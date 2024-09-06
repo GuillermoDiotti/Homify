@@ -1,0 +1,6 @@
+@Homify.WebApi_HostAddress = http://localhost:5003
+
+GET {{Homify.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
