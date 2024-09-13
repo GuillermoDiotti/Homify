@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Homify.BusinessLogic.Utility;
 
+[ExcludeFromCodeCoverage]
 public class HomifyDateTime
 {
     public static DateTimeOffset Parse(string date)

@@ -27,4 +27,8 @@
       <ProjectReference Include="..\Homify.WebApi\Homify.WebApi.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="BusinessLogicTests\" />
+    </ItemGroup>
+
 </Project>
