@@ -1,6 +1,8 @@
+using Homify.BusinessLogic.Users.Entities;
+
 namespace Homify.BusinessLogic.Admins.Entities;
 
-public class Admin
+public class Admin : User
 {
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
