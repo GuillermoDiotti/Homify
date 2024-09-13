@@ -183,4 +183,14 @@ public class AdminControllerTests
     #endregion
 
     #endregion
+    
+    #region Delete
+    
+    public void DeleteAdmin_WhenAdminIdIsNull_ShouldThrowException()
+    {
+        _adminServiceMock.Setup(admin => admin.Delete(It.IsAny<string>())).Throws(new ArgsNullException("AdminId cannot be null"));
+        _controller.Invoking(c => c.Delete(null)).Should().Throw<ArgsNullException>();
+    }
+    
+    #endregion
 }
