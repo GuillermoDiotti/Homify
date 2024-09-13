@@ -67,5 +67,19 @@ public class AdminControllerTests
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void CreateAdmin_WhenEmailFormatInInvalid2_ShouldThrowExceptionn()
+    {
+        var request = new CreateAdminRequest()
+        {
+            Name = "John",
+            Email = "example.com",
+            Password = "password",
+            LastName = "Doe"
+        };
+        _controller.Create(request);
+    }
     #endregion
 }
