@@ -22,4 +22,8 @@
         <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Homify.WebApi\Homify.WebApi.csproj" />
+    </ItemGroup>
+
 </Project>
