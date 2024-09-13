@@ -194,5 +194,14 @@ public class AdminControllerTests
         _controller.Delete("1234");
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void DeleteAdmin_WhenAdminIdIsOk_ShouldDeleteAdmin()
+    {
+        var testAdmin = new Admin();
+        _adminServiceMock.Setup(admin => admin.GetById(testAdmin.Id)).Throws(new NotFoundException("Admin not found"));
+        _controller.Delete(testAdmin.Id);
+    }
+
     #endregion
 }
