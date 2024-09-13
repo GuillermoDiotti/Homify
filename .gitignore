@@ -3,7 +3,7 @@
 [Oo]bj/
 
 .env*
-
+.idea
 
 # mstest test results
 TestResults
