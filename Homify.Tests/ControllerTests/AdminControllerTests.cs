@@ -1,4 +1,6 @@
+using FluentAssertions;
 using Homify.BusinessLogic.Admins;
+using Homify.BusinessLogic.Admins.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.Admins.Models;
@@ -142,6 +144,34 @@ public class AdminControllerTests
             LastName = null
         };
         _controller.Create(request);
+    }
+
+    [TestMethod]
+    public void CreateAdmin_WhenDataIsOk_ShouldCreateAdmin()
+    {
+        var request = new CreateAdminRequest()
+        {
+            Name = "John",
+            Email = "example@gmail.com",
+            Password = "12345",
+            LastName = "lastName"
+        };
+
+        var expectedAdmin = new Admin()
+        {
+            Name = request.Name,
+            Email = request.Email,
+            Password = request.Password,
+            LastName = request.LastName
+        };
+        _adminServiceMock.Setup(admin => admin.Add(It.IsAny<CreateAdminArgs>())).Returns(expectedAdmin);
+
+        var response = _controller.Create(request);
+
+        response.Should().NotBeNull();
+        response.Id.Should().NotBeNull();
+        response.Id.Should().NotBeEmpty();
+        response.Id.Should().Be(expectedAdmin.Id);
     }
     #endregion
 }
