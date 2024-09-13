@@ -1,15 +1,15 @@
 using Homify.Exceptions;
 
-namespace Homify.BusinessLogic.Admins.Entities;
+namespace Homify.BusinessLogic.Users.Entities;
 
-public class CreateAdminArgs
+public class CreateUserArgs
 {
     public readonly string Name;
     public readonly string Email;
     public readonly string Password;
     public readonly string LastName;
 
-    public CreateAdminArgs(string name, string email, string password, string lastName)
+    public CreateUserArgs(string name, string email, string password, string lastName)
     {
         if (string.IsNullOrWhiteSpace(name))
         {

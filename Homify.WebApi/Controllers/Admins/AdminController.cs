@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.Admins;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public sealed class AdminController : ControllerBase
             throw new NullRequestException("Request cannot be null");
         }
 
-        var arguments = new CreateAdminArgs(
+        var arguments = new CreateUserArgs(
             request.Name ?? string.Empty,
             request.Email ?? string.Empty,
             request.Password ?? string.Empty,

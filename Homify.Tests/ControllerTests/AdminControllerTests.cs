@@ -2,6 +2,7 @@ using FluentAssertions;
 using Homify.BusinessLogic.Admins;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.Admins.Models;
@@ -172,7 +173,7 @@ public class AdminControllerTests
             Password = request.Password,
             LastName = request.LastName
         };
-        _adminServiceMock.Setup(admin => admin.Add(It.IsAny<CreateAdminArgs>())).Returns(expectedAdmin);
+        _adminServiceMock.Setup(admin => admin.Add(It.IsAny<CreateUserArgs>())).Returns(expectedAdmin);
 
         var response = _controller.Create(request);
 
