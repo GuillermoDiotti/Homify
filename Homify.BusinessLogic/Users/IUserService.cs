@@ -1,8 +1,8 @@
 using Homify.BusinessLogic.Admins.Entities;
 
-namespace Homify.BusinessLogic.Admins;
+namespace Homify.BusinessLogic.Users;
 
-public interface IAdminService
+public interface IUserService
 {
     Admin Add(CreateAdminArgs args);
     Admin GetById(string id);

@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Homify.BusinessLogic.Admins;
 using Homify.BusinessLogic.Admins.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.Admins.Models;
@@ -12,11 +13,11 @@ namespace Homify.Tests.ControllerTests;
 public class AdminControllerTests
 {
     private AdminController _controller;
-    private Mock<IAdminService> _adminServiceMock;
+    private Mock<IUserService> _adminServiceMock;
 
     public AdminControllerTests()
     {
-        _adminServiceMock = new Mock<IAdminService>(MockBehavior.Strict);
+        _adminServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _controller = new AdminController(_adminServiceMock.Object);
     }
 

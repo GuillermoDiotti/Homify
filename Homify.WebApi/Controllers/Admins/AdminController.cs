@@ -1,5 +1,6 @@
 using Homify.BusinessLogic.Admins;
 using Homify.BusinessLogic.Admins.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace Homify.WebApi.Controllers.Admins;
 [Route("admins")]
 public sealed class AdminController : ControllerBase
 {
-    private readonly IAdminService _adminService;
+    private readonly IUserService _userService;
 
-    public AdminController(IAdminService adminService)
+    public AdminController(IUserService userService)
     {
-        _adminService = adminService;
+        _userService = userService;
     }
 
     [HttpPost]
@@ -31,7 +32,7 @@ public sealed class AdminController : ControllerBase
             request.Password ?? string.Empty,
             request.LastName ?? string.Empty);
 
-        var adiminstratorSaved = _adminService.Add(arguments);
+        var adiminstratorSaved = _userService.Add(arguments);
 
         return new CreateAdminResponse(adiminstratorSaved);
     }
@@ -39,14 +40,14 @@ public sealed class AdminController : ControllerBase
     [HttpDelete("{adminId}")]
     public void Delete(string adminId)
     {
-        var admin = _adminService.GetById(adminId);
+        var admin = _userService.GetById(adminId);
         if (admin == null)
         {
             throw new NotFoundException("Admin not found");
         }
         else
         {
-            _adminService.Delete(adminId);
+            _userService.Delete(adminId);
         }
     }
 
@@ -57,6 +58,6 @@ public sealed class AdminController : ControllerBase
             throw new NotFoundException("Admin not found");
         }
 
-        return _adminService.GetById(id);
+        return _userService.GetById(id);
     }
 }
