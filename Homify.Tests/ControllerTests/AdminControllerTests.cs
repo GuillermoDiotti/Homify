@@ -21,6 +21,9 @@ public class AdminControllerTests
     }
 
     #region Create
+
+    #region Error
+
     [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void CreateAdmin_WhenRequestIsNull_ShouldThrowEception()
@@ -146,6 +149,10 @@ public class AdminControllerTests
         _controller.Create(request);
     }
 
+    #endregion
+
+    #region Success
+
     [TestMethod]
     public void CreateAdmin_WhenDataIsOk_ShouldCreateAdmin()
     {
@@ -173,5 +180,7 @@ public class AdminControllerTests
         response.Id.Should().NotBeEmpty();
         response.Id.Should().Be(expectedAdmin.Id);
     }
+    #endregion
+
     #endregion
 }
