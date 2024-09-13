@@ -221,7 +221,7 @@ public class AdminControllerTests
         var testAdmin = new Admin();
         _adminServiceMock.Setup(admin => admin.GetById(testAdmin.Id)).Returns(testAdmin);
 
-        var response = _controller.Get(testAdmin.Id);
+        var response = _controller.GetById(testAdmin.Id);
 
         response.Should().NotBeNull();
         response.Id.Should().NotBeNull();

@@ -49,4 +49,14 @@ public sealed class AdminController : ControllerBase
             _adminService.Delete(adminId);
         }
     }
+
+    public Admin GetById(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            throw new NotFoundException("Admin not found");
+        }
+
+        return _adminService.GetById(id);
+    }
 }
