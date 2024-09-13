@@ -229,5 +229,12 @@ public class AdminControllerTests
         response.Id.Should().Be(testAdmin.Id);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void GetAdmin_WhenAdminIdIsNull_ShouldThrowException()
+    {
+        var response = _controller.GetById(null);
+    }
+
     #endregion
 }
