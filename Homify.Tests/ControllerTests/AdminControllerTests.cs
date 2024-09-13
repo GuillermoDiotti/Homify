@@ -129,5 +129,19 @@ public class AdminControllerTests
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateAdmin_WhenLastNameIsNull_ShouldThrowExceptionn()
+    {
+        var request = new CreateAdminRequest()
+        {
+            Name = "John",
+            Email = "example@gmail.com",
+            Password = "12345",
+            LastName = null
+        };
+        _controller.Create(request);
+    }
     #endregion
 }
