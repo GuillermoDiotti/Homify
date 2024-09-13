@@ -4,5 +4,5 @@ namespace Homify.BusinessLogic.Admins;
 
 public interface IAdminService
 {
-    Admin CreateAdmin(CreateAdminArgs args);
+    Admin Add(CreateAdminArgs args);
 }

@@ -1,5 +1,8 @@
+using Homify.BusinessLogic.Admins;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins;
+using Homify.WebApi.Controllers.Admins.Models;
+using Moq;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -7,10 +10,12 @@ namespace Homify.Tests.ControllerTests;
 public class AdminControllerTests
 {
     private AdminController _controller;
+    private Mock<IAdminService> _adminServiceMock;
 
     public AdminControllerTests()
     {
-        _controller = new AdminController();
+        _adminServiceMock = new Mock<IAdminService>(MockBehavior.Strict);
+        _controller = new AdminController(_adminServiceMock.Object);
     }
 
     #region Create
@@ -27,7 +32,10 @@ public class AdminControllerTests
     {
         var request = new CreateAdminRequest()
         {
-            Name = null, Email = "example@gmail.com", Password = "password", LastName = "Doe"
+            Name = null,
+            Email = "example@gmail.com",
+            Password = "password",
+            LastName = "Doe"
         };
         _controller.Create(request);
     }

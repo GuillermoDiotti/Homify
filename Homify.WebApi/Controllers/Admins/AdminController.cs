@@ -1,3 +1,5 @@
+using Homify.BusinessLogic.Admins;
+using Homify.BusinessLogic.Admins.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +10,11 @@ namespace Homify.WebApi.Controllers.Admins;
 [Route("admins")]
 public sealed class AdminController : ControllerBase
 {
-    public AdminController()
+    private readonly IAdminService _adminService;
+
+    public AdminController(IAdminService adminService)
     {
+        _adminService = adminService;
     }
 
     [HttpPost]
@@ -20,6 +25,14 @@ public sealed class AdminController : ControllerBase
             throw new NullRequestException("Request cannot be null");
         }
 
-        return new CreateAdminResponse();
+        var arguments = new CreateAdminArgs(
+            request.Name ?? string.Empty,
+            request.Email ?? string.Empty,
+            request.Password ?? string.Empty,
+            request.LastName ?? string.Empty);
+
+        var adiminstratorSaved = _adminService.Add(arguments);
+
+        return new CreateAdminResponse(adiminstratorSaved);
     }
 }
