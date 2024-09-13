@@ -1,3 +1,4 @@
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins;
 
 namespace Homify.Tests.ControllerTests;
@@ -14,7 +15,7 @@ public class AdminControllerTests
 
     #region Create
     [TestMethod]
-    [ExpectedException(typeof(Exception))]
+    [ExpectedException(typeof(NullRequestException))]
     public void CreateAdmin_WhenRequestIsNull_ShouldThrowEception()
     {
         var admin = _controller.Create(null);

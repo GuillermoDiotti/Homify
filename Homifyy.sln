@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.BusinessLogic", "Hom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.Tests", "Homify.Tests\Homify.Tests.csproj", "{28408524-FB84-441C-A3E7-96B77C491890}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.Exceptions", "Homify.Exceptions\Homify.Exceptions.csproj", "{ECB18587-4C60-4100-84F1-61F2E62FA410}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{28408524-FB84-441C-A3E7-96B77C491890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28408524-FB84-441C-A3E7-96B77C491890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28408524-FB84-441C-A3E7-96B77C491890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECB18587-4C60-4100-84F1-61F2E62FA410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECB18587-4C60-4100-84F1-61F2E62FA410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECB18587-4C60-4100-84F1-61F2E62FA410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECB18587-4C60-4100-84F1-61F2E62FA410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

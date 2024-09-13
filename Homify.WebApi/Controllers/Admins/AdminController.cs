@@ -1,3 +1,4 @@
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ public sealed class AdminController : ControllerBase
     {
         if (request == null)
         {
-            throw new Exception("Request is null");
+            throw new NullRequestException("Request cannot be null");
         }
 
         return new CreateAdminResponse();
