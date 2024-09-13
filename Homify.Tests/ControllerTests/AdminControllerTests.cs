@@ -183,14 +183,16 @@ public class AdminControllerTests
     #endregion
 
     #endregion
-    
+
     #region Delete
-    
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
     public void DeleteAdmin_WhenAdminIdIsNull_ShouldThrowException()
     {
-        _adminServiceMock.Setup(admin => admin.Delete(It.IsAny<string>())).Throws(new ArgsNullException("AdminId cannot be null"));
-        _controller.Invoking(c => c.Delete(null)).Should().Throw<ArgsNullException>();
+        _adminServiceMock.Setup(admin => admin.GetById(It.IsAny<string>())).Throws(new NotFoundException("Admin not found"));
+        _controller.Delete("1234");
     }
-    
+
     #endregion
 }

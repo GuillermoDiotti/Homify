@@ -35,4 +35,18 @@ public sealed class AdminController : ControllerBase
 
         return new CreateAdminResponse(adiminstratorSaved);
     }
+
+    [HttpDelete("{adminId}")]
+    public void Delete(string adminId)
+    {
+        var admin = _adminService.GetById(adminId);
+        if (admin == null)
+        {
+            throw new NotFoundException("Admin not found");
+        }
+        else
+        {
+            _adminService.Delete(adminId);
+        }
+    }
 }
