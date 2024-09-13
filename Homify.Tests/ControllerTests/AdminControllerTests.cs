@@ -186,6 +186,8 @@ public class AdminControllerTests
 
     #region Delete
 
+    #region Error
+
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void DeleteAdmin_WhenAdminIdIsNull_ShouldThrowException()
@@ -194,6 +196,10 @@ public class AdminControllerTests
         _controller.Delete("1234");
     }
 
+    #endregion
+
+    #region Success
+
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void DeleteAdmin_WhenAdminIdIsOk_ShouldDeleteAdmin()
@@ -201,6 +207,26 @@ public class AdminControllerTests
         var testAdmin = new Admin();
         _adminServiceMock.Setup(admin => admin.GetById(testAdmin.Id)).Throws(new NotFoundException("Admin not found"));
         _controller.Delete(testAdmin.Id);
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Get
+
+    [TestMethod]
+    public void GetAdmin_WhenAdminIdIsOk_ShouldReturnAdmin()
+    {
+        var testAdmin = new Admin();
+        _adminServiceMock.Setup(admin => admin.GetById(testAdmin.Id)).Returns(testAdmin);
+
+        var response = _controller.Get(testAdmin.Id);
+
+        response.Should().NotBeNull();
+        response.Id.Should().NotBeNull();
+        response.Id.Should().NotBeEmpty();
+        response.Id.Should().Be(testAdmin.Id);
     }
 
     #endregion
