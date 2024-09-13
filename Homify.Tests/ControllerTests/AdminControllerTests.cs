@@ -39,5 +39,19 @@ public class AdminControllerTests
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateAdmin_WhenEmailIsNull_ShouldThrowExceptionn()
+    {
+        var request = new CreateAdminRequest()
+        {
+            Name = "John",
+            Email = null,
+            Password = "password",
+            LastName = "Doe"
+        };
+        _controller.Create(request);
+    }
     #endregion
 }
