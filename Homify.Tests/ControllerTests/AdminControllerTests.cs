@@ -181,6 +181,10 @@ public class AdminControllerTests
         response.Id.Should().NotBeNull();
         response.Id.Should().NotBeEmpty();
         response.Id.Should().Be(expectedAdmin.Id);
+        expectedAdmin.Name.Should().Be(request.Name);
+        expectedAdmin.Email.Should().Be(request.Email);
+        expectedAdmin.Password.Should().Be(request.Password);
+        expectedAdmin.LastName.Should().Be(request.LastName);
     }
     #endregion
 
