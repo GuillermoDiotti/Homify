@@ -6,7 +6,7 @@ namespace Homify.DataAccess.Contexts;
 
 public class HomifyDbContext : DbContext
 {
-    private static SqliteConnection _connection = new("Data Source=:memory:");
+    private static readonly SqliteConnection _connection = new("Data Source=:memory:");
 
     public static TestDbContext BuildTestDbContext()
     {
