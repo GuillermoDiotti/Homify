@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Homify.BusinessLogic.Admins;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
@@ -13,8 +12,8 @@ namespace Homify.Tests.ControllerTests;
 [TestClass]
 public class AdminControllerTests
 {
-    private AdminController _controller;
-    private Mock<IUserService> _adminServiceMock;
+    private readonly AdminController _controller;
+    private readonly Mock<IUserService> _adminServiceMock;
 
     public AdminControllerTests()
     {
@@ -30,7 +29,7 @@ public class AdminControllerTests
     [ExpectedException(typeof(NullRequestException))]
     public void CreateAdmin_WhenRequestIsNull_ShouldThrowEception()
     {
-        var admin = _controller.Create(null);
+        var admin = _controller.Create(null!);
     }
 
     [TestMethod]
@@ -239,7 +238,7 @@ public class AdminControllerTests
     [ExpectedException(typeof(NotFoundException))]
     public void GetAdmin_WhenAdminIdIsNull_ShouldThrowException()
     {
-        var response = _controller.GetById(null);
+        var response = _controller.GetById(null!);
     }
 
     #endregion
