@@ -29,7 +29,7 @@ public class AdminControllerTests
     [ExpectedException(typeof(NullRequestException))]
     public void CreateAdmin_WhenRequestIsNull_ShouldThrowEception()
     {
-        var admin = _controller.Create(null!);
+        _controller.Create(null!);
     }
 
     [TestMethod]
@@ -238,7 +238,7 @@ public class AdminControllerTests
     [ExpectedException(typeof(NotFoundException))]
     public void GetAdmin_WhenAdminIdIsNull_ShouldThrowException()
     {
-        var response = _controller.GetById(null!);
+        _controller.GetById(null!);
     }
 
     #endregion
