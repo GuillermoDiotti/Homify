@@ -32,7 +32,7 @@ public sealed class AdminController : ControllerBase
             request.Password ?? string.Empty,
             request.LastName ?? string.Empty);
 
-        var adiminstratorSaved = _userService.Add(arguments);
+        var adiminstratorSaved = _userService.AddAdmin(arguments);
 
         return new CreateAdminResponse(adiminstratorSaved);
     }
@@ -51,7 +51,7 @@ public sealed class AdminController : ControllerBase
         }
     }
 
-    public Admin GetById(string id)
+    public User GetById(string id)
     {
         if (string.IsNullOrEmpty(id))
         {

@@ -172,7 +172,7 @@ public class AdminControllerTests
             Password = request.Password,
             LastName = request.LastName
         };
-        _adminServiceMock.Setup(admin => admin.Add(It.IsAny<CreateUserArgs>())).Returns(expectedAdmin);
+        _adminServiceMock.Setup(admin => admin.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedAdmin);
 
         var response = _controller.Create(request);
 
