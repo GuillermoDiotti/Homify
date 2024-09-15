@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.CompanyOwners;
 using Homify.WebApi.Controllers.CompanyOwners.Models;
@@ -60,6 +61,29 @@ public class CompanyOwnerControllerTest
     #endregion
 
     #region Error
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void CreateOwner_WhenRequestIsNull_ShouldThrowNullRequestException()
+    {
+        _controller.Create(null);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(Exception))]
+    public void CreateOwner_WhenUserServiceFails_ShouldThrowException()
+    {
+        var request = new CreateCompanyOwnerRequest()
+        {
+            Name = "John",
+            Email = "example@gmail.com",
+            Password = "12345",
+            LastName = "lastName"
+        };
+
+        _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Throws(new Exception("Internal Error"));
+
+        _controller.Create(request);
+    }
 
     #endregion
 
