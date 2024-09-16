@@ -242,4 +242,98 @@ public class AdminControllerTests
     }
 
     #endregion
+
+    [TestMethod]
+    public void AllAccounts_WhenLimitAndOffsetAreValid_ShouldReturnCorrectUsers()
+    {
+        var users = new List<User>
+        {
+            new User { Name = "John", LastName = "Doe" },
+            new User { Name = "Jane", LastName = "Smith" },
+            new User { Name = "Adam", LastName = "Johnson" }
+        };
+
+        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+
+        var result = _controller.AllAccounts("2", "1");
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Jane", result[0].Name);
+        Assert.AreEqual("Smith", result[0].LastName);
+    }
+
+    [TestMethod]
+    public void AllAccounts_WhenLimitIsInvalid_ShouldReturnDefaultPageSize()
+    {
+        var users = new List<User>
+        {
+            new User { Name = "John", LastName = "Doe" },
+            new User { Name = "Jane", LastName = "Smith" },
+            new User { Name = "Adam", LastName = "Johnson" },
+            new User { Name = "Lucy", LastName = "Williams" }
+        };
+
+        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+
+        var result = _controller.AllAccounts("invalid", "0");
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(4, result.Count);
+    }
+
+    [TestMethod]
+    public void AllAccounts_WhenOffsetIsInvalid_ShouldReturnFirstUsers()
+    {
+        var users = new List<User>
+        {
+            new User { Name = "John", LastName = "Doe" },
+            new User { Name = "Jane", LastName = "Smith" },
+            new User { Name = "Adam", LastName = "Johnson" }
+        };
+
+        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+
+        var result = _controller.AllAccounts("2", "invalid");
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("John", result[0].Name);
+    }
+
+    [TestMethod]
+    public void AllAccounts_WhenNoParameters_ShouldReturnDefaultValues()
+    {
+        var users = new List<User>
+        {
+            new User { Name = "John", LastName = "Doe" },
+            new User { Name = "Jane", LastName = "Smith" },
+            new User { Name = "Adam", LastName = "Johnson" }
+        };
+
+        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+
+        var result = _controller.AllAccounts(null, null);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(3, result.Count);
+    }
+
+    [TestMethod]
+    public void AllAccounts_ShouldMapUserToUserBasicInfoCorrectly()
+    {
+        var users = new List<User>
+        {
+            new User { Name = "John", LastName = "Doe", CreatedAt = DateTime.Now }
+        };
+
+        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+
+        var result = _controller.AllAccounts("10", "0");
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("John", result[0].Name);
+        Assert.AreEqual("Doe", result[0].LastName);
+    }
 }
