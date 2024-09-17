@@ -19,6 +19,7 @@ public class CompanyController : ControllerBase
     [HttpPost]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
+        // TODO: verificar que la cuenta sea incompleta para poder usar este endpoint
         if (request == null)
         {
             throw new NullRequestException();
