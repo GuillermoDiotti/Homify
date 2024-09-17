@@ -1,4 +1,3 @@
-using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -32,7 +31,7 @@ public sealed class AdminController : ControllerBase
             request.Password ?? string.Empty,
             request.LastName ?? string.Empty);
 
-        var administratorSaved = _userService.AddAdmin(arguments);
+        var administratorSaved = _userService.AddUser(arguments);
 
         return new CreateAdminResponse(administratorSaved);
     }

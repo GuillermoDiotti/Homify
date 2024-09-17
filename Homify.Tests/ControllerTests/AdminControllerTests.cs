@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -10,15 +9,15 @@ using Moq;
 namespace Homify.Tests.ControllerTests;
 
 [TestClass]
-public class AdminControllerTests
+public class UserControllerTests
 {
     private readonly AdminController _controller;
-    private readonly Mock<IUserService> _adminServiceMock;
+    private readonly Mock<IUserService> _UserServiceMock;
 
-    public AdminControllerTests()
+    public UserControllerTests()
     {
-        _adminServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new AdminController(_adminServiceMock.Object);
+        _UserServiceMock = new Mock<IUserService>(MockBehavior.Strict);
+        _controller = new AdminController(_UserServiceMock.Object);
     }
 
     #region Create
@@ -27,14 +26,14 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
-    public void CreateAdmin_WhenRequestIsNull_ShouldThrowEception()
+    public void CreateUser_WhenRequestIsNull_ShouldThrowEception()
     {
         _controller.Create(null!);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateAdmin_WhenNameIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenNameIsNull_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -48,7 +47,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateAdmin_WhenEmailIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenEmailIsNull_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -62,7 +61,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateAdmin_WhenEmailFormatInInvalid1_ShouldThrowExceptionn()
+    public void CreateUser_WhenEmailFormatInInvalid1_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -76,7 +75,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateAdmin_WhenEmailFormatInInvalid2_ShouldThrowExceptionn()
+    public void CreateUser_WhenEmailFormatInInvalid2_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -90,7 +89,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateAdmin_WhenPasswordIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenPasswordIsNull_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -104,7 +103,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateAdmin_WhenPasswordIsFormatIsInvalid1_ShouldThrowExceptionn()
+    public void CreateUser_WhenPasswordIsFormatIsInvalid1_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -118,7 +117,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateAdmin_WhenPasswordIsFormatIsInvalid2_ShouldThrowExceptionn()
+    public void CreateUser_WhenPasswordIsFormatIsInvalid2_ShouldThrowExceptionn()
     {
         var password = string.Empty;
         for (var i = 0; i < 60; i++)
@@ -138,7 +137,7 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateAdmin_WhenLastNameIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenLastNameIsNull_ShouldThrowExceptionn()
     {
         var request = new CreateAdminRequest()
         {
@@ -155,7 +154,7 @@ public class AdminControllerTests
     #region Success
 
     [TestMethod]
-    public void CreateAdmin_WhenDataIsOk_ShouldCreateAdmin()
+    public void CreateUser_WhenDataIsOk_ShouldCreateUser()
     {
         var request = new CreateAdminRequest()
         {
@@ -165,25 +164,25 @@ public class AdminControllerTests
             LastName = "lastName"
         };
 
-        var expectedAdmin = new Admin()
+        var expectedUser = new User()
         {
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName
         };
-        _adminServiceMock.Setup(admin => admin.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedAdmin);
+        _UserServiceMock.Setup(user => user.AddUser(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
 
         var response = _controller.Create(request);
 
         response.Should().NotBeNull();
         response.Id.Should().NotBeNull();
         response.Id.Should().NotBeEmpty();
-        response.Id.Should().Be(expectedAdmin.Id);
-        expectedAdmin.Name.Should().Be(request.Name);
-        expectedAdmin.Email.Should().Be(request.Email);
-        expectedAdmin.Password.Should().Be(request.Password);
-        expectedAdmin.LastName.Should().Be(request.LastName);
+        response.Id.Should().Be(expectedUser.Id);
+        expectedUser.Name.Should().Be(request.Name);
+        expectedUser.Email.Should().Be(request.Email);
+        expectedUser.Password.Should().Be(request.Password);
+        expectedUser.LastName.Should().Be(request.LastName);
     }
     #endregion
 
@@ -195,9 +194,9 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
-    public void DeleteAdmin_WhenAdminIdIsNull_ShouldThrowException()
+    public void DeleteUser_WhenUserIdIsNull_ShouldThrowException()
     {
-        _adminServiceMock.Setup(admin => admin.GetById(It.IsAny<string>())).Throws(new NotFoundException("Admin not found"));
+        _UserServiceMock.Setup(user => user.GetById(It.IsAny<string>())).Throws(new NotFoundException("User not found"));
         _controller.Delete("1234");
     }
 
@@ -207,11 +206,11 @@ public class AdminControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
-    public void DeleteAdmin_WhenAdminIdIsOk_ShouldDeleteAdmin()
+    public void DeleteUser_WhenUserIdIsOk_ShouldDeleteUser()
     {
-        var testAdmin = new Admin();
-        _adminServiceMock.Setup(admin => admin.GetById(testAdmin.Id)).Throws(new NotFoundException("Admin not found"));
-        _controller.Delete(testAdmin.Id);
+        var testUser = new User();
+        _UserServiceMock.Setup(user => user.GetById(testUser.Id)).Throws(new NotFoundException("User not found"));
+        _controller.Delete(testUser.Id);
     }
 
     #endregion
@@ -221,22 +220,22 @@ public class AdminControllerTests
     #region Get
 
     [TestMethod]
-    public void GetAdmin_WhenAdminIdIsOk_ShouldReturnAdmin()
+    public void GetUser_WhenUserIdIsOk_ShouldReturnUser()
     {
-        var testAdmin = new Admin();
-        _adminServiceMock.Setup(admin => admin.GetById(testAdmin.Id)).Returns(testAdmin);
+        var testUser = new User();
+        _UserServiceMock.Setup(user => user.GetById(testUser.Id)).Returns(testUser);
 
-        var response = _controller.GetById(testAdmin.Id);
+        var response = _controller.GetById(testUser.Id);
 
         response.Should().NotBeNull();
         response.Id.Should().NotBeNull();
         response.Id.Should().NotBeEmpty();
-        response.Id.Should().Be(testAdmin.Id);
+        response.Id.Should().Be(testUser.Id);
     }
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
-    public void GetAdmin_WhenAdminIdIsNull_ShouldThrowException()
+    public void GetUser_WhenUserIdIsNull_ShouldThrowException()
     {
         _controller.GetById(null!);
     }
@@ -253,7 +252,7 @@ public class AdminControllerTests
             new User { Name = "Adam", LastName = "Johnson" }
         };
 
-        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("2", "1");
 
@@ -274,7 +273,7 @@ public class AdminControllerTests
             new User { Name = "Lucy", LastName = "Williams" }
         };
 
-        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("invalid", "0");
 
@@ -292,7 +291,7 @@ public class AdminControllerTests
             new User { Name = "Adam", LastName = "Johnson" }
         };
 
-        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("2", "invalid");
 
@@ -311,7 +310,7 @@ public class AdminControllerTests
             new User { Name = "Adam", LastName = "Johnson" }
         };
 
-        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts(null, null);
 
@@ -327,7 +326,7 @@ public class AdminControllerTests
             new User { Name = "John", LastName = "Doe", CreatedAt = DateTime.Now }
         };
 
-        _adminServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("10", "0");
 
