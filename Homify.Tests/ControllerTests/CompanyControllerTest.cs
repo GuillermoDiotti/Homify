@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Users;
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -41,5 +42,14 @@ public class CompanyControllerTest
 
         response.Should().NotBeNull();
         response.Id.Should().Be(expected.Id);
+    }
+
+    [TestMethod]
+    public void Create_WhenRequestIsNull_ShouldThrowArgumentNullException()
+    {
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws<NullRequestException>();
+
+        var response = () => _controller.Create(null);
+        response.Should().Throw<NullRequestException>().WithMessage("Request cannot be null");
     }
 }

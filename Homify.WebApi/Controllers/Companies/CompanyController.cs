@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Companies;
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.Companies.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,11 @@ public class CompanyController : ControllerBase
     [HttpPost]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        if (request == null)
+        {
+            throw new NullRequestException();
+        }
+
         var args = new CreateCompanyArgs(request.Name ?? string.Empty, request.LogoUrl ?? string.Empty,
             request.Rut ?? string.Empty);
 
