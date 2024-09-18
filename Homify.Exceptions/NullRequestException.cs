@@ -11,10 +11,5 @@ public class NullRequestException : Exception
         : base(message)
     {
     }
-
-    public NullRequestException(string message, Exception innerException)
-        : base(message, innerException)
-    {
-    }
 }
 
