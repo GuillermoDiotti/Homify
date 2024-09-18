@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.CompanyOwners.Models;
 using Microsoft.AspNetCore.Mvc;
 

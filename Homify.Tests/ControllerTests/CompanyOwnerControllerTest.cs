@@ -3,7 +3,6 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.CompanyOwners;
 using Homify.WebApi.Controllers.CompanyOwners.Models;
 using Moq;

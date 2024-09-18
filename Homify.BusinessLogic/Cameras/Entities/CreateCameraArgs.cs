@@ -33,7 +33,7 @@ public class CreateCameraArgs
 
         Description = description;
 
-        List<string> list = new ();
+        List<string> list = [];
         foreach (var p in photos)
         {
             list.Add(p);

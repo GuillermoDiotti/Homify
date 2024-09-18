@@ -11,6 +11,7 @@ public class Device
     public List<string> Photos { get; init; } = null!;
     public Company Company { get; init; } = null!;
     public string? PpalPicture { get; init; }
+    public bool IsActive { get; set; }
 
     // TODO: public List<IObserver> MembersToNotify { get; init; }
 
@@ -23,10 +24,12 @@ public class Device
         Photos = photos;
         Company = company;
         PpalPicture = pictureUrl;
+        IsActive = false;
     }
 
     public Device()
     {
         Id = Guid.NewGuid().ToString();
+        IsActive = false;
     }
 }

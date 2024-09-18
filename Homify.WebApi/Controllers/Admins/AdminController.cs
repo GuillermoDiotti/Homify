@@ -67,9 +67,9 @@ public sealed class AdminController : ControllerBase
         }
 
         List<User> list = _userService.GetAll();
-        List<User> paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
+        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
 
-        List<UserBasicInfo> result = new ();
+        List<UserBasicInfo> result = [];
         foreach (User u in paginatedList)
         {
             result.Add(new UserBasicInfo(u));

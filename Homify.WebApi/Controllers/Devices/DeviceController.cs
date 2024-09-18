@@ -20,6 +20,7 @@ public class DeviceController : ControllerBase
     [HttpPost("cameras")]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
+        // TODO: verificar que solo puedan acceder los de cuentas COMPLETAS
         if (req == null)
         {
             throw new NullRequestException();
