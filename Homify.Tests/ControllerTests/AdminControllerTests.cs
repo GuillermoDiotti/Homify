@@ -12,12 +12,12 @@ namespace Homify.Tests.ControllerTests;
 public class UserControllerTests
 {
     private readonly AdminController _controller;
-    private readonly Mock<IUserService> _UserServiceMock;
+    private readonly Mock<IUserService> _userServiceMock;
 
     public UserControllerTests()
     {
-        _UserServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new AdminController(_UserServiceMock.Object);
+        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
+        _controller = new AdminController(_userServiceMock.Object);
     }
 
     #region Create
@@ -171,7 +171,7 @@ public class UserControllerTests
             Password = request.Password,
             LastName = request.LastName
         };
-        _UserServiceMock.Setup(user => user.AddUser(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
+        _userServiceMock.Setup(user => user.AddUser(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
 
         var response = _controller.Create(request);
 
@@ -196,7 +196,7 @@ public class UserControllerTests
     [ExpectedException(typeof(NotFoundException))]
     public void DeleteUser_WhenUserIdIsNull_ShouldThrowException()
     {
-        _UserServiceMock.Setup(user => user.GetById(It.IsAny<string>())).Throws(new NotFoundException("User not found"));
+        _userServiceMock.Setup(user => user.GetById(It.IsAny<string>())).Throws(new NotFoundException("User not found"));
         _controller.Delete("1234");
     }
 
@@ -209,7 +209,7 @@ public class UserControllerTests
     public void DeleteUser_WhenUserIdIsOk_ShouldDeleteUser()
     {
         var testUser = new User();
-        _UserServiceMock.Setup(user => user.GetById(testUser.Id)).Throws(new NotFoundException("User not found"));
+        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Throws(new NotFoundException("User not found"));
         _controller.Delete(testUser.Id);
     }
 
@@ -223,7 +223,7 @@ public class UserControllerTests
     public void GetUser_WhenUserIdIsOk_ShouldReturnUser()
     {
         var testUser = new User();
-        _UserServiceMock.Setup(user => user.GetById(testUser.Id)).Returns(testUser);
+        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Returns(testUser);
 
         var response = _controller.GetById(testUser.Id);
 
@@ -252,7 +252,7 @@ public class UserControllerTests
             new User { Name = "Adam", LastName = "Johnson" }
         };
 
-        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("2", "1");
 
@@ -273,7 +273,7 @@ public class UserControllerTests
             new User { Name = "Lucy", LastName = "Williams" }
         };
 
-        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("invalid", "0");
 
@@ -291,7 +291,7 @@ public class UserControllerTests
             new User { Name = "Adam", LastName = "Johnson" }
         };
 
-        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("2", "invalid");
 
@@ -310,7 +310,7 @@ public class UserControllerTests
             new User { Name = "Adam", LastName = "Johnson" }
         };
 
-        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts(null, null);
 
@@ -326,7 +326,7 @@ public class UserControllerTests
             new User { Name = "John", LastName = "Doe", CreatedAt = DateTime.Now }
         };
 
-        _UserServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
         var result = _controller.AllAccounts("10", "0");
 
