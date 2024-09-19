@@ -87,4 +87,21 @@ public class HomesControllerTest
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
+    {
+        var request = new CreateHomeRequest
+        {
+            Street = "calle 1",
+            Number = "1",
+            Latitude = "101",
+            Longitud = "202",
+            MaxMembers = "3"
+        };
+
+        var response = _controller.Create(request);
+
+        Assert.IsNotNull(response);
+    }
 }
