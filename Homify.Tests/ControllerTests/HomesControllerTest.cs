@@ -72,4 +72,19 @@ public class HomesControllerTest
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHome_WhenMaxMembersIsNull_ShouldThrowException()
+    {
+        var request = new CreateHomeRequest()
+        {
+            Street = "calle",
+            Number = "3",
+            Latitude = "141",
+            Longitud = "231",
+            MaxMembers = null
+        };
+        _controller.Create(request);
+    }
 }
