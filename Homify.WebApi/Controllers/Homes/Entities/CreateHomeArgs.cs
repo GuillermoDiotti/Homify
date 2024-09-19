@@ -6,8 +6,9 @@ public class CreateHomeArgs
 {
     public readonly string Street;
     public readonly string Number;
+    public readonly string Latitude;
 
-    public CreateHomeArgs(string street, string number)
+    public CreateHomeArgs(string street, string number, string latitude)
     {
         if (string.IsNullOrWhiteSpace(street))
         {
@@ -18,8 +19,13 @@ public class CreateHomeArgs
         {
             throw new ArgsNullException("number cannot be null or empty");
         }
+        if (string.IsNullOrWhiteSpace(latitude))
+        {
+            throw new ArgsNullException("latitude cannot be null or empty");
+        }
 
         Street = street;
         Number = number;
+        Latitude = latitude;
     }
 }
