@@ -33,4 +33,16 @@ public class HomesControllerTest
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHome_WhenNumberIsNull_ShouldThrowException()
+    {
+        var request = new CreateHomeRequest()
+        {
+            Street = "calle",
+            Number = null
+        };
+        _controller.Create(request);
+    }
 }
