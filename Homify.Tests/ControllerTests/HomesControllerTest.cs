@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Homes;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes;
+using Homify.WebApi.Controllers.Homes.Models;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -20,5 +21,16 @@ public class HomesControllerTest
     public void Create_WhenRequestIsNull_ShouldThrowException()
     {
         _controller.Create(null);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHome_WhenStreetIsNull_ShouldThrowException()
+    {
+        var request = new CreateHomeRequest()
+        {
+            Street = null
+        };
+        _controller.Create(request);
     }
 }

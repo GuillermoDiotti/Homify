@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Homes.Entities;
 using Homify.WebApi.Controllers.Homes.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,8 +26,10 @@ public sealed class HomeController : ControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        // var arguments = new CreateHomeArgs(
-        //    request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
+        var arguments = new CreateHomeArgs(
+           request.Street ?? string.Empty);
+
+        // string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
         //    request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
 
         var home = new Home
@@ -41,4 +44,5 @@ public sealed class HomeController : ControllerBase
         // _homes.Add(home);
         return new CreateHomeResponse(home);
     }
+
 }
