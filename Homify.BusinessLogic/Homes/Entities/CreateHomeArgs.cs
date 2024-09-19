@@ -1,6 +1,6 @@
 ﻿using Homify.Exceptions;
 
-namespace Homify.WebApi.Controllers.Homes.Entities;
+namespace Homify.BusinessLogic.Homes.Entities;
 
 public class CreateHomeArgs
 {

@@ -104,4 +104,11 @@ public class HomesControllerTest
 
         Assert.IsNotNull(response);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void UpdateMemberList_WhenRequestIsNull_ShouldThrowException()
+    {
+        _controller.UpdateMembersList(null);
+    }
 }

@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.Exceptions;
-using Homify.WebApi.Controllers.Homes.Entities;
 using Homify.WebApi.Controllers.Homes.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,20 +29,18 @@ public sealed class HomeController : ControllerBase
            request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
            request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
 
-        // string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
-        //    request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
-
-        var home = new Home
-        {
-            Street = arguments.Street,
-            Number = arguments.Number,
-            Latitude = arguments.Latitude,
-            Longitude = arguments.Longitude,
-            MaxMembers = arguments.MaxMembers
-        };
-
-        // _homes.Add(home);
-        return new CreateHomeResponse(home);
+        var administratorSaved = _homeService.AddHome(arguments);
+        return new CreateHomeResponse(administratorSaved);
     }
 
+    [HttpPost]
+    public UpdateMembersListResponse UpdateMembersList(UpdateMemberListRequest request)
+    {
+        if (request == null)
+        {
+            throw new NullRequestException("Request can not be null");
+        }
+
+        return new UpdateMembersListResponse();
+    }
 }
