@@ -27,7 +27,7 @@ public sealed class HomeController : ControllerBase
         }
 
         var arguments = new CreateHomeArgs(
-           request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty);
+           request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty, request.Longitud ?? string.Empty);
 
         // string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
         //    request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
@@ -37,8 +37,8 @@ public sealed class HomeController : ControllerBase
             Street = arguments.Street,
             Number = arguments.Number,
             Latitude = arguments.Latitude,
+            Longitude = arguments.Longitude
 
-            // Longitude = arguments.Longitud,
             // MaxMembers = arguments.MaxMembers
         };
 

@@ -58,4 +58,18 @@ public class HomesControllerTest
         };
         _controller.Create(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHome_WhenLongitudIsNull_ShouldThrowException()
+    {
+        var request = new CreateHomeRequest()
+        {
+            Street = "calle",
+            Number = "3",
+            Latitude = "141",
+            Longitud = null
+        };
+        _controller.Create(request);
+    }
 }
