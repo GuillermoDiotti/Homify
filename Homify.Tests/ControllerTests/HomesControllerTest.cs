@@ -151,4 +151,11 @@ public class HomesControllerTest
 
         Assert.IsTrue(result.Members.Contains(newMember), "El nuevo miembro debería estar en la lista");
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void UpdateHomeDevices_WhenRequestIsNull_ShouldThrowException()
+    {
+        _controller.UpdateHomeDevice(null);
+    }
 }

@@ -45,4 +45,13 @@ public sealed class HomeController : ControllerBase
 
         return new UpdateMembersListResponse(home);
     }
+
+    [HttpPost]
+    public void UpdateHomeDevice(UpdateHomeDevicesRequest request)
+    {
+        if(request == null)
+        {
+            throw new NullRequestException("Request can not be null");
+        }
+    }
 }
