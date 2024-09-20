@@ -41,6 +41,8 @@ public sealed class HomeController : ControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        return new UpdateMembersListResponse();
+        var home = _homeService.UpdateMemberList(request.Email);
+
+        return new UpdateMembersListResponse(home);
     }
 }
