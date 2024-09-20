@@ -1,4 +1,6 @@
-﻿using Homify.BusinessLogic.Homes;
+﻿using System.Linq;
+using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -158,4 +160,50 @@ public class HomesControllerTest
     {
         _controller.UpdateHomeDevice(null);
     }
+
+    [TestMethod]
+    public void UpdateHomeDevice_WhenRequestIsValid_ShouldIncreaseDeviceCount()
+    {
+        // Arrange: Configuramos un request válido
+        var request = new UpdateHomeDevicesRequest
+        {
+            DeviceId = "device123"
+        };
+
+        // Creamos un dispositivo que será añadido
+        var device = new Device()
+        {
+            Id = "device123"
+        };
+
+        // Inicializamos el estado del hogar antes de la actualización con una lista vacía de dispositivos
+        var homeBeforeUpdate = new Home
+        {
+            Id = "1",
+            Street = "Test Home",
+            Devices = new List<Device>()  // Lista vacía de dispositivos inicializada
+        };
+
+        // Simulamos el hogar después de la actualización con el nuevo dispositivo añadido
+        var homeAfterUpdate = new Home
+        {
+            Id = "1",
+            Street = "Test Home",
+            Devices = new List<Device> { device }  // Dispositivo añadido
+        };
+
+        // Mockeamos el servicio para simular la adición de un dispositivo
+        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId))
+                        .Callback(() => homeBeforeUpdate.Devices.Add(device));  // Añadimos el dispositivo a la lista de Devices
+
+        // Act: Ejecutamos el método que estamos probando
+        _controller.UpdateHomeDevice(request);
+
+        // Assert: Verificamos que el número de dispositivos ha aumentado
+        Assert.AreEqual(1, homeBeforeUpdate.Devices.Count, "La cantidad de dispositivos debería haber aumentado a 1");
+
+        // Verificamos que el nuevo dispositivo ha sido añadido a la lista de dispositivos
+        Assert.IsTrue(homeBeforeUpdate.Devices.Contains(device), "El nuevo dispositivo debería estar en la lista");
+    }
+
 }

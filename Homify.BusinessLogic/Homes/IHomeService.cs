@@ -5,4 +5,5 @@ public interface IHomeService
 {
     Home AddHome(CreateHomeArgs home);
     Home UpdateMemberList(string name);
+    void UpdateHomeDevices(string id);
 }
