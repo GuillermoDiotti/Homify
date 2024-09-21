@@ -1,5 +1,7 @@
-﻿using Homify.BusinessLogic.Homes;
+﻿using Azure.Core;
+using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +35,7 @@ public sealed class HomeController : ControllerBase
         return new CreateHomeResponse(administratorSaved);
     }
 
-    [HttpPost]
+    [HttpPut]
     public UpdateMembersListResponse UpdateMembersList(UpdateMemberListRequest request)
     {
         if (request == null)
@@ -46,7 +48,7 @@ public sealed class HomeController : ControllerBase
         return new UpdateMembersListResponse(home);
     }
 
-    [HttpPost]
+    [HttpPut]
     public void UpdateHomeDevice(UpdateHomeDevicesRequest request)
     {
         if(request == null)
@@ -55,5 +57,20 @@ public sealed class HomeController : ControllerBase
         }
 
         _homeService.UpdateHomeDevices(request.DeviceId);
+    }
+
+    [HttpGet]
+    public List<GetMemberResponse> GetMembers()
+    {
+        var list = _homeService.GetHomeMembers();
+
+        // var list2 = new List<GetMemberResponse>((IEnumerable<GetMemberResponse>)list);
+
+        // return list2;
+
+        // return new List<GetMemberResponse>((IEnumerable<GetMemberResponse>)list);
+        var responseList = list.Select(user => new GetMemberResponse(new List<User> { user })).ToList();
+
+        return responseList;
     }
 }
