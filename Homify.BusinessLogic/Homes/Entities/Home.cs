@@ -14,13 +14,15 @@ public class Home
     public HomeOwner Owner { get; set; } = null!;
     public List<User> Members { get; set; } = null!;
     public List<Device> Devices {  get; set; } = null!;
+    public List<User> NofificatedMembers {  get; set; } = null!;
 
     public Home()
     {
         Id = Guid.NewGuid().ToString();
     }
 
-    public Home(string street, string number, string latitude, string longitude, string maxMembers, HomeOwner owner, List<User> members, List<Device> devices)
+    public Home(string street, string number, string latitude, string longitude,
+        string maxMembers, HomeOwner owner, List<User> members, List<Device> devices, List<User> notificated)
     {
         Id = Guid.NewGuid().ToString();
         Street = street;
@@ -31,5 +33,6 @@ public class Home
         Owner = owner;
         Members = members;
         Devices = devices;
+        NofificatedMembers = notificated;
     }
 }

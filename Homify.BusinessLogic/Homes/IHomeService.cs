@@ -8,4 +8,5 @@ public interface IHomeService
     Home UpdateMemberList(string name);
     void UpdateHomeDevices(string id);
     List<User> GetHomeMembers();
+    void UpdateNotificatedList(string id);
 }

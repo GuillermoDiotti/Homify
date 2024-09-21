@@ -73,4 +73,13 @@ public sealed class HomeController : ControllerBase
 
         return responseList;
     }
+
+    [HttpPut]
+    public void NofificatedMembers(NotificatedMembersRequest request)
+    {
+        if (request == null)
+        {
+            throw new NullRequestException("Request can not be null");
+        }
+    }
 }

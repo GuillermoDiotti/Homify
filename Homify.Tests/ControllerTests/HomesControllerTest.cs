@@ -218,4 +218,11 @@ public class HomesControllerTest
         Assert.AreEqual("John Doe", result[0].Members[0].Name);
         Assert.AreEqual("jane@example.com", result[1].Members[0].Email);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
+    {
+        _controller.NofificatedMembers(null);
+    }
 }
