@@ -97,6 +97,7 @@ public class HomesControllerTest
     [TestMethod]
     public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
     {
+        // Arrange
         var request = new CreateHomeRequest
         {
             Street = "calle 1",
@@ -106,10 +107,29 @@ public class HomesControllerTest
             MaxMembers = "3"
         };
 
+        var expectedHome = new Home
+        {
+            Id = "home123",     // ID esperado para el nuevo hogar
+            Street = "calle 1",
+            Number = "1",
+            Latitude = "101",
+            Longitude = "202",
+            MaxMembers = "3"
+        };
+
+        // Simulación del comportamiento del servicio
+        _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
+                        .Returns(expectedHome); // Devolver el objeto Home completo
+
+        // Act
         var response = _controller.Create(request);
 
-        Assert.IsNotNull(response);
+        // Assert
+        Assert.IsNotNull(response, "La respuesta no debería ser null");
+        Assert.AreEqual(expectedHome.Id, response.Id, "El ID del hogar devuelto no es el esperado");
     }
+
+
 
     [TestMethod]
     public void UpdateMemberList_WhenRequestIsOk_ShouldUpdateNotificatedMembersList()
@@ -203,7 +223,6 @@ public class HomesControllerTest
         _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
     }
-
 
     [TestMethod]
     public void GetMembers_WhenCalled_ShouldReturnListOfHomeMembers()
