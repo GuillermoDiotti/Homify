@@ -292,5 +292,4 @@ public class HomesControllerTest
         Assert.IsFalse(result[1].IsConnected, "El segundo dispositivo no debería estar conectado.");
         Assert.AreEqual("photo2.jpg", result[1].MainPhoto, "La foto principal del segundo dispositivo no es la esperada.");
     }
-
 }

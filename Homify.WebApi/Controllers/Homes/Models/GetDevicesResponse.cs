@@ -23,6 +23,7 @@ public class GetDevicesResponse
             };
             returnList.Add(newDevice);
         }
+
         return returnList;
     }
 }
