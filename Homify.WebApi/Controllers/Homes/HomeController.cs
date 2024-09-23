@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Homify.BusinessLogic.Homes;
+﻿using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -81,5 +80,7 @@ public sealed class HomeController : ControllerBase
         {
             throw new NullRequestException("Request can not be null");
         }
+
+        _homeService.UpdateNotificatedList(request.MemberId);
     }
 }
