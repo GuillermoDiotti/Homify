@@ -109,7 +109,7 @@ public class HomesControllerTest
 
         var expectedHome = new Home
         {
-            Id = "home123",     // ID esperado para el nuevo hogar
+            Id = "home123",
             Street = "calle 1",
             Number = "1",
             Latitude = "101",
@@ -117,19 +117,14 @@ public class HomesControllerTest
             MaxMembers = "3"
         };
 
-        // Simulación del comportamiento del servicio
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
-                        .Returns(expectedHome); // Devolver el objeto Home completo
+                        .Returns(expectedHome);
 
-        // Act
         var response = _controller.Create(request);
 
-        // Assert
         Assert.IsNotNull(response, "La respuesta no debería ser null");
         Assert.AreEqual(expectedHome.Id, response.Id, "El ID del hogar devuelto no es el esperado");
     }
-
-
 
     [TestMethod]
     public void UpdateMemberList_WhenRequestIsOk_ShouldUpdateNotificatedMembersList()
@@ -250,5 +245,21 @@ public class HomesControllerTest
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
         _controller.NofificatedMembers(null);
+    }
+
+    [TestMethod]
+    public void NofificatedMembers_WhenRequestIsValid_ShouldCallServiceToUpdateNotificatedList()
+    {
+        var request = new NotificatedMembersRequest
+        {
+            MemberId = "member123"
+        };
+
+        _homeServiceMock.Setup(service => service.UpdateNotificatedList(request.MemberId)).Verifiable();
+
+        _controller.NofificatedMembers(request);
+
+        _homeServiceMock.Verify(service => service.UpdateNotificatedList(request.MemberId), Times.Once,
+            "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
     }
 }
