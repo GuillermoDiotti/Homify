@@ -164,8 +164,8 @@ public class HomesControllerTest
             Longitude = "0.0000",
             MaxMembers = "5",
             Owner = new HomeOwner { Name = "Owner Name" },
-            Devices = new List<HomeDevice>(),
-            NofificatedMembers = new List<HomeUser> { existingMember }
+            Devices = [],
+            NofificatedMembers = [existingMember]
         };
 
         var homeResponseAfterUpdate = new Home
@@ -176,9 +176,12 @@ public class HomesControllerTest
             Latitude = "0.0000",
             Longitude = "0.0000",
             MaxMembers = "5",
-            Owner = new HomeOwner { Name = "Owner Name" },
-            Devices = new List<HomeDevice>(),
-            NofificatedMembers = new List<HomeUser> { existingMember, newMember }
+            Owner = new HomeOwner
+            {
+                Name = "Owner Name"
+            },
+            Devices = [],
+            NofificatedMembers = [existingMember, newMember]
         };
 
         _homeServiceMock.Setup(service => service.UpdateMemberList(request.Email))
