@@ -1,6 +1,6 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HouseOwner;
-using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.Homes.Entities;
 public class Home
@@ -12,9 +12,8 @@ public class Home
     public string Longitude { get; set; } = null!;
     public string MaxMembers { get; set; } = null!;
     public HomeOwner Owner { get; set; } = null!;
-    public List<User> Members { get; set; } = null!;
-    public List<Device> Devices {  get; set; } = null!;
-    public List<User> NofificatedMembers {  get; set; } = null!;
+    public List<HomeDevice> Devices {  get; set; } = null!;
+    public List<HomeUser> NofificatedMembers {  get; set; } = null!;
 
     public Home()
     {
@@ -22,7 +21,7 @@ public class Home
     }
 
     public Home(string street, string number, string latitude, string longitude,
-        string maxMembers, HomeOwner owner, List<User> members, List<Device> devices, List<User> notificated)
+        string maxMembers, HomeOwner owner, List<HomeDevice> devices, List<HomeUser> notificated)
     {
         Id = Guid.NewGuid().ToString();
         Street = street;
@@ -31,7 +30,6 @@ public class Home
         Longitude = longitude;
         MaxMembers = maxMembers;
         Owner = owner;
-        Members = members;
         Devices = devices;
         NofificatedMembers = notificated;
     }

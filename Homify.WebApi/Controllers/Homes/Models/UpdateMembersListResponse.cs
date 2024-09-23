@@ -1,14 +1,14 @@
 ﻿using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.HomeUsers;
 
 namespace Homify.WebApi.Controllers.Homes.Models;
 
 public class UpdateMembersListResponse
 {
-    public List<User> Members { get; set; } = null!;
+    public List<HomeUser> Members { get; set; } = null!;
 
     public UpdateMembersListResponse(Home home)
     {
-        Members = home.Members;
+        Members = home.NofificatedMembers;
     }
 }
