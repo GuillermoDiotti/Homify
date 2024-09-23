@@ -177,42 +177,33 @@ public class HomesControllerTest
         _controller.UpdateHomeDevice(null);
     }
 
-    /*[TestMethod]
-    public void UpdateHomeDevice_WhenRequestIsValid_ShouldIncreaseDeviceCount()
+    [TestMethod]
+    public void UpdateHomeDevice_WhenRequestIsValid_ShouldCallServiceToUpdateDevice()
     {
+        // Arrange
         var request = new UpdateHomeDevicesRequest
         {
             DeviceId = "device123"
         };
 
-        var device = new Device()
+        var homeDevice = new HomeDevice
         {
-            Id = "device123"
+            DeviceId = "device123", // Usar DeviceId en lugar de Id
+            HomeId = "home1",       // Añadir HomeId ya que es obligatorio en HomeDevice
+            Home = new Home { Id = "home1" },
+            Device = new Device { Id = "device123" },
+            Connected = true,
+            HardwareId = 1001
         };
 
-        var homeBeforeUpdate = new Home
-        {
-            Id = "1",
-            Street = "Test Home",
-            Devices = new List<HomeDevice>()
-        };
+        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId)).Verifiable();
 
-        var homeAfterUpdate = new Home
-        {
-            Id = "1",
-            Street = "Test Home",
-            // Devices = new List<HomeDevice> { device }
-        };
+        _controller.UpdateHomeDevice(request);
 
-        // _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId))
-        //                .Callback(() => homeBeforeUpdate.Devices.Add(device));
+        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId), Times.Once,
+            "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
+    }
 
-        // _controller.UpdateHomeDevice(request);
-
-        // Assert.AreEqual(1, homeBeforeUpdate.Devices.Count, "La cantidad de dispositivos debería haber aumentado a 1");
-
-        // Assert.IsTrue(homeBeforeUpdate.Devices.Contains(device), "El nuevo dispositivo debería estar en la lista");
-    }*/
 
     [TestMethod]
     public void GetMembers_WhenCalled_ShouldReturnListOfHomeMembers()
