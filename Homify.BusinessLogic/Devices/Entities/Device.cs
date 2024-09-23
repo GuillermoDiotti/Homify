@@ -13,20 +13,6 @@ public class Device
     public string? PpalPicture { get; init; }
     public bool IsActive { get; set; }
 
-    // TODO: public List<IObserver> MembersToNotify { get; init; }
-
-    public Device(string name, string model, string description, List<string> photos, Company company, string? pictureUrl)
-    {
-        Id = Guid.NewGuid().ToString();
-        Name = name;
-        Model = model;
-        Description = description;
-        Photos = photos;
-        Company = company;
-        PpalPicture = pictureUrl;
-        IsActive = false;
-    }
-
     public Device()
     {
         Id = Guid.NewGuid().ToString();

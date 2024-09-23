@@ -1,5 +1,6 @@
 ﻿using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Devices.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public class DeviceController : ControllerBase
             throw new NullRequestException();
         }
 
-        var args = new CreateCameraArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
+        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
             req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty);
 
         Camera cam = _deviceService.AddCamera(args);

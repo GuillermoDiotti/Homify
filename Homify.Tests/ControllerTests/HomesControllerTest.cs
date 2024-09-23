@@ -1,4 +1,5 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using FluentAssertions;
+using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
@@ -20,6 +21,101 @@ public class HomesControllerTest
     {
         _homeServiceMock = new Mock<IHomeService>(MockBehavior.Strict);
         _controller = new HomeController(_homeServiceMock.Object);
+    }
+
+    [TestMethod]
+    public void GetHomeAttributes_WhenCalled_ShouldReturnAttributes()
+    {
+        var home = new Home()
+        {
+            Id = "home123",
+            Street = "calle 1",
+            Number = "1",
+            Latitude = "101",
+            Longitude = "202",
+            MaxMembers = "3",
+            Owner = new HomeOwner
+            {
+                Name = "Owner Name"
+            },
+            Devices = [],
+        };
+
+        home.Id.Should().Be("home123");
+        home.Street.Should().Be("calle 1");
+        home.Number.Should().Be("1");
+        home.Latitude.Should().Be("101");
+        home.Longitude.Should().Be("202");
+        home.MaxMembers.Should().Be("3");
+        home.Owner.Name.Should().Be("Owner Name");
+        home.Devices.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void GetHomePermissionAttributes_WhenCalled_ShouldReturnAttributes()
+    {
+        var homepermission = new HomePermission()
+        {
+            Id = 123,
+            Value = "calle 1"
+        };
+
+        homepermission.Id.Should().Be(123);
+        homepermission.Value.Should().Be("calle 1");
+    }
+
+    [TestMethod]
+    public void GetHomeDeviceAttributes_WhenCalled_ShouldReturnAttributes()
+    {
+        var homedevice = new HomeDevice()
+        {
+            HomeId = "home123",
+            DeviceId = "device123",
+            Home = new Home
+            {
+                Id = "home123"
+            },
+            Device = new Device
+            {
+                Id = "device123"
+            },
+            Connected = true,
+            HardwareId = 1001
+        };
+
+        homedevice.HomeId.Should().Be("home123");
+        homedevice.DeviceId.Should().Be("device123");
+        homedevice.Home.Id.Should().Be("home123");
+        homedevice.Device.Id.Should().Be("device123");
+        homedevice.Connected.Should().BeTrue();
+        homedevice.HardwareId.Should().Be(1001);
+    }
+
+    [TestMethod]
+    public void GetHomeUsersAttributes_WhenCalled_ShouldReturnAttributes()
+    {
+        var homeuser = new HomeUser()
+        {
+            HomeId = "home123",
+            UserId = "device123",
+            Home = new Home
+            {
+                Id = "home123"
+            },
+            User = new User
+            {
+                Id = "device123"
+            },
+            IsNotificable = true,
+            Permissions = []
+        };
+
+        homeuser.HomeId.Should().Be("home123");
+        homeuser.UserId.Should().Be("device123");
+        homeuser.Home.Id.Should().Be("home123");
+        homeuser.User.Id.Should().Be("device123");
+        homeuser.IsNotificable.Should().BeTrue();
+        homeuser.Permissions.Should().BeEmpty();
     }
 
     [TestMethod]

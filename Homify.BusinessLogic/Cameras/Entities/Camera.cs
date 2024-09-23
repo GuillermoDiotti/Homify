@@ -9,15 +9,6 @@ public class Camera : Device
     public bool MovementDetection { get; init; }
     public bool PeopleDetection { get; init; }
 
-    public Camera(bool isExterior, bool isInterior, bool movementDetection, bool peopleDetection)
-        : base()
-    {
-        IsExterior = isExterior;
-        IsInterior = isInterior;
-        MovementDetection = movementDetection;
-        PeopleDetection = peopleDetection;
-    }
-
     public Camera()
         : base()
     {

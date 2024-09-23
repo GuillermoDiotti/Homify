@@ -1,8 +1,9 @@
 ﻿using Homify.BusinessLogic.Cameras.Entities;
+using Homify.BusinessLogic.Devices.Entities;
 
 namespace Homify.BusinessLogic.Devices;
 
 public interface IDeviceService
 {
-    Camera AddCamera(CreateCameraArgs camera);
+    Camera AddCamera(CreateDeviceArgs device);
 }

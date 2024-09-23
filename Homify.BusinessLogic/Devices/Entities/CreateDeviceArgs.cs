@@ -1,6 +1,6 @@
-﻿namespace Homify.BusinessLogic.Cameras.Entities;
+﻿namespace Homify.BusinessLogic.Devices.Entities;
 
-public class CreateCameraArgs
+public class CreateDeviceArgs
 {
     public string Name { get; init; }
     public string Model { get; init; }
@@ -8,7 +8,7 @@ public class CreateCameraArgs
     public List<string> Photos { get; init; }
     public string? PpalPicture { get; init; }
 
-    public CreateCameraArgs(string name, string model, string description, List<string> photos, string? ppalPicture)
+    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string? ppalPicture)
     {
         PpalPicture = ppalPicture;
 

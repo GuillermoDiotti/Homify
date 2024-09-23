@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.WebApi.Controllers.Devices;
 using Homify.WebApi.Controllers.Devices.Models;
 using Moq;
@@ -48,11 +49,24 @@ public class DeviceControllerTest
             MovementDetection = request.MovementDetection,
             PeopleDetection = request.PeopleDetection,
         };
-        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateCameraArgs>())).Returns(expected);
+
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture);
+
+        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>())).Returns(expected);
 
         var response = _controller.RegisterCamera(request);
 
         response.Should().NotBeNull();
         response.Id.Should().Be(expected.Id);
+        expected.Name.Should().Be(args.Name);
+        expected.Model.Should().Be(args.Model);
+        expected.Description.Should().Be(args.Description);
+        expected.Photos.Should().BeEquivalentTo(args.Photos);
+        expected.PpalPicture.Should().Be(args.PpalPicture);
+        expected.IsExterior.Should().Be(request.IsExterior);
+        expected.IsInterior.Should().Be(request.IsInterior);
+        expected.MovementDetection.Should().Be(request.MovementDetection);
+        expected.PeopleDetection.Should().Be(request.PeopleDetection);
+        expected.Company.Should().NotBeNull();
     }
 }

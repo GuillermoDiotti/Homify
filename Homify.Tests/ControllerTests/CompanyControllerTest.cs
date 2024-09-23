@@ -40,6 +40,9 @@ public class CompanyControllerTest
 
         response.Should().NotBeNull();
         response.Id.Should().Be(expected.Id);
+        expected.Name.Should().Be(request.Name);
+        expected.LogoUrl.Should().Be(request.LogoUrl);
+        expected.Rut.Should().Be(request.Rut);
     }
 
     [TestMethod]
