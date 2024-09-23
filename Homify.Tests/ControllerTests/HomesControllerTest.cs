@@ -248,7 +248,7 @@ public class HomesControllerTest
     }
 
     [TestMethod]
-    public void NofificatedMembers_WhenRequestIsValid_ShouldCallServiceToUpdateNotificatedList()
+    public void UpdateNofificatedMembers_WhenRequestIsValid_ShouldUpdate()
     {
         var request = new NotificatedMembersRequest
         {
@@ -262,4 +262,35 @@ public class HomesControllerTest
         _homeServiceMock.Verify(service => service.UpdateNotificatedList(request.MemberId), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
     }
+
+    [TestMethod]
+    public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
+    {
+        // Arrange
+        var devices = new List<Device>
+    {
+        new Device { Name = "Device 1", Model = "Model A", IsActive = true, Photos = new List<string> { "photo1.jpg" } },
+        new Device { Name = "Device 2", Model = "Model B", IsActive = false, Photos = new List<string> { "photo2.jpg" } }
+    };
+
+        _homeServiceMock.Setup(service => service.GetHomeDevices()).Returns(devices);
+
+        // Act
+        var result = _controller.GetHomeDevices();
+
+        // Assert
+        Assert.IsNotNull(result, "El resultado no debería ser null.");
+        Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");
+
+        Assert.AreEqual("Device 1", result[0].Name, "El nombre del primer dispositivo no es el esperado.");
+        Assert.AreEqual("Model A", result[0].Model, "El modelo del primer dispositivo no es el esperado.");
+        Assert.IsTrue(result[0].IsConnected, "El primer dispositivo debería estar conectado.");
+        Assert.AreEqual("photo1.jpg", result[0].MainPhoto, "La foto principal del primer dispositivo no es la esperada.");
+
+        Assert.AreEqual("Device 2", result[1].Name, "El nombre del segundo dispositivo no es el esperado.");
+        Assert.AreEqual("Model B", result[1].Model, "El modelo del segundo dispositivo no es el esperado.");
+        Assert.IsFalse(result[1].IsConnected, "El segundo dispositivo no debería estar conectado.");
+        Assert.AreEqual("photo2.jpg", result[1].MainPhoto, "La foto principal del segundo dispositivo no es la esperada.");
+    }
+
 }

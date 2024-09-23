@@ -83,4 +83,13 @@ public sealed class HomeController : ControllerBase
 
         _homeService.UpdateNotificatedList(request.MemberId);
     }
+
+    [HttpGet]
+    public List<GetDevicesResponse> GetHomeDevices()
+    {
+        var list = _homeService.GetHomeDevices();
+        var response = new GetDevicesResponse();
+        var returnList = response.Transform(list);
+        return returnList;
+    }
 }
