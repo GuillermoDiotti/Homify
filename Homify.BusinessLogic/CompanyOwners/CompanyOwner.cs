@@ -1,0 +1,12 @@
+﻿using Homify.BusinessLogic.Users.Entities;
+
+namespace Homify.BusinessLogic.CompanyOwners;
+
+public class CompanyOwner : User
+{
+    public bool IsIncomplete { get; set; }
+    public CompanyOwner()
+    {
+        IsIncomplete = true;
+    }
+}

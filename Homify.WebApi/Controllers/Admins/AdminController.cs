@@ -1,4 +1,3 @@
-using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -32,9 +31,9 @@ public sealed class AdminController : ControllerBase
             request.Password ?? string.Empty,
             request.LastName ?? string.Empty);
 
-        var adiminstratorSaved = _userService.Add(arguments);
+        var administratorSaved = _userService.AddUser(arguments);
 
-        return new CreateAdminResponse(adiminstratorSaved);
+        return new CreateAdminResponse(administratorSaved);
     }
 
     [HttpDelete("{adminId}")]
@@ -51,7 +50,35 @@ public sealed class AdminController : ControllerBase
         }
     }
 
-    public Admin GetById(string id)
+    [HttpGet]
+    public List<UserBasicInfo> AllAccounts([FromQuery] string limit, [FromQuery] string offset)
+    {
+        var pageSize = 10;
+        var pageOffset = 0;
+
+        if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        {
+            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
+        }
+
+        if (!string.IsNullOrEmpty(offset) && int.TryParse(offset, out var parsedOffset))
+        {
+            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
+        }
+
+        List<User> list = _userService.GetAll();
+        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
+
+        List<UserBasicInfo> result = [];
+        foreach (User u in paginatedList)
+        {
+            result.Add(new UserBasicInfo(u));
+        }
+
+        return result;
+    }
+
+    public User GetById(string id)
     {
         if (string.IsNullOrEmpty(id))
         {
