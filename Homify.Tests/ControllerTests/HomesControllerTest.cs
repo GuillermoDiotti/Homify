@@ -97,7 +97,6 @@ public class HomesControllerTest
     [TestMethod]
     public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
     {
-        // Arrange
         var request = new CreateHomeRequest
         {
             Street = "calle 1",
@@ -138,14 +137,22 @@ public class HomesControllerTest
         {
             HomeId = "123",
             UserId = "1",
-            User = new User { Name = "Existing Member", Email = "mail1" }
+            User = new User
+            {
+                Name = "Existing Member",
+                Email = "mail1"
+            }
         };
 
         var newMember = new HomeUser
         {
             HomeId = "456",
             UserId = "2",
-            User = new User { Name = "New Member", Email = "test@example.com" }
+            User = new User
+            {
+                Name = "New Member",
+                Email = "test@example.com"
+            }
         };
 
         var homeResponseBeforeUpdate = new Home
@@ -195,7 +202,6 @@ public class HomesControllerTest
     [TestMethod]
     public void UpdateHomeDevice_WhenRequestIsValid_ShouldCallServiceToUpdateDevice()
     {
-        // Arrange
         var request = new UpdateHomeDevicesRequest
         {
             DeviceId = "device123"
@@ -203,8 +209,8 @@ public class HomesControllerTest
 
         var homeDevice = new HomeDevice
         {
-            DeviceId = "device123", // Usar DeviceId en lugar de Id
-            HomeId = "home1",       // Añadir HomeId ya que es obligatorio en HomeDevice
+            DeviceId = "device123",
+            HomeId = "home1",
             Home = new Home { Id = "home1" },
             Device = new Device { Id = "device123" },
             Connected = true,
@@ -224,8 +230,18 @@ public class HomesControllerTest
     {
         var membersList = new List<User>
         {
-        new User { Id = "1", Name = "John Doe", Email = "john@example.com" },
-        new User { Id = "2", Name = "Jane Smith", Email = "jane@example.com" }
+        new User
+        {
+            Id = "1",
+            Name = "John Doe",
+            Email = "john@example.com"
+        },
+        new User
+        {
+            Id = "2",
+            Name = "Jane Smith",
+            Email = "jane@example.com"
+        }
         };
 
         _homeServiceMock.Setup(service => service.GetHomeMembers())
@@ -269,16 +285,26 @@ public class HomesControllerTest
         // Arrange
         var devices = new List<Device>
     {
-        new Device { Name = "Device 1", Model = "Model A", IsActive = true, Photos = new List<string> { "photo1.jpg" } },
-        new Device { Name = "Device 2", Model = "Model B", IsActive = false, Photos = new List<string> { "photo2.jpg" } }
+        new Device
+        {
+            Name = "Device 1",
+            Model = "Model A",
+            IsActive = true,
+            Photos = ["photo1.jpg"]
+        },
+        new Device
+        {
+            Name = "Device 2",
+            Model = "Model B",
+            IsActive = false,
+            Photos = ["photo2.jpg"]
+        }
     };
 
         _homeServiceMock.Setup(service => service.GetHomeDevices()).Returns(devices);
 
-        // Act
         var result = _controller.GetHomeDevices();
 
-        // Assert
         Assert.IsNotNull(result, "El resultado no debería ser null.");
         Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");
 

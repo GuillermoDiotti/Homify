@@ -63,11 +63,6 @@ public sealed class HomeController : ControllerBase
     {
         var list = _homeService.GetHomeMembers();
 
-        // var list2 = new List<GetMemberResponse>((IEnumerable<GetMemberResponse>)list);
-
-        // return list2;
-
-        // return new List<GetMemberResponse>((IEnumerable<GetMemberResponse>)list);
         var responseList = list.Select(user => new GetMemberResponse([user])).ToList();
 
         return responseList;
