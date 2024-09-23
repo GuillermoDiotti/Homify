@@ -12,8 +12,8 @@ public class Home
     public string Longitude { get; set; } = null!;
     public string MaxMembers { get; set; } = null!;
     public HomeOwner Owner { get; set; } = null!;
-    public List<HomeDevice> Devices {  get; set; } = null!;
-    public List<HomeUser> NofificatedMembers {  get; set; } = null!;
+    public List<HomeDevice> Devices { get; set; } = null!;
+    public List<HomeUser> NofificatedMembers { get; set; } = null!;
 
     public Home()
     {

@@ -49,7 +49,7 @@ public sealed class HomeController : ControllerBase
     [HttpPut]
     public void UpdateHomeDevice(UpdateHomeDevicesRequest request)
     {
-        if(request == null)
+        if (request == null)
         {
             throw new NullRequestException("Request can not be null");
         }

@@ -8,7 +8,7 @@ public class HomeDevice
     public string HomeId { get; set; } = null!;
     public string DeviceId { get; set; } = null!;
     public Home Home { get; set; } = null!;
-    public Device Device {  get; set; } = null!;
+    public Device Device { get; set; } = null!;
     public bool Connected { get; set; }
     public int HardwareId { get; set; }
 }

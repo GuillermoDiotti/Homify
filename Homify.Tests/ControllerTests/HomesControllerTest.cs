@@ -191,7 +191,7 @@ public class HomesControllerTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
-        Assert.IsTrue(result.Members.Any(m => m.User.Email== "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
+        Assert.IsTrue(result.Members.Any(m => m.User.Email == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
         Assert.AreEqual(homeResponseAfterUpdate.NofificatedMembers, result.Members, "La lista de miembros notificados debería coincidir con la respuesta esperada");
     }
 
