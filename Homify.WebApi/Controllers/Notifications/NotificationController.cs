@@ -54,4 +54,17 @@ public class NotificationController
 
         return result;
     }
+
+    [HttpPut("{notificationId}")]
+    public CreateNotificationResponse UpdateNotification([FromRoute] string notificationId)
+    {
+        var noti = _notificationService.ReadNotificationById(notificationId);
+
+        if (noti == null)
+        {
+            throw new NotFoundException("Notification not found");
+        }
+
+        return new CreateNotificationResponse(noti);
+    }
 }

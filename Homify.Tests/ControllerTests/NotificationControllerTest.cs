@@ -53,4 +53,20 @@ public class NotificationControllerTest
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(expected);
     }
+
+    [TestMethod]
+    public void ReadNotification_ShouldReadNotification()
+    {
+        var expected = new Notification()
+        {
+            Id = "a1",
+            IsRead = true,
+        };
+        _notificationService.Setup(n => n.ReadNotificationById(It.IsAny<string>())).Returns(expected);
+        var result = _controller.UpdateNotification("lucas sugo");
+
+        result.Should().NotBeNull();
+        result.Id.Should().BeEquivalentTo(expected.Id);
+        result.IsRead.Should().BeTrue();
+    }
 }
