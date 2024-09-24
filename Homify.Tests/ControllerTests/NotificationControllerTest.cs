@@ -42,4 +42,15 @@ public class NotificationControllerTest
         result.Id.Should().NotBeNull();
         result.Id.Should().Be(expected.Id);
     }
+
+    [TestMethod]
+    public void GetNotifications_ShouldReturnUserNotifications()
+    {
+        var expected = new List<Notification>();
+        _notificationService.Setup(n => n.GetAllByUserId(It.IsAny<string>())).Returns(expected);
+        var result = _controller.ObtainNotifications("pablito lescano");
+
+        result.Should().NotBeNull();
+        result.Should().BeEquivalentTo(expected);
+    }
 }

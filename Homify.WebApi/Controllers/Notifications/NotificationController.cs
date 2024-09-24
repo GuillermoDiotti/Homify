@@ -41,4 +41,17 @@ public class NotificationController
 
         return new CreateNotificationResponse(invitation);
     }
+
+    [HttpGet]
+    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string user)
+    {
+        var list = _notificationService.GetAllByUserId(user);
+        var result = new List<NotificationBasicInfo>();
+        foreach (var noti in list)
+        {
+            result.Add(new NotificationBasicInfo(noti));
+        }
+
+        return result;
+    }
 }
