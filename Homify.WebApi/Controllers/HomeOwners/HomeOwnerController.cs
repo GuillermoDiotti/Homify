@@ -26,7 +26,7 @@ public class HomeOwnerController
         }
 
         var args = new CreateHomeOwnerArgs(req.Name ?? string.Empty, req.Email ?? string.Empty, req.Password ?? string.Empty,
-            req.LastName ?? string.Empty, req.ProfilePicUrl ?? String.Empty);
+            req.LastName ?? string.Empty, req.ProfilePicUrl ?? string.Empty);
         var user = _userService.AddHomeOwner(args);
 
         return new CreateHomeOwnerResponse(user);

@@ -11,7 +11,7 @@ public class CreateNotificationArgs
 
     public CreateNotificationArgs(string eventShot, Device device, bool isRead, string date)
     {
-        if (String.IsNullOrEmpty(eventShot))
+        if (string.IsNullOrEmpty(eventShot))
         {
             throw new ArgumentNullException("Event cannot be null");
         }
@@ -22,7 +22,7 @@ public class CreateNotificationArgs
 
         Device = device;
 
-        if (String.IsNullOrEmpty(date))
+        if (string.IsNullOrEmpty(date))
         {
             throw new ArgumentNullException("Date cannot be null");
         }
