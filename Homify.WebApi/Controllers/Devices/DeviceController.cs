@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Devices.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -33,5 +34,22 @@ public class DeviceController : ControllerBase
         Camera cam = _deviceService.AddCamera(args);
 
         return new CreateDeviceResponse(cam);
+    }
+
+    [HttpPost("sensors")]
+    public CreateDeviceResponse RegisterSensor(CreateSensorRequest req)
+    {
+        // TODO: verificar que solo puedan acceder los de cuentas COMPLETAS
+        if (req == null)
+        {
+            throw new NullRequestException();
+        }
+
+        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
+            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty);
+
+        Sensor sen = _deviceService.AddSensor(args);
+
+        return new CreateDeviceResponse(sen);
     }
 }
