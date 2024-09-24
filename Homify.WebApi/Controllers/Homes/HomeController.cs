@@ -29,59 +29,64 @@ public sealed class HomeController : ControllerBase
            request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
            request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
 
-        var administratorSaved = _homeService.AddHome(arguments);
-        return new CreateHomeResponse(administratorSaved);
+        var homeSaved = _homeService.AddHome(arguments);
+        return new CreateHomeResponse(homeSaved);
     }
 
-    [HttpPut]
-    public UpdateMembersListResponse UpdateMembersList(UpdateMemberListRequest request)
+    [HttpPut("{homeId}")]
+    public UpdateMembersListResponse UpdateMembersList([FromRoute] string homeId, UpdateMemberListRequest request)
     {
         if (request == null)
         {
             throw new NullRequestException("Request can not be null");
         }
 
-        var home = _homeService.UpdateMemberList(request.Email);
+        var home = _homeService.UpdateMemberList(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);
     }
 
-    [HttpPut]
-    public void UpdateHomeDevice(UpdateHomeDevicesRequest request)
+    [HttpPut("{homeId}/devices")]
+    public void UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)
     {
         if (request == null)
         {
             throw new NullRequestException("Request can not be null");
         }
 
-        _homeService.UpdateHomeDevices(request.DeviceId);
+        if (homeId == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
+        _homeService.UpdateHomeDevices(request.DeviceId, homeId);
     }
 
-    [HttpGet]
-    public List<GetMemberResponse> GetMembers()
+    [HttpGet("{homeId}/members")]
+    public List<GetMemberResponse> GetMembers([FromRoute] string homeId)
     {
-        var list = _homeService.GetHomeMembers();
+        var list = _homeService.GetHomeMembers(homeId);
 
         var responseList = list.Select(user => new GetMemberResponse([user])).ToList();
 
         return responseList;
     }
 
-    [HttpPut]
-    public void NofificatedMembers(NotificatedMembersRequest request)
+    [HttpPut("{homeId}/notifications")]
+    public void NotificatedMembers([FromRoute] string homeId, NotificatedMembersRequest request)
     {
         if (request == null)
         {
             throw new NullRequestException("Request can not be null");
         }
 
-        _homeService.UpdateNotificatedList(request.MemberId);
+        _homeService.UpdateNotificatedList(homeId, request.MemberId);
     }
 
-    [HttpGet]
-    public List<GetDevicesResponse> GetHomeDevices()
+    [HttpGet("{homeId}/devices")]
+    public List<GetDevicesResponse> GetHomeDevices([FromRoute] string homeId)
     {
-        var list = _homeService.GetHomeDevices();
+        var list = _homeService.GetHomeDevices(homeId);
         var response = new GetDevicesResponse();
         var returnList = response.Transform(list);
         return returnList;
