@@ -259,7 +259,10 @@ public class HomesControllerTest
             Latitude = "0.0000",
             Longitude = "0.0000",
             MaxMembers = "5",
-            Owner = new HomeOwner { Name = "Owner Name" },
+            Owner = new HomeOwner
+            {
+                Name = "Owner Name"
+            },
             Devices = [],
             NofificatedMembers = [existingMember]
         };
@@ -280,10 +283,10 @@ public class HomesControllerTest
             NofificatedMembers = [existingMember, newMember]
         };
 
-        _homeServiceMock.Setup(service => service.UpdateMemberList(request.Email))
+        _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, request.Email))
                         .Returns(homeResponseAfterUpdate);
 
-        var result = _controller.UpdateMembersList(request);
+        var result = _controller.UpdateMembersList("1", request);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
@@ -295,7 +298,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevices_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.UpdateHomeDevice(null);
+        _controller.UpdateHomeDevice(null, "home123");
     }
 
     [TestMethod]
@@ -311,14 +314,17 @@ public class HomesControllerTest
             DeviceId = "device123",
             HomeId = "home1",
             Home = new Home { Id = "home1" },
-            Device = new Device { Id = "device123" },
+            Device = new Device
+            {
+                Id = "device123"
+            },
             Connected = true,
             HardwareId = 1001
         };
 
         _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId)).Verifiable();
 
-        _controller.UpdateHomeDevice(request);
+        _controller.UpdateHomeDevice(request, "home1");
 
         _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
@@ -343,10 +349,9 @@ public class HomesControllerTest
         }
         };
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers())
-                        .Returns(membersList);
+        _homeServiceMock.Setup(service => service.GetHomeMembers("home123")).Returns(membersList);
 
-        var result = _controller.GetMembers();
+        var result = _controller.GetMembers("home123");
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(2, result.Count, "La lista debe contener 2 miembros");
@@ -359,7 +364,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.NotificatedMembers(null);
+        _controller.NotificatedMembers("homeIe", null);
     }
 
     [TestMethod]
@@ -370,18 +375,17 @@ public class HomesControllerTest
             MemberId = "member123"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateNotificatedList(request.MemberId)).Verifiable();
+        _homeServiceMock.Setup(service => service.UpdateNotificatedList("homeId", request.MemberId)).Verifiable();
 
-        _controller.NotificatedMembers(request);
+        _controller.NotificatedMembers("homeId", request);
 
-        _homeServiceMock.Verify(service => service.UpdateNotificatedList(request.MemberId), Times.Once,
+        _homeServiceMock.Verify(service => service.UpdateNotificatedList("homeId", request.MemberId), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
     }
 
     [TestMethod]
     public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
     {
-        // Arrange
         var devices = new List<Device>
     {
         new Device
@@ -400,9 +404,9 @@ public class HomesControllerTest
         }
     };
 
-        _homeServiceMock.Setup(service => service.GetHomeDevices()).Returns(devices);
+        _homeServiceMock.Setup(service => service.GetHomeDevices("homeId")).Returns(devices);
 
-        var result = _controller.GetHomeDevices();
+        var result = _controller.GetHomeDevices("homeId");
 
         Assert.IsNotNull(result, "El resultado no debería ser null.");
         Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");

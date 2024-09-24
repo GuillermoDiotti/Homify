@@ -6,7 +6,7 @@ namespace Homify.BusinessLogic.Homes;
 public interface IHomeService
 {
     Home AddHome(CreateHomeArgs home);
-    Home UpdateMemberList(string homeId, string name);
+    Home UpdateMemberList(string homeId, string mail);
     void UpdateHomeDevices(string id);
     List<User> GetHomeMembers(string id);
     void UpdateNotificatedList(string homeId, string memberId);
