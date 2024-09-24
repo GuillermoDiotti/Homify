@@ -8,4 +8,5 @@ public interface IDeviceService
 {
     Camera AddCamera(CreateDeviceArgs device);
     Sensor AddSensor(CreateDeviceArgs device);
+    Device GetById(string id);
 }
