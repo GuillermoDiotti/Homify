@@ -29,12 +29,12 @@ public sealed class HomeController : ControllerBase
            request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
            request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
 
-        var administratorSaved = _homeService.AddHome(arguments);
-        return new CreateHomeResponse(administratorSaved);
+        var homeSaved = _homeService.AddHome(arguments);
+        return new CreateHomeResponse(homeSaved);
     }
 
-    [HttpPut]
-    public UpdateMembersListResponse UpdateMembersList(UpdateMemberListRequest request)
+    [HttpPut("{homeId}")]
+    public UpdateMembersListResponse UpdateMembersList(string homeId, UpdateMemberListRequest request)
     {
         if (request == null)
         {
@@ -46,8 +46,8 @@ public sealed class HomeController : ControllerBase
         return new UpdateMembersListResponse(home);
     }
 
-    [HttpPut]
-    public void UpdateHomeDevice(UpdateHomeDevicesRequest request)
+    [HttpPut("{homeId}/devices")]
+    public void UpdateHomeDevice(UpdateHomeDevicesRequest request, string homeId)
     {
         if (request == null)
         {
@@ -57,8 +57,8 @@ public sealed class HomeController : ControllerBase
         _homeService.UpdateHomeDevices(request.DeviceId);
     }
 
-    [HttpGet]
-    public List<GetMemberResponse> GetMembers()
+    [HttpGet("{homeId}/members")]
+    public List<GetMemberResponse> GetMembers(string homeId)
     {
         var list = _homeService.GetHomeMembers();
 
@@ -67,8 +67,8 @@ public sealed class HomeController : ControllerBase
         return responseList;
     }
 
-    [HttpPut]
-    public void NofificatedMembers(NotificatedMembersRequest request)
+    [HttpPut("{homeId}/notifications")]
+    public void NotificatedMembers(string homeId, NotificatedMembersRequest request)
     {
         if (request == null)
         {
@@ -78,8 +78,8 @@ public sealed class HomeController : ControllerBase
         _homeService.UpdateNotificatedList(request.MemberId);
     }
 
-    [HttpGet]
-    public List<GetDevicesResponse> GetHomeDevices()
+    [HttpGet("{homeId}/devices")]
+    public List<GetDevicesResponse> GetHomeDevices(string homeId)
     {
         var list = _homeService.GetHomeDevices();
         var response = new GetDevicesResponse();

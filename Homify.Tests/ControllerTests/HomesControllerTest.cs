@@ -359,7 +359,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.NofificatedMembers(null);
+        _controller.NotificatedMembers(null);
     }
 
     [TestMethod]
@@ -372,7 +372,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.UpdateNotificatedList(request.MemberId)).Verifiable();
 
-        _controller.NofificatedMembers(request);
+        _controller.NotificatedMembers(request);
 
         _homeServiceMock.Verify(service => service.UpdateNotificatedList(request.MemberId), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
