@@ -1,5 +1,7 @@
-﻿using Homify.BusinessLogic.Users.Entities;
-using Homify.BusinessLogic.Sessions;
+﻿using Homify.BusinessLogic.Sessions;
+using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.Session.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +10,12 @@ namespace Homify.WebApi.Controllers.Session;
 public class SessionController : ControllerBase
 {
     private readonly ISessionService _sessionService;
+    private readonly IUserService _userService;
 
-    public SessionController(ISessionService sessionService)
+    public SessionController(ISessionService sessionService, IUserService userService)
     {
         _sessionService = sessionService;
+        _userService = userService;
     }
 
     [HttpPost]
@@ -19,19 +23,28 @@ public class SessionController : ControllerBase
     {
         if (request == null)
         {
-            throw new Exception("Request can not be null");
+            throw new NullRequestException("Request can not be null");
         }
 
-        /*
-        var user = new User
+        if (request.Email == null)
         {
-            Email = request.Email,
-            Password = request.Password
-        };
+            throw new ArgumentException("Email can not be null");
+        }
 
-        Session sessionSaved = _sessionService.AddToken(user);
+        var userFound = _userService.GetAll().Find(u => u.Email == request.Email);
 
-        return new CreateSessionResponse(sessionSaved);*/
-        return new CreateSessionResponse();
+        if (request.Password != userFound.Password)
+        {
+            throw new NotFoundException("Cannot find user with email: " + request.Email);
+        }
+
+        if (request.Password != userFound.Password)
+        {
+            throw new ArgumentException("Incorrect password");
+        }
+
+        BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.AddToken(request.Email);
+
+        return new CreateSessionResponse(sessionSaved);
     }
 }

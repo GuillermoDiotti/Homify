@@ -3,10 +3,11 @@
 public class CreateSessionResponse
 {
     public Guid Token { get; init; }
-    /*public CreateSessionResponse(Session session)
+    public CreateSessionResponse(BusinessLogic.Sessions.Entities.Session session)
     {
         Token = session.AuthToken;
-    }*/
+    }
+
     public CreateSessionResponse()
     {
     }
