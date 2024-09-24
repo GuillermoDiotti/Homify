@@ -54,7 +54,12 @@ public sealed class HomeController : ControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        _homeService.UpdateHomeDevices(request.DeviceId);
+        if (homeId == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
+        _homeService.UpdateHomeDevices(request.DeviceId, homeId);
     }
 
     [HttpGet("{homeId}/members")]

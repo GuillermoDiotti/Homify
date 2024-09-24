@@ -313,7 +313,10 @@ public class HomesControllerTest
         {
             DeviceId = "device123",
             HomeId = "home1",
-            Home = new Home { Id = "home1" },
+            Home = new Home
+            {
+                Id = "home1"
+            },
             Device = new Device
             {
                 Id = "device123"
@@ -322,11 +325,11 @@ public class HomesControllerTest
             HardwareId = 1001
         };
 
-        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId)).Verifiable();
+        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId)).Verifiable();
 
         _controller.UpdateHomeDevice(request, "home1");
 
-        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId), Times.Once,
+        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
     }
 
