@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.Exceptions", "Homify
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.DataAccess", "Homify.DataAccess\Homify.DataAccess.csproj", "{325F82DB-2FB7-464F-A08D-4278CF1B2C44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.Utility", "Homify.Utility\Homify.Utility.csproj", "{7C408973-CB86-48B4-B7A2-4A60AF14A802}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{325F82DB-2FB7-464F-A08D-4278CF1B2C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{325F82DB-2FB7-464F-A08D-4278CF1B2C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{325F82DB-2FB7-464F-A08D-4278CF1B2C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

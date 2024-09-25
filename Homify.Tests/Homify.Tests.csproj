@@ -32,6 +32,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Homify.BusinessLogic\Homify.BusinessLogic.csproj" />
       <ProjectReference Include="..\Homify.DataAccess\Homify.DataAccess.csproj" />
+      <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
       <ProjectReference Include="..\Homify.WebApi\Homify.WebApi.csproj" />
     </ItemGroup>
 

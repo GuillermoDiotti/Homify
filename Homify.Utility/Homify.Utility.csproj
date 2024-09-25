@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
-      <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
-    </ItemGroup>
-
 </Project>
