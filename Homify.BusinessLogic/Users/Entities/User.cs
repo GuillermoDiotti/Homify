@@ -8,7 +8,6 @@ public class User
     public string LastName { get; set; } = null!;
     public string Id { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
-
     public User()
     {
         Id = Guid.NewGuid().ToString();

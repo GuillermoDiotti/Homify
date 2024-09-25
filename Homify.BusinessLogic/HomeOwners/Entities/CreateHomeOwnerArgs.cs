@@ -1,4 +1,5 @@
 ﻿using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.HouseOwner.Entities;
 
@@ -19,27 +20,11 @@ public class CreateHomeOwnerArgs
 
         Name = name;
 
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            throw new ArgsNullException("email cannot be null or empty");
-        }
-
-        if (!EmailFormatValidator(email))
-        {
-            throw new InvalidFormatException("email format is invalid");
-        }
+        AccountCredentialsValidator.CheckEmail(email);
 
         Email = email;
 
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            throw new ArgsNullException("password cannot be null or empty");
-        }
-
-        if (!PasswordFormatValidator(password))
-        {
-            throw new InvalidFormatException("password format is invalid");
-        }
+        AccountCredentialsValidator.CheckPassword(password);
 
         Password = password;
 
@@ -56,15 +41,5 @@ public class CreateHomeOwnerArgs
         }
 
         ProfilePicUrl = pfp;
-    }
-
-    private bool EmailFormatValidator(string email)
-    {
-        return email.Contains("@") && email.EndsWith(".com");
-    }
-
-    private bool PasswordFormatValidator(string password)
-    {
-        return password.Length > 3 && password.Length < 50;
     }
 }
