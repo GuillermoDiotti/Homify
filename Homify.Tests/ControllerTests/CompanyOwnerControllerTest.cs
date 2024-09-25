@@ -32,7 +32,7 @@ public class CompanyOwnerControllerTest
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "12345",
+            Password = "123456!",
             LastName = "lastName"
         };
 
@@ -75,7 +75,7 @@ public class CompanyOwnerControllerTest
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "12345",
+            Password = "123456!",
             LastName = "lastName"
         };
 

@@ -28,7 +28,7 @@ public class HomeOwnerControllerTest
             Email = "test@test.com",
             LastName = "test",
             Name = "test",
-            Password = "test",
+            Password = "test123@",
             ProfilePicUrl = "pic",
         };
 

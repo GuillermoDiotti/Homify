@@ -53,7 +53,7 @@ public class UserControllerTests
         {
             Name = "John",
             Email = null,
-            Password = "password",
+            Password = "password!",
             LastName = "Doe"
         };
         _controller.Create(request);
@@ -61,13 +61,13 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenEmailFormatInInvalid1_ShouldThrowExceptionn()
+    public void CreateUser_WhenEmailFormatInInvalid1_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
             Name = "John",
             Email = "example@example",
-            Password = "password",
+            Password = "password/",
             LastName = "Doe"
         };
         _controller.Create(request);
@@ -81,7 +81,7 @@ public class UserControllerTests
         {
             Name = "John",
             Email = "example.com",
-            Password = "password",
+            Password = "password!",
             LastName = "Doe"
         };
         _controller.Create(request);
@@ -103,21 +103,29 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenPasswordIsFormatIsInvalid1_ShouldThrowExceptionn()
+    public void CreateUser_WhenPasswordIsFormatIsInvalid1_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "123",
+            Password = "123456!",
             LastName = "Doe"
         };
+        var expected = new User()
+        {
+            Name = request.Name,
+            Email = request.Email,
+            Password = request.Password,
+            LastName = request.LastName,
+        };
+        _userServiceMock.Setup(u => u.AddUser(It.IsAny<CreateUserArgs>())).Returns(expected);
         _controller.Create(request);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenPasswordIsFormatIsInvalid2_ShouldThrowExceptionn()
+    public void CreateUser_WhenPasswordIsFormatIsInvalid2_ShouldThrowException()
     {
         var password = string.Empty;
         for (var i = 0; i < 60; i++)
@@ -129,9 +137,17 @@ public class UserControllerTests
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = password,
+            Password = password + "!",
             LastName = "Doe"
         };
+        var expected = new User()
+        {
+            Name = request.Name,
+            Email = request.Email,
+            Password = request.Password,
+            LastName = request.LastName,
+        };
+        _userServiceMock.Setup(u => u.AddUser(It.IsAny<CreateUserArgs>())).Returns(expected);
         _controller.Create(request);
     }
 
@@ -143,7 +159,7 @@ public class UserControllerTests
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "12345",
+            Password = "123456!",
             LastName = null
         };
         _controller.Create(request);
@@ -160,7 +176,7 @@ public class UserControllerTests
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "12345",
+            Password = "123456!",
             LastName = "lastName"
         };
 

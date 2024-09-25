@@ -1,5 +1,6 @@
 ﻿
 
+using Homify.Exceptions;
 using Homify.Utility;
 
 namespace Homify.Tests.UtilsTests;
@@ -8,24 +9,24 @@ namespace Homify.Tests.UtilsTests;
 public class AccountCredentialsValidatorTests
 {
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void CheckEmail_EmptyEmail_ThrowsArgumentException()
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CheckEmail_EmptyEmail_ThrowsInvalidFormatException()
     {
         var email = string.Empty;
         AccountCredentialsValidator.CheckEmail(email);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void CheckEmail_InvalidEmailWithoutAt_ThrowsArgumentException()
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void CheckEmail_InvalidEmailWithoutAt_ThrowsInvalidFormatException()
     {
         var email = "invalidemail.com";
         AccountCredentialsValidator.CheckEmail(email);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void CheckEmail_InvalidEmailWithoutDomain_ThrowsArgumentException()
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void CheckEmail_InvalidEmailWithoutDomain_ThrowsInvalidFormatException()
     {
         var email = "invalidemail@";
         AccountCredentialsValidator.CheckEmail(email);
@@ -39,24 +40,24 @@ public class AccountCredentialsValidatorTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void CheckPassword_EmptyPassword_ThrowsArgumentException()
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CheckPassword_EmptyPassword_ThrowsInvalidFormatException()
     {
         var password = string.Empty;
         AccountCredentialsValidator.CheckPassword(password);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void CheckPassword_ShortPassword_ThrowsArgumentException()
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void CheckPassword_ShortPassword_ThrowsInvalidFormatException()
     {
         var password = "Abc1!";
         AccountCredentialsValidator.CheckPassword(password);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void CheckPassword_NoSpecialCharacter_ThrowsArgumentException()
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void CheckPassword_NoSpecialCharacter_ThrowsInvalidFormatException()
     {
         var password = "Password1";
         AccountCredentialsValidator.CheckPassword(password);
