@@ -15,6 +15,8 @@ public class Home
     public List<HomeDevice> Devices { get; set; } = null!;
     public List<HomeUser> NofificatedMembers { get; set; } = null!;
 
+    public string OwnerId { get; set; } = null!;
+
     public Home()
     {
         Id = Guid.NewGuid().ToString();

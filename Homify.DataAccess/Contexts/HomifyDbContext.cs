@@ -1,3 +1,4 @@
+using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
@@ -18,18 +19,19 @@ namespace Homify.DataAccess.Contexts;
 
 public sealed class HomifyDbContext : DbContext
 {
-    public DbSet<Camera> Cameras { get; set; }
     public DbSet<Company> Companies { get; set; }
-    public DbSet<CompanyOwner> CompanyOwners { get; set; }
-    public DbSet<Device> Devices { get; set; }
-    public DbSet<HomeDevice> HomeDevice { get; set; }
-    public DbSet<HomeOwner> HomeOwner { get; set; }
+    public DbSet<HomeDevice> HomeDevices { get; set; }
+    public DbSet<HomeOwner> HomeOwners { get; set; }
     public DbSet<Home> Homes { get; set; }
-    public DbSet<HomeUser> HomeUser { get; set; }
     public DbSet<Notification> Notifications { get; set; }
-    public DbSet<Sensor> Sensors { get; set; }
     public DbSet<Session> Sessions { get; set; }
+    public DbSet<Camera> Cameras { get; set; }
+    public DbSet<Device> Devices { get; set; }
+    public DbSet<Sensor> Sensors { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<HomeUser> HomeUser { get; set; }
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<CompanyOwner> CompanyOwners { get; set; }
 
     public HomifyDbContext(DbContextOptions options)
         : base(options)
@@ -38,10 +40,51 @@ public sealed class HomifyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<HomeDevice>()
-            .HasKey(hd => new { hd.HomeId, hd.DeviceId });
+        modelBuilder.Entity<Sensor>().ToTable("Sensors");
+        modelBuilder.Entity<Camera>().ToTable("Cameras");
+
+        modelBuilder.Entity<Admin>().ToTable("Admins");
+        modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");
+        modelBuilder.Entity<HomeOwner>().ToTable("HomeOwners");
+
+        modelBuilder.Entity<HomeOwner>()
+            .HasMany(h => h.Homes)
+            .WithOne(o => o.Owner)
+            .HasForeignKey(i => i.OwnerId)
+            .IsRequired();
+
         modelBuilder.Entity<HomeUser>()
-            .HasKey(hu => new { hu.HomeId, hu.UserId });
+            .HasMany(p => p.Permissions)
+            .WithOne(h => h.HomeUser)
+            .HasForeignKey(hp => new { hp.HomeId, hp.UserId })
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
+        modelBuilder.Entity<Home>()
+            .HasMany(u => u.NofificatedMembers)
+            .WithOne(h => h.Home)
+            .HasForeignKey(i => i.HomeId)
+            .IsRequired();
+
+        modelBuilder.Entity<Home>()
+            .HasMany(d => d.Devices)
+            .WithOne(h => h.Home)
+            .HasForeignKey(i => i.HomeId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
+        modelBuilder.Entity<HomeDevice>()
+            .HasKey(hd => new
+            {
+                hd.HomeId,
+                hd.DeviceId
+            });
+        modelBuilder.Entity<HomeUser>()
+            .HasKey(hu => new
+            {
+                hu.HomeId,
+                hu.UserId
+            });
 
         base.OnModelCreating(modelBuilder);
     }
