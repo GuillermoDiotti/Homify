@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Session;
 
+[ApiController]
+[Route("sessions")]
 public class SessionController : ControllerBase
 {
     private readonly ISessionService _sessionService;

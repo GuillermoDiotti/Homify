@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.CompanyOwners;
 
+[ApiController]
+[Route("company-owners")]
 public class CompanyOwnerController
 {
     private readonly IUserService _userService;

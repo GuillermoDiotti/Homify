@@ -354,7 +354,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeMembers("home123")).Returns(membersList);
 
-        var result = _controller.GetMembers("home123");
+        var result = _controller.ObtainMembers("home123");
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(2, result.Count, "La lista debe contener 2 miembros");
@@ -409,7 +409,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeDevices("homeId")).Returns(devices);
 
-        var result = _controller.GetHomeDevices("homeId");
+        var result = _controller.ObtainHomeDevices("homeId");
 
         Assert.IsNotNull(result, "El resultado no debería ser null.");
         Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");
