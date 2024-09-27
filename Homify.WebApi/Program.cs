@@ -13,7 +13,7 @@ var configuration = builder.Configuration;
 var homifyConnectionString = configuration.GetConnectionString("Homify");
 if(string.IsNullOrEmpty(homifyConnectionString))
 {
-    throw new Exception("Missing Vidly connection string");
+    throw new Exception("Missing Homify connection string");
 }
 
 services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServer(homifyConnectionString));
