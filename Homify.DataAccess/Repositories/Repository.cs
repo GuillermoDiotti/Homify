@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
 
-public sealed class Repository<TEntity> : IRepository<TEntity>
+public class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
-    private readonly DbSet<TEntity> _entities;
+    public readonly DbSet<TEntity> _entities;
 
     private readonly DbContext _context;
 

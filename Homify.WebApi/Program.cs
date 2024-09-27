@@ -1,4 +1,7 @@
+using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
+using Homify.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,9 @@ if(string.IsNullOrEmpty(homifyConnectionString))
 }
 
 services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServer(homifyConnectionString));
+
+services.AddScoped<IRepository<User>, Repository<User>>();
+services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
