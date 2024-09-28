@@ -10,8 +10,10 @@ using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions.Entities;
+using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
+using Homify.DataAccess.Repositories.Roles;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +34,8 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<HomeUser> HomeUser { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<CompanyOwner> CompanyOwners { get; set; }
+    private DbSet<SystemPermission> Permissions { get; set; }
+    private DbSet<Role> Roles { get; set; }
 
     public HomifyDbContext(DbContextOptions options)
         : base(options)
@@ -85,6 +89,18 @@ public sealed class HomifyDbContext : DbContext
                 hu.HomeId,
                 hu.UserId
             });
+
+        modelBuilder.Entity<Role>()
+            .HasMany(r => r.Permissions);
+
+        modelBuilder.Entity<SystemPermission>()
+            .HasKey(sp => sp.Value);
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Role)
+            .WithMany()
+            .HasForeignKey(u => u.RoleId)
+            .IsRequired();
 
         base.OnModelCreating(modelBuilder);
     }
