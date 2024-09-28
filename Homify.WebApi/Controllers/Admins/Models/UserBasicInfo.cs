@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Users.Entities;
+using Homify.DataAccess.Repositories.Roles;
 
 namespace Homify.WebApi.Controllers.Admins.Models;
 
@@ -8,7 +9,7 @@ public class UserBasicInfo
     public string LastName { get; set; }
     public string FullName { get; set; }
 
-    // public string Role { get; set; }
+    public Role Role { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
 
@@ -18,5 +19,6 @@ public class UserBasicInfo
         LastName = u.LastName;
         FullName = u.Name + " " + u.LastName;
         CreatedAt = u.CreatedAt;
+        Role = u.Role;
     }
 }

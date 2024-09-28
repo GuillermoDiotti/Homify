@@ -21,7 +21,7 @@ if(string.IsNullOrEmpty(homifyConnectionString))
 
 services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServer(homifyConnectionString));
 
-services.AddScoped<IRepository<User>, Repository<User>>();
+services.AddScoped<IRepository<User>, UserRepository>();
 services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();

@@ -25,6 +25,7 @@ public class UserService : IUserService
             CreatedAt = DateTime.Now,
             Password = args.Password,
             LastName = args.LastName,
+            Role = args.Role,
         };
 
         _repository.Add(user);

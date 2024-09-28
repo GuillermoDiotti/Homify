@@ -28,7 +28,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         _context.SaveChanges();
     }
 
-    public List<TEntity> GetAll(Expression<Func<TEntity, bool>>? predicate = null)
+    public virtual List<TEntity> GetAll(Expression<Func<TEntity, bool>>? predicate = null)
     {
         if (predicate == null)
         {
@@ -38,7 +38,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         return _entities.Where(predicate).ToList();
     }
 
-    public TEntity Get(Expression<Func<TEntity, bool>> predicate)
+    public virtual TEntity Get(Expression<Func<TEntity, bool>> predicate)
     {
         var entity = _entities.FirstOrDefault(predicate);
 

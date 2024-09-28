@@ -1,3 +1,4 @@
+using Homify.DataAccess.Repositories.Roles;
 using Homify.Exceptions;
 using Homify.Utility;
 
@@ -9,8 +10,9 @@ public class CreateUserArgs
     public readonly string Email;
     public readonly string Password;
     public readonly string LastName;
+    public readonly Role Role;
 
-    public CreateUserArgs(string name, string email, string password, string lastName)
+    public CreateUserArgs(string name, string email, string password, string lastName, Role role)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -31,5 +33,12 @@ public class CreateUserArgs
         }
 
         LastName = lastName;
+
+        if (role == null)
+        {
+            throw new ArgsNullException("user must have a role");
+        }
+
+        Role = role;
     }
 }

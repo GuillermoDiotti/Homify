@@ -10,6 +10,7 @@ public class User
     public string LastName { get; set; } = null!;
     public string Id { get; init; }
     public Role Role { get; init; } = null!;
+    public string RoleId { get; set; } = null!;
     public DateTimeOffset CreatedAt { get; init; }
 
     public User(string id, string name, string email, string password, string lastName, Role role)
@@ -21,6 +22,7 @@ public class User
         Password = password;
         LastName = lastName;
         Role = role;
+        RoleId = role.Id;
     }
 
     public User()
