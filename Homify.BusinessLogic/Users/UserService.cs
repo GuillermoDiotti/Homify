@@ -36,6 +36,7 @@ public class UserService : IUserService
 
     public CompanyOwner AddCompanyOwner(CreateUserArgs args)
     {
+        ValidateEmailIsNotRepeated(args.Email);
         var companyOwner = new CompanyOwner
         {
             Id = Guid.NewGuid().ToString(),
@@ -53,6 +54,7 @@ public class UserService : IUserService
 
     public HomeOwner AddHomeOwner(CreateHomeOwnerArgs args)
     {
+        ValidateEmailIsNotRepeated(args.Email);
         var homeOwner = new HomeOwner
         {
             Id = Guid.NewGuid().ToString(),

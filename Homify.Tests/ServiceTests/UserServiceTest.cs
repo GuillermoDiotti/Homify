@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
 using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.HouseOwner;
+using Homify.BusinessLogic.HouseOwner.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
@@ -85,7 +87,7 @@ public class UserServiceTest
     }
 
     [TestMethod]
-    public void AddCompanyOwner_ShouldAddCompanyOwnerToRepository()
+    public void AddCompanyOwner_WhenInfoIsOk_ShouldAddCompanyOwnerToRepository()
     {
         var createUserArgs = new CreateUserArgs(
             "John",
@@ -115,5 +117,36 @@ public class UserServiceTest
         Assert.AreEqual(createUserArgs.Password, result.Password);
         Assert.AreEqual(createUserArgs.LastName, result.LastName);
         Assert.IsTrue(result.IsIncomplete);
+    }
+
+    [TestMethod]
+    public void AddHomeOwner_ShouldAddHomeOwnerToRepository()
+    {
+        var createHomeOwnerArgs = new CreateHomeOwnerArgs(
+              "John",
+             "john@example.com",
+              "password123!",
+             "Doe",
+             "http://example.com/profile.jpg"
+        );
+
+        _userRepositoryMock.Setup(r => r.Add(It.IsAny<HomeOwner>())).Verifiable();
+
+        var result = _service.AddHomeOwner(createHomeOwnerArgs);
+
+        _userRepositoryMock.Verify(r => r.Add(It.Is<HomeOwner>(u =>
+            u.Name == createHomeOwnerArgs.Name &&
+            u.Email == createHomeOwnerArgs.Email &&
+            u.Password == createHomeOwnerArgs.Password &&
+            u.LastName == createHomeOwnerArgs.LastName &&
+            u.ProfilePicture == createHomeOwnerArgs.ProfilePicUrl
+        )), Times.Once);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(createHomeOwnerArgs.Name, result.Name);
+        Assert.AreEqual(createHomeOwnerArgs.Email, result.Email);
+        Assert.AreEqual(createHomeOwnerArgs.Password, result.Password);
+        Assert.AreEqual(createHomeOwnerArgs.LastName, result.LastName);
+        Assert.AreEqual(createHomeOwnerArgs.ProfilePicUrl, result.ProfilePicture);
     }
 }
