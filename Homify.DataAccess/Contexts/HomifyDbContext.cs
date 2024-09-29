@@ -37,8 +37,8 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<Admin> Admins { get; set; }
     public DbSet<CompanyOwner> CompanyOwners { get; set; }
 
-    // private DbSet<SystemPermission> Permissions { get; set; }
-    // private DbSet<Role> Roles { get; set; }
+     public DbSet<SystemPermission> Permissions { get; set; }
+     public DbSet<Role> Roles { get; set; }
 
     public HomifyDbContext(DbContextOptions options)
         : base(options)
@@ -65,6 +65,11 @@ public sealed class HomifyDbContext : DbContext
             .WithOne(c => c.Company)
             .HasForeignKey(i => i.CompanyId)
             .IsRequired();
+
+        modelBuilder.Entity<Company>()
+            .HasOne(c => c.Owner)
+            .WithOne(co => co.Company)
+            .HasForeignKey<CompanyOwner>(co => co.Id);
 
         modelBuilder.Entity<HomeUser>()
             .HasMany(p => p.Permissions)
