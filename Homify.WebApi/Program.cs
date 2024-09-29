@@ -1,3 +1,4 @@
+using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
@@ -23,6 +24,9 @@ services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServe
 
 services.AddScoped<IRepository<User>, UserRepository>();
 services.AddScoped<IUserService, UserService>();
+
+services.AddScoped<IRepository<Company>, CompanyRepository>();
+services.AddScoped<ICompanyService, CompanyService>();
 
 var app = builder.Build();
 

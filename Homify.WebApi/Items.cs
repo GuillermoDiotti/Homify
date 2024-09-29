@@ -1,6 +1,6 @@
 namespace Homify.WebApi;
 
-public class Items
+public enum Items
 {
-    
+    UserLogged
 }

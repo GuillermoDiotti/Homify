@@ -1,6 +1,60 @@
+using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
+using Homify.DataAccess.Repositories;
+using Moq;
+
 namespace Homify.Tests.ServiceTests;
 
+[TestClass]
 public class CompanyServiceTest
 {
-    
+    private Mock<IRepository<Company>>? _companyRepositoryMock;
+
+    private CompanyService? _service;
+
+    [TestInitialize]
+    public void Setup()
+    {
+        _companyRepositoryMock = new Mock<IRepository<Company>>();
+        _service = new CompanyService(_companyRepositoryMock.Object);
+    }
+
+    [TestMethod]
+    public void Add_WhenInfoIsOk_ShouldAddCompanyToRepository()
+    {
+        var createCompanyArgs = new CreateCompanyArgs(
+            "Test Company",
+            "https://example.com/logo.png",
+            "123456789"
+        );
+
+        var user = new CompanyOwner
+        {
+            Id = "1",
+            Name = "John",
+            Email = "john@example.com",
+            Password = "password123",
+            LastName = "Doe",
+            Role = new Role()
+        };
+
+        _companyRepositoryMock.Setup(r => r.Add(It.IsAny<Company>())).Verifiable();
+
+        var result = _service.Add(createCompanyArgs, user);
+
+        _companyRepositoryMock.Verify(r => r.Add(It.Is<Company>(c =>
+            c.Name == createCompanyArgs.Name &&
+            c.LogoUrl == createCompanyArgs.LogoUrl &&
+            c.Rut == createCompanyArgs.Rut &&
+            c.Owner == user)), Times.Once);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(createCompanyArgs.Name, result.Name);
+        Assert.AreEqual(createCompanyArgs.LogoUrl, result.LogoUrl);
+        Assert.AreEqual(createCompanyArgs.Rut, result.Rut);
+        Assert.AreEqual(user, result.Owner);
+    }
 }

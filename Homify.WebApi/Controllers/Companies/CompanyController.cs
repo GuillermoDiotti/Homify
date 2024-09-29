@@ -1,4 +1,6 @@
-﻿using Homify.BusinessLogic.Companies;
+﻿using System.Net;
+using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Companies.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,7 @@ namespace Homify.WebApi.Controllers.Companies;
 
 [ApiController]
 [Route("companies")]
-public class CompanyController : ControllerBase
+public class CompanyController : HomifyControllerBase
 {
     private readonly ICompanyService _companyService;
 
@@ -25,10 +27,12 @@ public class CompanyController : ControllerBase
             throw new NullRequestException();
         }
 
+        var companyOwner = GetUserLogged();
+
         var args = new CreateCompanyArgs(request.Name ?? string.Empty, request.LogoUrl ?? string.Empty,
             request.Rut ?? string.Empty);
 
-        var company = _companyService.Add(args);
+        var company = _companyService.Add(args, companyOwner);
         return new CreateCompanyResponse(company);
     }
 }
