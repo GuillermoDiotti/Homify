@@ -149,4 +149,32 @@ public class UserServiceTest
         Assert.AreEqual(createHomeOwnerArgs.LastName, result.LastName);
         Assert.AreEqual(createHomeOwnerArgs.ProfilePicUrl, result.ProfilePicture);
     }
+
+    [TestMethod]
+    public void GetById_WhenUserExists_ShouldReturnUser()
+    {
+        // Arrange
+        var userId = Guid.NewGuid().ToString();
+        var expectedUser = new User
+        {
+            Id = userId,
+            Name = "John",
+            Email = "john@example.com",
+            Password = "password123",
+            LastName = "Doe",
+            Role = new Role()
+        };
+
+        _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(expectedUser);
+
+        var result = _service.GetById(userId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedUser.Id, result.Id);
+        Assert.AreEqual(expectedUser.Name, result.Name);
+        Assert.AreEqual(expectedUser.Email, result.Email);
+        Assert.AreEqual(expectedUser.Password, result.Password);
+        Assert.AreEqual(expectedUser.LastName, result.LastName);
+        Assert.AreEqual(expectedUser.Role, result.Role);
+    }
 }
