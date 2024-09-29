@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
@@ -81,5 +82,38 @@ public class UserServiceTest
         );
 
         _service.AddUser(createUserArgs);
+    }
+
+    [TestMethod]
+    public void AddCompanyOwner_ShouldAddCompanyOwnerToRepository()
+    {
+        var createUserArgs = new CreateUserArgs(
+            "John",
+            "john@example.com",
+            "password123!",
+            "Doe",
+            new Role()
+        );
+
+        _userRepositoryMock.Setup(r => r.Add(It.IsAny<CompanyOwner>())).Verifiable();
+
+        // Act
+        var result = _service.AddCompanyOwner(createUserArgs);
+
+        // Assert
+        _userRepositoryMock.Verify(r => r.Add(It.Is<CompanyOwner>(u =>
+            u.Name == createUserArgs.Name &&
+            u.Email == createUserArgs.Email &&
+            u.Password == createUserArgs.Password &&
+            u.LastName == createUserArgs.LastName &&
+            u.IsIncomplete == true
+        )), Times.Once);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(createUserArgs.Name, result.Name);
+        Assert.AreEqual(createUserArgs.Email, result.Email);
+        Assert.AreEqual(createUserArgs.Password, result.Password);
+        Assert.AreEqual(createUserArgs.LastName, result.LastName);
+        Assert.IsTrue(result.IsIncomplete);
     }
 }
