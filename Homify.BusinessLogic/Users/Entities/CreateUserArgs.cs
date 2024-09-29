@@ -1,4 +1,6 @@
+using Homify.BusinessLogic.Roles;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Users.Entities;
 
@@ -8,8 +10,9 @@ public class CreateUserArgs
     public readonly string Email;
     public readonly string Password;
     public readonly string LastName;
+    public readonly Role Role;
 
-    public CreateUserArgs(string name, string email, string password, string lastName)
+    public CreateUserArgs(string name, string email, string password, string lastName, Role role)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -18,28 +21,10 @@ public class CreateUserArgs
 
         Name = name;
 
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            throw new ArgsNullException("email cannot be null or empty");
-        }
-
-        if (!EmailFormatValidator(email))
-        {
-            throw new InvalidFormatException("email format is invalid");
-        }
-
+        AccountCredentialsValidator.CheckEmail(email);
         Email = email;
 
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            throw new ArgsNullException("password cannot be null or empty");
-        }
-
-        if (!PasswordFormatValidator(password))
-        {
-            throw new InvalidFormatException("password format is invalid");
-        }
-
+        AccountCredentialsValidator.CheckPassword(password);
         Password = password;
 
         if (string.IsNullOrWhiteSpace(lastName))
@@ -48,15 +33,12 @@ public class CreateUserArgs
         }
 
         LastName = lastName;
-    }
 
-    private bool EmailFormatValidator(string email)
-    {
-        return email.Contains("@") && email.EndsWith(".com");
-    }
+        if (role == null)
+        {
+            throw new ArgsNullException("user must have a role");
+        }
 
-    private bool PasswordFormatValidator(string password)
-    {
-        return password.Length > 3 && password.Length < 50;
+        Role = role;
     }
 }

@@ -63,7 +63,7 @@ public sealed class HomeController : ControllerBase
     }
 
     [HttpGet("{homeId}/members")]
-    public List<GetMemberResponse> GetMembers([FromRoute] string homeId)
+    public List<GetMemberResponse> ObtainMembers([FromRoute] string homeId)
     {
         var list = _homeService.GetHomeMembers(homeId);
 
@@ -84,7 +84,7 @@ public sealed class HomeController : ControllerBase
     }
 
     [HttpGet("{homeId}/devices")]
-    public List<GetDevicesResponse> GetHomeDevices([FromRoute] string homeId)
+    public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
     {
         var list = _homeService.GetHomeDevices(homeId);
         var response = new GetDevicesResponse();

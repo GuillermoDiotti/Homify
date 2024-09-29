@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -32,7 +34,7 @@ public class CompanyOwnerControllerTest
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "12345",
+            Password = "123456!",
             LastName = "lastName"
         };
 
@@ -41,7 +43,8 @@ public class CompanyOwnerControllerTest
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
-            LastName = request.LastName
+            LastName = request.LastName,
+            Role = RolesGenerator.CompanyOwner()
         };
         _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Returns(expectedOwner);
 
@@ -55,6 +58,7 @@ public class CompanyOwnerControllerTest
         expectedOwner.Email.Should().Be(request.Email);
         expectedOwner.Password.Should().Be(request.Password);
         expectedOwner.LastName.Should().Be(request.LastName);
+        expectedOwner.Role.Permissions[0].Value.Should().Be("companies-Create");
     }
 
     #endregion
@@ -75,7 +79,7 @@ public class CompanyOwnerControllerTest
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "12345",
+            Password = "123456!",
             LastName = "lastName"
         };
 
@@ -85,6 +89,28 @@ public class CompanyOwnerControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void Dunc()
+    {
+        var company = new CompanyOwner()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "TestCompany",
+            Company = new Company()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "TestCompany",
+                Rut = "TestRut",
+                LogoUrl = "TestLogoUrl"
+            }
+        };
+
+        company.Name.Should().Be("TestCompany");
+        company.Company.Name.Should().Be("TestCompany");
+        company.Company.Rut.Should().Be("TestRut");
+        company.Company.LogoUrl.Should().Be("TestLogoUrl");
+    }
 
     #endregion
 }

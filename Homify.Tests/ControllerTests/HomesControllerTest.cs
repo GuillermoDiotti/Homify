@@ -1,10 +1,11 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.BusinessLogic.HouseOwner;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes;
@@ -107,15 +108,28 @@ public class HomesControllerTest
                 Id = "device123"
             },
             IsNotificable = true,
-            Permissions = []
         };
+        var permission = new HomePermission()
+        {
+            Id = 123,
+            Value = "calle 1",
+            HomeUser = homeuser,
+            HomeId = "home123",
+            UserId = "device123"
+        };
+        homeuser.Permissions =
+        [
+            permission
+        ];
 
         homeuser.HomeId.Should().Be("home123");
         homeuser.UserId.Should().Be("device123");
         homeuser.Home.Id.Should().Be("home123");
         homeuser.User.Id.Should().Be("device123");
         homeuser.IsNotificable.Should().BeTrue();
-        homeuser.Permissions.Should().BeEmpty();
+        homeuser.Permissions.Should().NotBeNull();
+        homeuser.HomeId.Should().BeSameAs(permission.HomeId);
+        homeuser.UserId.Should().BeSameAs(permission.UserId);
     }
 
     [TestMethod]
@@ -202,15 +216,7 @@ public class HomesControllerTest
             MaxMembers = "3"
         };
 
-        var expectedHome = new Home
-        {
-            Id = "home123",
-            Street = "calle 1",
-            Number = "1",
-            Latitude = "101",
-            Longitude = "202",
-            MaxMembers = "3"
-        };
+        var expectedHome = new Home("calle 1", "1", "101", "202", "3", new HomeOwner(), [], []);
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
                         .Returns(expectedHome);
@@ -261,10 +267,11 @@ public class HomesControllerTest
             MaxMembers = "5",
             Owner = new HomeOwner
             {
-                Name = "Owner Name"
+                Name = "Owner Name",
+                Role = RolesGenerator.HomeOwner()
             },
             Devices = [],
-            NofificatedMembers = [existingMember]
+            NofificatedMembers = [existingMember],
         };
 
         var homeResponseAfterUpdate = new Home
@@ -277,10 +284,12 @@ public class HomesControllerTest
             MaxMembers = "5",
             Owner = new HomeOwner
             {
+                Id = "1",
                 Name = "Owner Name"
             },
             Devices = [],
-            NofificatedMembers = [existingMember, newMember]
+            NofificatedMembers = [existingMember, newMember],
+            OwnerId = "1"
         };
 
         _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, request.Email))
@@ -289,6 +298,7 @@ public class HomesControllerTest
         var result = _controller.UpdateMembersList("1", request);
 
         Assert.IsNotNull(result);
+        homeResponseAfterUpdate.OwnerId.Should().Be(homeResponseAfterUpdate.Owner.Id);
         Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
         Assert.IsTrue(result.Members.Any(m => m.User.Email == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
         Assert.AreEqual(homeResponseAfterUpdate.NofificatedMembers, result.Members, "La lista de miembros notificados debería coincidir con la respuesta esperada");
@@ -354,7 +364,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeMembers("home123")).Returns(membersList);
 
-        var result = _controller.GetMembers("home123");
+        var result = _controller.ObtainMembers("home123");
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(2, result.Count, "La lista debe contener 2 miembros");
@@ -409,7 +419,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeDevices("homeId")).Returns(devices);
 
-        var result = _controller.GetHomeDevices("homeId");
+        var result = _controller.ObtainHomeDevices("homeId");
 
         Assert.IsNotNull(result, "El resultado no debería ser null.");
         Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");

@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.Sensors.Entities;
 using Homify.WebApi.Controllers.Devices;
 using Homify.WebApi.Controllers.Devices.Models;
 using Moq;
@@ -67,6 +68,43 @@ public class DeviceControllerTest
         expected.IsInterior.Should().Be(request.IsInterior);
         expected.MovementDetection.Should().Be(request.MovementDetection);
         expected.PeopleDetection.Should().Be(request.PeopleDetection);
+        expected.Company.Should().NotBeNull();
+    }
+
+    [TestMethod]
+    public void RegisterSensor_WhenDataIsOk_ShouldRegisterCamera()
+    {
+        var request = new CreateSensorRequest()
+        {
+            Name = "Test",
+            Description = "Test",
+            Model = "Test",
+            Photos = ["1", "2", "3"],
+            PpalPicture = "Test"
+        };
+        var expected = new Sensor()
+        {
+            Name = request.Name,
+            PpalPicture = request.PpalPicture,
+            Company = new Company(),
+            Description = request.Description,
+            Model = request.Model,
+            Photos = request.Photos,
+        };
+
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture);
+
+        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>())).Returns(expected);
+
+        var response = _controller.RegisterSensor(request);
+
+        response.Should().NotBeNull();
+        response.Id.Should().Be(expected.Id);
+        expected.Name.Should().Be(args.Name);
+        expected.Model.Should().Be(args.Model);
+        expected.Description.Should().Be(args.Description);
+        expected.Photos.Should().BeEquivalentTo(args.Photos);
+        expected.PpalPicture.Should().Be(args.PpalPicture);
         expected.Company.Should().NotBeNull();
     }
 }

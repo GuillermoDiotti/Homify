@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Homify.BusinessLogic\Homify.BusinessLogic.csproj" />
     <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
+    <ProjectReference Include="..\Homify.DataAccess\Homify.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

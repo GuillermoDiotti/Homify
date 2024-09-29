@@ -20,4 +20,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Homify.BusinessLogic\Homify.BusinessLogic.csproj" />
+    </ItemGroup>
+
 </Project>

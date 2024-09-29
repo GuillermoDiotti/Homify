@@ -1,4 +1,5 @@
-﻿using Homify.BusinessLogic.Users;
+﻿using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.CompanyOwners.Models;
@@ -6,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.CompanyOwners;
 
+[ApiController]
+[Route("company-owners")]
 public class CompanyOwnerController
 {
     private readonly IUserService _userService;
@@ -27,7 +30,8 @@ public class CompanyOwnerController
             request.Name ?? string.Empty,
             request.Email ?? string.Empty,
             request.Password ?? string.Empty,
-            request.LastName ?? string.Empty);
+            request.LastName ?? string.Empty,
+            RolesGenerator.CompanyOwner());
 
         var ownerSaved = _userService.AddCompanyOwner(arguments);
 
