@@ -34,7 +34,7 @@ public class HomesControllerTest
             Number = "1",
             Latitude = "101",
             Longitude = "202",
-            MaxMembers = "3",
+            MaxMembers = 3,
             Owner = new HomeOwner
             {
                 Name = "Owner Name"
@@ -47,7 +47,7 @@ public class HomesControllerTest
         home.Number.Should().Be("1");
         home.Latitude.Should().Be("101");
         home.Longitude.Should().Be("202");
-        home.MaxMembers.Should().Be("3");
+        home.MaxMembers.Should().Be(3);
         home.Owner.Name.Should().Be("Owner Name");
         home.Devices.Should().BeEmpty();
     }
@@ -81,7 +81,9 @@ public class HomesControllerTest
                 Id = "device123"
             },
             Connected = true,
-            HardwareId = 1001
+            HardwareId = 1001,
+            MovementDetection = true,
+            PeopleDetection = true
         };
 
         homedevice.HomeId.Should().Be("home123");
@@ -216,7 +218,7 @@ public class HomesControllerTest
             MaxMembers = "3"
         };
 
-        var expectedHome = new Home("calle 1", "1", "101", "202", "3", new HomeOwner(), [], []);
+        var expectedHome = new Home("calle 1", "1", "101", "202", 3, new HomeOwner(), [], []);
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
                         .Returns(expectedHome);
@@ -264,7 +266,7 @@ public class HomesControllerTest
             Number = "1234",
             Latitude = "0.0000",
             Longitude = "0.0000",
-            MaxMembers = "5",
+            MaxMembers = 5,
             Owner = new HomeOwner
             {
                 Name = "Owner Name",
@@ -281,7 +283,7 @@ public class HomesControllerTest
             Number = "1234",
             Latitude = "0.0000",
             Longitude = "0.0000",
-            MaxMembers = "5",
+            MaxMembers = 5,
             Owner = new HomeOwner
             {
                 Id = "1",

@@ -11,4 +11,6 @@ public class HomeDevice
     public Device Device { get; set; } = null!;
     public bool Connected { get; set; }
     public int HardwareId { get; set; }
+    public bool MovementDetection { get; init; }
+    public bool PeopleDetection { get; init; }
 }
