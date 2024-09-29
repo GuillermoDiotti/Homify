@@ -35,11 +35,11 @@ public static class PermissionsGenerator
     {
         List<SystemPermission> permissions =
         [
-            new (CreateAdmin),
-            new (DeleteAdmin),
-            new (GetAllAccounts),
-            new (CreateCompanyOwner),
-            new (GetCompanies),
+            new(CreateAdmin),
+            new(DeleteAdmin),
+            new(GetAllAccounts),
+            new(CreateCompanyOwner),
+            new(GetCompanies),
         ];
         return permissions;
     }
@@ -71,14 +71,14 @@ public static class PermissionsGenerator
     {
         List<SystemPermission> permissions =
         [
-            new (CreateHome),
-            new (UpdateHomeMembersList),
-            new (UpdateHomeDevices),
-            new (GetHomeMembers),
-            new (GetHomeDevices),
-            new (UpdateHomeNotificatedMembers),
-            new (GetUserNotifications),
-            new (UpdateUserNotification),
+            new(CreateHome),
+            new(UpdateHomeMembersList),
+            new(UpdateHomeDevices),
+            new(GetHomeMembers),
+            new(GetHomeDevices),
+            new(UpdateHomeNotificatedMembers),
+            new(GetUserNotifications),
+            new(UpdateUserNotification),
         ];
         return permissions;
     }

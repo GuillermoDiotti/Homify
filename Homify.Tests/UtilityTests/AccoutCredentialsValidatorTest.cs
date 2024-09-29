@@ -1,6 +1,4 @@
-﻿
-
-using Homify.Exceptions;
+﻿using Homify.Exceptions;
 using Homify.Utility;
 
 namespace Homify.Tests.UtilsTests;

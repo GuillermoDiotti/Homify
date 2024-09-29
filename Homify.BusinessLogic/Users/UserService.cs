@@ -72,7 +72,7 @@ public class UserService : IUserService
 
     public User GetById(string id)
     {
-        return _repository.Get(x  => x.Id == id);
+        return _repository.Get(x => x.Id == id);
     }
 
     public List<User> GetAll()
@@ -82,7 +82,7 @@ public class UserService : IUserService
 
     public void Delete(string userId)
     {
-        var user = _repository.Get(x  => x.Id == userId);
+        var user = _repository.Get(x => x.Id == userId);
         if (user != null)
         {
             _repository.Remove(user);
