@@ -14,7 +14,7 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 var homifyConnectionString = configuration.GetConnectionString("Homify");
-if(string.IsNullOrEmpty(homifyConnectionString))
+if (string.IsNullOrEmpty(homifyConnectionString))
 {
     throw new Exception("Missing Homify connection string");
 }
