@@ -1,7 +1,9 @@
+using System.Linq.Expressions;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.DataAccess.Repositories.Roles;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -52,5 +54,32 @@ public class UserServiceTest
         Assert.AreEqual(createUserArgs.Password, result.Password);
         Assert.AreEqual(createUserArgs.LastName, result.LastName);
         Assert.AreEqual(createUserArgs.Role, result.Role);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(DuplicatedDataException))]
+    public void AddUser_WhenEmailIsDuplicated_ShouldThrowDuplicatedDataException()
+    {
+        var existingUser = new User
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "Existing",
+            Email = "duplicate@example.com",
+            Password = "password123",
+            LastName = "User",
+            Role = new Role()
+        };
+
+        _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(existingUser);
+
+        var createUserArgs = new CreateUserArgs(
+            "New",
+            "duplicate@example.com",
+            "password123!",
+            "User",
+            new Role()
+        );
+
+        _service.AddUser(createUserArgs);
     }
 }

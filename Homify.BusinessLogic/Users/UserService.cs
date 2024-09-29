@@ -3,6 +3,7 @@ using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.HouseOwner.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Users;
 
@@ -17,6 +18,7 @@ public class UserService : IUserService
 
     public User AddUser(CreateUserArgs args)
     {
+        ValidateEmailIsNotRepeated(args.Email);
         var user = new User
         {
             Id = Guid.NewGuid().ToString(),
@@ -82,6 +84,15 @@ public class UserService : IUserService
         if (user != null)
         {
             _repository.Remove(user);
+        }
+    }
+
+    private void ValidateEmailIsNotRepeated(string email)
+    {
+        User? userWithRepeatedEmail = _repository.Get(user => user.Email == email);
+        if (userWithRepeatedEmail is not null)
+        {
+            throw new DuplicatedDataException("A user with this email already exists");
         }
     }
 }
