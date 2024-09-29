@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
@@ -32,13 +33,12 @@ public class UserServiceTest
     {
         var mockRepository = new Mock<IRepository<User>>();
         var userService = new UserService(mockRepository.Object);
-        Role rol = new Role();
         var createUserArgs = new CreateUserArgs(
               "John",
               "john@example.com",
               "password123!",
               "Doe",
-              rol
+              RolesGenerator.Admin()
         );
 
         var result = _service.AddUser(createUserArgs);
@@ -63,14 +63,14 @@ public class UserServiceTest
     [ExpectedException(typeof(DuplicatedDataException))]
     public void AddUser_WhenEmailIsDuplicated_ShouldThrowDuplicatedDataException()
     {
-        var existingUser = new User
+        var existingUser = new Admin
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Existing",
             Email = "duplicate@example.com",
             Password = "password123",
             LastName = "User",
-            Role = new Role()
+            Role = RolesGenerator.Admin()
         };
 
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(existingUser);
@@ -99,10 +99,8 @@ public class UserServiceTest
 
         _userRepositoryMock.Setup(r => r.Add(It.IsAny<CompanyOwner>())).Verifiable();
 
-        // Act
         var result = _service.AddCompanyOwner(createUserArgs);
 
-        // Assert
         _userRepositoryMock.Verify(r => r.Add(It.Is<CompanyOwner>(u =>
             u.Name == createUserArgs.Name &&
             u.Email == createUserArgs.Email &&
@@ -153,7 +151,6 @@ public class UserServiceTest
     [TestMethod]
     public void GetById_WhenUserExists_ShouldReturnUser()
     {
-        // Arrange
         var userId = Guid.NewGuid().ToString();
         var expectedUser = new User
         {
