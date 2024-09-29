@@ -53,4 +53,49 @@ public class CompanyControllerTest
         var response = () => _controller.Create(null);
         response.Should().Throw<NullRequestException>().WithMessage("Request cannot be null");
     }
+
+    [TestMethod]
+    public void Create_WhenNameIsNull_ShouldThrowArgumentNullException()
+    {
+        var request = new CreateCompanyRequest()
+        {
+            Name = null,
+            Rut = "TestRut",
+            LogoUrl = "TestLogoUrl",
+        };
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws(new ArgsNullException("name cannot be null or empty"));
+
+        var response = () => _controller.Create(request);
+        response.Should().Throw<ArgsNullException>().WithMessage("name cannot be null or empty");
+    }
+
+    [TestMethod]
+    public void Create_WhenLogoUrlIsNull_ShouldThrowArgumentNullException()
+    {
+        var request = new CreateCompanyRequest()
+        {
+            Name = "TestCompany",
+            Rut = "TestRut",
+            LogoUrl = null,
+        };
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws(new ArgsNullException("logo image cannot be null or empty"));
+
+        var response = () => _controller.Create(request);
+        response.Should().Throw<ArgsNullException>().WithMessage("logo image cannot be null or empty");
+    }
+
+    [TestMethod]
+    public void Create_WhenRutIsNull_ShouldThrowArgumentNullException()
+    {
+        var request = new CreateCompanyRequest()
+        {
+            Name = "TestCompany",
+            Rut = null,
+            LogoUrl = "TestLogoUrl",
+        };
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws(new ArgsNullException("rut cannot be null or empty"));
+
+        var response = () => _controller.Create(request);
+        response.Should().Throw<ArgsNullException>().WithMessage("rut cannot be null or empty");
+    }
 }

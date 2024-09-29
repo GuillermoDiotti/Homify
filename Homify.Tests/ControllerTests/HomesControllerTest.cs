@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;

@@ -4,16 +4,17 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.Notifications.Entities;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
-using Homify.DataAccess.Repositories.Roles;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 

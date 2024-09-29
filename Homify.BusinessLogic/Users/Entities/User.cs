@@ -1,4 +1,4 @@
-using Homify.DataAccess.Repositories.Roles;
+using Homify.BusinessLogic.Roles;
 
 namespace Homify.BusinessLogic.Users.Entities;
 

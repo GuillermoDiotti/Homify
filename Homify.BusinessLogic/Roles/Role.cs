@@ -1,6 +1,6 @@
 ﻿using Homify.BusinessLogic.SystemPermissions;
 
-namespace Homify.DataAccess.Repositories.Roles;
+namespace Homify.BusinessLogic.Roles;
 
 public class Role
 {

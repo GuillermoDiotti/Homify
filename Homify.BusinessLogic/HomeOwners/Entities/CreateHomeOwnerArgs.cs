@@ -1,7 +1,7 @@
 ﻿using Homify.Exceptions;
 using Homify.Utility;
 
-namespace Homify.BusinessLogic.HouseOwner.Entities;
+namespace Homify.BusinessLogic.HomeOwners.Entities;
 
 public class CreateHomeOwnerArgs
 {

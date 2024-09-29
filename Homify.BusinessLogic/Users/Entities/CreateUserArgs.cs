@@ -1,4 +1,4 @@
-using Homify.DataAccess.Repositories.Roles;
+using Homify.BusinessLogic.Roles;
 using Homify.Exceptions;
 using Homify.Utility;
 

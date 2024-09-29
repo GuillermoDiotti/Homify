@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
-using Homify.BusinessLogic.HouseOwner;
-using Homify.BusinessLogic.HouseOwner.Entities;
+using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeOwners;
 using Homify.WebApi.Controllers.HomeOwners.Models;
 using Moq;
@@ -53,5 +54,35 @@ public class HomeOwnerControllerTest
         ho.Email.Should().Be(req.Email);
         ho.Password.Should().Be(req.Password);
         ho.LastName.Should().Be(req.LastName);
+    }
+
+    [TestMethod]
+    public void CreateHomeOwner_WhenRequestIsNull_ThrowsArgumentNullException()
+    {
+        _userService.Setup(u => u.AddHomeOwner(It.IsAny<CreateHomeOwnerArgs>())).Throws<NullRequestException>();
+
+        var response = () => _controller.Create(null);
+        response.Should().Throw<NullRequestException>().WithMessage("Request cannot be null");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHomeOwner_WhenEmailIsNull_ThrowsArgumentNullException()
+    {
+        CreateHomeOwnerArgs req = new(null, "example@domain.com", ".Qwhnd123", "test123@", "pic");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHomeOwner_WhenPasswordIsNull_ThrowsArgumentNullException()
+    {
+        CreateHomeOwnerArgs req = new("test", "example@domain.com", null, "test123@", "pic");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHomeOwner_WhenLastNameIsNull_ThrowsArgumentNullException()
+    {
+        CreateHomeOwnerArgs req = new("test", "example@domain.com", ".Qwhnd123", null, "pic");
     }
 }
