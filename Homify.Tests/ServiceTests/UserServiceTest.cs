@@ -213,6 +213,14 @@ public class UserServiceTest
             Role = new Role()
         };
 
+        var user2 = new User(
+            userId,
+            "John",
+            "john@example.com",
+            "password123",
+            "Doe",
+            new Role()
+        );
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
         _userRepositoryMock.Setup(r => r.Remove(It.IsAny<User>())).Verifiable();
 
