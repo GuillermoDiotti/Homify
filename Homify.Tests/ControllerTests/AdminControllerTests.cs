@@ -103,13 +103,13 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenPasswordIsFormatIsInvalid1_ShouldThrowException()
+    public void CreateUser_WhenPasswordFormatIsInvalid1_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
             Name = "John",
             Email = "example@gmail.com",
-            Password = "123456!",
+            Password = "123456",
             LastName = "Doe"
         };
         var expected = new User()
@@ -125,10 +125,10 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenPasswordIsFormatIsInvalid2_ShouldThrowException()
+    public void CreateUser_WhenPasswordFormatIsInvalid2_ShouldThrowException()
     {
         var password = string.Empty;
-        for (var i = 0; i < 60; i++)
+        for (var i = 0; i < 4; i++)
         {
             password += "a";
         }
