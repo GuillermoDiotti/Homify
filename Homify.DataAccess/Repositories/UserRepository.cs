@@ -20,6 +20,11 @@ public sealed class UserRepository : Repository<User>
 
         var user = query.FirstOrDefault();
 
+        if (user == null)
+        {
+            throw new InvalidOperationException($"User not found");
+        }
+
         return user;
     }
 
