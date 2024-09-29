@@ -7,9 +7,9 @@ public class CreateNotificationArgs
     public string Event { get; init; }
     public Device Device { get; init; }
     public bool IsRead { get; init; }
-    public string Date { get; init; }
+    public DateTimeOffset? Date { get; init; }
 
-    public CreateNotificationArgs(string eventShot, Device device, bool isRead, string date)
+    public CreateNotificationArgs(string eventShot, Device device, bool isRead, DateTimeOffset date)
     {
         if (string.IsNullOrEmpty(eventShot))
         {
@@ -22,7 +22,7 @@ public class CreateNotificationArgs
 
         Device = device;
 
-        if (string.IsNullOrEmpty(date))
+        if (date == null)
         {
             throw new ArgumentNullException("Date cannot be null");
         }
