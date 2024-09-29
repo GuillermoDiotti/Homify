@@ -198,4 +198,26 @@ public class UserServiceTest
         Assert.AreEqual("John", result[0].Name);
         Assert.AreEqual("Jane", result[1].Name);
     }
+
+    [TestMethod]
+    public void Delete_WhenUserExists_ShouldRemoveUser()
+    {
+        var userId = Guid.NewGuid().ToString();
+        var user = new User
+        {
+            Id = userId,
+            Name = "John",
+            Email = "john@example.com",
+            Password = "password123",
+            LastName = "Doe",
+            Role = new Role()
+        };
+
+        _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
+        _userRepositoryMock.Setup(r => r.Remove(It.IsAny<User>())).Verifiable();
+
+        _service.Delete(userId);
+
+        _userRepositoryMock.Verify(r => r.Remove(It.Is<User>(u => u.Id == userId)), Times.Once);
+    }
 }
