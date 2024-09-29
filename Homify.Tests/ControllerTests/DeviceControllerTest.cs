@@ -33,22 +33,20 @@ public class DeviceControllerTest
             Photos = ["1", "2", "3"],
             IsExterior = false,
             IsInterior = true,
-            MovementDetection = true,
-            PeopleDetection = false,
             PpalPicture = "Test"
         };
+        var comoany = new Company();
         var expected = new Camera()
         {
             Name = request.Name,
             PpalPicture = request.PpalPicture,
-            Company = new Company(),
+            Company = comoany,
             Description = request.Description,
             Model = request.Model,
             Photos = request.Photos,
             IsExterior = request.IsExterior,
             IsInterior = request.IsInterior,
-            MovementDetection = request.MovementDetection,
-            PeopleDetection = request.PeopleDetection,
+            CompanyId = comoany.Id
         };
 
         var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture);
@@ -66,8 +64,6 @@ public class DeviceControllerTest
         expected.PpalPicture.Should().Be(args.PpalPicture);
         expected.IsExterior.Should().Be(request.IsExterior);
         expected.IsInterior.Should().Be(request.IsInterior);
-        expected.MovementDetection.Should().Be(request.MovementDetection);
-        expected.PeopleDetection.Should().Be(request.PeopleDetection);
         expected.Company.Should().NotBeNull();
     }
 

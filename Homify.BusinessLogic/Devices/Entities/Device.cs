@@ -12,6 +12,7 @@ public class Device
     public Company Company { get; init; } = null!;
     public string? PpalPicture { get; init; }
     public bool IsActive { get; set; }
+    public string CompanyId { get; set; } = null!;
 
     public Device()
     {

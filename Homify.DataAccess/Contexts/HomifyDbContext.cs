@@ -60,6 +60,12 @@ public sealed class HomifyDbContext : DbContext
             .HasForeignKey(i => i.OwnerId)
             .IsRequired();
 
+        modelBuilder.Entity<Company>()
+            .HasMany(d => d.Devices)
+            .WithOne(c => c.Company)
+            .HasForeignKey(i => i.CompanyId)
+            .IsRequired();
+
         modelBuilder.Entity<HomeUser>()
             .HasMany(p => p.Permissions)
             .WithOne(h => h.HomeUser)

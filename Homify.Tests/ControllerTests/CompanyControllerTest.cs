@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.CompanyOwners;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -33,6 +34,8 @@ public class CompanyControllerTest
             Name = request.Name,
             LogoUrl = request.LogoUrl,
             Rut = request.Rut,
+            Owner = new CompanyOwner(),
+            Devices = []
         };
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Returns(expected);
 
