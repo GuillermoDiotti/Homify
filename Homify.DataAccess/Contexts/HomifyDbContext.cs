@@ -36,8 +36,9 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<HomeUser> HomeUser { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<CompanyOwner> CompanyOwners { get; set; }
-    private DbSet<SystemPermission> Permissions { get; set; }
-    private DbSet<Role> Roles { get; set; }
+
+    // private DbSet<SystemPermission> Permissions { get; set; }
+    // private DbSet<Role> Roles { get; set; }
 
     public HomifyDbContext(DbContextOptions options)
         : base(options)

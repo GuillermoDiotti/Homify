@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Session.Models;

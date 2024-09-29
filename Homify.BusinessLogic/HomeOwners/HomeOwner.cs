@@ -9,7 +9,7 @@ public class HomeOwner : User
     public string ProfilePicture { get; set; } = null!;
     public HomeOwner()
     {
-        Homes = new List<Home>();
+        Homes = [];
         Role = RolesGenerator.HomeOwner();
     }
 }

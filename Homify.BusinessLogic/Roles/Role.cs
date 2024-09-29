@@ -17,7 +17,7 @@ public class Role
 
     public Role()
     {
-        Permissions = new();
+        Permissions = [];
         Id = Guid.NewGuid().ToString();
     }
 }

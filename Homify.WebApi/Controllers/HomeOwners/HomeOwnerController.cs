@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Users;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeOwners.Models;
 using Microsoft.AspNetCore.Mvc;

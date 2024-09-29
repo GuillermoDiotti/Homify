@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
-using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Notifications;
 using Homify.WebApi.Controllers.Notifications.Models;

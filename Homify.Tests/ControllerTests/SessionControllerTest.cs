@@ -55,7 +55,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns(new List<User>());
+            .Returns([]);
 
         _controller.Create(request);
     }
@@ -77,7 +77,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns(new List<User> { user });
+            .Returns([user]);
 
         _controller.Create(request);
     }
@@ -97,8 +97,8 @@ public class SessionControllerTest
             Password = ".Coo120dshjha"
         };
 
-        Guid authToken = Guid.NewGuid();
-        Guid authToken2 = Guid.NewGuid();
+        var authToken = Guid.NewGuid();
+        var authToken2 = Guid.NewGuid();
 
         var session = new Session(authToken, user);
 
@@ -109,10 +109,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns(new List<User>
-            {
-                user
-            });
+            .Returns([user]);
 
         _sessionServiceMock.Setup(ss => ss.AddToken(It.IsAny<string>()))
             .Returns(session);

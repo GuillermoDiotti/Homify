@@ -38,8 +38,7 @@ public class UserServiceTest
               "john@example.com",
               "password123!",
               "Doe",
-              RolesGenerator.Admin()
-        );
+              RolesGenerator.Admin());
 
         var result = _service.AddUser(createUserArgs);
 
@@ -48,8 +47,7 @@ public class UserServiceTest
             u.Email == createUserArgs.Email &&
             u.Password == createUserArgs.Password &&
             u.LastName == createUserArgs.LastName &&
-            u.Role == createUserArgs.Role
-        )), Times.Once);
+            u.Role == createUserArgs.Role)), Times.Once);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(createUserArgs.Name, result.Name);
@@ -80,8 +78,7 @@ public class UserServiceTest
             "duplicate@example.com",
             "password123!",
             "User",
-            new Role()
-        );
+            new Role());
 
         _service.AddUser(createUserArgs);
     }
@@ -94,8 +91,7 @@ public class UserServiceTest
             "john@example.com",
             "password123!",
             "Doe",
-            new Role()
-        );
+            new Role());
 
         _userRepositoryMock.Setup(r => r.Add(It.IsAny<CompanyOwner>())).Verifiable();
 
@@ -106,8 +102,7 @@ public class UserServiceTest
             u.Email == createUserArgs.Email &&
             u.Password == createUserArgs.Password &&
             u.LastName == createUserArgs.LastName &&
-            u.IsIncomplete == true
-        )), Times.Once);
+            u.IsIncomplete == true)), Times.Once);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(createUserArgs.Name, result.Name);
@@ -125,8 +120,7 @@ public class UserServiceTest
              "john@example.com",
               "password123!",
              "Doe",
-             "http://example.com/profile.jpg"
-        );
+             "https://example.com/profile.jpg");
 
         _userRepositoryMock.Setup(r => r.Add(It.IsAny<HomeOwner>())).Verifiable();
 
@@ -137,8 +131,7 @@ public class UserServiceTest
             u.Email == createHomeOwnerArgs.Email &&
             u.Password == createHomeOwnerArgs.Password &&
             u.LastName == createHomeOwnerArgs.LastName &&
-            u.ProfilePicture == createHomeOwnerArgs.ProfilePicUrl
-        )), Times.Once);
+            u.ProfilePicture == createHomeOwnerArgs.ProfilePicUrl)), Times.Once);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(createHomeOwnerArgs.Name, result.Name);
@@ -211,13 +204,12 @@ public class UserServiceTest
         };
 
         var user2 = new User(
-            userId,
             "John",
             "john@example.com",
             "password123",
             "Doe",
-            new Role()
-        );
+            new Role());
+
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
         _userRepositoryMock.Setup(r => r.Remove(It.IsAny<User>())).Verifiable();
 

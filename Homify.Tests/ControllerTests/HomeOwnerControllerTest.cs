@@ -69,20 +69,20 @@ public class HomeOwnerControllerTest
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeOwner_WhenEmailIsNull_ThrowsArgumentNullException()
     {
-        CreateHomeOwnerArgs req = new(null, "example@domain.com", ".Qwhnd123", "test123@", "pic");
+        new CreateHomeOwnerArgs(null, "example@domain.com", ".Qwhnd123", "test123@", "pic");
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeOwner_WhenPasswordIsNull_ThrowsArgumentNullException()
     {
-        CreateHomeOwnerArgs req = new("test", "example@domain.com", null, "test123@", "pic");
+        new CreateHomeOwnerArgs("test", "example@domain.com", null, "test123@", "pic");
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeOwner_WhenLastNameIsNull_ThrowsArgumentNullException()
     {
-        CreateHomeOwnerArgs req = new("test", "example@domain.com", ".Qwhnd123", null, "pic");
+        new CreateHomeOwnerArgs("test", "example@domain.com", ".Qwhnd123", null, "pic");
     }
 }

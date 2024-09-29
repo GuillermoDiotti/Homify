@@ -109,7 +109,7 @@ public class HomesControllerTest
             },
             IsNotificable = true,
         };
-        HomePermission permission = new HomePermission()
+        var permission = new HomePermission()
         {
             Id = 123,
             Value = "calle 1",
@@ -216,7 +216,7 @@ public class HomesControllerTest
             MaxMembers = "3"
         };
 
-        var expectedHome = new Home("calle 1", "1", "101", "202", "3", new HomeOwner(), new List<HomeDevice>(), new List<HomeUser>());
+        var expectedHome = new Home("calle 1", "1", "101", "202", "3", new HomeOwner(), [], []);
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
                         .Returns(expectedHome);

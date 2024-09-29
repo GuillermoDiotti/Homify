@@ -1,9 +1,7 @@
-﻿using Homify.Exceptions;
+﻿using System.Text.RegularExpressions;
+using Homify.Exceptions;
 
 namespace Homify.Utility;
-
-using System;
-using System.Text.RegularExpressions;
 
 public static class AccountCredentialsValidator
 {

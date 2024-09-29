@@ -13,7 +13,7 @@ public class User
     public string RoleId { get; set; } = null!;
     public DateTimeOffset CreatedAt { get; init; }
 
-    public User(string id, string name, string email, string password, string lastName, Role role)
+    public User(string name, string email, string password, string lastName, Role role)
     {
         Id = Guid.NewGuid().ToString();
         CreatedAt = DateTimeOffset.UtcNow;
