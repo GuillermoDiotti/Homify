@@ -34,5 +34,6 @@ public class Home
         Owner = owner;
         Devices = devices;
         NofificatedMembers = notificated;
+        OwnerId = owner.Id;
     }
 }

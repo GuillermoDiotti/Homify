@@ -107,15 +107,28 @@ public class HomesControllerTest
                 Id = "device123"
             },
             IsNotificable = true,
-            Permissions = []
         };
+        HomePermission permission = new HomePermission()
+        {
+            Id = 123,
+            Value = "calle 1",
+            HomeUser = homeuser,
+            HomeId = "home123",
+            UserId = "device123"
+        };
+        homeuser.Permissions =
+        [
+            permission
+        ];
 
         homeuser.HomeId.Should().Be("home123");
         homeuser.UserId.Should().Be("device123");
         homeuser.Home.Id.Should().Be("home123");
         homeuser.User.Id.Should().Be("device123");
         homeuser.IsNotificable.Should().BeTrue();
-        homeuser.Permissions.Should().BeEmpty();
+        homeuser.Permissions.Should().NotBeNull();
+        homeuser.HomeId.Should().BeSameAs(permission.HomeId);
+        homeuser.UserId.Should().BeSameAs(permission.UserId);
     }
 
     [TestMethod]
@@ -202,15 +215,7 @@ public class HomesControllerTest
             MaxMembers = "3"
         };
 
-        var expectedHome = new Home
-        {
-            Id = "home123",
-            Street = "calle 1",
-            Number = "1",
-            Latitude = "101",
-            Longitude = "202",
-            MaxMembers = "3"
-        };
+        var expectedHome = new Home("calle 1", "1", "101", "202", "3", new HomeOwner(), new List<HomeDevice>(), new List<HomeUser>());
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
                         .Returns(expectedHome);
@@ -277,10 +282,12 @@ public class HomesControllerTest
             MaxMembers = "5",
             Owner = new HomeOwner
             {
+                Id = "1",
                 Name = "Owner Name"
             },
             Devices = [],
-            NofificatedMembers = [existingMember, newMember]
+            NofificatedMembers = [existingMember, newMember],
+            OwnerId = "1"
         };
 
         _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, request.Email))
@@ -289,6 +296,7 @@ public class HomesControllerTest
         var result = _controller.UpdateMembersList("1", request);
 
         Assert.IsNotNull(result);
+        homeResponseAfterUpdate.OwnerId.Should().Be(homeResponseAfterUpdate.Owner.Id);
         Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
         Assert.IsTrue(result.Members.Any(m => m.User.Email == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
         Assert.AreEqual(homeResponseAfterUpdate.NofificatedMembers, result.Members, "La lista de miembros notificados debería coincidir con la respuesta esperada");
