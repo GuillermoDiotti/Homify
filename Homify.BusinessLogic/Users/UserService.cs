@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
-using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;

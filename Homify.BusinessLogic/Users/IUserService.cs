@@ -1,7 +1,6 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
-using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.Users;

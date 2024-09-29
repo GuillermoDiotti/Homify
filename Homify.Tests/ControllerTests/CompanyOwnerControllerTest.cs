@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
@@ -85,6 +86,28 @@ public class CompanyOwnerControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void Dunc()
+    {
+        var company = new CompanyOwner()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "TestCompany",
+            Company = new Company()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "TestCompany",
+                Rut = "TestRut",
+                LogoUrl = "TestLogoUrl"
+            }
+        };
+
+        company.Name.Should().Be("TestCompany");
+        company.Company.Name.Should().Be("TestCompany");
+        company.Company.Rut.Should().Be("TestRut");
+        company.Company.LogoUrl.Should().Be("TestLogoUrl");
+    }
 
     #endregion
 }

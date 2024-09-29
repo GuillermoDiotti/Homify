@@ -7,7 +7,6 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Sensors.Entities;

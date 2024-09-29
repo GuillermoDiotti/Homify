@@ -5,7 +5,6 @@ using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.BusinessLogic.HouseOwner;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes;
