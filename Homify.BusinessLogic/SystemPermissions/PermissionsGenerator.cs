@@ -46,11 +46,23 @@ public static class PermissionsGenerator
 
     public static List<SystemPermission> GetCompanyOwnerPermissions()
     {
+        var permission1 = new SystemPermission()
+        {
+            Value = CreateCompany,
+        };
+        var permission2 = new SystemPermission()
+        {
+            Value = RegisterCamera,
+        };
+        var permission3 = new SystemPermission()
+        {
+            Value = RegisterSensor,
+        };
         List<SystemPermission> permissions =
         [
-            new (CreateCompany),
-            new (RegisterCamera),
-            new (RegisterSensor),
+            permission1,
+            permission2,
+            permission3,
         ];
         return permissions;
     }

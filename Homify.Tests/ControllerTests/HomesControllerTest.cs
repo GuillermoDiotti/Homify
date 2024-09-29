@@ -5,6 +5,7 @@ using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes;
@@ -266,10 +267,11 @@ public class HomesControllerTest
             MaxMembers = "5",
             Owner = new HomeOwner
             {
-                Name = "Owner Name"
+                Name = "Owner Name",
+                Role = RolesGenerator.HomeOwner()
             },
             Devices = [],
-            NofificatedMembers = [existingMember]
+            NofificatedMembers = [existingMember],
         };
 
         var homeResponseAfterUpdate = new Home
