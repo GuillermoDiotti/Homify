@@ -263,9 +263,21 @@ public class UserControllerTests
     {
         var users = new List<User>
         {
-            new User { Name = "John", LastName = "Doe" },
-            new User { Name = "Jane", LastName = "Smith" },
-            new User { Name = "Adam", LastName = "Johnson" }
+            new User
+            {
+                Name = "John",
+                LastName = "Doe"
+            },
+            new User
+            {
+                Name = "Jane",
+                LastName = "Smith"
+            },
+            new User
+            {
+                Name = "Adam",
+                LastName = "Johnson"
+            }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
@@ -283,10 +295,26 @@ public class UserControllerTests
     {
         var users = new List<User>
         {
-            new User { Name = "John", LastName = "Doe" },
-            new User { Name = "Jane", LastName = "Smith" },
-            new User { Name = "Adam", LastName = "Johnson" },
-            new User { Name = "Lucy", LastName = "Williams" }
+            new User
+            {
+                Name = "John",
+                LastName = "Doe"
+            },
+            new User
+            {
+                Name = "Jane",
+                LastName = "Smith"
+            },
+            new User
+            {
+                Name = "Adam",
+                LastName = "Johnson"
+            },
+            new User
+            {
+                Name = "Lucy",
+                LastName = "Williams"
+            }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
@@ -302,9 +330,21 @@ public class UserControllerTests
     {
         var users = new List<User>
         {
-            new User { Name = "John", LastName = "Doe" },
-            new User { Name = "Jane", LastName = "Smith" },
-            new User { Name = "Adam", LastName = "Johnson" }
+            new User
+            {
+                Name = "John",
+                LastName = "Doe"
+            },
+            new User
+            {
+                Name = "Jane",
+                LastName = "Smith"
+            },
+            new User
+            {
+                Name = "Adam",
+                LastName = "Johnson"
+            }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
@@ -321,9 +361,21 @@ public class UserControllerTests
     {
         var users = new List<User>
         {
-            new User { Name = "John", LastName = "Doe" },
-            new User { Name = "Jane", LastName = "Smith" },
-            new User { Name = "Adam", LastName = "Johnson" }
+            new User
+            {
+                Name = "John",
+                LastName = "Doe"
+            },
+            new User
+            {
+                Name = "Jane",
+                LastName = "Smith"
+            },
+            new User
+            {
+                Name = "Adam",
+                LastName = "Johnson"
+            }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
@@ -339,7 +391,12 @@ public class UserControllerTests
     {
         var users = new List<User>
         {
-            new User { Name = "John", LastName = "Doe", CreatedAt = DateTime.Now }
+            new User
+            {
+                Name = "John",
+                LastName = "Doe",
+                CreatedAt = DateTime.Now
+            }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);

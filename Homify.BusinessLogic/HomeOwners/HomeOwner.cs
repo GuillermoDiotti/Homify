@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.HomeOwners;
@@ -9,5 +10,6 @@ public class HomeOwner : User
     public HomeOwner()
     {
         Homes = new List<Home>();
+        Role = RolesGenerator.HomeOwner();
     }
 }
