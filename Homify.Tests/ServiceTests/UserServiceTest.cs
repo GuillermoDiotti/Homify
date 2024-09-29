@@ -177,4 +177,25 @@ public class UserServiceTest
         Assert.AreEqual(expectedUser.LastName, result.LastName);
         Assert.AreEqual(expectedUser.Role, result.Role);
     }
+
+    [TestMethod]
+    public void GetAll_WhenAreUsers_ShouldReturnAllUsers()
+    {
+        var users = new List<User>
+        {
+            new User { Id = "1", Name = "John", Email = "john@example.com", Password = "password123", LastName = "Doe", Role = new Role() },
+            new User { Id = "2", Name = "Jane", Email = "jane@example.com", Password = "password456", LastName = "Smith", Role = new Role() }
+        };
+
+        _userRepositoryMock
+            .Setup(x => x.GetAll(It.IsAny<Expression<Func<User, bool>>>()))
+            .Returns(users);
+
+        var result = _service.GetAll();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("John", result[0].Name);
+        Assert.AreEqual("Jane", result[1].Name);
+    }
 }
