@@ -65,7 +65,18 @@ public class DeviceService : IDeviceService
 
     public Device GetById(string id)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(id))
+        {
+            throw new ArgumentException("Device ID cannot be null or empty");
+        }
+
+        var device = _deviceRepository.Get(d => d.Id == id);
+        if (device == null)
+        {
+            throw new KeyNotFoundException($"Device with ID '{id}' not found");
+        }
+
+        return device;
     }
 
     private void HasCompany(CompanyOwner owner)

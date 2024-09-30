@@ -1,9 +1,11 @@
+using System.Linq.Expressions;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
 
@@ -102,5 +104,20 @@ public class DeviceServiceTest
         Assert.AreEqual(deviceArgs.PpalPicture, result.PpalPicture);
         Assert.AreEqual(company, result.Company);
         Assert.AreEqual(company.Id, result.CompanyId);
+    }
+
+    [TestMethod]
+    public void GetById_WhenDeviceExists_ShouldReturnDevice()
+    {
+        var deviceId = "test-device-id";
+        var device = new Device { Id = deviceId, Name = "Test Device" };
+        _deviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Device, bool>>>()))
+            .Returns(device);
+
+        var result = _deviceService.GetById(deviceId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(deviceId, result.Id);
+        Assert.AreEqual("Test Device", result.Name);
     }
 }
