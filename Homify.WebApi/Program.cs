@@ -2,6 +2,8 @@ using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Sensors.Entities;
+using Homify.BusinessLogic.Sessions;
+using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
@@ -35,8 +37,12 @@ services.AddScoped<ICompanyService, CompanyService>();
 
 services.AddScoped<IRepository<Device>, Repository<Device>>();
 services.AddScoped<IRepository<Camera>, Repository<Camera>>();
+
 services.AddScoped<IRepository<Sensor>, Repository<Sensor>>();
 services.AddScoped<IDeviceService, DeviceService>();
+
+services.AddScoped<IRepository<Session>, SessionRepository>();
+services.AddScoped<ISessionService, SessionService>();
 
 var app = builder.Build();
 
