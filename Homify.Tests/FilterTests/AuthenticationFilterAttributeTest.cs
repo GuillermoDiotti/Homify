@@ -1,0 +1,55 @@
+﻿using FluentAssertions;
+using Homify.BusinessLogic.Sessions;
+using Homify.BusinessLogic.Users.Entities;
+using Homify.WebApi;
+using Homify.WebApi.Filters;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Moq;
+
+namespace Homify.Tests.FilterTests;
+
+[TestClass]
+public class AuthenticationFilterAttributeTest
+{
+    private Mock<HttpContext> _httpContextMock;
+    private Mock<ISessionService> _sessionServiceMock;
+    private AuthorizationFilterContext _context;
+    private AuthenticationFilterAttribute _attribute;
+
+    public AuthenticationFilterAttributeTest(Mock<HttpContext> httpContextMock, Mock<ISessionService> sessionServiceMock, AuthorizationFilterContext context)
+    {
+        _httpContextMock = httpContextMock;
+        _sessionServiceMock = sessionServiceMock;
+        _context = context;
+        _attribute = new AuthenticationFilterAttribute();
+    }
+
+    [TestMethod]
+    public void Authenticate_WhenTokenIsCorrect_ShouldNotFail()
+    {
+        var AUTHORIZATION_HEADER = "Authorization";
+        var validToken = Guid.NewGuid().ToString();
+        User user = new User
+        {
+            Name = "BBB",
+            LastName = "AAA",
+            Email = "BB@email.com",
+            Password = "bbPASS",
+        };
+        _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns(user);
+
+        _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(validToken);
+        _httpContextMock.Setup(h => h.RequestServices.GetService(It.IsAny<Type>()))
+            .Returns(_sessionServiceMock.Object);
+        _httpContextMock.SetupSet(h => h.Items[Items.UserLogged] = user);
+        _attribute.OnAuthorization(_context);
+
+        IActionResult? response = _context.Result;
+
+        _httpContextMock.VerifyAll();
+        _sessionServiceMock.VerifyAll();
+        response.Should().BeNull();
+    }
+}
