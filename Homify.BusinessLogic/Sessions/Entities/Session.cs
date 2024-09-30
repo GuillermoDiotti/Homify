@@ -4,7 +4,7 @@ namespace Homify.BusinessLogic.Sessions.Entities;
 public class Session
 {
     public string Id { get; init; }
-    public Guid AuthToken { get; set; }
+    public string AuthToken { get; set; } = null!;
     public User User { get; set; } = new User();
 
     public Session()
@@ -12,7 +12,7 @@ public class Session
         Id = Guid.NewGuid().ToString();
     }
 
-    public Session(Guid token, User user)
+    public Session(string token, User user)
     {
         Id = Guid.NewGuid().ToString();
         AuthToken = token;

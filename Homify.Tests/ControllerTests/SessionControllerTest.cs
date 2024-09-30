@@ -100,11 +100,11 @@ public class SessionControllerTest
         var authToken = Guid.NewGuid();
         var authToken2 = Guid.NewGuid();
 
-        var session = new Session(authToken, user);
+        var session = new Session(authToken.ToString(), user);
 
         var sesion2 = new Session
         {
-            AuthToken = authToken2,
+            AuthToken = authToken2.ToString(),
             User = user
         };
 
@@ -122,6 +122,6 @@ public class SessionControllerTest
         session.Id.Should().NotBe(null);
         session.User.Should().Be(user);
         sesion2.User.Should().Be(user);
-        sesion2.AuthToken.Should().Be(authToken2);
+        sesion2.AuthToken.Should().Be(authToken2.ToString());
     }
 }
