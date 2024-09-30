@@ -88,6 +88,46 @@ public class ExceptionFilterTest
         }
     }
 
+    [TestMethod]
+    public void OnException_WhenExceptionIsDateNotFoundException_ShouldResponseNotFound()
+    {
+        _context.Exception = new NotFoundException("User not found");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("ElementNotFound");
+            GetMessage(concreteResponse.Value).Should().Be("User not found");
+        }
+    }
+
+    [TestMethod]
+    public void OnException_WhenExceptionIsNullRequestException_ShouldResponseNullRequest()
+    {
+        _context.Exception = new NullRequestException("Request is null");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("NullRequest");
+            GetMessage(concreteResponse.Value).Should().Be("Request is null");
+        }
+    }
+
     private string GetInnerCode(object value)
     {
         return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();

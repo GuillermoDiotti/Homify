@@ -32,6 +32,28 @@ public class ExceptionFilter
                     StatusCode = (int)HttpStatusCode.BadRequest
                 }
         },
+        {
+            typeof(NotFoundException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "ElementNotFound",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.NotFound
+                }
+        },
+        {
+            typeof(NullRequestException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "NullRequest",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
     };
 
 public void OnException(ExceptionContext context)
