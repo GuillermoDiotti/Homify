@@ -140,4 +140,29 @@ public class DeviceServiceTest
         var deviceId = string.Empty;
         var device = _deviceService.GetById(deviceId);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void AddCamera_WhenCompanyIsNull_ShouldThrowNotFoundException()
+    {
+        var createDeviceArgs = new CreateDeviceArgs(
+            "Test Camera",
+            "Model X",
+            "Test Description",
+            new List<string> { "photo1.jpg", "photo2.jpg" },
+            "photo1.jpg",
+            true,
+            false
+        );
+
+        var user = new CompanyOwner
+        {
+            Id = "1",
+            Name = "John",
+            Email = "john@example.com",
+            Company = null
+        };
+
+        var device = _deviceService.AddCamera(createDeviceArgs, user);
+    }
 }

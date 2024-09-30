@@ -84,7 +84,7 @@ public class DeviceService : IDeviceService
     {
         if (owner.Company == null)
         {
-            throw new Exception("The user does not have a company");
+            throw new NotFoundException("The user does not have a company");
         }
     }
 }
