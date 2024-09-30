@@ -68,5 +68,20 @@ public class AuthenticationFilterAttributeTest
         ObjectResult? concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("Unauthenticated");
+            GetMessage(concreteResponse.Value).Should().Be("You are not authenticated");
+        }
+    }
+
+    private string GetInnerCode(object value)
+    {
+        return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();
+    }
+
+    private string GetMessage(object value)
+    {
+        return value.GetType().GetProperty("Message").GetValue(value).ToString();
     }
 }
