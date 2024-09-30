@@ -13,6 +13,14 @@ public class SessionService : ISessionService
         _repository = repository;
     }
 
+    public Session AddToken(string userEmail)
+    {
+        var session = _repository.Get(x => x.User.Email == userEmail);
+        session.AuthToken = Guid.NewGuid().ToString();
+        _repository.Update(session);
+        return session;
+    }
+
     public User GetUserByToken(string token)
     {
         var session = _repository.Get(x => x.AuthToken == token);

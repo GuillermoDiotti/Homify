@@ -28,7 +28,6 @@ public class SessionServiceTest
     [TestMethod]
     public void GetUserByToken_ValidToken_ReturnsUser()
     {
-        // Arrange
         var token = "valid_token";
         var expectedUser = new User()
         {
@@ -48,5 +47,32 @@ public class SessionServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedUser, result);
+    }
+
+    [TestMethod]
+    public void AddToken_ValidToken_AddsToken()
+    {
+        var userEmail = "john@example.com";
+        var expectedUser = new User()
+        {
+            Id = "123456",
+            Name = "John",
+            Email = userEmail,
+            Password = "password123",
+            LastName = "Doe",
+            Role = new Role()
+        };
+        var session = new Session { AuthToken = null, User = expectedUser, Id = "123456789" };
+
+        _sessionRepositoryMock.Setup(repo =>
+                repo.Get(It.Is<Expression<Func<Session, bool>>>(predicate => predicate.Compile()(session))))
+            .Returns(session);
+        var result = _service?.AddToken(userEmail);
+
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(result.AuthToken);
+        Assert.AreNotEqual(string.Empty, result.AuthToken);
+
+        _sessionRepositoryMock.Verify(repo => repo.Update(It.Is<Session>(s => s.Id == session.Id && s.AuthToken == result.AuthToken)), Times.Once);
     }
 }
