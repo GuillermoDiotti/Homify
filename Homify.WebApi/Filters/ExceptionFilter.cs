@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Homify.WebApi.Filters;
 
-public class ExceptionFilter
+public class ExceptionFilter : IExceptionFilter
 {
    private readonly Dictionary<Type, Func<Exception, IActionResult>>
     _errors = new Dictionary<Type, Func<Exception, IActionResult>>
