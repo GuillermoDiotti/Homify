@@ -128,6 +128,26 @@ public class ExceptionFilterTest
         }
     }
 
+    [TestMethod]
+    public void OnException_WhenExceptionIsDuplicatedDataException_ShouldResponseDuplicatedData()
+    {
+        _context.Exception = new DuplicatedDataException("User already exists");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Conflict);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("DuplicatedData");
+            GetMessage(concreteResponse.Value).Should().Be("User already exists");
+        }
+    }
+
     private string GetInnerCode(object value)
     {
         return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();

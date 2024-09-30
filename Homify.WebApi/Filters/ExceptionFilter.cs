@@ -54,6 +54,17 @@ public class ExceptionFilter
                     StatusCode = (int)HttpStatusCode.BadRequest
                 }
         },
+        {
+            typeof(DuplicatedDataException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "DuplicatedData",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.Conflict
+                }
+        },
     };
 
 public void OnException(ExceptionContext context)
