@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Devices;
 
@@ -73,7 +74,7 @@ public class DeviceService : IDeviceService
         var device = _deviceRepository.Get(d => d.Id == id);
         if (device == null)
         {
-            throw new KeyNotFoundException($"Device with ID '{id}' not found");
+            throw new NotFoundException($"Device with ID '{id}' not found");
         }
 
         return device;

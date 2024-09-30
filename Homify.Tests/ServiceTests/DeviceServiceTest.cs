@@ -7,6 +7,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -119,5 +120,16 @@ public class DeviceServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(deviceId, result.Id);
         Assert.AreEqual("Test Device", result.Name);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void GetById_WhenDeviceNotFound_ShouldThrowKeyNotFoundException()
+    {
+        var deviceId = "non-existent-device-id";
+        _deviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Device, bool>>>()))
+            .Returns((Device)null);
+
+        var device = _deviceService.GetById(deviceId);
     }
 }
