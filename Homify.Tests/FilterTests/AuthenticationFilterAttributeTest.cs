@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.WebApi;
@@ -51,5 +52,21 @@ public class AuthenticationFilterAttributeTest
         _httpContextMock.VerifyAll();
         _sessionServiceMock.VerifyAll();
         response.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void Authenticate_WhenTokenIsMissing_ShouldThrow401()
+    {
+        var AUTHORIZATION_HEADER = "Authorization";
+        _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(String.Empty);
+
+        _attribute.OnAuthorization(_context);
+        IActionResult? response = _context.Result;
+        _httpContextMock.VerifyAll();
+        _sessionServiceMock.VerifyAll();
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
     }
 }
