@@ -10,7 +10,7 @@ namespace Homify.WebApi.Controllers.Devices;
 
 [ApiController]
 [Route("devices")]
-public class DeviceController : ControllerBase
+public class DeviceController : HomifyControllerBase
 {
     private readonly IDeviceService _deviceService;
 
@@ -29,9 +29,10 @@ public class DeviceController : ControllerBase
         }
 
         var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty);
+            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, req.IsExterior, req.IsInterior);
+        var companyOwner = GetUserLogged();
 
-        Camera cam = _deviceService.AddCamera(args);
+        Camera cam = _deviceService.AddCamera(args, companyOwner);
 
         return new CreateDeviceResponse(cam);
     }
@@ -45,8 +46,10 @@ public class DeviceController : ControllerBase
             throw new NullRequestException();
         }
 
+        var isExterior = false;
+
         var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty);
+            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, isExterior, isExterior);
 
         Sensor sen = _deviceService.AddSensor(args);
 

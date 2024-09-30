@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.WebApi.Controllers.Devices;
 using Homify.WebApi.Controllers.Devices.Models;
 using Moq;
@@ -49,9 +50,9 @@ public class DeviceControllerTest
             CompanyId = comoany.Id
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture);
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
 
-        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(),It.IsAny<User>())).Returns(expected);
 
         var response = _controller.RegisterCamera(request);
 
@@ -88,7 +89,7 @@ public class DeviceControllerTest
             Photos = request.Photos,
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture);
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
 
         _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>())).Returns(expected);
 

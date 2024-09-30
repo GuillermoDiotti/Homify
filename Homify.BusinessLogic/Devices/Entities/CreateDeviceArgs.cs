@@ -7,8 +7,10 @@ public class CreateDeviceArgs
     public string Description { get; init; }
     public List<string> Photos { get; init; }
     public string? PpalPicture { get; init; }
+    public bool IsExterior { get; init; }
+    public bool IsInterior { get; init; }
 
-    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string? ppalPicture)
+    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string? ppalPicture, bool isExterior, bool isInterior)
     {
         PpalPicture = ppalPicture;
 
