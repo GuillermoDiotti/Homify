@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.SystemPermissions;
@@ -45,7 +46,7 @@ public class AuthorizationFilterAttributeTest
 
         _permission = new SystemPermission { Value = "admins-Create" };
 
-        _roleForTest = new Role { Name = Constants.ADMINISTRATOR, Permissions = new List<SystemPermission> { _permission } };
+        _roleForTest = new Role { Name = Constants.ADMINISTRATOR, Permissions = [_permission] };
 
         _authorizationHeader = "Authorization";
         _validToken = Guid.NewGuid().ToString();
@@ -97,5 +98,33 @@ public class AuthorizationFilterAttributeTest
 
         IActionResult? response = _context.Result;
         response.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void Authorization_WhenNoPermission_ShouldFail()
+    {
+        _attribute = new AuthorizationFilterAttribute("admins-Create");
+        _attribute.OnAuthorization(_context);
+
+        IActionResult? response = _context.Result;
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Forbidden);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("Unauthorized");
+            GetMessage(concreteResponse.Value).Should().Be("You are not authorized");
+        }
+    }
+
+    private string GetInnerCode(object value)
+    {
+        return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();
+    }
+
+    private string GetMessage(object value)
+    {
+        return value.GetType().GetProperty("Message").GetValue(value).ToString();
     }
 }
