@@ -75,6 +75,33 @@ public class AuthenticationFilterAttributeTest
         }
     }
 
+    [TestMethod]
+    public void Authenticate_WhenTokenIsNotAssignedToAUser_ShouldThrow401()
+    {
+        var AUTHORIZATION_HEADER = "Authorization";
+        var validToken = Guid.NewGuid().ToString();
+
+        _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(validToken);
+        _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns((User?)null);
+        _httpContextMock.Setup(h => h.RequestServices.GetService(It.IsAny<Type>()))
+            .Returns(_sessionServiceMock.Object);
+        _httpContextMock.SetupSet(h => h.Items[Items.UserLogged] = (User?)null);
+
+        _attribute.OnAuthorization(_context);
+        IActionResult? response = _context.Result;
+        _httpContextMock.VerifyAll();
+        _sessionServiceMock.VerifyAll();
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("Unauthenticated");
+            GetMessage(concreteResponse.Value).Should().Be("You are not authenticated");
+        }
+    }
+
     private string GetInnerCode(object value)
     {
         return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();
