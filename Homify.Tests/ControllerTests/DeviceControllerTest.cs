@@ -7,6 +7,8 @@ using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.WebApi.Controllers.Devices;
 using Homify.WebApi.Controllers.Devices.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -21,6 +23,12 @@ public class DeviceControllerTest
     {
         _deviceServiceMock = new Mock<IDeviceService>(MockBehavior.Strict);
         _controller = new DeviceController(_deviceServiceMock.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items["UserLogged"] = new User { };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
     }
 
     [TestMethod]
@@ -52,7 +60,7 @@ public class DeviceControllerTest
 
         var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
 
-        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(),It.IsAny<User>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(), It.IsAny<User>())).Returns(expected);
 
         var response = _controller.RegisterCamera(request);
 

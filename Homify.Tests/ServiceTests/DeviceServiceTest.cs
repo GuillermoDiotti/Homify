@@ -29,7 +29,6 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddCamera_ShouldAddCameraToRepository()
     {
-        // Arrange
         var createDeviceArgs = new CreateDeviceArgs(
             "Test Camera",
             "Model X",
@@ -50,10 +49,8 @@ public class DeviceServiceTest
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
-        // Act
         var result = _deviceService.AddCamera(createDeviceArgs, user);
 
-        // Assert
         _cameraRepositoryMock.Verify(r => r.Add(It.Is<Camera>(c =>
             c.Name == createDeviceArgs.Name &&
             c.Model == createDeviceArgs.Model &&
