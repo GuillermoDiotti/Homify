@@ -47,11 +47,12 @@ public class DeviceController : HomifyControllerBase
         }
 
         var isExterior = false;
+        var companyOwner = GetUserLogged();
 
         var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
             req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, isExterior, isExterior);
 
-        Sensor sen = _deviceService.AddSensor(args);
+        Sensor sen = _deviceService.AddSensor(args,companyOwner);
 
         return new CreateDeviceResponse(sen);
     }

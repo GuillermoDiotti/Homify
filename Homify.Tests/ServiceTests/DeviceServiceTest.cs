@@ -71,4 +71,36 @@ public class DeviceServiceTest
         Assert.AreEqual(createDeviceArgs.IsInterior, result.IsInterior);
         Assert.AreEqual(user.Company, result.Company);
     }
+
+    [TestMethod]
+    public void AddSensor_ShouldAddSensor_WhenValidArguments()
+    {
+        // Arrange
+        var deviceArgs = new CreateDeviceArgs(
+            "Test Sensor",
+            "Model X",
+            "Test Description",
+            new List<string> { "photo1.jpg", "photo2.jpg" },
+            "mainphoto.jpg",
+            true,
+            false
+        );
+
+        var company = new Company { Id = "companyId", Name = "Test Company" };
+        var user = new CompanyOwner { Company = company };
+
+        // Act
+        var result = _deviceService.AddSensor(deviceArgs, user);
+
+        // Assert
+        _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<Sensor>()), Times.Once);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(deviceArgs.Name, result.Name);
+        Assert.AreEqual(deviceArgs.Model, result.Model);
+        Assert.AreEqual(deviceArgs.Description, result.Description);
+        Assert.AreEqual(deviceArgs.Photos, result.Photos);
+        Assert.AreEqual(deviceArgs.PpalPicture, result.PpalPicture);
+        Assert.AreEqual(company, result.Company);
+        Assert.AreEqual(company.Id, result.CompanyId);
+    }
 }

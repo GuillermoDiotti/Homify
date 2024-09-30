@@ -99,7 +99,7 @@ public class DeviceControllerTest
 
         var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
 
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(),It.IsAny<User>())).Returns(expected);
 
         var response = _controller.RegisterSensor(request);
 

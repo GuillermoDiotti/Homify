@@ -35,16 +35,32 @@ public class DeviceService : IDeviceService
             PpalPicture = device.PpalPicture,
             IsExterior = device.IsExterior,
             IsInterior = device.IsInterior,
-            Company = owner.Company
+            Company = owner.Company,
+            CompanyId = owner.Company.Id,
         };
 
         _cameraRepository.Add(camera);
         return camera;
     }
 
-    public Sensor AddSensor(CreateDeviceArgs device)
+    public Sensor AddSensor(CreateDeviceArgs device, User user)
     {
-        throw new NotImplementedException();
+        CompanyOwner owner = (CompanyOwner)user;
+        HasCompany(owner);
+        var sensor = new Sensor
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = device.Name,
+            Model = device.Model,
+            Description = device.Description,
+            Photos = device.Photos,
+            PpalPicture = device.PpalPicture,
+            Company = owner.Company,
+            CompanyId = owner.Company.Id
+        };
+
+        _sensorRepository.Add(sensor);
+        return sensor;
     }
 
     public Device GetById(string id)
