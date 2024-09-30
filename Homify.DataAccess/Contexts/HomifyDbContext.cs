@@ -116,6 +116,28 @@ public sealed class HomifyDbContext : DbContext
             .HasForeignKey(u => u.RoleId)
             .IsRequired();
 
+        modelBuilder.Entity<SystemPermission>().HasData(
+            new SystemPermission { Value = PermissionsGenerator.CreateAdmin },
+            new SystemPermission { Value = PermissionsGenerator.DeleteAdmin },
+            new SystemPermission { Value = PermissionsGenerator.GetAllAccounts },
+            new SystemPermission { Value = PermissionsGenerator.CreateCompanyOwner },
+            new SystemPermission { Value = PermissionsGenerator.GetCompanies },
+            new SystemPermission { Value = PermissionsGenerator.CreateCompany },
+            new SystemPermission { Value = PermissionsGenerator.RegisterCamera },
+            new SystemPermission { Value = PermissionsGenerator.RegisterSensor },
+            new SystemPermission { Value = PermissionsGenerator.CreateHome },
+            new SystemPermission { Value = PermissionsGenerator.UpdateHomeMembersList },
+            new SystemPermission { Value = PermissionsGenerator.UpdateHomeDevices },
+            new SystemPermission { Value = PermissionsGenerator.GetHomeMembers },
+            new SystemPermission { Value = PermissionsGenerator.GetHomeDevices },
+            new SystemPermission { Value = PermissionsGenerator.UpdateHomeNotificatedMembers },
+            new SystemPermission { Value = PermissionsGenerator.GetUserNotifications },
+            new SystemPermission { Value = PermissionsGenerator.UpdateUserNotification },
+            new SystemPermission { Value = PermissionsGenerator.ViewRegisteredDevices },
+            new SystemPermission { Value = PermissionsGenerator.ViewSupportedDevices },
+            new SystemPermission { Value = PermissionsGenerator.CreateNotification }
+        );
+
         base.OnModelCreating(modelBuilder);
     }
 
