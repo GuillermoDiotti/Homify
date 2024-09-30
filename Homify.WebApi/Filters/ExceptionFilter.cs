@@ -21,6 +21,17 @@ public class ExceptionFilter
                     StatusCode = (int)HttpStatusCode.BadRequest
                 }
         },
+        {
+            typeof(InvalidFormatException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "InvalidArgumentFormat",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
     };
 
 public void OnException(ExceptionContext context)

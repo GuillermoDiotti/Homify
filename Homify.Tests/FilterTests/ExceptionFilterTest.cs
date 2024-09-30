@@ -68,6 +68,26 @@ public class ExceptionFilterTest
         }
     }
 
+    [TestMethod]
+    public void OnException_WhenExceptionIsDateFormatException_ShouldResponseInvalidDateFormat()
+    {
+        _context.Exception = new InvalidFormatException("Invalid date format. Try dd-mm-yyyy");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("InvalidArgumentFormat");
+            GetMessage(concreteResponse.Value).Should().Be("Invalid date format. Try dd-mm-yyyy");
+        }
+    }
+
     private string GetInnerCode(object value)
     {
         return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();
