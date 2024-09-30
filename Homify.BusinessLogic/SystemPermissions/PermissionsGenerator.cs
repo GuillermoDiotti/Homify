@@ -3,26 +3,26 @@
 public static class PermissionsGenerator
 {
     // ADMIN PERMISSIONS
-    private static string CreateAdmin { get; } = "admins-Create";
-    private static string DeleteAdmin { get; } = "admins-Delete";
-    private static string GetAllAccounts { get; } = "admins-AllAccounts";
-    private static string CreateCompanyOwner { get; } = "company-owners-Create";
-    private static string GetCompanies { get; } = "homes-ObtainCompanies";
+    public static string CreateAdmin { get; } = "admins-Create";
+    public static string DeleteAdmin { get; } = "admins-Delete";
+    public static string GetAllAccounts { get; } = "admins-AllAccounts";
+    public static string CreateCompanyOwner { get; } = "company-owners-Create";
+    public static string GetCompanies { get; } = "homes-ObtainCompanies";
 
     // COMPANY OWNER PERMISSIONS
-    private static string CreateCompany { get; } = "companies-Create";
-    private static string RegisterCamera { get; } = "devices-RegisterCamera";
-    private static string RegisterSensor { get; } = "companies-RegisterSensor";
+    public static string CreateCompany { get; } = "companies-Create";
+    public static string RegisterCamera { get; } = "devices-RegisterCamera";
+    public static string RegisterSensor { get; } = "companies-RegisterSensor";
 
     // HOME OWNER PERMISSIONS
-    private static string CreateHome { get; } = "homes-Create";
-    private static string UpdateHomeMembersList { get; } = "homes-UpdateMembersList";
-    private static string UpdateHomeDevices { get; } = "homes-UpdateHomeDevice";
-    private static string GetHomeMembers { get; } = "homes-ObtainMembers";
-    private static string GetHomeDevices { get; } = "homes-ObtainHomeDevices";
-    private static string UpdateHomeNotificatedMembers { get; } = "homes-NotificatedMembers";
-    private static string GetUserNotifications { get; } = "notifications-ObtainNotifications";
-    private static string UpdateUserNotification { get; } = "notifications-UpdateNotification";
+    public static string CreateHome { get; } = "homes-Create";
+    public static string UpdateHomeMembersList { get; } = "homes-UpdateMembersList";
+    public static string UpdateHomeDevices { get; } = "homes-UpdateHomeDevice";
+    public static string GetHomeMembers { get; } = "homes-ObtainMembers";
+    public static string GetHomeDevices { get; } = "homes-ObtainHomeDevices";
+    public static string UpdateHomeNotificatedMembers { get; } = "homes-NotificatedMembers";
+    public static string GetUserNotifications { get; } = "notifications-ObtainNotifications";
+    public static string UpdateUserNotification { get; } = "notifications-UpdateNotification";
 
     // NON AUTHENTICATED USER
     public static string ViewRegisteredDevices { get; } = "devices-ViewRegistered";
