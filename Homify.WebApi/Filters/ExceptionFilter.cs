@@ -1,0 +1,46 @@
+﻿using System.Net;
+using Homify.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
+namespace Homify.WebApi.Filters;
+
+public class ExceptionFilter
+{
+   private readonly Dictionary<Type, Func<Exception, IActionResult>>
+    _errors = new Dictionary<Type, Func<Exception, IActionResult>>
+    {
+        {
+            typeof(ArgsNullException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "InvalidNullArgument",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
+    };
+
+public void OnException(ExceptionContext context)
+{
+    Type exceptionType = context.Exception.GetType();
+    Func<Exception, IActionResult>? responseBuilder = _errors.GetValueOrDefault(exceptionType);
+
+    if (responseBuilder == null)
+    {
+        context.Result = new ObjectResult(new
+        {
+            InnerCode = "InternalError",
+            Message = "There was an error while processing the request"
+        })
+        {
+            StatusCode = (int)HttpStatusCode.InternalServerError
+        };
+        return;
+    }
+
+    context.Result = responseBuilder(context.Exception);
+}
+}
