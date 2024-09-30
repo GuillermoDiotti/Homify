@@ -29,6 +29,26 @@ public class ExceptionFilterTest
     }
 
     [TestMethod]
+    public void OnException_WhenExceptionIsNotRegistered_ShouldResponseInternalError()
+    {
+        _context.Exception = new Exception("Not registered");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("InternalError");
+            GetMessage(concreteResponse.Value).Should().Be("There was an error while processing the request");
+        }
+    }
+
+    [TestMethod]
     public void OnException_WhenExceptionIsArgsFormatException_ShouldResponseInvalidArgumentFormat()
     {
         _context.Exception = new ArgsNullException("The email format is not valid");
