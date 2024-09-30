@@ -132,4 +132,12 @@ public class DeviceServiceTest
 
         var device = _deviceService.GetById(deviceId);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void GetById_WhenDeviceIdIsNullOrEmpty_ShouldThrowArgumentException()
+    {
+        var deviceId = string.Empty;
+        var device = _deviceService.GetById(deviceId);
+    }
 }
