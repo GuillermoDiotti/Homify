@@ -38,7 +38,7 @@ public sealed class AdminController : ControllerBase
             request.LastName ?? string.Empty,
             adminRole);
 
-        var administratorSaved = _userService.AddUser(arguments);
+        var administratorSaved = _userService.AddAdmin(arguments);
 
         return new CreateAdminResponse(administratorSaved);
     }

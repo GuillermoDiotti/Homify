@@ -40,7 +40,7 @@ public class UserServiceTest
               "Doe",
               RolesGenerator.Admin());
 
-        var result = _service.AddUser(createUserArgs);
+        var result = _service.AddAdmin(createUserArgs);
 
         _userRepositoryMock.Verify(r => r.Add(It.Is<User>(u =>
             u.Name == createUserArgs.Name &&
@@ -80,7 +80,7 @@ public class UserServiceTest
             "User",
             new Role());
 
-        _service.AddUser(createUserArgs);
+        _service.AddAdmin(createUserArgs);
     }
 
     [TestMethod]

@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
@@ -115,14 +116,14 @@ public class UserControllerTests
             Password = "123456",
             LastName = "Doe"
         };
-        var expected = new User()
+        var expected = new Admin()
         {
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName,
         };
-        _userServiceMock.Setup(u => u.AddUser(It.IsAny<CreateUserArgs>())).Returns(expected);
+        _userServiceMock.Setup(u => u.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expected);
         _controller.Create(request);
     }
 
@@ -143,14 +144,14 @@ public class UserControllerTests
             Password = password + "!",
             LastName = "Doe"
         };
-        var expected = new User()
+        var expected = new Admin()
         {
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName,
         };
-        _userServiceMock.Setup(u => u.AddUser(It.IsAny<CreateUserArgs>())).Returns(expected);
+        _userServiceMock.Setup(u => u.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expected);
         _controller.Create(request);
     }
 
@@ -183,14 +184,14 @@ public class UserControllerTests
             LastName = "lastName"
         };
 
-        var expectedUser = new User()
+        var expectedUser = new Admin()
         {
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName
         };
-        _userServiceMock.Setup(user => user.AddUser(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
+        _userServiceMock.Setup(user => user.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
 
         var response = _controller.Create(request);
 

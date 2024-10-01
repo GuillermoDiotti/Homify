@@ -1,4 +1,5 @@
-﻿using Homify.BusinessLogic.CompanyOwners;
+﻿using Homify.BusinessLogic.Admins.Entities;
+using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -16,10 +17,10 @@ public class UserService : IUserService
         _repository = repository;
     }
 
-    public User AddUser(CreateUserArgs args)
+    public Admin AddAdmin(CreateUserArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var user = new User
+        var user = new Admin
         {
             Id = Guid.NewGuid().ToString(),
             Name = args.Name,
