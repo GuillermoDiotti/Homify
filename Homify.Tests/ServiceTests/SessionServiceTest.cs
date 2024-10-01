@@ -67,7 +67,7 @@ public class SessionServiceTest
         _sessionRepositoryMock.Setup(repo =>
                 repo.Get(It.Is<Expression<Func<Session, bool>>>(predicate => predicate.Compile()(session))))
             .Returns(session);
-        var result = _service?.AddToken(userEmail);
+        var result = _service?.CreateSession(expectedUser);
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.AuthToken);

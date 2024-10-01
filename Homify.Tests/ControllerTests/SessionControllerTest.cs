@@ -111,8 +111,7 @@ public class SessionControllerTest
         _userServiceMock.Setup(us => us.GetAll())
             .Returns([user]);
 
-        _sessionServiceMock.Setup(ss => ss.AddToken(It.IsAny<string>()))
-            .Returns(session);
+        _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>())).Returns(session);
 
         var result = _controller.Create(request);
 

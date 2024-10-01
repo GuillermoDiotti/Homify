@@ -49,7 +49,7 @@ public class SessionController : ControllerBase
             throw new ArgumentException("Incorrect password");
         }
 
-        BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.AddToken(request.Email ?? string.Empty);
+        BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.CreateSession(userFound);
 
         return new CreateSessionResponse(sessionSaved);
     }

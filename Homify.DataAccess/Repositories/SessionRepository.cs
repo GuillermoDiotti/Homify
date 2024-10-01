@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
@@ -20,13 +21,13 @@ public sealed class SessionRepository : Repository<Session>
                 .Include(s => s.User.Role.Permissions)
                 .Where(expression);
 
-        var user = query.FirstOrDefault();
+        var session = query.FirstOrDefault();
 
-        if (user == null)
+        if (session == null)
         {
-            throw new InvalidOperationException($"User not found");
+            throw new NotFoundException($"User not found");
         }
 
-        return user;
+        return session;
     }
 }

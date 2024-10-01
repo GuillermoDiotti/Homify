@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Sessions;
 
@@ -13,17 +14,41 @@ public class SessionService : ISessionService
         _repository = repository;
     }
 
-    public Session AddToken(string userEmail)
+    public Session CreateSession(User u)
     {
-        var session = _repository.Get(x => x.User.Email == userEmail);
-        session.AuthToken = Guid.NewGuid().ToString();
-        _repository.Update(session);
-        return session;
+        Session hasSession;
+        try
+        {
+            hasSession = _repository.Get(x => x.User.Email == u.Email);
+        }
+        catch (NotFoundException)
+        {
+            hasSession = null;
+        }
+
+        if (hasSession != null && hasSession.AuthToken != null)
+        {
+            return hasSession;
+        }
+
+        var newSession = new Session()
+        {
+            AuthToken = Guid.NewGuid().ToString(), Id = Guid.NewGuid().ToString(), User = u,
+        };
+        _repository.Add(newSession);
+        return newSession;
     }
 
-    public User GetUserByToken(string token)
+    public User? GetUserByToken(string token)
     {
-        var session = _repository.Get(x => x.AuthToken == token);
-        return session.User;
+        try
+        {
+            var session = _repository.Get(x => x.AuthToken == token);
+            return session.User;
+        }
+        catch (NotFoundException)
+        {
+            return null;
+        }
     }
 }
