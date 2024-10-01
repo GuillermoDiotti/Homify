@@ -33,6 +33,12 @@ if (string.IsNullOrEmpty(homifyConnectionString))
     throw new Exception("Missing Homify connection string");
 }
 
+services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
+
 services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServer(homifyConnectionString));
 
 services.AddScoped<IRepository<User>, UserRepository>();
