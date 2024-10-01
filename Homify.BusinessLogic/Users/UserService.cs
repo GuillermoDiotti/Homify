@@ -71,9 +71,16 @@ public class UserService : IUserService
         return homeOwner;
     }
 
-    public User GetById(string id)
+    public User? GetById(string id)
     {
-        return _repository.Get(x => x.Id == id);
+        try
+        {
+            return _repository.Get(x => x.Id == id);
+        }
+        catch (NotFoundException)
+        {
+            return null;
+        }
     }
 
     public List<User> GetAll()
@@ -83,7 +90,16 @@ public class UserService : IUserService
 
     public void Delete(string userId)
     {
-        var user = _repository.Get(x => x.Id == userId);
+        User user;
+        try
+        {
+            user = _repository.Get(x => x.Id == userId);
+        }
+        catch (NotFoundException)
+        {
+            user = null;
+        }
+
         if (user != null)
         {
             _repository.Remove(user);

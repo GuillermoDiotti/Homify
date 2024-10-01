@@ -14,6 +14,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder
+    .Services
+    .AddControllers()
+    .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -47,6 +52,8 @@ services.AddScoped<ISessionService, SessionService>();
 
 services.AddScoped<IRepository<Role>, RoleRepository>();
 services.AddScoped<IRoleService, RoleService>();
+
+services.AddScoped<AuthenticationFilterAttribute>();
 
 var app = builder.Build();
 

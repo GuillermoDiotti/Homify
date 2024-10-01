@@ -23,7 +23,7 @@ public class AuthorizationFilterAttributeTest
     private Mock<HttpContext> _httpContextMock;
     private Mock<ISessionService> _sessionServiceMock;
     private AuthorizationFilterContext _context;
-    private AuthorizationFilterAttribute _attribute = null!;
+    private AuthorizationFilter _attribute = null!;
 
     private SystemPermission _permission;
     private Role _roleForTest;
@@ -66,7 +66,7 @@ public class AuthorizationFilterAttributeTest
             .Returns(_sessionServiceMock.Object);
         _httpContextMock.SetupSet(h => h.Items[Items.UserLogged] = _user);
         _httpContextMock.Setup(h => h.Items[Items.UserLogged]).Returns(_user);
-        _attribute = new AuthorizationFilterAttribute("admins-Create");
+        _attribute = new AuthorizationFilter("admins-Create");
     }
 
     [TestMethod]
@@ -103,7 +103,7 @@ public class AuthorizationFilterAttributeTest
     [TestMethod]
     public void Authorization_WhenNoPermission_ShouldFail()
     {
-        _attribute = new AuthorizationFilterAttribute("admins-Create");
+        _attribute = new AuthorizationFilter("admins-Create");
         _attribute.OnAuthorization(_context);
 
         IActionResult? response = _context.Result;

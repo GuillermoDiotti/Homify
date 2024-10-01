@@ -11,7 +11,7 @@ public interface IUserService
     Admin AddAdmin(CreateUserArgs args);
     CompanyOwner AddCompanyOwner(CreateUserArgs args);
     HomeOwner AddHomeOwner(CreateHomeOwnerArgs args);
-    User GetById(string id);
+    User? GetById(string id);
     List<User> GetAll();
     void Delete(string userId);
 }

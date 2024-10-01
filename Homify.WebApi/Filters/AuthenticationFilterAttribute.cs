@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
@@ -11,10 +12,10 @@ namespace Homify.WebApi.Filters;
 public class AuthenticationFilterAttribute : Attribute, IAuthorizationFilter
 {
     private const string AUTHORIZATION_HEADER = "Authorization";
-
-    public void OnAuthorization(AuthorizationFilterContext context)
+    public virtual void OnAuthorization(AuthorizationFilterContext context)
     {
-        if (!context.HttpContext.Request.Headers.TryGetValue(AUTHORIZATION_HEADER, out var authorizationHeader) || string.IsNullOrEmpty(authorizationHeader))
+        var authorizationHeader = context.HttpContext.Request.Headers[AUTHORIZATION_HEADER];
+        if (string.IsNullOrEmpty(authorizationHeader))
         {
             context.Result = new ObjectResult(new
             {
@@ -61,7 +62,16 @@ public class AuthenticationFilterAttribute : Attribute, IAuthorizationFilter
     private User? GetUserOfAuthorization(string authorization, AuthorizationFilterContext context)
     {
         var sessionService = context.HttpContext.RequestServices.GetService<ISessionService>();
-        User user = sessionService.GetUserByToken(authorization);
+        User user;
+        try
+        {
+            user = sessionService.GetUserByToken(authorization);
+        }
+        catch (NotFoundException)
+        {
+            user = null;
+        }
+
         return user;
     }
 }

@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Homify.WebApi.Filters;
 
-public sealed class AuthorizationFilterAttribute : AuthenticationFilterAttribute
+public sealed class AuthorizationFilter : AuthenticationFilterAttribute
 {
     public string Code { get; set; }
 
-    public AuthorizationFilterAttribute(string code)
+    public AuthorizationFilter(string code)
     {
         Code = code;
     }
 
-    public void OnAuthorization(AuthorizationFilterContext context)
+    public override void OnAuthorization(AuthorizationFilterContext context)
     {
         base.OnAuthorization(context);
 

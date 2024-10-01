@@ -23,6 +23,8 @@ public sealed class AdminController : ControllerBase
     }
 
     [HttpPost]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateAdmin)]
     public CreateAdminResponse Create(CreateAdminRequest? request)
     {
         if (request == null)
@@ -45,6 +47,8 @@ public sealed class AdminController : ControllerBase
     }
 
     [HttpDelete("{adminId}")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.DeleteAdmin)]
     public void Delete(string adminId)
     {
         var admin = _userService.GetById(adminId);
@@ -59,6 +63,8 @@ public sealed class AdminController : ControllerBase
     }
 
     [HttpGet]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
     public List<UserBasicInfo> AllAccounts([FromQuery] string limit, [FromQuery] string offset)
     {
         var pageSize = 10;
