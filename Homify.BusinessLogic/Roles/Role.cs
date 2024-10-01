@@ -4,7 +4,7 @@ namespace Homify.BusinessLogic.Roles;
 
 public class Role
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
     public List<SystemPermission> Permissions { get; init; }
 
@@ -12,12 +12,14 @@ public class Role
     {
         Name = name;
         Permissions = permissions;
-        Id = Guid.NewGuid().ToString();
+
+        // Id = Guid.NewGuid().ToString();
     }
 
     public Role()
     {
         Permissions = [];
-        Id = Guid.NewGuid().ToString();
+
+        // Id = Guid.NewGuid().ToString();
     }
 }

@@ -357,9 +357,9 @@ namespace Homify.DataAccess.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { "adminid", "ADMINISTRATOR" },
-                    { "companyownerId", "COMPANYOWNER" },
-                    { "homeownerId", "HOMEOWNER" }
+                    { "AdminId", "ADMINISTRATOR" },
+                    { "CompanyOwnerId", "COMPANYOWNER" },
+                    { "HomeOwnerId", "HOMEOWNER" }
                 });
 
             migrationBuilder.InsertData(
@@ -393,26 +393,51 @@ namespace Homify.DataAccess.Migrations
                 columns: new[] { "RoleSystemPermissionId", "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { "0482207e-9010-4a58-ab88-23db33562fcd", "3", "adminid" },
-                    { "1c752c84-71e7-416f-bbbd-4f8657aecdf6", "13", "homeownerId" },
-                    { "21f8dbd4-a4c2-4293-b9ed-385c029c3dce", "7", "companyownerId" },
-                    { "3d09ab14-2c0a-4d15-a3b1-c88f934d34a8", "15", "homeownerId" },
-                    { "52036ef0-b29f-49fc-a9e5-ce587eb1f8fc", "2", "adminid" },
-                    { "56cd2c12-f5bd-4827-b6bb-df89b88ddab1", "5", "adminid" },
-                    { "726d4ee0-3090-433d-9994-f1b78b9754c1", "18", "homeownerId" },
-                    { "7769ce1e-5bd9-4e65-8ef6-f033ce06d5a6", "8", "companyownerId" },
-                    { "891655a1-41d4-4176-8c38-3024b95b8629", "19", "homeownerId" },
-                    { "9022e1b8-0201-4e46-a5dd-08a7484a571e", "10", "homeownerId" },
-                    { "9e47b295-6e2f-4e5a-81bd-ddc727a6ce23", "6", "companyownerId" },
-                    { "a99c4e8f-a22a-4ee6-955a-d53924383d61", "17", "homeownerId" },
-                    { "aaea7282-788b-4fb9-b0e6-6b07762730c7", "12", "homeownerId" },
-                    { "b6c42153-46b8-44a5-b4cd-a0f1c393e473", "1", "adminid" },
-                    { "cc63d5ab-456d-4587-8d2d-727bac6b65e4", "4", "adminid" },
-                    { "cfe2e139-59e4-45cc-85a9-e7b9111170ea", "11", "homeownerId" },
-                    { "e1990255-736d-495b-b398-18f16083c8f5", "9", "homeownerId" },
-                    { "e73a9385-b37a-4222-b2fa-23c5febfdbb8", "16", "homeownerId" },
-                    { "f0186d7e-d00e-4e00-b1b8-ad52eac6fdb1", "14", "homeownerId" }
+                    { "0372ba86-e92e-411e-82b2-15ea0cc6ff51", "5", "AdminId" },
+                    { "06c771e8-8f6a-4004-932d-d307969ad098", "17", "HomeOwnerId" },
+                    { "21d171ed-1847-4a35-acc0-59e641b10322", "4", "AdminId" },
+                    { "33231747-44af-43d1-97b6-a2ce9f52213d", "7", "CompanyOwnerId" },
+                    { "332f1bad-9d8d-4299-b833-c8ef69638f4c", "11", "HomeOwnerId" },
+                    { "348c7704-33bd-4e6b-a589-9dfb057bea25", "18", "HomeOwnerId" },
+                    { "4cf97750-ba1d-46c5-8561-56f106fa841f", "3", "AdminId" },
+                    { "5320ae19-7984-4551-9de2-995e5b85b8ce", "16", "HomeOwnerId" },
+                    { "62c83039-d96a-4618-a220-88b2d66e4774", "2", "AdminId" },
+                    { "6f358126-fcaf-4828-a551-e4d960bc242a", "13", "HomeOwnerId" },
+                    { "74d2dedf-d33f-42c7-8672-130f51087708", "6", "CompanyOwnerId" },
+                    { "77467c39-37d0-47ab-bc64-132c87ab9f32", "9", "HomeOwnerId" },
+                    { "7d9b95f8-8f91-495b-bf1c-b5bf80072dff", "10", "HomeOwnerId" },
+                    { "91f04b8e-2494-4f37-9eef-d14bbb2561a7", "12", "HomeOwnerId" },
+                    { "9e97dd98-939c-4973-a58c-88ac13c04345", "8", "CompanyOwnerId" },
+                    { "a19d4be7-d4b2-485c-b3ac-730ab6910605", "15", "HomeOwnerId" },
+                    { "af460110-9f76-4eb1-bbfe-6dc4cdf4fb0a", "19", "HomeOwnerId" },
+                    { "c2782acb-2830-438d-8366-ee65762b6ac2", "14", "HomeOwnerId" },
+                    { "e3abcd50-b28a-4ef3-8efc-783eb413035f", "1", "AdminId" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "CreatedAt", "Email", "LastName", "Name", "Password", "RoleId" },
+                values: new object[,]
+                {
+                    { "0579fd6c-4cd9-4b6d-8238-3a7f8cc55ac9", new DateTimeOffset(new DateTime(2024, 10, 1, 18, 15, 56, 26, DateTimeKind.Unspecified).AddTicks(4315), new TimeSpan(0, 0, 0, 0, 0)), "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", "CompanyOwnerId" },
+                    { "9f120626-14ac-4022-a9c4-4d388b4d6c4f", new DateTimeOffset(new DateTime(2024, 10, 1, 18, 15, 56, 26, DateTimeKind.Unspecified).AddTicks(4203), new TimeSpan(0, 0, 0, 0, 0)), "admin@domain.com", "LastName", "Admin", ".Popso212", "AdminId" },
+                    { "f5a6577f-7164-47e0-9ae2-2ff4879b7643", new DateTimeOffset(new DateTime(2024, 10, 1, 18, 15, 56, 26, DateTimeKind.Unspecified).AddTicks(4309), new TimeSpan(0, 0, 0, 0, 0)), "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "HomeOwnerId" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Admins",
+                column: "Id",
+                value: "9f120626-14ac-4022-a9c4-4d388b4d6c4f");
+
+            migrationBuilder.InsertData(
+                table: "CompanyOwners",
+                columns: new[] { "Id", "IsIncomplete" },
+                values: new object[] { "0579fd6c-4cd9-4b6d-8238-3a7f8cc55ac9", true });
+
+            migrationBuilder.InsertData(
+                table: "HomeOwners",
+                columns: new[] { "Id", "ProfilePicture" },
+                values: new object[] { "f5a6577f-7164-47e0-9ae2-2ff4879b7643", "picture" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_OwnerId",

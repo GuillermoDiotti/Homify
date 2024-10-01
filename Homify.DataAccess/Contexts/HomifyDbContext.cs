@@ -136,17 +136,17 @@ public sealed class HomifyDbContext : DbContext
     modelBuilder.Entity<Role>().HasData(
         new Role
         {
-            Id = "adminid",
+            Id = Constants.ADMINISTRATORID,
             Name = Constants.ADMINISTRATOR
         },
         new Role
         {
-            Id = "companyownerId",
+            Id = Constants.COMPANYOWNERID,
             Name = Constants.COMPANYOWNER
         },
         new Role
         {
-            Id = "homeownerId",
+            Id = Constants.HOMEOWNERID,
             Name = Constants.HOMEOWNER
         }
     );
@@ -164,100 +164,132 @@ public sealed class HomifyDbContext : DbContext
     modelBuilder.Entity<RoleSystemPermission>().HasData(
             new RoleSystemPermission
             {
-                RoleId = "adminid",
+                RoleId = Constants.ADMINISTRATORID,
                 PermissionId = "1"
             },
             new RoleSystemPermission
             {
-                RoleId = "adminid",
+                RoleId = Constants.ADMINISTRATORID,
                 PermissionId = "2"
             },
             new RoleSystemPermission
             {
-                RoleId = "adminid",
+                RoleId = Constants.ADMINISTRATORID,
                 PermissionId = "3"
             },
             new RoleSystemPermission
             {
-                RoleId = "adminid",
+                RoleId = Constants.ADMINISTRATORID,
                 PermissionId = "4"
             },
             new RoleSystemPermission
             {
-                RoleId = "adminid",
+                RoleId = Constants.ADMINISTRATORID,
                 PermissionId = "5"
             },
             new RoleSystemPermission
             {
-                RoleId = "companyownerId",
+                RoleId = Constants.COMPANYOWNERID,
                 PermissionId = "6"
             },
             new RoleSystemPermission
             {
-                RoleId = "companyownerId",
+                RoleId = Constants.COMPANYOWNERID,
                 PermissionId = "7"
             },
             new RoleSystemPermission
             {
-                RoleId = "companyownerId",
+                RoleId = Constants.COMPANYOWNERID,
                 PermissionId = "8"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "9"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "10"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "11"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "12"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "13"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "14"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "15"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "16"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "17"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "18"
             },
             new RoleSystemPermission
             {
-                RoleId = "homeownerId",
+                RoleId = Constants.HOMEOWNERID,
                 PermissionId = "19"
             }
         );
+
+    User admin = new Admin()
+    {
+        Name = "Admin",
+        Email = "admin@domain.com",
+        Password = ".Popso212",
+        LastName = "LastName",
+        RoleId = Constants.ADMINISTRATORID,
+    };
+
+    User homeowner = new HomeOwner()
+    {
+        Name = "Homeowner",
+        Email = "homeowner@domain.com",
+        Password = ".Popso212",
+        LastName = "LastName",
+        ProfilePicture = "picture",
+        RoleId = Constants.HOMEOWNERID
+    };
+
+    User companyowner = new CompanyOwner()
+    {
+        Name = "CompanyOwner",
+        Email = "companyowner@domain.com",
+        Password = ".Popso212",
+        LastName = "LastName",
+        RoleId = Constants.COMPANYOWNERID
+    };
+
+    modelBuilder.Entity<Admin>().HasData(admin);
+    modelBuilder.Entity<HomeOwner>().HasData(homeowner);
+    modelBuilder.Entity<CompanyOwner>().HasData(companyowner);
 
     base.OnModelCreating(modelBuilder);
 }

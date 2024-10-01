@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.CompanyOwners;
 
@@ -11,6 +12,6 @@ public class CompanyOwner : User
     public CompanyOwner()
     {
         IsIncomplete = true;
-        Role = RolesGenerator.CompanyOwner();
+        RoleId = Constants.COMPANYOWNERID;
     }
 }

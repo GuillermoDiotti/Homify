@@ -4,6 +4,14 @@ public static class Constants
 {
     #region Role Names
 
+    public const string ADMINISTRATORID = "AdminId";
+    public const string COMPANYOWNERID = "CompanyOwnerId";
+    public const string HOMEOWNERID = "HomeOwnerId";
+
+    #endregion
+
+    #region Role Names
+
     public const string ADMINISTRATOR = "ADMINISTRATOR";
 
     public const string COMPANYOWNER = "COMPANYOWNER";
