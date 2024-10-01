@@ -110,6 +110,8 @@ public sealed class HomifyDbContext : DbContext
         .HasMany(r => r.Permissions)
         .WithMany(p => p.Roles)
         .UsingEntity<RoleSystemPermission>();
+    modelBuilder.Entity<Role>()
+        .HasKey(r => r.Id);
 
     modelBuilder.Entity<SystemPermission>().HasData(
         new SystemPermission { Id = "1", Value = PermissionsGenerator.CreateAdmin },
