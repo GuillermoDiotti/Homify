@@ -1,4 +1,5 @@
-﻿using Homify.Exceptions;
+﻿using Homify.BusinessLogic.Roles;
+using Homify.Exceptions;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.HomeOwners.Entities;
@@ -10,8 +11,9 @@ public class CreateHomeOwnerArgs
     public readonly string Password;
     public readonly string LastName;
     public readonly string ProfilePicUrl;
+    public readonly Role? Role;
 
-    public CreateHomeOwnerArgs(string name, string email, string password, string lastName, string pfp)
+    public CreateHomeOwnerArgs(string name, string email, string password, string lastName, string pfp, Role? role)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -39,6 +41,13 @@ public class CreateHomeOwnerArgs
         {
             throw new ArgsNullException("name cannot be null or empty");
         }
+
+        if (role == null)
+        {
+            throw new ArgsNullException("Role cannot be null");
+        }
+
+        Role = role;
 
         ProfilePicUrl = pfp;
     }

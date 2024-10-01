@@ -120,7 +120,8 @@ public class UserServiceTest
              "john@example.com",
               "password123!",
              "Doe",
-             "https://example.com/profile.jpg");
+             "https://example.com/profile.jpg",
+              RolesGenerator.HomeOwner());
 
         _userRepositoryMock.Setup(r => r.Add(It.IsAny<HomeOwner>())).Verifiable();
 
