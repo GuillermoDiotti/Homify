@@ -91,7 +91,16 @@ public class UserService : IUserService
 
     private void ValidateEmailIsNotRepeated(string email)
     {
-        User? userWithRepeatedEmail = _repository.Get(user => user.Email == email);
+        User? userWithRepeatedEmail;
+        try
+        {
+            userWithRepeatedEmail = _repository.Get(user => user.Email == email);
+        }
+        catch (NotFoundException)
+        {
+            userWithRepeatedEmail = null;
+        }
+
         if (userWithRepeatedEmail is not null)
         {
             throw new DuplicatedDataException("A user with this email already exists");

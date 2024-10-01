@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
@@ -22,7 +23,7 @@ public sealed class UserRepository : Repository<User>
 
         if (user == null)
         {
-            throw new InvalidOperationException($"User not found");
+            throw new NotFoundException($"User not found");
         }
 
         return user;
