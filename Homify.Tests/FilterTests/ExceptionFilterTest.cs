@@ -148,6 +148,26 @@ public class ExceptionFilterTest
         }
     }
 
+    [TestMethod]
+    public void OnException_WhenExceptionIsArgumentException_ShouldResponseInvalidArgument()
+    {
+        _context.Exception = new ArgumentException("Incorrect password");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("Invalid Argument");
+            GetMessage(concreteResponse.Value).Should().Be("Incorrect password");
+        }
+    }
+
     private string GetInnerCode(object value)
     {
         return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();

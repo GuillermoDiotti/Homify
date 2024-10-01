@@ -65,6 +65,17 @@ public class ExceptionFilter : IExceptionFilter
                     StatusCode = (int)HttpStatusCode.Conflict
                 }
         },
+        {
+            typeof(ArgumentException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "Invalid Argument",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
     };
 
 public void OnException(ExceptionContext context)
