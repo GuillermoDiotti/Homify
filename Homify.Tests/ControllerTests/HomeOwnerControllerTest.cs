@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeOwners;
@@ -17,14 +16,12 @@ public class HomeOwnerControllerTest
     private readonly Mock<IUserService> _userService;
     private readonly HomeOwnerController _controller;
     private readonly Mock<IRoleService> _roleService;
-    private readonly Mock<ISessionService> _sessionService;
 
     public HomeOwnerControllerTest()
     {
         _userService = new Mock<IUserService>(MockBehavior.Strict);
         _roleService = new Mock<IRoleService>(MockBehavior.Strict);
-        _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
-        _controller = new HomeOwnerController(_userService.Object, _roleService.Object, _sessionService.Object);
+        _controller = new HomeOwnerController(_userService.Object, _roleService.Object);
     }
 
     [TestMethod]

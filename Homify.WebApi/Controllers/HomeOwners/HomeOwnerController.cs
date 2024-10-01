@@ -15,13 +15,11 @@ public class HomeOwnerController
 {
     private readonly IUserService _userService;
     private readonly IRoleService _roleService;
-    private readonly ISessionService _sessionService;
 
-    public HomeOwnerController(IUserService userService, IRoleService roleService, ISessionService sessionService)
+    public HomeOwnerController(IUserService userService, IRoleService roleService)
     {
         _userService = userService;
         _roleService = roleService;
-        _sessionService = sessionService;
     }
 
     public CreateHomeOwnerResponse Create(CreateHomeOwnerRequest req)
@@ -35,7 +33,6 @@ public class HomeOwnerController
         var args = new CreateHomeOwnerArgs(req.Name ?? string.Empty, req.Email ?? string.Empty, req.Password ?? string.Empty,
             req.LastName ?? string.Empty, req.ProfilePicUrl ?? string.Empty, role);
         var user = _userService.AddHomeOwner(args);
-        _sessionService.CreateSession(user);
         return new CreateHomeOwnerResponse(user);
     }
 }
