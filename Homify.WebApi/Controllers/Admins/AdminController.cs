@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Admins.Models;
 using Microsoft.AspNetCore.Mvc;
+using Constants = Homify.Utility.Constants;
 
 namespace Homify.WebApi.Controllers.Admins;
 
@@ -12,10 +13,12 @@ namespace Homify.WebApi.Controllers.Admins;
 public sealed class AdminController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IRoleService _roleService;
 
-    public AdminController(IUserService userService)
+    public AdminController(IUserService userService, IRoleService roleService)
     {
         _userService = userService;
+        _roleService = roleService;
     }
 
     [HttpPost]
@@ -26,12 +29,14 @@ public sealed class AdminController : ControllerBase
             throw new NullRequestException("Request cannot be null");
         }
 
+        var adminRole = _roleService.GetRole(Constants.ADMINISTRATOR);
+
         var arguments = new CreateUserArgs(
             request.Name ?? string.Empty,
             request.Email ?? string.Empty,
             request.Password ?? string.Empty,
             request.LastName ?? string.Empty,
-            RolesGenerator.Admin());
+            adminRole);
 
         var administratorSaved = _userService.AddUser(arguments);
 

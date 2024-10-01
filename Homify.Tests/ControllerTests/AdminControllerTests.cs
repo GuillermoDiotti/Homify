@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -13,11 +14,13 @@ public class UserControllerTests
 {
     private readonly AdminController _controller;
     private readonly Mock<IUserService> _userServiceMock;
+    private readonly Mock<IRoleService> _roleServicemock;
 
     public UserControllerTests()
     {
         _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new AdminController(_userServiceMock.Object);
+        _roleServicemock = new Mock<IRoleService>(MockBehavior.Strict);
+        _controller = new AdminController(_userServiceMock.Object, _roleServicemock.Object);
     }
 
     #region Create
