@@ -71,5 +71,12 @@ public class NonAuthenticationFilterAttributeTest
 
             Assert.IsNull(_actionExecutingContext.Result);
         }
+
+        [TestMethod]
+        public void OnActionExecuting_WithoutAuthorizationHeader_ShouldProceed()
+        {
+            _filter.OnActionExecuting(_actionExecutingContext);
+            Assert.IsNull(_actionExecutingContext.Result);
+        }
     }
 }
