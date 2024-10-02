@@ -17,7 +17,7 @@ public class UserBasicInfo
     {
         Name = u.Name;
         LastName = u.LastName;
-        FullName = u.Name + " " + u.LastName;
+        FullName = u.FullName;
         CreatedAt = u.CreatedAt;
         Role = u.Role;
     }

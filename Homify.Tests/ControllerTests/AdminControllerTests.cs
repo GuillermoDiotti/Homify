@@ -286,7 +286,7 @@ public class UserControllerTests
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        var result = _controller.AllAccounts("2", "1");
+        var result = _controller.AllAccounts("2", "1", string.Empty, string.Empty);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -323,7 +323,7 @@ public class UserControllerTests
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        var result = _controller.AllAccounts("invalid", "0");
+        var result = _controller.AllAccounts("invalid", "0", string.Empty, string.Empty);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(4, result.Count);
@@ -353,7 +353,7 @@ public class UserControllerTests
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        var result = _controller.AllAccounts("2", "invalid");
+        var result = _controller.AllAccounts("2", "invalid", string.Empty, string.Empty);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -384,7 +384,7 @@ public class UserControllerTests
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        var result = _controller.AllAccounts(null, null);
+        var result = _controller.AllAccounts(null, null, string.Empty, string.Empty);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
@@ -405,7 +405,7 @@ public class UserControllerTests
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        var result = _controller.AllAccounts("10", "0");
+        var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);

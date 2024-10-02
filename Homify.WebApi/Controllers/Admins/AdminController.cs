@@ -82,9 +82,20 @@ public sealed class AdminController : ControllerBase
         }
 
         List<User> list = _userService.GetAll();
+
+        if (!string.IsNullOrEmpty(role))
+        {
+            list = list.Where(u => u.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(fullName))
+        {
+            list = list.Where(u => u.FullName.Contains(fullName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
 
-        List<UserBasicInfo> result = [];
+        List<UserBasicInfo> result = new List<UserBasicInfo>();
         foreach (User u in paginatedList)
         {
             result.Add(new UserBasicInfo(u));
