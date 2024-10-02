@@ -6,4 +6,5 @@ public interface ICompanyService
 {
     Company Add(CreateCompanyArgs args, User user);
     Company? GetByUserId(string userId);
+    List<Company> GetAll();
 }

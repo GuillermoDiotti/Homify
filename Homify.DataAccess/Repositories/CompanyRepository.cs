@@ -28,4 +28,21 @@ public class CompanyRepository : Repository<Company>
 
         return user;
     }
+
+    public override List<Company> GetAll(Expression<Func<Company, bool>>? predicate)
+    {
+        if (predicate == null)
+        {
+            return _entities.Include(u => u.Devices)
+                .Include(u => u.Owner).ToList();
+        }
+
+        var query =
+            _entities.Include(u => u.Devices)
+                .Include(u => u.Owner)
+                .Where(predicate)
+                .ToList();
+
+        return query;
+    }
 }

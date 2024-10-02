@@ -43,4 +43,9 @@ public class CompanyService : ICompanyService
             return null;
         }
     }
+
+    public List<Company> GetAll()
+    {
+        return _repository.GetAll().ToList();
+    }
 }
