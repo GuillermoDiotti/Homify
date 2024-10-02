@@ -65,7 +65,8 @@ public sealed class AdminController : ControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
-    public List<UserBasicInfo> AllAccounts([FromQuery] string limit, [FromQuery] string offset)
+    public List<UserBasicInfo> AllAccounts([FromQuery] string? limit, [FromQuery] string? offset,
+        [FromQuery] string? role, [FromQuery] string? fullName)
     {
         var pageSize = 10;
         var pageOffset = 0;

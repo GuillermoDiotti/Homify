@@ -67,8 +67,8 @@ public class CompanyController : HomifyControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
-    public List<CompanyBasicInfo> AllCompanies([FromQuery] string limit, [FromQuery] string offset,
-        [FromQuery] string ownerFullName, [FromQuery] string company)
+    public List<CompanyBasicInfo> AllCompanies([FromQuery] string? limit, [FromQuery] string? offset,
+        [FromQuery] string? ownerFullName, [FromQuery] string? company)
     {
         var pageSize = 10;
         var pageOffset = 0;

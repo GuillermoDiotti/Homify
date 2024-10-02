@@ -133,7 +133,7 @@ public class CompanyControllerTest
             new CompanyBasicInfo(companies[2], companies[2].Owner)
         };
 
-        var result = _controller.AllCompanies(limit, offset);
+        var result = _controller.AllCompanies(limit, offset, string.Empty, string.Empty);
 
         Assert.AreEqual(2, result.Count);
         CollectionAssert.AreEqual(expectedResult, result);
