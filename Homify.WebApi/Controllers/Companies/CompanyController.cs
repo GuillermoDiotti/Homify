@@ -66,7 +66,7 @@ public class CompanyController : HomifyControllerBase
 
     [HttpGet]
     [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
+    [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
     public List<CompanyBasicInfo> AllCompanies([FromQuery] string limit, [FromQuery] string offset)
     {
         var pageSize = 10;
@@ -82,11 +82,11 @@ public class CompanyController : HomifyControllerBase
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
-        List<User> list = _companyService.GetAll();
+        List<Company> list = _companyService.GetAll();
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
 
         List<CompanyBasicInfo> result = [];
-        foreach (User c in paginatedList)
+        foreach (Company c in paginatedList)
         {
             result.Add(new CompanyBasicInfo(c, c.Owner));
         }
