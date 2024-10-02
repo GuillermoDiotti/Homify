@@ -56,5 +56,20 @@ public class NonAuthenticationFilterAttributeTest
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }
+
+        [TestMethod]
+        public void OnActionExecuting_WithValidAuthorizationHeader_AndUserDoesNotExist_ShouldProceed()
+        {
+            var token = "invalid-token";
+            _actionExecutingContext.HttpContext.Request.Headers["Authorization"] = token;
+
+            _sessionServiceMock
+                .Setup(x => x.GetUserByToken(token))
+                .Returns((User)null);
+
+            _filter.OnActionExecuting(_actionExecutingContext);
+
+            Assert.IsNull(_actionExecutingContext.Result);
+        }
     }
 }
