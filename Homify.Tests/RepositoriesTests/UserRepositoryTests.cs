@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -61,7 +62,7 @@ public class UserRepositoryTests
         var userRepository = new UserRepository(mockContext.Object);
         Expression<Func<User, bool>> predicate = user => false;
 
-        Assert.ThrowsException<InvalidOperationException>(() => userRepository.Get(predicate));
+        Assert.ThrowsException<NotFoundException>(() => userRepository.Get(predicate));
     }
 
     [TestMethod]
