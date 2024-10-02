@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -74,5 +75,15 @@ public class CompanyServiceTest
         var result = _service.GetByUserId(userId);
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedCompany, result);
+    }
+
+    [TestMethod]
+    public void GetByUserId_ShouldReturnNull_WhenNotFoundExceptionThrown()
+    {
+        var userId = "test-user-id";
+        _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Throws(new NotFoundException("Test Company"));
+        var result = _service.GetByUserId(userId);
+        Assert.IsNull(result);
     }
 }
