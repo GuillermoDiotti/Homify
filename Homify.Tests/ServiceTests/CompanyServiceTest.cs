@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Roles;
@@ -56,5 +57,22 @@ public class CompanyServiceTest
         Assert.AreEqual(createCompanyArgs.LogoUrl, result.LogoUrl);
         Assert.AreEqual(createCompanyArgs.Rut, result.Rut);
         Assert.AreEqual(user, result.Owner);
+    }
+
+    [TestMethod]
+    public void GetByUserId_ShouldReturnCompany_WhenCompanyExists()
+    {
+        var userId = "test-user-id";
+        var expectedCompany = new Company
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "Test Company",
+            OwnerId = userId
+        };
+        _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns(expectedCompany);
+        var result = _service.GetByUserId(userId);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedCompany, result);
     }
 }

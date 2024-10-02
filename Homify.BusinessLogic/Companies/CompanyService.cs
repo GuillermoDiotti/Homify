@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Companies;
@@ -29,5 +30,17 @@ public class CompanyService : ICompanyService
 
         _repository.Add(company);
         return company;
+    }
+
+    public Company? GetByUserId(string userId)
+    {
+        try
+        {
+            return _repository.Get(x => x.OwnerId == userId);
+        }
+        catch (NotFoundException)
+        {
+            return null;
+        }
     }
 }
