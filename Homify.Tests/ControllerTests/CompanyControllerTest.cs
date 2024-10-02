@@ -112,4 +112,30 @@ public class CompanyControllerTest
         var response = () => _controller.Create(request);
         response.Should().Throw<ArgsNullException>().WithMessage("rut cannot be null or empty");
     }
+
+    [TestMethod]
+    public void AllCompanies_ShouldReturnPaginatedCompanyBasicInfo()
+    {
+        var companies = new List<Company>
+        {
+            new Company { Id = "1", Name = "Company A", Owner = new CompanyOwner() },
+            new Company { Id = "2", Name = "Company B", Owner = new CompanyOwner() },
+            new Company { Id = "3", Name = "Company C", Owner = new CompanyOwner() },
+        };
+
+        _companyServiceMock.Setup(s => s.GetAll()).Returns(companies);
+
+        var limit = "2";
+        var offset = "1";
+        var expectedResult = new List<CompanyBasicInfo>
+        {
+            new CompanyBasicInfo(companies[1], companies[1].Owner),
+            new CompanyBasicInfo(companies[2], companies[2].Owner)
+        };
+
+        var result = _controller.AllCompanies(limit, offset);
+
+        Assert.AreEqual(2, result.Count);
+        CollectionAssert.AreEqual(expectedResult, result);
+    }
 }

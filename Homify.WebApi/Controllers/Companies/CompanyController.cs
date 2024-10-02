@@ -27,8 +27,6 @@ public class CompanyController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
-        // TODO: verificar que no tenga una empresa ya creada
-
         if (request == null)
         {
             throw new NullRequestException();
@@ -64,5 +62,35 @@ public class CompanyController : HomifyControllerBase
         var company = _companyService.Add(args, companyOwner);
 
         return new CreateCompanyResponse(company);
+    }
+
+    [HttpGet]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
+    public List<CompanyBasicInfo> AllCompanies([FromQuery] string limit, [FromQuery] string offset)
+    {
+        var pageSize = 10;
+        var pageOffset = 0;
+
+        if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        {
+            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
+        }
+
+        if (!string.IsNullOrEmpty(offset) && int.TryParse(offset, out var parsedOffset))
+        {
+            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
+        }
+
+        List<User> list = _companyService.GetAll();
+        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
+
+        List<CompanyBasicInfo> result = [];
+        foreach (User c in paginatedList)
+        {
+            result.Add(new CompanyBasicInfo(c, c.Owner));
+        }
+
+        return result;
     }
 }
