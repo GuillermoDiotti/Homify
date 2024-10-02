@@ -43,7 +43,7 @@ public class NotificationController
     }
 
     [HttpGet]
-    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string user)
+    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string user = "")
     {
         var list = _notificationService.GetAllByUserId(user);
         var result = new List<NotificationBasicInfo>();
