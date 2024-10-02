@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.CompanyOwners.Models;
+using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.CompanyOwners;
@@ -19,6 +20,8 @@ public class CompanyOwnerController
     }
 
     [HttpPost]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateCompanyOwner)]
     public CreateCompanyOwnerResponse Create(CreateCompanyOwnerRequest? request)
     {
         if (request == null)
