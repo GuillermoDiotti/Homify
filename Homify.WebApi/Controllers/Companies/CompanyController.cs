@@ -67,7 +67,8 @@ public class CompanyController : HomifyControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
-    public List<CompanyBasicInfo> AllCompanies([FromQuery] string limit, [FromQuery] string offset)
+    public List<CompanyBasicInfo> AllCompanies([FromQuery] string limit, [FromQuery] string offset,
+        [FromQuery] string ownerFullName, [FromQuery] string company)
     {
         var pageSize = 10;
         var pageOffset = 0;
@@ -83,9 +84,20 @@ public class CompanyController : HomifyControllerBase
         }
 
         List<Company> list = _companyService.GetAll();
+
+        if (!string.IsNullOrEmpty(ownerFullName))
+        {
+            list = list.Where(c => c.Owner.FullName.Contains(ownerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(company))
+        {
+            list = list.Where(c => c.Name.Contains(company, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
 
-        List<CompanyBasicInfo> result = [];
+        List<CompanyBasicInfo> result = new List<CompanyBasicInfo>();
         foreach (Company c in paginatedList)
         {
             result.Add(new CompanyBasicInfo(c, c.Owner));
