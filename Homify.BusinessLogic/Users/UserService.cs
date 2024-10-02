@@ -20,7 +20,7 @@ public class UserService : IUserService
     public Admin AddAdmin(CreateUserArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var user = new Admin
+        var user = new Admin()
         {
             Id = Guid.NewGuid().ToString(),
             Name = args.Name,
@@ -38,7 +38,7 @@ public class UserService : IUserService
     public CompanyOwner AddCompanyOwner(CreateUserArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var companyOwner = new CompanyOwner
+        var companyOwner = new CompanyOwner()
         {
             Id = Guid.NewGuid().ToString(),
             Email = args.Email,
@@ -47,6 +47,7 @@ public class UserService : IUserService
             LastName = args.LastName,
             CreatedAt = DateTime.Now,
             IsIncomplete = true,
+            Role = args.Role,
         };
 
         _repository.Add(companyOwner);
@@ -56,7 +57,7 @@ public class UserService : IUserService
     public HomeOwner AddHomeOwner(CreateHomeOwnerArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var homeOwner = new HomeOwner
+        var homeOwner = new HomeOwner()
         {
             Id = Guid.NewGuid().ToString(),
             Email = args.Email,
@@ -65,6 +66,7 @@ public class UserService : IUserService
             LastName = args.LastName,
             CreatedAt = DateTime.Now,
             ProfilePicture = args.ProfilePicUrl,
+            Role = args.Role,
         };
 
         _repository.Add(homeOwner);

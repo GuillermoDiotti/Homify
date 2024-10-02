@@ -2,6 +2,7 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -90,7 +91,8 @@ public sealed class AdminController : HomifyControllerBase
 
         if (!string.IsNullOrEmpty(fullName))
         {
-            list = list.Where(u => u.FullName.Contains(fullName, StringComparison.OrdinalIgnoreCase)).ToList();
+            list = list.Where(u => Helpers.GetUserFullName(u.Name, u.LastName)
+                .Contains(fullName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();

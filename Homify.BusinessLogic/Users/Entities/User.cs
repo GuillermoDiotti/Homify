@@ -8,7 +8,6 @@ public class User
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
     public string LastName { get; set; } = null!;
-    public string FullName { get; set; } = null!;
     public string Id { get; init; }
     public Role Role { get; init; } = null!;
     public string RoleId { get; set; } = null!;
@@ -20,7 +19,6 @@ public class User
         CreatedAt = DateTimeOffset.UtcNow;
         Name = name;
         Email = email;
-        FullName = Name + " " + LastName;
         Password = password;
         LastName = lastName;
         Role = role;

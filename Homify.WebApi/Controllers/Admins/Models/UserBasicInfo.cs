@@ -7,7 +7,6 @@ public class UserBasicInfo
 {
     public string Name { get; set; }
     public string LastName { get; set; }
-    public string FullName { get; set; }
 
     public Role Role { get; set; }
 
@@ -17,7 +16,6 @@ public class UserBasicInfo
     {
         Name = u.Name;
         LastName = u.LastName;
-        FullName = u.FullName;
         CreatedAt = u.CreatedAt;
         Role = u.Role;
     }

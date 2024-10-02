@@ -87,7 +87,8 @@ public class CompanyController : HomifyControllerBase
 
         if (!string.IsNullOrEmpty(ownerFullName))
         {
-            list = list.Where(c => c.Owner.FullName.Contains(ownerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
+            list = list.Where(c => Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName)
+                .Contains(ownerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         if (!string.IsNullOrEmpty(company))
