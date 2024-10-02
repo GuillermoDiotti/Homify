@@ -48,6 +48,13 @@ public class CompanyController : HomifyControllerBase
             throw new InvalidOperationException("Account must be incomplete to execute this action.");
         }
 
+        var alreadyHasACompany = _companyService.GetByUserId(userLogged.Id);
+
+        if (alreadyHasACompany != null)
+        {
+            throw new InvalidOperationException("User already owns a company");
+        }
+
         var args = new CreateCompanyArgs(
             request.Name ?? string.Empty,
             request.LogoUrl ?? string.Empty,
