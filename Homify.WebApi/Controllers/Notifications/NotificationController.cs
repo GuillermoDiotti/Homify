@@ -9,7 +9,7 @@ namespace Homify.WebApi.Controllers.Notifications;
 
 [ApiController]
 [Route("notifications")]
-public class NotificationController
+public class NotificationController : HomifyControllerBase
 {
     private readonly INotificationService _notificationService;
     private readonly IDeviceService _deviceService;

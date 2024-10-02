@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Session.Models;
+using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Session;
@@ -21,6 +22,7 @@ public class SessionController : ControllerBase
     }
 
     [HttpPost]
+    [NonAuthenticationFilter]
     public CreateSessionResponse Create(CreateSessionRequest? request)
     {
         if (request == null)

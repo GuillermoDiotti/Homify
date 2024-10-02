@@ -10,7 +10,7 @@ namespace Homify.WebApi.Controllers.CompanyOwners;
 
 [ApiController]
 [Route("company-owners")]
-public class CompanyOwnerController
+public class CompanyOwnerController : HomifyControllerBase
 {
     private readonly IUserService _userService;
 

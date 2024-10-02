@@ -8,7 +8,7 @@ namespace Homify.WebApi.Controllers.Homes;
 
 [ApiController]
 [Route("homes")]
-public sealed class HomeController : ControllerBase
+public sealed class HomeController : HomifyControllerBase
 {
     private readonly IHomeService _homeService;
 

@@ -5,13 +5,14 @@ using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.HomeOwners.Models;
+using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.HomeOwners;
 
 [ApiController]
 [Route("homeowners")]
-public class HomeOwnerController
+public class HomeOwnerController : HomifyControllerBase
 {
     private readonly IUserService _userService;
     private readonly IRoleService _roleService;
@@ -22,6 +23,8 @@ public class HomeOwnerController
         _roleService = roleService;
     }
 
+    [HttpPost]
+    [NonAuthenticationFilter]
     public CreateHomeOwnerResponse Create(CreateHomeOwnerRequest req)
     {
         if (req == null)

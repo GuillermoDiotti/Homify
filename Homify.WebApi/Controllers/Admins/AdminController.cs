@@ -11,7 +11,7 @@ namespace Homify.WebApi.Controllers.Admins;
 
 [ApiController]
 [Route("admins")]
-public sealed class AdminController : ControllerBase
+public sealed class AdminController : HomifyControllerBase
 {
     private readonly IUserService _userService;
     private readonly IRoleService _roleService;
