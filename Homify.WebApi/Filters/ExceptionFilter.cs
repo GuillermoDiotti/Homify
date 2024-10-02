@@ -76,6 +76,17 @@ public class ExceptionFilter : IExceptionFilter
                     StatusCode = (int)HttpStatusCode.BadRequest
                 }
         },
+        {
+            typeof(InvalidOperationException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "InvalidOperation",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        }
     };
 
 public void OnException(ExceptionContext context)

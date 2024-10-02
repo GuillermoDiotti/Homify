@@ -168,6 +168,26 @@ public class ExceptionFilterTest
         }
     }
 
+    [TestMethod]
+    public void OnException_WhenExceptionIsInvalidOperation_ShouldResponseInvalidOperation()
+    {
+        _context.Exception = new InvalidOperationException("Your account is not incomplete");
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        ObjectResult? concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("InvalidOperation");
+            GetMessage(concreteResponse.Value).Should().Be("Your account is not incomplete");
+        }
+    }
+
     private string GetInnerCode(object value)
     {
         return value.GetType().GetProperty("InnerCode").GetValue(value).ToString();
