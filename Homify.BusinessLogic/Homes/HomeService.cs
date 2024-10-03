@@ -13,7 +13,7 @@ public class HomeService
         _repository = repository;
     }
 
-    public Home AddHome(CreateHomeArgs home, HomeOwner owner)
+    public Home AddHome(CreateHomeArgs home)
     {
         var newHome = new Home()
         {
@@ -22,11 +22,11 @@ public class HomeService
             Latitude = home.Latitude,
             Longitude = home.Longitude,
             Number = home.Number,
-            Owner = owner,
+            Owner = home.Owner,
             Street = home.Street,
             MaxMembers = home.MaxMembers,
             NofificatedMembers = [],
-            OwnerId = owner.Id,
+            OwnerId = home.Owner.Id,
         };
         _repository.Add(newHome);
         return newHome;

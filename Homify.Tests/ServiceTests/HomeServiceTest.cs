@@ -25,10 +25,10 @@ public class HomeServiceTest
         // Arrange
         var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
 
-        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5);
+        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner);
 
         // Act
-        var result = _homeService.AddHome(createHomeArgs, owner);
+        var result = _homeService.AddHome(createHomeArgs);
 
         // Assert
         _mockRepository.Verify(r => r.Add(It.Is<Home>(h =>

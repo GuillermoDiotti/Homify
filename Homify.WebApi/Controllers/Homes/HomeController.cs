@@ -1,4 +1,5 @@
-﻿using Homify.BusinessLogic.Homes;
+﻿using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes.Models;
@@ -28,9 +29,10 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
+        var owner = GetUserLogged() as HomeOwner;
         var arguments = new CreateHomeArgs(
            request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
-           request.Longitud ?? string.Empty, request.MaxMembers);
+           request.Longitud ?? string.Empty, request.MaxMembers, owner);
 
         var homeSaved = _homeService.AddHome(arguments);
         return new CreateHomeResponse(homeSaved);

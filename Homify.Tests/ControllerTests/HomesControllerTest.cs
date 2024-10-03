@@ -201,7 +201,7 @@ public class HomesControllerTest
             Number = "3",
             Latitude = "141",
             Longitud = "231",
-            MaxMembers = null
+            MaxMembers = 0
         };
         _controller.Create(request);
     }
@@ -215,9 +215,9 @@ public class HomesControllerTest
             Number = "1",
             Latitude = "101",
             Longitud = "202",
-            MaxMembers = "3"
+            MaxMembers = 3,
         };
-
+        var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
         var expectedHome = new Home("calle 1", "1", "101", "202", 3, new HomeOwner(), [], []);
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
