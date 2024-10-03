@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Filters;
@@ -13,10 +14,12 @@ namespace Homify.WebApi.Controllers.Homes;
 public sealed class HomeController : HomifyControllerBase
 {
     private readonly IHomeService _homeService;
+    private readonly IUserService _userService;
 
-    public HomeController(IHomeService homeService)
+    public HomeController(IHomeService homeService, IUserService userService)
     {
         _homeService = homeService;
+        _userService = userService;
     }
 
     [HttpPost]
@@ -60,7 +63,14 @@ public sealed class HomeController : HomifyControllerBase
             throw new InvalidOperationException("Home members list is full");
         }
 
-        var home = _homeService.UpdateMemberList(homeId, request.Email);
+        var userFound = _userService.GetByMail(request.Email);
+
+        if (userFound == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        var home = _homeService.UpdateMemberList(homeId, userFound);
 
         return new UpdateMembersListResponse(home);
     }

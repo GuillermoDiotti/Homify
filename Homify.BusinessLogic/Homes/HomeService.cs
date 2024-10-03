@@ -47,9 +47,9 @@ public class HomeService : IHomeService
         }
     }
 
-    public Home UpdateMemberList(string homeId, string mail)
+    public Home UpdateMemberList(string homeId, HomeOwner homeOwner)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void UpdateHomeDevices(string deviceid, string homeid)
