@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Users;
-using Homify.DataAccess.Contexts;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
@@ -148,6 +147,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/devices")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
     public void UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)
     {
         if (request == null)
@@ -161,6 +162,15 @@ public sealed class HomeController : HomifyControllerBase
         }
 
         _homeService.UpdateHomeDevices(request.DeviceId, homeId);
+    }
+
+    [HttpGet("{homeId}/devices")]
+    public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
+    {
+        var list = _homeService.GetHomeDevices(homeId);
+        var response = new GetDevicesResponse();
+        var returnList = response.Transform(list);
+        return returnList;
     }
 
     [HttpGet("{homeId}/members")]
@@ -182,14 +192,5 @@ public sealed class HomeController : HomifyControllerBase
         }
 
         _homeService.UpdateNotificatedList(homeId, request.MemberId);
-    }
-
-    [HttpGet("{homeId}/devices")]
-    public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
-    {
-        var list = _homeService.GetHomeDevices(homeId);
-        var response = new GetDevicesResponse();
-        var returnList = response.Transform(list);
-        return returnList;
     }
 }
