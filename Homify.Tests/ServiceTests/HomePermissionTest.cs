@@ -32,4 +32,15 @@ public class HomePermissionTest
         Assert.IsNotNull(result);
         Assert.AreEqual(value, result.Value);
     }
+
+    [TestMethod]
+    public void GetByValue_ShouldReturnNull_WhenValueDoesNotExist()
+    {
+        _repositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomePermission, bool>>>()))
+            .Returns((HomePermission)null);
+
+        var result = _service.GetByValue("nonExistingValue");
+
+        Assert.IsNull(result);
+    }
 }
