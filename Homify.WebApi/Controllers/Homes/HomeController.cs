@@ -176,9 +176,12 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpGet("{homeId}/members")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.GetHomeMembers)]
     public List<GetMemberResponse> ObtainMembers([FromRoute] string homeId)
     {
-        var list = _homeService.GetHomeMembers(homeId);
+        var user = GetUserLogged();
+        var list = _homeService.GetHomeMembers(homeId, user);
 
         var responseList = list.Select(user => new GetMemberResponse([user])).ToList();
 

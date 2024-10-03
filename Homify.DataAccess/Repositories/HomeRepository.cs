@@ -30,4 +30,24 @@ public class HomeRepository : Repository<Home>
 
         return home;
     }
+
+    public override List<Home> GetAll(Expression<Func<Home, bool>>? predicate)
+    {
+        if (predicate == null)
+        {
+            return _entities.Include(u => u.Members)
+                .ThenInclude(u => u.Permissions)
+                .Include(u => u.Devices)
+                .ToList();
+        }
+
+        var query =
+            _entities.Include(u => u.Members)
+                .ThenInclude(u => u.Permissions)
+                .Include(u => u.Devices)
+                .Where(predicate)
+                .ToList();
+
+        return query;
+    }
 }

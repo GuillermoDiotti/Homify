@@ -366,7 +366,9 @@ public class HomesControllerTest
         }
         };
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers("home123")).Returns(membersList);
+        var User = new User();
+
+        _homeServiceMock.Setup(service => service.GetHomeMembers("home123", User)).Returns(membersList);
 
         var result = _controller.ObtainMembers("home123");
 

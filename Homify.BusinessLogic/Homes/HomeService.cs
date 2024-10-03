@@ -96,9 +96,15 @@ public class HomeService : IHomeService
         }
     }
 
-    public List<User> GetHomeMembers(string id)
+    public List<User> GetHomeMembers(string homeId, User user)
     {
-        throw new NotImplementedException();
+        var home = _repository.Get(x => x.Id == homeId);
+        if (home.OwnerId != user.Id)
+        {
+            throw new InvalidOperationException("Only the owner can see the members");
+        }
+
+        return _repository.GetAll(x => x.Id == homeId).SelectMany(x => x.Members).Select(x => x.User).ToList();
     }
 
     public void UpdateNotificatedList(string homeId, string memberId)

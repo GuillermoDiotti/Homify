@@ -145,4 +145,31 @@ public class HomeServiceTest
 
         _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Devices.Any(d => d.DeviceId == deviceId))), Times.Once);
     }
+
+    [TestMethod]
+    public void GetHomeMembers_ShouldReturnListOfUsers_WhenUserIsOwner()
+    {
+        var homeId = "home1";
+        var userId = "user1";
+        var user = new User { Id = userId };
+        var homeUser = new HomeUser { User = user };
+        var home = new Home
+        {
+            Id = homeId,
+            OwnerId = userId,
+            Members = new List<HomeUser> { homeUser }
+        };
+        var homes = new List<Home> { home };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Home, bool>>>()))
+            .Returns(home);
+        _mockRepository.Setup(r => r.GetAll(It.IsAny<System.Linq.Expressions.Expression<System.Func<Home, bool>>>()))
+            .Returns(homes);
+
+        var result = _homeService.GetHomeMembers(homeId, user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(userId, result.First().Id);
+    }
 }
