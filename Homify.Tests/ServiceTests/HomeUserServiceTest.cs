@@ -52,4 +52,21 @@ public class HomeUserServiceTest
         Assert.IsNull(result);
         _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()), Times.Once);
     }
+
+    [TestMethod]
+    public void Update_ShouldCallRepositoryUpdate_AndReturnUpdatedHomeUser()
+    {
+        var homeUser = new HomeUser
+        {
+            HomeId = "home123",
+            UserId = "user123",
+        };
+        var result = _homeUserService.Update(homeUser);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(homeUser.HomeId, result.HomeId);
+        Assert.AreEqual(homeUser.UserId, result.UserId);
+        _mockRepository.Verify(r => r.Update(It.Is<HomeUser>(u =>
+            u.HomeId == homeUser.HomeId
+            && u.UserId == homeUser.UserId)), Times.Once);
+    }
 }

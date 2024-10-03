@@ -18,6 +18,7 @@ public class HomeUserService : IHomeUserService
 
     public HomeUser Update(HomeUser hu)
     {
-        throw new NotImplementedException();
+        _repository.Update(hu);
+        return hu;
     }
 }
