@@ -1,10 +1,12 @@
-﻿using Homify.BusinessLogic.HomeOwners;
+﻿using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.Homes;
 
-public class HomeService
+public class HomeService : IHomeService
 {
     private readonly IRepository<Home> _repository;
 
@@ -30,5 +32,30 @@ public class HomeService
         };
         _repository.Add(newHome);
         return newHome;
+    }
+
+    public Home UpdateMemberList(string homeId, string mail)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateHomeDevices(string deviceid, string homeid)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<User> GetHomeMembers(string id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateNotificatedList(string homeId, string memberId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Device> GetHomeDevices(string homeId)
+    {
+        throw new NotImplementedException();
     }
 }
