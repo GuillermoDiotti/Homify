@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Users;
+using Homify.DataAccess.Contexts;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
@@ -96,7 +97,7 @@ public sealed class HomeController : HomifyControllerBase
         return new UpdateMembersListResponse(home);
     }
 
-    [HttpPut("{homeId}/{memberId}")]
+    /*[HttpPut("{homeId}/{memberId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
     public HomeMemberBasicInfo ChangeHomeMemberPermissions([FromRoute] string? homeId, [FromRoute] string memberId,
@@ -123,7 +124,7 @@ public sealed class HomeController : HomifyControllerBase
         var list = new List<HomePermission>();
         if (req.CanAddDevices)
         {
-            list.Add(new HomePermission()
+            list.Add(new HomifyDbContext.HomeUserHomePermission()
             {
                 Id = Guid.NewGuid().ToString(),
                 HomeId = found.HomeId,
@@ -148,7 +149,7 @@ public sealed class HomeController : HomifyControllerBase
         found.Permissions = list;
         var result = _homeUserService.Update(found);
         return new HomeMemberBasicInfo(result);
-    }
+    }*/
 
     [HttpPut("{homeId}/devices")]
     public void UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)

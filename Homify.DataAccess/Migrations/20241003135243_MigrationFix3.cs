@@ -8,11 +8,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Homify.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration1 : Migration
+    public partial class MigrationFix3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "HomePermission",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomePermission", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -195,7 +207,7 @@ namespace Homify.DataAccess.Migrations
                         column: x => x.OwnerId,
                         principalTable: "HomeOwners",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,25 +238,26 @@ namespace Homify.DataAccess.Migrations
                 name: "HomeUsers",
                 columns: table => new
                 {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HomeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsNotificable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomeUsers", x => new { x.HomeId, x.UserId });
+                    table.PrimaryKey("PK_HomeUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_HomeUsers_Homes_HomeId",
                         column: x => x.HomeId,
                         principalTable: "Homes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_HomeUsers_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -332,24 +345,62 @@ namespace Homify.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HomePermission",
+                name: "HomePermissionHomeUser",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HomeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    HomeUsersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PermissionsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomePermission", x => x.Id);
+                    table.PrimaryKey("PK_HomePermissionHomeUser", x => new { x.HomeUsersId, x.PermissionsId });
                     table.ForeignKey(
-                        name: "FK_HomePermission_HomeUsers_HomeId_UserId",
-                        columns: x => new { x.HomeId, x.UserId },
+                        name: "FK_HomePermissionHomeUser_HomePermission_PermissionsId",
+                        column: x => x.PermissionsId,
+                        principalTable: "HomePermission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HomePermissionHomeUser_HomeUsers_HomeUsersId",
+                        column: x => x.HomeUsersId,
                         principalTable: "HomeUsers",
-                        principalColumns: new[] { "HomeId", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeUserHomePermission",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HomeUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HomePermissionId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeUserHomePermission", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HomeUserHomePermission_HomePermission_HomePermissionId",
+                        column: x => x.HomePermissionId,
+                        principalTable: "HomePermission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HomeUserHomePermission_HomeUsers_HomeUserId",
+                        column: x => x.HomeUserId,
+                        principalTable: "HomeUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "HomePermission",
+                columns: new[] { "Id", "Value" },
+                values: new object[,]
+                {
+                    { "1", "HomeOwner" },
+                    { "2", "AddDevices" },
+                    { "3", "ListDevices" }
                 });
 
             migrationBuilder.InsertData(
@@ -393,25 +444,25 @@ namespace Homify.DataAccess.Migrations
                 columns: new[] { "RoleSystemPermissionId", "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { "0372ba86-e92e-411e-82b2-15ea0cc6ff51", "5", "AdminId" },
-                    { "06c771e8-8f6a-4004-932d-d307969ad098", "17", "HomeOwnerId" },
-                    { "21d171ed-1847-4a35-acc0-59e641b10322", "4", "AdminId" },
-                    { "33231747-44af-43d1-97b6-a2ce9f52213d", "7", "CompanyOwnerId" },
-                    { "332f1bad-9d8d-4299-b833-c8ef69638f4c", "11", "HomeOwnerId" },
-                    { "348c7704-33bd-4e6b-a589-9dfb057bea25", "18", "HomeOwnerId" },
-                    { "4cf97750-ba1d-46c5-8561-56f106fa841f", "3", "AdminId" },
-                    { "5320ae19-7984-4551-9de2-995e5b85b8ce", "16", "HomeOwnerId" },
-                    { "62c83039-d96a-4618-a220-88b2d66e4774", "2", "AdminId" },
-                    { "6f358126-fcaf-4828-a551-e4d960bc242a", "13", "HomeOwnerId" },
-                    { "74d2dedf-d33f-42c7-8672-130f51087708", "6", "CompanyOwnerId" },
-                    { "77467c39-37d0-47ab-bc64-132c87ab9f32", "9", "HomeOwnerId" },
-                    { "7d9b95f8-8f91-495b-bf1c-b5bf80072dff", "10", "HomeOwnerId" },
-                    { "91f04b8e-2494-4f37-9eef-d14bbb2561a7", "12", "HomeOwnerId" },
-                    { "9e97dd98-939c-4973-a58c-88ac13c04345", "8", "CompanyOwnerId" },
-                    { "a19d4be7-d4b2-485c-b3ac-730ab6910605", "15", "HomeOwnerId" },
-                    { "af460110-9f76-4eb1-bbfe-6dc4cdf4fb0a", "19", "HomeOwnerId" },
-                    { "c2782acb-2830-438d-8366-ee65762b6ac2", "14", "HomeOwnerId" },
-                    { "e3abcd50-b28a-4ef3-8efc-783eb413035f", "1", "AdminId" }
+                    { "163c07e8-fec1-4869-98f6-0c3e21ace5d1", "14", "HomeOwnerId" },
+                    { "17de5a05-680d-4281-b1e5-6c3f2ada476b", "4", "AdminId" },
+                    { "2039e445-f008-43cf-b671-521d3db500b9", "5", "AdminId" },
+                    { "2a95feaa-64c6-45e0-997f-3ad6483677d5", "15", "HomeOwnerId" },
+                    { "4a15b122-278a-4235-abb2-713922803edf", "16", "HomeOwnerId" },
+                    { "5deafe6b-1645-4086-96fa-3a1c36a184ff", "12", "HomeOwnerId" },
+                    { "6487a47f-83b8-4c33-bb97-8e927fdd97de", "19", "HomeOwnerId" },
+                    { "6e0a404e-9894-4137-8ab5-fc2d7e3ea95a", "11", "HomeOwnerId" },
+                    { "cbd00d72-65d9-412c-b3dc-be7b5640f870", "6", "CompanyOwnerId" },
+                    { "d0d7c2ff-eb29-49a2-b23b-af8047cb56e8", "2", "AdminId" },
+                    { "da3a1ef0-aa01-4889-819d-cfd31ccea1b4", "18", "HomeOwnerId" },
+                    { "dd1b84d8-5252-4035-89db-2c61e2c09eb4", "7", "CompanyOwnerId" },
+                    { "def82875-2929-47a7-b8eb-13c6b9d235a4", "1", "AdminId" },
+                    { "e20ed006-53e0-428a-9b98-e63c9b66be5d", "13", "HomeOwnerId" },
+                    { "e6072d73-6d74-4036-bce5-31e6bb4fe07e", "3", "AdminId" },
+                    { "edc54d89-da46-4829-8194-b973f4592afe", "10", "HomeOwnerId" },
+                    { "f9dbbde0-4095-4cbb-82f3-b8e8163f8740", "8", "CompanyOwnerId" },
+                    { "fa7aab64-e41e-41ab-975b-ec2a202d4bb0", "17", "HomeOwnerId" },
+                    { "fe08d917-5475-45ea-9e90-88ad039d560b", "9", "HomeOwnerId" }
                 });
 
             migrationBuilder.InsertData(
@@ -419,25 +470,25 @@ namespace Homify.DataAccess.Migrations
                 columns: new[] { "Id", "CreatedAt", "Email", "LastName", "Name", "Password", "RoleId" },
                 values: new object[,]
                 {
-                    { "0579fd6c-4cd9-4b6d-8238-3a7f8cc55ac9", new DateTimeOffset(new DateTime(2024, 10, 1, 18, 15, 56, 26, DateTimeKind.Unspecified).AddTicks(4315), new TimeSpan(0, 0, 0, 0, 0)), "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", "CompanyOwnerId" },
-                    { "9f120626-14ac-4022-a9c4-4d388b4d6c4f", new DateTimeOffset(new DateTime(2024, 10, 1, 18, 15, 56, 26, DateTimeKind.Unspecified).AddTicks(4203), new TimeSpan(0, 0, 0, 0, 0)), "admin@domain.com", "LastName", "Admin", ".Popso212", "AdminId" },
-                    { "f5a6577f-7164-47e0-9ae2-2ff4879b7643", new DateTimeOffset(new DateTime(2024, 10, 1, 18, 15, 56, 26, DateTimeKind.Unspecified).AddTicks(4309), new TimeSpan(0, 0, 0, 0, 0)), "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "HomeOwnerId" }
+                    { "056e4c6c-0085-44ba-8df6-ca6997cf49f2", new DateTimeOffset(new DateTime(2024, 10, 3, 13, 52, 42, 792, DateTimeKind.Unspecified).AddTicks(7580), new TimeSpan(0, 0, 0, 0, 0)), "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", "CompanyOwnerId" },
+                    { "08009c28-d048-42ae-9461-8a04d69c5040", new DateTimeOffset(new DateTime(2024, 10, 3, 13, 52, 42, 792, DateTimeKind.Unspecified).AddTicks(7570), new TimeSpan(0, 0, 0, 0, 0)), "admin@domain.com", "LastName", "Admin", ".Popso212", "AdminId" },
+                    { "d392518f-319d-4a41-8cf6-aed4686bc5ef", new DateTimeOffset(new DateTime(2024, 10, 3, 13, 52, 42, 792, DateTimeKind.Unspecified).AddTicks(7580), new TimeSpan(0, 0, 0, 0, 0)), "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "HomeOwnerId" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Admins",
                 column: "Id",
-                value: "9f120626-14ac-4022-a9c4-4d388b4d6c4f");
+                value: "08009c28-d048-42ae-9461-8a04d69c5040");
 
             migrationBuilder.InsertData(
                 table: "CompanyOwners",
                 columns: new[] { "Id", "IsIncomplete" },
-                values: new object[] { "0579fd6c-4cd9-4b6d-8238-3a7f8cc55ac9", true });
+                values: new object[] { "056e4c6c-0085-44ba-8df6-ca6997cf49f2", true });
 
             migrationBuilder.InsertData(
                 table: "HomeOwners",
                 columns: new[] { "Id", "ProfilePicture" },
-                values: new object[] { "f5a6577f-7164-47e0-9ae2-2ff4879b7643", "picture" });
+                values: new object[] { "d392518f-319d-4a41-8cf6-aed4686bc5ef", "picture" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_OwnerId",
@@ -456,14 +507,29 @@ namespace Homify.DataAccess.Migrations
                 column: "DeviceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HomePermission_HomeId_UserId",
-                table: "HomePermission",
-                columns: new[] { "HomeId", "UserId" });
+                name: "IX_HomePermissionHomeUser_PermissionsId",
+                table: "HomePermissionHomeUser",
+                column: "PermissionsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Homes_OwnerId",
                 table: "Homes",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeUserHomePermission_HomePermissionId",
+                table: "HomeUserHomePermission",
+                column: "HomePermissionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeUserHomePermission_HomeUserId",
+                table: "HomeUserHomePermission",
+                column: "HomeUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeUsers_HomeId",
+                table: "HomeUsers",
+                column: "HomeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HomeUsers_UserId",
@@ -509,7 +575,10 @@ namespace Homify.DataAccess.Migrations
                 name: "HomeDevices");
 
             migrationBuilder.DropTable(
-                name: "HomePermission");
+                name: "HomePermissionHomeUser");
+
+            migrationBuilder.DropTable(
+                name: "HomeUserHomePermission");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -522,6 +591,9 @@ namespace Homify.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sessions");
+
+            migrationBuilder.DropTable(
+                name: "HomePermission");
 
             migrationBuilder.DropTable(
                 name: "HomeUsers");

@@ -67,13 +67,6 @@ public sealed class HomifyDbContext : DbContext
         .HasForeignKey(i => i.CompanyId)
         .IsRequired();
 
-    modelBuilder.Entity<HomeUser>()
-        .HasMany(p => p.Permissions)
-        .WithOne(h => h.HomeUser)
-        .HasForeignKey(hp => new { hp.HomeId, hp.UserId })
-        .OnDelete(DeleteBehavior.Restrict)
-        .IsRequired();
-
     modelBuilder.Entity<Home>()
         .HasMany(u => u.Members)
         .WithOne(h => h.Home)
@@ -92,12 +85,6 @@ public sealed class HomifyDbContext : DbContext
         {
             hd.HomeId,
             hd.DeviceId
-        });
-    modelBuilder.Entity<HomeUser>()
-        .HasKey(hu => new
-        {
-            hu.HomeId,
-            hu.UserId
         });
 
     modelBuilder.Entity<User>()
@@ -135,6 +122,24 @@ public sealed class HomifyDbContext : DbContext
         new SystemPermission { Id = "19", Value = PermissionsGenerator.CreateNotification }
     );
 
+    modelBuilder.Entity<HomePermission>().HasData(
+        new HomePermission
+        {
+            Id = "1",
+            Value = "HomeOwner"
+        },
+        new HomePermission
+        {
+            Id = "2",
+            Value = "AddDevices"
+        },
+        new HomePermission
+        {
+            Id = "3",
+            Value = "ListDevices"
+        }
+    );
+
     modelBuilder.Entity<Role>().HasData(
         new Role
         {
@@ -162,6 +167,26 @@ public sealed class HomifyDbContext : DbContext
     modelBuilder.Entity<RoleSystemPermission>().HasOne(r => r.Permission)
         .WithMany()
         .HasForeignKey(r => r.PermissionId);
+
+    modelBuilder.Entity<HomeUserHomePermission>()
+        .HasKey(hp => hp.Id);
+
+    modelBuilder.Entity<HomeUserHomePermission>()
+        .HasOne(hp => hp.HomeUser)
+        .WithMany()
+        .HasForeignKey(hp => hp.HomeUserId)
+        .IsRequired();
+
+    modelBuilder.Entity<HomeUserHomePermission>()
+        .HasOne(hp => hp.HomePermission)
+        .WithMany()
+        .HasForeignKey(hp => hp.HomePermissionId)
+        .IsRequired();
+
+    modelBuilder.Entity<HomeUser>()
+        .HasMany(hu => hu.Permissions)
+        .WithMany(hp => hp.HomeUsers)
+        .UsingEntity<HomeUserHomePermission>();
 
     modelBuilder.Entity<RoleSystemPermission>().HasData(
             new RoleSystemPermission
@@ -318,5 +343,15 @@ public sealed class HomifyDbContext : DbContext
 
         public string? PermissionId { get; set; }
         public SystemPermission? Permission { get; set; }
+    }
+
+    public sealed record class HomeUserHomePermission
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string? HomeUserId { get; set; }
+        public HomeUser? HomeUser { get; set; }
+
+        public string? HomePermissionId { get; set; }
+        public HomePermission? HomePermission { get; set; }
     }
 }
