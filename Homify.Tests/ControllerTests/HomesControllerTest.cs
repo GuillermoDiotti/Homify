@@ -6,6 +6,7 @@ using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes;
@@ -18,10 +19,12 @@ public class HomesControllerTest
 {
     private readonly HomeController? _controller;
     private readonly Mock<IHomeService>? _homeServiceMock;
+    private readonly Mock <IUserService>? _userServiceMock;
     public HomesControllerTest()
     {
         _homeServiceMock = new Mock<IHomeService>(MockBehavior.Strict);
-        _controller = new HomeController(_homeServiceMock.Object);
+        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
+        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object);
     }
 
     [TestMethod]
@@ -294,7 +297,7 @@ public class HomesControllerTest
             OwnerId = "1"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, request.Email))
+        _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, newMember))
                         .Returns(homeResponseAfterUpdate);
 
         var result = _controller.UpdateMembersList("1", request);
