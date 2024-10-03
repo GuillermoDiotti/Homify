@@ -13,7 +13,7 @@ public class Home
     public int MaxMembers { get; set; }
     public HomeOwner Owner { get; set; } = null!;
     public List<HomeDevice> Devices { get; set; } = null!;
-    public List<HomeUser> NofificatedMembers { get; set; } = null!;
+    public List<HomeUser> Members { get; set; } = null!;
 
     public string OwnerId { get; set; } = null!;
 
@@ -33,7 +33,7 @@ public class Home
         MaxMembers = maxMembers;
         Owner = owner;
         Devices = devices;
-        NofificatedMembers = notificated;
+        Members = notificated;
         OwnerId = owner.Id;
     }
 }

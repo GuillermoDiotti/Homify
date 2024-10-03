@@ -273,7 +273,7 @@ public class HomesControllerTest
                 Role = RolesGenerator.HomeOwner()
             },
             Devices = [],
-            NofificatedMembers = [existingMember],
+            Members = [existingMember],
         };
 
         var homeResponseAfterUpdate = new Home
@@ -290,7 +290,7 @@ public class HomesControllerTest
                 Name = "Owner Name"
             },
             Devices = [],
-            NofificatedMembers = [existingMember, newMember],
+            Members = [existingMember, newMember],
             OwnerId = "1"
         };
 
@@ -303,7 +303,7 @@ public class HomesControllerTest
         homeResponseAfterUpdate.OwnerId.Should().Be(homeResponseAfterUpdate.Owner.Id);
         Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
         Assert.IsTrue(result.Members.Any(m => m.User.Email == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
-        Assert.AreEqual(homeResponseAfterUpdate.NofificatedMembers, result.Members, "La lista de miembros notificados debería coincidir con la respuesta esperada");
+        Assert.AreEqual(homeResponseAfterUpdate.Members, result.Members, "La lista de miembros notificados debería coincidir con la respuesta esperada");
     }
 
     [TestMethod]

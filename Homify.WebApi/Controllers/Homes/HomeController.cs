@@ -48,6 +48,18 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
+        var homeFound = _homeService.GetHomeById(homeId);
+
+        if (homeFound == null)
+        {
+            throw new NotFoundException("Home not found");
+        }
+
+        if (homeFound.MaxMembers >= homeFound.Members.Count)
+        {
+            throw new InvalidOperationException("Home members list is full");
+        }
+
         var home = _homeService.UpdateMemberList(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);

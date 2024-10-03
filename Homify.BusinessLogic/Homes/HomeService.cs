@@ -28,7 +28,7 @@ public class HomeService : IHomeService
             Owner = home.Owner,
             Street = home.Street,
             MaxMembers = home.MaxMembers,
-            NofificatedMembers = [],
+            Members = [],
             OwnerId = home.Owner.Id,
         };
         _repository.Add(newHome);

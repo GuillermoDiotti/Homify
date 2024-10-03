@@ -61,7 +61,7 @@ services.AddScoped<ISessionService, SessionService>();
 services.AddScoped<IRepository<Role>, RoleRepository>();
 services.AddScoped<IRoleService, RoleService>();
 
-services.AddScoped<IRepository<Home>, Repository<Home>>();
+services.AddScoped<IRepository<Home>, HomeRepository>();
 services.AddScoped<IHomeService, HomeService>();
 
 services.AddScoped<AuthenticationFilterAttribute>();

@@ -75,7 +75,7 @@ public sealed class HomifyDbContext : DbContext
         .IsRequired();
 
     modelBuilder.Entity<Home>()
-        .HasMany(u => u.NofificatedMembers)
+        .HasMany(u => u.Members)
         .WithOne(h => h.Home)
         .HasForeignKey(i => i.HomeId)
         .IsRequired();

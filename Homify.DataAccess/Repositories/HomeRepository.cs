@@ -17,6 +17,7 @@ public class HomeRepository : Repository<Home>
         var query =
             _entities.Include(u => u.Devices)
                 .Include(u => u.Owner)
+                .Include(u => u.Members)
                 .Where(predicate);
 
         var home = query.FirstOrDefault();

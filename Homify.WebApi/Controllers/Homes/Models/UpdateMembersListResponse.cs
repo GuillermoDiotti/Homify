@@ -9,6 +9,6 @@ public class UpdateMembersListResponse
 
     public UpdateMembersListResponse(Home home)
     {
-        Members = home.NofificatedMembers;
+        Members = home.Members;
     }
 }
