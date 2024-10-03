@@ -62,7 +62,7 @@ public class HomeService : IHomeService
     public void UpdateHomeDevices(string deviceid, string homeid, User user)
     {
         var home = _repository.Get(x => x.Id == homeid);
-        var homeUser = home.Members.FirstOrDefault(x => x.Id == user.Id);
+        var homeUser = home.Members.FirstOrDefault(x => x.UserId == user.Id);
         if (homeUser == null && home.OwnerId != user.Id)
         {
             throw new InvalidOperationException("User doesn't belong to this house");

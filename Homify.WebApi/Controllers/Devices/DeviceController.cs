@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Devices.Models;
+using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Devices;
@@ -20,6 +21,8 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("cameras")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.RegisterCamera)]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
         // TODO: verificar que solo puedan acceder los de cuentas COMPLETAS

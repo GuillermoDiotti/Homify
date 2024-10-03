@@ -14,12 +14,14 @@ public class DeviceService : IDeviceService
     private readonly IRepository<Camera> _cameraRepository;
     private readonly IRepository<Sensor> _sensorRepository;
     private readonly IRepository<Device> _deviceRepository;
+    private readonly ICompanyService _companyService;
 
-    public DeviceService(IRepository<Camera> cameraRepository, IRepository<Sensor> sensorRepository, IRepository<Device> deviceRepository)
+    public DeviceService(IRepository<Camera> cameraRepository, IRepository<Sensor> sensorRepository, IRepository<Device> deviceRepository, ICompanyService companyService)
     {
         _cameraRepository = cameraRepository;
         _sensorRepository = sensorRepository;
         _deviceRepository = deviceRepository;
+        _companyService = companyService;
     }
 
     public Camera AddCamera(CreateDeviceArgs device, User user)
@@ -82,7 +84,8 @@ public class DeviceService : IDeviceService
 
     private void HasCompany(CompanyOwner owner)
     {
-        if (owner.Company == null)
+        var company = _companyService.GetByUserId(owner.Id);
+        if (company == null)
         {
             throw new NotFoundException("The user does not have a company");
         }

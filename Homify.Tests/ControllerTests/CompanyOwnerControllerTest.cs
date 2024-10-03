@@ -16,11 +16,13 @@ public class CompanyOwnerControllerTest
 {
     private readonly CompanyOwnerController _controller;
     private readonly Mock<IUserService> _ownerServiceMock;
+    private readonly Mock<IRoleService> _roleServiceMock;
 
     public CompanyOwnerControllerTest()
     {
         _ownerServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new CompanyOwnerController(_ownerServiceMock.Object);
+        _roleServiceMock = new Mock<IRoleService>(MockBehavior.Strict);
+        _controller = new CompanyOwnerController(_ownerServiceMock.Object, _roleServiceMock.Object);
     }
 
     #region Create
