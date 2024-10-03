@@ -68,6 +68,9 @@ services.AddScoped<IHomeService, HomeService>();
 services.AddScoped<IRepository<HomeUser>, HomeUserRepository>();
 services.AddScoped<IHomeUserService, HomeUserService>();
 
+services.AddScoped<IRepository<HomePermission>, HomePermissionRepository>();
+services.AddScoped<IHomePermissionService, HomePermissionService>();
+
 services.AddScoped<AuthenticationFilterAttribute>();
 
 var app = builder.Build();
