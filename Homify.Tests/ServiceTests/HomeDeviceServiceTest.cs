@@ -15,14 +15,12 @@ public class HomeDeviceServiceTest
 {
     private Mock<IRepository<HomeDevice>>? _homeDeviceRepositoryMock;
     private HomeDeviceService? _homeDeviceService;
-    private Mock<IHomeService>? _homeService;
 
     [TestInitialize]
     public void Setup()
     {
         _homeDeviceRepositoryMock = new Mock<IRepository<HomeDevice>>();
-        _homeService = new Mock<IHomeService>();
-        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _homeService.Object);
+        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -34,10 +32,8 @@ public class HomeDeviceServiceTest
         var home = new Home { Id = homeId };
         var device = new Device { Id = deviceId };
 
-        _homeService.Setup(h => h.GetHomeById(homeId)).Returns(home);
-
         // Act
-        var result = _homeDeviceService.AddHomeDevice(homeId, device);
+        var result = _homeDeviceService.AddHomeDevice(home, device);
 
         // Assert
         Assert.IsNotNull(result);

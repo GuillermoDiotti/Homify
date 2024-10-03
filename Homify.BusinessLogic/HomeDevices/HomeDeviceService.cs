@@ -1,5 +1,6 @@
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Homes;
+using Homify.BusinessLogic.Homes.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 
@@ -8,17 +9,14 @@ namespace Homify.BusinessLogic.HomeDevices;
 public class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
-    private readonly IHomeService _homeService;
 
-    public HomeDeviceService(IRepository<HomeDevice> repository, IHomeService homeService)
+    public HomeDeviceService(IRepository<HomeDevice> repository)
     {
         _repository = repository;
-        _homeService = homeService;
     }
 
-    public HomeDevice? AddHomeDevice(string homeid, Device device)
+    public HomeDevice? AddHomeDevice(Home home, Device device)
     {
-        var home = _homeService.GetHomeById(homeid);
         if (home == null)
         {
             throw new NotFoundException("Home not found");
@@ -26,7 +24,7 @@ public class HomeDeviceService : IHomeDeviceService
 
         var homeDevice = new HomeDevice()
         {
-            HomeId = homeid,
+            HomeId = home.Id,
             DeviceId = device.Id,
             Device = device,
             Home = home,

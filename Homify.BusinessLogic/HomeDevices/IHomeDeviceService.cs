@@ -1,8 +1,9 @@
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Homes.Entities;
 
 namespace Homify.BusinessLogic.HomeDevices;
 
 public interface IHomeDeviceService
 {
-    HomeDevice? AddHomeDevice(string homeid, Device device);
+    HomeDevice? AddHomeDevice(Home home, Device device);
 }

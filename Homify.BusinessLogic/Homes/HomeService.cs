@@ -90,7 +90,7 @@ public class HomeService : IHomeService
                 MovementDetection = false,
                 PeopleDetection = false,
             };
-            _homeDeviceService.AddHomeDevice(homeid, device);
+            _homeDeviceService.AddHomeDevice(home, device);
             home.Devices.Add(homeDevice);
             _repository.Update(home);
         }
