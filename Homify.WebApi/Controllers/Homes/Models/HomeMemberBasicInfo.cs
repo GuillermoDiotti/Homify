@@ -10,6 +10,6 @@ public class HomeMemberBasicInfo
     public HomeMemberBasicInfo(HomeUser user)
     {
         UserId = user.UserId;
-        Permissions = user.Permissions.Select(x => x.ToString()).ToList();
+        Permissions = user.Permissions.Select(x => x.Value.ToString()).ToList();
     }
 }

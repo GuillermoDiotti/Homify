@@ -19,12 +19,14 @@ public sealed class HomeController : HomifyControllerBase
     private readonly IHomeService _homeService;
     private readonly IUserService _userService;
     private readonly IHomeUserService _homeUserService;
+    private readonly IHomePermissionService _homePermissionService;
 
-    public HomeController(IHomeService homeService, IUserService userService, IHomeUserService homeUserService)
+    public HomeController(IHomeService homeService, IUserService userService, IHomeUserService homeUserService, IHomePermissionService homePermissionService)
     {
         _homeService = homeService;
         _userService = userService;
         _homeUserService = homeUserService;
+        _homePermissionService = homePermissionService;
     }
 
     [HttpPost]
@@ -97,7 +99,7 @@ public sealed class HomeController : HomifyControllerBase
         return new UpdateMembersListResponse(home);
     }
 
-    /*[HttpPut("{homeId}/{memberId}")]
+    [HttpPut("{homeId}/{memberId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
     public HomeMemberBasicInfo ChangeHomeMemberPermissions([FromRoute] string? homeId, [FromRoute] string memberId,
@@ -124,32 +126,26 @@ public sealed class HomeController : HomifyControllerBase
         var list = new List<HomePermission>();
         if (req.CanAddDevices)
         {
-            list.Add(new HomifyDbContext.HomeUserHomePermission()
+            var permission = _homePermissionService.GetByValue(PermissionsGenerator.MemberCanAddDevice);
+            if (permission != null)
             {
-                Id = Guid.NewGuid().ToString(),
-                HomeId = found.HomeId,
-                HomeUser = found,
-                UserId = found.UserId,
-                Value = PermissionsGenerator.MemberCanAddDevice,
-            });
+                list.Add(permission);
+            }
         }
 
         if (req.CanListDevices)
         {
-            list.Add(new HomePermission()
+            var permission = _homePermissionService.GetByValue(PermissionsGenerator.MemberCanListDevices);
+            if (permission != null)
             {
-                Id = Guid.NewGuid().ToString(),
-                HomeId = found.HomeId,
-                HomeUser = found,
-                UserId = found.UserId,
-                Value = PermissionsGenerator.MemberCanListDevices,
-            });
+                list.Add(permission);
+            }
         }
 
         found.Permissions = list;
         var result = _homeUserService.Update(found);
         return new HomeMemberBasicInfo(result);
-    }*/
+    }
 
     [HttpPut("{homeId}/devices")]
     public void UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)

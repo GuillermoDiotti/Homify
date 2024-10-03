@@ -32,7 +32,7 @@ public static class PermissionsGenerator
     public const string CreateNotification = "notifications-Create";
 
     // HOMEUSERS
-    public const string MemberCanAddDevice = "AddDevice";
+    public const string MemberCanAddDevice = "AddDevices";
     public const string MemberCanListDevices = "ListDevices";
 
     public static List<SystemPermission> GetAdminPermissions()

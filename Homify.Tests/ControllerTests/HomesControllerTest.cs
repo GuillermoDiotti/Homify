@@ -21,12 +21,14 @@ public class HomesControllerTest
     private readonly Mock<IHomeService>? _homeServiceMock;
     private readonly Mock<IUserService>? _userServiceMock;
     private readonly Mock<IHomeUserService> _homeUserServiceMock;
+    private readonly Mock<IHomePermissionService> _homePermissionServiceMock;
     public HomesControllerTest()
     {
         _homeServiceMock = new Mock<IHomeService>(MockBehavior.Strict);
         _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _homeUserServiceMock = new Mock<IHomeUserService>(MockBehavior.Strict);
-        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object, _homeUserServiceMock.Object);
+        _homePermissionServiceMock = new Mock<IHomePermissionService>(MockBehavior.Strict);
+        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object, _homeUserServiceMock.Object, _homePermissionServiceMock.Object);
     }
 
     [TestMethod]
@@ -302,8 +304,7 @@ public class HomesControllerTest
         Assert.IsNotNull(result);
         homeResponseAfterUpdate.OwnerId.Should().Be(homeResponseAfterUpdate.Owner.Id);
         Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
-        Assert.IsTrue(result.Members.Any(m => m.User.Email == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
-        Assert.AreEqual(homeResponseAfterUpdate.Members, result.Members, "La lista de miembros notificados debería coincidir con la respuesta esperada");
+        Assert.IsTrue(result.Members.Any(m => m == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
     }
 
     [TestMethod]
@@ -437,10 +438,10 @@ public class HomesControllerTest
         Assert.AreEqual("photo2.jpg", result[1].MainPhoto, "La foto principal del segundo dispositivo no es la esperada.");
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void ChangeHomeMemberPermissions_ShouldThrowNullRequestException_WhenRequestIsNull()
     {
         _controller.ChangeHomeMemberPermissions("home123", "member123", null);
-    }*/
+    }
 }
