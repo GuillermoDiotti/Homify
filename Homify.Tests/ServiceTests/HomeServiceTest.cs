@@ -172,4 +172,25 @@ public class HomeServiceTest
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual(userId, result.First().Id);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void GetHomeMembers_ShouldThrowException_WhenUserIsNotOwner()
+    {
+        var homeId = "home1";
+        var userId = "user1";
+        var ownerId = "owner1";
+        var user = new User { Id = userId };
+        var home = new Home
+        {
+            Id = homeId,
+            OwnerId = ownerId,
+            Members = new List<HomeUser>()
+        };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Home, bool>>>()))
+            .Returns(home);
+
+        _homeService.GetHomeMembers(homeId, user);
+    }
 }
