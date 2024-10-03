@@ -1,6 +1,6 @@
 namespace Homify.BusinessLogic.CompanyOwners;
 
-public class ICompanyOwnerService
+public interface ICompanyOwnerService
 {
-    
+    CompanyOwner? GetById(string id);
 }

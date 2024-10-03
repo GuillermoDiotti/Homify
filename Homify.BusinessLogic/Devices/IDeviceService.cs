@@ -8,7 +8,7 @@ namespace Homify.BusinessLogic.Devices;
 
 public interface IDeviceService
 {
-    Camera AddCamera(CreateDeviceArgs device, User user);
-    Sensor AddSensor(CreateDeviceArgs device, User user);
+    Camera AddCamera(CreateDeviceArgs device, CompanyOwner? user);
+    Sensor AddSensor(CreateDeviceArgs device, CompanyOwner? user);
     Device GetById(string id);
 }

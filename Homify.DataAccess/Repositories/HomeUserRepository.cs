@@ -20,6 +20,7 @@ public class HomeUserRepository : Repository<HomeUser>
                 .Include(s => s.User.Role.Permissions)
                 .Include(s => s.Home)
                 .Include(s => s.Home.Devices)
+                .Include(s => s.Permissions)
                 .Where(expression);
 
         var session = query.FirstOrDefault();

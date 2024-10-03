@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
@@ -18,11 +19,13 @@ public class DeviceControllerTest
 {
     private readonly DeviceController _controller;
     private readonly Mock<IDeviceService> _deviceServiceMock;
+    private readonly Mock<ICompanyOwnerService> _companyOwnerServiceMock;
 
     public DeviceControllerTest()
     {
+        _companyOwnerServiceMock = new Mock<ICompanyOwnerService>(MockBehavior.Strict);
         _deviceServiceMock = new Mock<IDeviceService>(MockBehavior.Strict);
-        _controller = new DeviceController(_deviceServiceMock.Object);
+        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object);
         var httpContext = new DefaultHttpContext();
         httpContext.Items["UserLogged"] = new User { };
         _controller.ControllerContext = new ControllerContext
@@ -60,7 +63,7 @@ public class DeviceControllerTest
 
         var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
 
-        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(), It.IsAny<User>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(), It.IsAny<CompanyOwner>())).Returns(expected);
 
         var response = _controller.RegisterCamera(request);
 
@@ -99,7 +102,7 @@ public class DeviceControllerTest
 
         var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
 
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(),It.IsAny<User>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(),It.IsAny<CompanyOwner>())).Returns(expected);
 
         var response = _controller.RegisterSensor(request);
 

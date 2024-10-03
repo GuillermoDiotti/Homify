@@ -91,8 +91,8 @@ public class HomeService : IHomeService
                 PeopleDetection = false,
             };
             _homeDeviceService.AddHomeDevice(home, device);
-            home.Devices.Add(homeDevice);
             _repository.Update(home);
+            home.Devices.Add(homeDevice);
         }
     }
 

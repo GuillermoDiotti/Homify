@@ -24,9 +24,8 @@ public class DeviceService : IDeviceService
         _companyService = companyService;
     }
 
-    public Camera AddCamera(CreateDeviceArgs device, User user)
+    public Camera AddCamera(CreateDeviceArgs device, CompanyOwner owner)
     {
-        CompanyOwner owner = (CompanyOwner)user;
         HasCompany(owner);
         var camera = new Camera
         {
@@ -46,7 +45,7 @@ public class DeviceService : IDeviceService
         return camera;
     }
 
-    public Sensor AddSensor(CreateDeviceArgs device, User user)
+    public Sensor AddSensor(CreateDeviceArgs device, CompanyOwner user)
     {
         CompanyOwner owner = (CompanyOwner)user;
         HasCompany(owner);
@@ -82,7 +81,7 @@ public class DeviceService : IDeviceService
         return device;
     }
 
-    private void HasCompany(CompanyOwner owner)
+    private void HasCompany(CompanyOwner? owner)
     {
         var company = _companyService.GetByUserId(owner.Id);
         if (company == null)

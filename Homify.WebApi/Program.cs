@@ -1,5 +1,6 @@
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Homes;
@@ -74,6 +75,9 @@ services.AddScoped<IHomePermissionService, HomePermissionService>();
 
 services.AddScoped<IRepository<HomeDevice>, Repository<HomeDevice>>();
 services.AddScoped<IHomeDeviceService, HomeDeviceService>();
+
+services.AddScoped<IRepository<CompanyOwner>, CompanyOwnerRepository>();
+services.AddScoped<ICompanyOwnerService, CompanyOwnerService>();
 
 services.AddScoped<AuthenticationFilterAttribute>();
 
