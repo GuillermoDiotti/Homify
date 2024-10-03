@@ -19,12 +19,14 @@ public class HomesControllerTest
 {
     private readonly HomeController? _controller;
     private readonly Mock<IHomeService>? _homeServiceMock;
-    private readonly Mock <IUserService>? _userServiceMock;
+    private readonly Mock<IUserService>? _userServiceMock;
+    private readonly Mock<IHomeUserService> _homeUserServiceMock;
     public HomesControllerTest()
     {
         _homeServiceMock = new Mock<IHomeService>(MockBehavior.Strict);
         _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object);
+        _homeUserServiceMock = new Mock<IHomeUserService>(MockBehavior.Strict);
+        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object, _homeUserServiceMock.Object);
     }
 
     [TestMethod]
@@ -60,11 +62,11 @@ public class HomesControllerTest
     {
         var homepermission = new HomePermission()
         {
-            Id = 123,
+            Id = "123",
             Value = "calle 1"
         };
 
-        homepermission.Id.Should().Be(123);
+        homepermission.Id.Should().Be("123");
         homepermission.Value.Should().Be("calle 1");
     }
 
@@ -116,7 +118,7 @@ public class HomesControllerTest
         };
         var permission = new HomePermission()
         {
-            Id = 123,
+            Id = "123",
             Value = "calle 1",
             HomeUser = homeuser,
             HomeId = "home123",
@@ -438,5 +440,12 @@ public class HomesControllerTest
         Assert.AreEqual("Model B", result[1].Model, "El modelo del segundo dispositivo no es el esperado.");
         Assert.IsFalse(result[1].IsConnected, "El segundo dispositivo no debería estar conectado.");
         Assert.AreEqual("photo2.jpg", result[1].MainPhoto, "La foto principal del segundo dispositivo no es la esperada.");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void ChangeHomeMemberPermissions_ShouldThrowNullRequestException_WhenRequestIsNull()
+    {
+        _controller.ChangeHomeMemberPermissions("home123", "member123", null);
     }
 }

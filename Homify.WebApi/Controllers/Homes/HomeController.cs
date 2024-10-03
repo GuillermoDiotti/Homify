@@ -17,11 +17,13 @@ public sealed class HomeController : HomifyControllerBase
 {
     private readonly IHomeService _homeService;
     private readonly IUserService _userService;
+    private readonly IHomeUserService _homeUserService;
 
-    public HomeController(IHomeService homeService, IUserService userService)
+    public HomeController(IHomeService homeService, IUserService userService, IHomeUserService homeUserService)
     {
         _homeService = homeService;
         _userService = userService;
+        _homeUserService = homeUserService;
     }
 
     [HttpPost]
@@ -92,6 +94,52 @@ public sealed class HomeController : HomifyControllerBase
         var home = _homeService.UpdateMemberList(homeId, homeUser);
 
         return new UpdateMembersListResponse(home);
+    }
+
+    [HttpPut("{homeId}/{memberId}")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
+    public HomeMemberBasicInfo ChangeHomeMemberPermissions([FromRoute] string? homeId, [FromRoute] string memberId,
+        EditMemberPermissionsRequest req)
+    {
+        if (req == null)
+        {
+            throw new NullRequestException("Request can not be null");
+        }
+
+        var found = _homeUserService.GetByIds(homeId, memberId);
+
+        if (found == null)
+        {
+            throw new NotFoundException("HomeUser not found");
+        }
+
+        if (req.CanAddDevices)
+        {
+            found.Permissions.Add(new HomePermission()
+            {
+                Id = Guid.NewGuid().ToString(),
+                HomeId = found.HomeId,
+                HomeUser = found,
+                UserId = found.UserId,
+                Value = PermissionsGenerator.MemberCanAddDevice,
+            });
+        }
+
+        if (req.CanListDevices)
+        {
+            found.Permissions.Add(new HomePermission()
+            {
+                Id = Guid.NewGuid().ToString(),
+                HomeId = found.HomeId,
+                HomeUser = found,
+                UserId = found.UserId,
+                Value = PermissionsGenerator.MemberCanListDevices,
+            });
+        }
+
+        var result = _homeUserService.Update(found);
+        return new HomeMemberBasicInfo(result);
     }
 
     [HttpPut("{homeId}/devices")]

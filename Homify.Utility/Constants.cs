@@ -2,7 +2,7 @@
 
 public static class Constants
 {
-    #region Role Names
+    #region Role Ids
 
     public const string ADMINISTRATORID = "AdminId";
     public const string COMPANYOWNERID = "CompanyOwnerId";
