@@ -10,7 +10,7 @@ public class HomeDevice
     public Home Home { get; set; } = null!;
     public Device Device { get; set; } = null!;
     public bool Connected { get; set; }
-    public int HardwareId { get; set; }
+    public string HardwareId { get; set; } = null!;
     public bool MovementDetection { get; init; }
     public bool PeopleDetection { get; init; }
 }

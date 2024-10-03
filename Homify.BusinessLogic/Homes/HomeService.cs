@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
@@ -11,10 +12,12 @@ namespace Homify.BusinessLogic.Homes;
 public class HomeService : IHomeService
 {
     private readonly IRepository<Home> _repository;
+    private readonly IDeviceService _deviceService;
 
-    public HomeService(IRepository<Home> repository)
+    public HomeService(IRepository<Home> repository, IDeviceService deviceService)
     {
         _repository = repository;
+        _deviceService = deviceService;
     }
 
     public Home AddHome(CreateHomeArgs home)
@@ -56,9 +59,38 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public void UpdateHomeDevices(string deviceid, string homeid)
+    public void UpdateHomeDevices(string deviceid, string homeid, User user)
     {
-        throw new NotImplementedException();
+        var home = _repository.Get(x => x.Id == homeid);
+        var homeUser = home.Members.FirstOrDefault(x => x.Id == user.Id);
+        if (homeUser == null && home.OwnerId != user.Id)
+        {
+            throw new InvalidOperationException("User doesn't belong to this house");
+        }
+
+        var inHome = home.Members.Any(x => x.Id == user.Id);
+        if (home.OwnerId == user.Id || homeUser.Permissions.Any(x => x.Value == PermissionsGenerator.MemberCanAddDevice))
+        {
+            var device = _deviceService.GetById(deviceid);
+            if (device == null)
+            {
+                throw new NotFoundException("Device not found");
+            }
+
+            var homeDevice = new HomeDevice()
+            {
+                Device = device,
+                DeviceId = device.Id,
+                Home = home,
+                HomeId = home.Id,
+                Connected = false,
+                HardwareId = Guid.NewGuid().ToString(),
+                MovementDetection = false,
+                PeopleDetection = false,
+            };
+            home.Devices.Add(homeDevice);
+            _repository.Update(home);
+        }
     }
 
     public List<User> GetHomeMembers(string id)

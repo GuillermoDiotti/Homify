@@ -1,9 +1,12 @@
 ﻿using System.Linq.Expressions;
+using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
 
@@ -14,11 +17,13 @@ public class HomeServiceTest
 {
     private Mock<IRepository<Home>> _mockRepository;
     private HomeService _homeService;
+    private Mock<IDeviceService> _deviceService;
 
     public HomeServiceTest()
     {
+        _deviceService = new Mock<IDeviceService>();
         _mockRepository = new Mock<IRepository<Home>>();
-        _homeService = new HomeService(_mockRepository.Object);
+        _homeService = new HomeService(_mockRepository.Object, _deviceService.Object);
     }
 
     [TestMethod]
@@ -110,5 +115,35 @@ public class HomeServiceTest
 
         // Verify that the repository's Get method was called once
         _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void UpdateHomeDevices_ShouldAddDeviceToHome_WhenUserHasPermission()
+    {
+        // Arrange
+        var homeId = "home1";
+        var deviceId = "device1";
+        var userId = "user1";
+        var user = new User { Id = userId };
+        var home = new Home
+        {
+            Id = homeId,
+            OwnerId = userId,
+            Members = new List<HomeUser>
+            {
+                new HomeUser { Id = userId, Permissions = new List<HomePermission> { new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice } } }
+            },
+            Devices = new List<HomeDevice>()
+        };
+        var device = new Device { Id = deviceId };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
+        _deviceService.Setup(d => d.GetById(deviceId)).Returns(device);
+
+        // Act
+        _homeService.UpdateHomeDevices(deviceId, homeId, user);
+
+        // Assert
+        _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Devices.Any(d => d.DeviceId == deviceId))), Times.Once);
     }
 }

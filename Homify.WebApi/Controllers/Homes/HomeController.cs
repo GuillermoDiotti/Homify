@@ -161,7 +161,9 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("HomeId can not be null");
         }
 
-        _homeService.UpdateHomeDevices(request.DeviceId, homeId);
+        var user = GetUserLogged();
+
+        _homeService.UpdateHomeDevices(request.DeviceId, homeId, user);
     }
 
     [HttpGet("{homeId}/devices")]

@@ -88,7 +88,7 @@ public class HomesControllerTest
                 Id = "device123"
             },
             Connected = true,
-            HardwareId = 1001,
+            HardwareId = "1001",
             MovementDetection = true,
             PeopleDetection = true
         };
@@ -98,7 +98,7 @@ public class HomesControllerTest
         homedevice.Home.Id.Should().Be("home123");
         homedevice.Device.Id.Should().Be("device123");
         homedevice.Connected.Should().BeTrue();
-        homedevice.HardwareId.Should().Be(1001);
+        homedevice.HardwareId.Should().Be("1001");
     }
 
     [TestMethod]
@@ -322,6 +322,7 @@ public class HomesControllerTest
             DeviceId = "device123"
         };
 
+        var user = new User();
         var homeDevice = new HomeDevice
         {
             DeviceId = "device123",
@@ -335,14 +336,14 @@ public class HomesControllerTest
                 Id = "device123"
             },
             Connected = true,
-            HardwareId = 1001
+            HardwareId = "1001"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId)).Verifiable();
+        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId, user)).Verifiable();
 
         _controller.UpdateHomeDevice(request, "home1");
 
-        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId), Times.Once,
+        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId, user), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
     }
 

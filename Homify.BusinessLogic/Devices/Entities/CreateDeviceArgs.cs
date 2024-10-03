@@ -42,5 +42,7 @@ public class CreateDeviceArgs
         }
 
         Photos = list;
+        IsExterior = isExterior;
+        IsInterior = isInterior;
     }
 }

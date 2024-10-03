@@ -10,7 +10,7 @@ public interface IHomeService
     Home AddHome(CreateHomeArgs home);
     Home? GetHomeById(string id);
     Home UpdateMemberList(string homeId, HomeUser homeOwner);
-    void UpdateHomeDevices(string deviceid, string homeid);
+    void UpdateHomeDevices(string deviceid, string homeid, User user);
     List<User> GetHomeMembers(string id);
     void UpdateNotificatedList(string homeId, string memberId);
     List<Device> GetHomeDevices(string homeId);
