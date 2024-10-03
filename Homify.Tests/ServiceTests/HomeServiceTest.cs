@@ -18,12 +18,14 @@ public class HomeServiceTest
     private Mock<IRepository<Home>> _mockRepository;
     private HomeService _homeService;
     private Mock<IDeviceService> _deviceService;
+    private Mock<IHomeDeviceService> _homeDeviceService;
 
     public HomeServiceTest()
     {
         _deviceService = new Mock<IDeviceService>();
         _mockRepository = new Mock<IRepository<Home>>();
-        _homeService = new HomeService(_mockRepository.Object, _deviceService.Object);
+        _homeDeviceService = new Mock<IHomeDeviceService>();
+        _homeService = new HomeService(_mockRepository.Object, _deviceService.Object, _homeDeviceService.Object);
     }
 
     [TestMethod]

@@ -13,11 +13,13 @@ public class HomeService : IHomeService
 {
     private readonly IRepository<Home> _repository;
     private readonly IDeviceService _deviceService;
+    private readonly IHomeDeviceService _homeDeviceService;
 
-    public HomeService(IRepository<Home> repository, IDeviceService deviceService)
+    public HomeService(IRepository<Home> repository, IDeviceService deviceService, IHomeDeviceService homeDeviceService)
     {
         _repository = repository;
         _deviceService = deviceService;
+        _homeDeviceService = homeDeviceService;
     }
 
     public Home AddHome(CreateHomeArgs home)
@@ -88,6 +90,7 @@ public class HomeService : IHomeService
                 MovementDetection = false,
                 PeopleDetection = false,
             };
+            _homeDeviceService.AddHomeDevice(homeid, device);
             home.Devices.Add(homeDevice);
             _repository.Update(home);
         }
