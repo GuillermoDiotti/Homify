@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -47,9 +48,12 @@ public class HomeService : IHomeService
         }
     }
 
-    public Home UpdateMemberList(string homeId, HomeOwner homeOwner)
+    public Home UpdateMemberList(string homeId, HomeUser homeOwner)
     {
-        
+        var home = _repository.Get(x => x.Id == homeId);
+        home.Members.Add(homeOwner);
+        _repository.Update(home);
+        return home;
     }
 
     public void UpdateHomeDevices(string deviceid, string homeid)

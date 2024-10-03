@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
 using Homify.DataAccess.Repositories;
 using Moq;
@@ -71,5 +72,43 @@ public class HomeServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedHome.Id, result.Id);
         Assert.AreEqual(expectedHome.Number, result.Number);
+    }
+
+    [TestMethod]
+    public void UpdateMemberList_ShouldAddMemberAndUpdateHome()
+    {
+        // Arrange
+        var homeId = "home123";
+        var homeOwner = new HomeUser { UserId = "owner123" };
+
+        var home = new Home
+        {
+            Id = homeId,
+            Members = new List<HomeUser>(),  // Initially no members
+            Number = "123",
+            Street = "Main St",
+            Latitude = "45.0",
+            Longitude = "-93.0",
+            MaxMembers = 5
+        };
+
+        // Setup mock to return the home when Get is called
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(home);
+
+        // Act
+        var updatedHome = _homeService.UpdateMemberList(homeId, homeOwner);
+
+        // Assert
+        Assert.IsNotNull(updatedHome);
+        Assert.AreEqual(homeId, updatedHome.Id);
+        Assert.AreEqual(1, updatedHome.Members.Count);  // Check if member was added
+        Assert.AreEqual(homeOwner.UserId, updatedHome.Members[0].UserId);  // Check if correct member was added
+
+        // Verify that the repository's Update method was called
+        _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Id == homeId && h.Members.Contains(homeOwner))), Times.Once);
+
+        // Verify that the repository's Get method was called once
+        _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()), Times.Once);
     }
 }
