@@ -4,6 +4,7 @@ using Homify.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homify.DataAccess.Migrations
 {
     [DbContext(typeof(HomifyDbContext))]
-    partial class HomifyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241003162322_IntToString")]
+    partial class IntToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,6 +196,11 @@ namespace Homify.DataAccess.Migrations
                     b.ToTable("HomePermission");
 
                     b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Value = "HomeOwner"
+                        },
                         new
                         {
                             Id = "2",
@@ -470,115 +478,115 @@ namespace Homify.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            RoleSystemPermissionId = "cb433c65-efd6-4151-bb70-4c5d5d940d39",
+                            RoleSystemPermissionId = "2507e45a-de6b-4a18-b694-dfd616753923",
                             PermissionId = "1",
                             RoleId = "AdminId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "f8b7f016-ce69-463d-9dd9-7fd2f19cb8bd",
+                            RoleSystemPermissionId = "2bf22b38-9130-4d11-8323-6c385a11a805",
                             PermissionId = "2",
                             RoleId = "AdminId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "4358ab65-3ac5-4d4a-a8c4-fc9e381790dd",
+                            RoleSystemPermissionId = "4546a0a4-54cf-4f0d-b30d-f6558a301722",
                             PermissionId = "3",
                             RoleId = "AdminId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "11df4adb-3217-4494-ac4e-b552349ef602",
+                            RoleSystemPermissionId = "79c95d6e-7e8e-48f2-a978-a9f244b3c606",
                             PermissionId = "4",
                             RoleId = "AdminId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "f4aa1354-f6d7-4dc2-9429-b335c29e29fe",
+                            RoleSystemPermissionId = "71a26694-4676-4189-ba29-512040252b89",
                             PermissionId = "5",
                             RoleId = "AdminId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "e52271f4-1eea-47d0-b8c0-edf9ac84caaf",
+                            RoleSystemPermissionId = "0525622a-bec3-4b81-aa09-5ccfa715dfcd",
                             PermissionId = "6",
                             RoleId = "CompanyOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "2864b2e5-620d-4826-a270-4452e595a110",
+                            RoleSystemPermissionId = "8f6781ef-eea1-4bfb-883f-109332343ebb",
                             PermissionId = "7",
                             RoleId = "CompanyOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "5e560913-3c29-4ea4-9c0a-7ef203a35f75",
+                            RoleSystemPermissionId = "57a8dd74-9e6a-437f-a792-5d63c2d85b6c",
                             PermissionId = "8",
                             RoleId = "CompanyOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "b75a367f-4b18-4f38-b5b5-d7cf29f11082",
+                            RoleSystemPermissionId = "a7d3f03d-57a3-4ce2-93a1-1b87baa1312b",
                             PermissionId = "9",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "22521359-23f0-4e17-ac05-cedd466c3ab4",
+                            RoleSystemPermissionId = "f40fa0ec-dc11-48b3-bd6b-5a59afeef2a7",
                             PermissionId = "10",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "3685181c-78a5-4509-8ed0-85417737e33c",
+                            RoleSystemPermissionId = "a916afb7-a203-4015-be03-f753c406508a",
                             PermissionId = "11",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "d64b42cc-8473-436d-87e3-b51a24f3a594",
+                            RoleSystemPermissionId = "3c049ff0-e02e-40c3-8bcc-fb0fb1a26d3b",
                             PermissionId = "12",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "93cc90d9-9a6f-4845-b7aa-a266a105e7f9",
+                            RoleSystemPermissionId = "cd76f4ab-485c-4d38-8444-784c4eafb58d",
                             PermissionId = "13",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "f86194d4-819b-4d55-a4b9-8af6b8551e9e",
+                            RoleSystemPermissionId = "533ff79e-cf7c-4c30-a903-da9950d127d6",
                             PermissionId = "14",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "887c5e3e-121c-48ab-936a-ae660d1287c3",
+                            RoleSystemPermissionId = "571c3f1b-21a7-4c63-84b0-7d636af34213",
                             PermissionId = "15",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "cfbbd4fd-91a2-4e4b-9f8f-81a1f5a69cd3",
+                            RoleSystemPermissionId = "48599fce-c032-427d-8a07-000508a5e7a7",
                             PermissionId = "16",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "e49ddb85-313b-40a7-899f-e6ca171176e5",
+                            RoleSystemPermissionId = "6758993a-dd40-4568-b12e-27cbb7fb2aa1",
                             PermissionId = "17",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "ab78e16e-b4e8-498f-a5eb-1e07e66f0079",
+                            RoleSystemPermissionId = "5be26469-1cb6-462b-bc18-ecab7bfdb48e",
                             PermissionId = "18",
                             RoleId = "HomeOwnerId"
                         },
                         new
                         {
-                            RoleSystemPermissionId = "405e2053-c373-464b-b5d2-4e47104c1251",
+                            RoleSystemPermissionId = "2cdf07b7-3b54-4663-9fb3-461d15d3e11e",
                             PermissionId = "19",
                             RoleId = "HomeOwnerId"
                         });
@@ -613,8 +621,8 @@ namespace Homify.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "44346f94-7612-43d1-bec7-e03c4789c569",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 10, 3, 16, 26, 46, 944, DateTimeKind.Unspecified).AddTicks(4188), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = "adde7479-c96e-4ae9-84c3-7345adb00049",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 10, 3, 16, 23, 21, 434, DateTimeKind.Unspecified).AddTicks(4579), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "admin@domain.com",
                             LastName = "LastName",
                             Name = "Admin",
@@ -635,8 +643,8 @@ namespace Homify.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b11f22b2-c507-40f5-83d3-e2ab904bb21b",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 10, 3, 16, 26, 46, 944, DateTimeKind.Unspecified).AddTicks(4215), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = "9d1121ef-a732-4c1c-966f-66a8d43101c5",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 10, 3, 16, 23, 21, 434, DateTimeKind.Unspecified).AddTicks(4597), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "companyowner@domain.com",
                             LastName = "LastName",
                             Name = "CompanyOwner",
@@ -659,8 +667,8 @@ namespace Homify.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c89c8736-45e4-46e8-a752-45be075b3fda",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 10, 3, 16, 26, 46, 944, DateTimeKind.Unspecified).AddTicks(4203), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = "79fdbfd4-10a0-49be-9746-8bfc6d999554",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 10, 3, 16, 23, 21, 434, DateTimeKind.Unspecified).AddTicks(4591), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "homeowner@domain.com",
                             LastName = "LastName",
                             Name = "Homeowner",

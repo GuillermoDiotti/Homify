@@ -120,7 +120,6 @@ public class HomeServiceTest
     [TestMethod]
     public void UpdateHomeDevices_ShouldAddDeviceToHome_WhenUserHasPermission()
     {
-        // Arrange
         var homeId = "home1";
         var deviceId = "device1";
         var userId = "user1";
@@ -140,10 +139,8 @@ public class HomeServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
         _deviceService.Setup(d => d.GetById(deviceId)).Returns(device);
 
-        // Act
         _homeService.UpdateHomeDevices(deviceId, homeId, user);
 
-        // Assert
         _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Devices.Any(d => d.DeviceId == deviceId))), Times.Once);
     }
 }
