@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Homes.Models;
+using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Homes;
@@ -18,6 +19,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPost]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public CreateHomeResponse Create(CreateHomeRequest request)
     {
         if (request == null)
@@ -27,13 +30,13 @@ public sealed class HomeController : HomifyControllerBase
 
         var arguments = new CreateHomeArgs(
            request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
-           request.Longitud ?? string.Empty, request.MaxMembers ?? string.Empty);
+           request.Longitud ?? string.Empty, request.MaxMembers);
 
         var homeSaved = _homeService.AddHome(arguments);
         return new CreateHomeResponse(homeSaved);
     }
 
-    [HttpPut("{homeId}")]
+    [HttpPut("{homeId}/members")]
     public UpdateMembersListResponse UpdateMembersList([FromRoute] string homeId, UpdateMemberListRequest request)
     {
         if (request == null)

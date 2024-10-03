@@ -8,9 +8,9 @@ public class CreateHomeArgs
     public readonly string Number;
     public readonly string Latitude;
     public readonly string Longitude;
-    public readonly string MaxMembers;
+    public readonly int MaxMembers;
 
-    public CreateHomeArgs(string street, string number, string latitude, string longitude, string maxMembers)
+    public CreateHomeArgs(string street, string number, string latitude, string longitude, int maxMembers)
     {
         if (string.IsNullOrWhiteSpace(street))
         {
@@ -32,7 +32,7 @@ public class CreateHomeArgs
             throw new ArgsNullException("longitude cannot be null or empty");
         }
 
-        if (string.IsNullOrWhiteSpace(maxMembers))
+        if (maxMembers < 1)
         {
             throw new ArgsNullException("max members cannot be null or empty");
         }
