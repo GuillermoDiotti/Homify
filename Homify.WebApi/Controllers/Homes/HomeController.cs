@@ -114,9 +114,16 @@ public sealed class HomeController : HomifyControllerBase
             throw new NotFoundException("HomeUser not found");
         }
 
+        var user = GetUserLogged();
+        if (user.Id != found.Home.OwnerId)
+        {
+            throw new InvalidOperationException("You must be the owner of this home");
+        }
+
+        var list = new List<HomePermission>();
         if (req.CanAddDevices)
         {
-            found.Permissions.Add(new HomePermission()
+            list.Add(new HomePermission()
             {
                 Id = Guid.NewGuid().ToString(),
                 HomeId = found.HomeId,
@@ -128,7 +135,7 @@ public sealed class HomeController : HomifyControllerBase
 
         if (req.CanListDevices)
         {
-            found.Permissions.Add(new HomePermission()
+            list.Add(new HomePermission()
             {
                 Id = Guid.NewGuid().ToString(),
                 HomeId = found.HomeId,
@@ -138,6 +145,7 @@ public sealed class HomeController : HomifyControllerBase
             });
         }
 
+        found.Permissions = list;
         var result = _homeUserService.Update(found);
         return new HomeMemberBasicInfo(result);
     }
