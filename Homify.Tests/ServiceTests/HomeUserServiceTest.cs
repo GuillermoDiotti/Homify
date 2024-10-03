@@ -40,4 +40,16 @@ public class HomeUserServiceTest
         Assert.AreEqual(expectedHomeUser.UserId, result.UserId);
         _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()), Times.Once);
     }
+
+    [TestMethod]
+    public void GetByIds_ShouldReturnNull_WhenHomeUserDoesNotExist()
+    {
+        var homeId = "nonexistentHome";
+        var userId = "nonexistentUser";
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()))
+            .Returns((HomeUser)null);
+        var result = _homeUserService.GetByIds(homeId, userId);
+        Assert.IsNull(result);
+        _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()), Times.Once);
+    }
 }
