@@ -3,6 +3,7 @@ using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Homes;
 
@@ -32,6 +33,18 @@ public class HomeService : IHomeService
         };
         _repository.Add(newHome);
         return newHome;
+    }
+
+    public Home? GetHomeById(string id)
+    {
+        try
+        {
+            return _repository.Get(x => x.Id == id);
+        }
+        catch (NotFoundException)
+        {
+            return null;
+        }
     }
 
     public Home UpdateMemberList(string homeId, string mail)

@@ -1,4 +1,5 @@
-﻿using Homify.BusinessLogic.HomeOwners;
+﻿using System.Linq.Expressions;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Roles;
@@ -43,5 +44,32 @@ public class HomeServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(owner.Id, result.OwnerId);
+    }
+
+    [TestMethod]
+    public void GetHomeById_ShouldReturnHome_WhenHomeExists()
+    {
+        // Arrange
+        var homeId = "home123";
+        var expectedHome = new Home
+        {
+            Id = homeId,
+            Number = "123",
+            Street = "Main St",
+            Latitude = "45.0",
+            Longitude = "-93.1",
+            MaxMembers = 5
+        };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(expectedHome);
+
+        // Act
+        var result = _homeService.GetHomeById(homeId);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedHome.Id, result.Id);
+        Assert.AreEqual(expectedHome.Number, result.Number);
     }
 }
