@@ -78,6 +78,13 @@ public class NotificationController : HomifyControllerBase
             throw new NullRequestException("Exception cannot be null");
         }
 
+        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(req.HardwareId);
+
+        if (fromDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
         return null;
     }
 
