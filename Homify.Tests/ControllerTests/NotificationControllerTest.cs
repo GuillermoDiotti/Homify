@@ -64,7 +64,8 @@ public class NotificationControllerTest
             Event = req.PersonDetectedId,
             Device = homeDevice,
             IsRead = false,
-            Id = Guid.NewGuid().ToString()
+            Id = Guid.NewGuid().ToString(),
+            DetectedUserId = req.PersonDetectedId
         };
         _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(It.IsAny<string>())).Returns(device);
         _notificationService.Setup(n => n.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
