@@ -265,7 +265,6 @@ public class UserControllerTests
     [TestMethod]
     public void AllAccounts_WhenLimitAndOffsetAreValid_ShouldReturnCorrectUsers()
     {
-        // Arrange: Lista de usuarios con inicialización adecuada
         var users = new List<User>
         {
             new User
@@ -290,10 +289,8 @@ public class UserControllerTests
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        // Act: Llamada al método con limit y offset
         var result = _controller.AllAccounts("2", "1", string.Empty, string.Empty);
 
-        // Assert: Verificaciones del resultado
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual("Jane", result[0].Name);
@@ -308,22 +305,26 @@ public class UserControllerTests
             new User
             {
                 Name = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Role = new Role { Name = "Admin" }  // Asegúrate de inicializar Role si es necesario
             },
             new User
             {
                 Name = "Jane",
-                LastName = "Smith"
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Adam",
-                LastName = "Johnson"
+                LastName = "Johnson",
+                Role = new Role { Name = "Guest" }
             },
             new User
             {
                 Name = "Lucy",
-                LastName = "Williams"
+                LastName = "Williams",
+                Role = new Role { Name = "Admin" }
             }
         };
 
