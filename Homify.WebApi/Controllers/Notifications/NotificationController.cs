@@ -3,6 +3,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +40,33 @@ public class NotificationController : HomifyControllerBase
         var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
+
+        return new CreateNotificationResponse(notification);
+    }
+
+    [HttpPost("window-movement")]
+    public CreateNotificationResponse WindowMovementNotification(CreateNotificationRequest request)
+    {
+        if (request == null)
+        {
+            throw new NullRequestException("Request cannot be null.");
+        }
+
+        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
+
+        if (fromDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if (fromDevice.Device.Type != Constants.SENSOR)
+        {
+            throw new InvalidOperationException("Only sensors are supported.");
+        }
+
+        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+
+        var notification = _notificationService.AddWindowNotification(arguments);
 
         return new CreateNotificationResponse(notification);
     }

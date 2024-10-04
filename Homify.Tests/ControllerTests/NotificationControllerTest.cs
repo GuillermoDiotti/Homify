@@ -124,4 +124,11 @@ public class NotificationControllerTest
         notificationBasicInfo.DeviceId.Should().Be(notification.Device.Id);
         notificationBasicInfo.IsRead.Should().Be(notification.IsRead);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void WindowMovementNotification_ShouldThrowNullRequestException_WhenRequestIsNull()
+    {
+        _controller.WindowMovementNotification(null);
+    }
 }
