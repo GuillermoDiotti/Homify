@@ -45,7 +45,37 @@ public class NotificationService : INotificationService
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Event = "Persona Detectada",
+                    Event = "Person Detected",
+                    Device = notification.Device,
+                    IsRead = false,
+                    Date = notification.Date,
+                    HomeDeviceId = notification.Device.Id,
+                    DetectedUserId = detectedUser?.Id,
+                    HomeUserId = users.UserId,
+                    HomeUser = users,
+                };
+                returnNotification = noti;
+                _notificationRepository.Add(noti);
+            }
+        }
+
+        return returnNotification;
+    }
+
+    public Notification AddWindowNotification(CreateNotificationArgs notification)
+    {
+        var homeId = notification.Device.HomeId;
+        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var returnNotification = new Notification();
+        foreach (var users in homeUsers)
+        {
+            if(users.IsNotificable)
+            {
+                var detectedUser = _userService.GetById(users.UserId);
+                var noti = new Notification()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Event = "Window state switch detected",
                     Device = notification.Device,
                     IsRead = false,
                     Date = notification.Date,
