@@ -7,9 +7,10 @@ public class CreateNotificationArgs
     public string Event { get; init; }
     public Device Device { get; init; }
     public bool IsRead { get; init; }
+    public string? HardwareId { get; init; }
     public DateTimeOffset? Date { get; init; }
 
-    public CreateNotificationArgs(string eventShot, Device device, bool isRead, DateTimeOffset date)
+    public CreateNotificationArgs(string eventShot, Device device, bool isRead, DateTimeOffset date, string hardwareId)
     {
         if (string.IsNullOrEmpty(eventShot))
         {
@@ -17,6 +18,13 @@ public class CreateNotificationArgs
         }
 
         Event = eventShot;
+
+        if (hardwareId == null)
+        {
+            throw new ArgumentException("HardwareId cannot be null");
+        }
+
+        HardwareId = hardwareId;
 
         ArgumentNullException.ThrowIfNull(device);
 

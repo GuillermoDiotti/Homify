@@ -21,7 +21,7 @@ public class NotificationController : HomifyControllerBase
     }
 
     [HttpPost]
-    public CreateNotificationResponse Create(CreateNotificationRequest request)
+    public CreateNotificationResponse PersonDetectedNotification(CreateNotificationRequest request)
     {
         if (request == null)
         {
@@ -35,7 +35,7 @@ public class NotificationController : HomifyControllerBase
             throw new NotFoundException("Device not found.");
         }
 
-        var arguments = new CreateNotificationArgs(request.Event, fromDevice, false, request.Date);
+        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, request.Date, request.HardwareId);
 
         var invitation = _notificationService.AddNotification(arguments);
 

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
@@ -27,7 +28,7 @@ public class NotificationControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void CreateNotification_WhenRequestIsNull_ShouldThrowNullRequestException()
     {
-        _controller.Create(null);
+        _controller.PersonDetectedNotification(null);
     }
 
     [TestMethod]
@@ -38,12 +39,12 @@ public class NotificationControllerTest
         {
             DeviceId = "1",
             Date = DateTimeOffset.Now,
-            Event = "Evento de prueba",
+            PersonDetectedId = Guid.NewGuid().ToString(),
         };
 
         _deviceService.Setup(d => d.GetById(It.IsAny<string>())).Returns((Device?)null);
 
-        _controller.Create(req);
+        _controller.PersonDetectedNotification(req);
     }
 
     [TestMethod]
@@ -53,21 +54,22 @@ public class NotificationControllerTest
         {
             DeviceId = "1",
             Date = DateTimeOffset.Now,
-            Event = "Me afanaron la jarra electrica",
+            PersonDetectedId = Guid.NewGuid().ToString(),
         };
         var device = new Device();
+        var homeDevice = new HomeDevice();
         var expected = new Notification()
         {
             Date = req.Date,
-            Event = req.Event,
-            Device = device,
+            Event = req.PersonDetectedId,
+            Device = homeDevice,
             IsRead = false,
             Id = Guid.NewGuid().ToString()
         };
         _deviceService.Setup(d => d.GetById(It.IsAny<string>())).Returns(device);
         _notificationService.Setup(n => n.AddNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
 
-        var result = _controller.Create(req);
+        var result = _controller.PersonDetectedNotification(req);
 
         result.Id.Should().NotBeNull();
         result.Id.Should().Be(expected.Id);
@@ -103,10 +105,9 @@ public class NotificationControllerTest
     [TestMethod]
     public void NotificationBasicInfo_ShouldMapCorrectlyFromNotificationEntity()
     {
-        var device = new Device
+        var device = new HomeDevice
         {
             Id = "device123",
-            Name = "Test Device"
         };
 
         var notification = new Notification
