@@ -117,4 +117,16 @@ public class DeviceService : IDeviceService
 
         return devicesQuery.ToList();
     }
+
+    public List<string> SearchSupportedDevices()
+    {
+        var devices = _deviceRepository.GetAll();
+
+        var supportedDeviceTypes = devices
+            .Select(d => d.Type)
+            .Distinct()
+            .ToList();
+
+        return supportedDeviceTypes;
+    }
 }
