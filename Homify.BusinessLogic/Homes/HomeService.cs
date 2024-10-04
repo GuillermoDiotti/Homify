@@ -109,9 +109,14 @@ public class HomeService : IHomeService
         return _repository.GetAll(x => x.Id == homeId).SelectMany(x => x.Members).ToList();
     }
 
-    public List<HomeUser> UpdateNotificatedList(string homeId, string memberId)
+    public List<HomeUser> UpdateNotificatedList(string homeId, string memberId, User owner)
     {
         var home = _repository.Get(x => x.Id == homeId);
+        if (home.OwnerId != owner.Id)
+        {
+            throw new InvalidOperationException("Only the owner can set notificated members");
+        }
+
         var user = home.Members.Find(x => x.UserId == memberId);
         if (user == null)
         {

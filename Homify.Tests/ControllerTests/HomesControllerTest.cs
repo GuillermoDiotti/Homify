@@ -381,12 +381,12 @@ public class HomesControllerTest
         {
             HomeUserId = "member123"
         };
-
-        _homeServiceMock.Setup(service => service.UpdateNotificatedList("homeId", request.HomeUserId)).Verifiable();
+        var user = new HomeOwner();
+        _homeServiceMock.Setup(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user)).Verifiable();
 
         _controller.NotificatedMembers("homeId", request);
 
-        _homeServiceMock.Verify(service => service.UpdateNotificatedList("homeId", request.HomeUserId), Times.Once,
+        _homeServiceMock.Verify(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
     }
 

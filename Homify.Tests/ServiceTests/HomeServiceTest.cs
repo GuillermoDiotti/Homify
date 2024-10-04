@@ -237,17 +237,20 @@ public class HomeServiceTest
             new HomeUser { UserId = "otherMemberId", IsNotificable = true }
         };
 
+        var homeOwner = new HomeOwner() { Id = "123" };
         var home = new Home
         {
             Id = homeId,
-            Members = members
+            Members = members,
+            Owner = homeOwner,
+            OwnerId = homeOwner.Id,
         };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(home);
 
         // Act
-        var result = _homeService.UpdateNotificatedList(homeId, memberId);
+        var result = _homeService.UpdateNotificatedList(homeId, memberId, homeOwner);
 
         // Assert
         Assert.IsNotNull(result);

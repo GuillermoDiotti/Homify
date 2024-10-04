@@ -203,13 +203,17 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/notifications")]
-    public void NotificatedMembers([FromRoute] string homeId, NotificatedMembersRequest request)
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
+    public NotificatedMembersResponse NotificatedMembers([FromRoute] string homeId, NotificatedMembersRequest request)
     {
         if (request == null)
         {
             throw new NullRequestException("Request can not be null");
         }
 
-        _homeService.UpdateNotificatedList(homeId, request.HomeUserId);
+        var user = GetUserLogged();
+        var newMembersToNotify = _homeService.UpdateNotificatedList(homeId, request.HomeUserId, user);
+        return new NotificatedMembersResponse(newMembersToNotify);
     }
 }

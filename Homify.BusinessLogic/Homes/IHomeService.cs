@@ -13,6 +13,6 @@ public interface IHomeService
     Home UpdateMemberList(string homeId, HomeUser homeOwner);
     HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user);
     List<HomeUser> GetHomeMembers(string homeId, User user);
-    List<HomeUser> UpdateNotificatedList(string homeId, string memberId);
+    List<HomeUser> UpdateNotificatedList(string homeId, string memberId, User owner);
     List<HomeDevice> GetHomeDevices(string homeId, User u);
 }
