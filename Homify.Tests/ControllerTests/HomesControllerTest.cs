@@ -393,25 +393,22 @@ public class HomesControllerTest
     [TestMethod]
     public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
     {
-        var devices = new List<Device>
-    {
-        new Device
+        var d1 = new Device { Name = "Device 1", Model = "Model A", IsActive = true, Photos = ["photo1.jpg"] };
+        var d2 = new Device { Name = "Device 2", Model = "Model B", IsActive = false, Photos = ["photo2.jpg"] };
+        var homeDevices = new List<HomeDevice>()
         {
-            Name = "Device 1",
-            Model = "Model A",
-            IsActive = true,
-            Photos = ["photo1.jpg"]
-        },
-        new Device
-        {
-            Name = "Device 2",
-            Model = "Model B",
-            IsActive = false,
-            Photos = ["photo2.jpg"]
-        }
-    };
-
-        _homeServiceMock.Setup(service => service.GetHomeDevices("homeId")).Returns(devices);
+            new HomeDevice()
+            {
+                Device = d1,
+            },
+            new HomeDevice()
+            {
+                Device = d2,
+            },
+        };
+        var owner = new HomeOwner() { Id = "juancho" };
+        var home = new Home() { Id = "homeId1", Owner = owner };
+        _homeServiceMock.Setup(service => service.GetHomeDevices("homeId1", owner)).Returns(homeDevices);
 
         var result = _controller.ObtainHomeDevices("homeId");
 

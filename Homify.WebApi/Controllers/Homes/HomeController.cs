@@ -167,12 +167,25 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpGet("{homeId}/devices")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
     public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
     {
-        var list = _homeService.GetHomeDevices(homeId);
-        var response = new GetDevicesResponse();
-        var returnList = response.Transform(list);
-        return returnList;
+        if (homeId == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
+        var user = GetUserLogged();
+
+        var list = _homeService.GetHomeDevices(homeId, user);
+        var response = new List<GetDevicesResponse>();
+        foreach (var hd in list)
+        {
+            response.Add(new GetDevicesResponse(hd));
+        }
+
+        return response;
     }
 
     [HttpGet("{homeId}/members")]

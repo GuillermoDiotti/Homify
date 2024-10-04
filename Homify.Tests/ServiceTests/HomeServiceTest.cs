@@ -193,4 +193,34 @@ public class HomeServiceTest
 
         _homeService.GetHomeMembers(homeId, user);
     }
+
+    [TestMethod]
+    public void GetHomeDevices_ShouldReturnDevices_WhenHomeExists()
+    {
+        // Arrange
+        var homeId = "testHomeId";
+        var user = new User {};
+        var expectedDevices = new List<HomeDevice>
+        {
+            new HomeDevice {},
+            new HomeDevice {}
+        };
+
+        var home = new Home
+        {
+            Id = homeId,
+            Devices = expectedDevices
+        };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(home);
+
+        // Act
+        var result = _homeService.GetHomeDevices(homeId, user);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedDevices.Count, result.Count);
+        CollectionAssert.AreEqual(expectedDevices, result);
+    }
 }

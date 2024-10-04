@@ -112,8 +112,8 @@ public class HomeService : IHomeService
         throw new NotImplementedException();
     }
 
-    public List<Device> GetHomeDevices(string homeId)
+    public List<HomeDevice> GetHomeDevices(string homeId, User u)
     {
-        throw new NotImplementedException();
+       return _repository.Get(x => x.Id == homeId).Devices.ToList();
     }
 }

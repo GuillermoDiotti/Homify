@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
@@ -13,5 +14,5 @@ public interface IHomeService
     void UpdateHomeDevices(string deviceid, string homeid, User user);
     List<HomeUser> GetHomeMembers(string homeId, User user);
     void UpdateNotificatedList(string homeId, string memberId);
-    List<Device> GetHomeDevices(string homeId);
+    List<HomeDevice> GetHomeDevices(string homeId, User u);
 }
