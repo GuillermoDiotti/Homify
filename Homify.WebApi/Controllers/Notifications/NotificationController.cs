@@ -71,6 +71,32 @@ public class NotificationController : HomifyControllerBase
         return new CreateNotificationResponse(notification);
     }
 
+    public CreateNotificationResponse MovementNotification(CreateNotificationRequest req)
+    {
+        if (req == null)
+        {
+            throw new NullRequestException("Exception cannot be null");
+        }
+
+        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(req.HardwareId);
+
+        if (fromDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if (fromDevice.Device.Type != Constants.CAMERA)
+        {
+            throw new InvalidOperationException("Only sensors are supported.");
+        }
+
+        var arguments = new CreateNotificationArgs(req.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, req.HardwareId);
+
+        var notification = _notificationService.AddWindowNotification(arguments);
+
+        return new CreateNotificationResponse(notification);
+    }
+
     [HttpGet]
     public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string user = "")
     {

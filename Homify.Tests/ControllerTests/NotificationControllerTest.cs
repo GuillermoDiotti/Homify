@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
@@ -52,6 +53,7 @@ public class NotificationControllerTest
     {
         var req = new CreateNotificationRequest()
         {
+            HardwareId = "123",
             DeviceId = "1",
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
@@ -62,7 +64,8 @@ public class NotificationControllerTest
             Event = req.PersonDetectedId,
             Device = homeDevice,
             IsRead = false,
-            Id = Guid.NewGuid().ToString()
+            Id = Guid.NewGuid().ToString(),
+            DetectedUserId = req.PersonDetectedId
         };
         _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(It.IsAny<string>())).Returns(device);
         _notificationService.Setup(n => n.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
@@ -197,6 +200,120 @@ public class NotificationControllerTest
             .Returns(notification);
 
         var result = _controller.WindowMovementNotification(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Notification123", result.Id);
+        Assert.AreEqual("Window state switch detected", result.Event);
+        _homeDeviceService.Verify(s => s.GetHomeDeviceByHardwareId(request.HardwareId), Times.Once);
+        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()), Times.Once);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void CreateMovementDetectionNotification_WhenRequestIsNull_ShouldThrowException()
+    {
+        _controller.MovementNotification(null);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CreateMovementDetectionNotification_WhenHardwareIdIsNull_ShouldThrowException()
+    {
+        var request = new CreateNotificationRequest
+        {
+            HardwareId = null
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Throws(new NotFoundException("HardwareId not found"));
+
+        _controller.MovementNotification(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CreateMovementDetectionNotification_WhenHardwareIdIsIncorrect_ShouldThrowException()
+    {
+        var request = new CreateNotificationRequest
+        {
+            HardwareId = "hardwareId"
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Throws(new NotFoundException("HardwareId not found"));
+
+        _controller.MovementNotification(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CreateMovementDetectionNotification_WhenDeviceIsNull_ShouldThrowException()
+    {
+        var request = new CreateNotificationRequest
+        {
+            DeviceId = null,
+            HardwareId = "hardwareId"
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns((HomeDevice?)null);
+
+        _controller.MovementNotification(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void CreateMovementDetectionNotification_WhenDeviceIsSensor_ShouldThrowException()
+    {
+        var request = new CreateNotificationRequest
+        {
+            DeviceId = "id",
+            HardwareId = "hardwareId"
+        };
+
+        var expectedDevice = new Device
+        {
+            Type = Constants.SENSOR
+        };
+
+        var HomeDevice = new HomeDevice() { DeviceId = "id", Device = expectedDevice };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns(HomeDevice);
+
+        _controller.MovementNotification(request);
+    }
+
+    [TestMethod]
+    public void MovementNotification_ShouldReturnNotification_WhenRequestIsValid()
+    {
+        var request = new CreateNotificationRequest
+        {
+            HardwareId = "ValidHardwareId",
+            PersonDetectedId = "Perro",
+        };
+
+        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = Constants.CAMERA }, HardwareId = "333" };
+
+        var notification = new Notification
+        {
+            Id = "Notification123",
+            Event = "Window state switch detected",
+            IsRead = false,
+            HomeDeviceId = homeDevice.Id,
+            HomeUserId = "User123",
+            Date = DateTimeOffset.Now,
+            Device = homeDevice,
+            DetectedUserId = null,
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns(homeDevice);
+
+        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()))
+            .Returns(notification);
+
+        var result = _controller.MovementNotification(request);
 
         Assert.IsNotNull(result);
         Assert.AreEqual("Notification123", result.Id);
