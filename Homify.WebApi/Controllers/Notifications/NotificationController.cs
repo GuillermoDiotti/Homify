@@ -21,7 +21,7 @@ public class NotificationController : HomifyControllerBase
         _homeDeviceService = homeDeviceService;
     }
 
-    [HttpPost("/person-detected")]
+    [HttpPost("person-detected")]
     public CreateNotificationResponse PersonDetectedNotification(CreateNotificationRequest request)
     {
         if (request == null)
@@ -29,14 +29,14 @@ public class NotificationController : HomifyControllerBase
             throw new NullRequestException("Request cannot be null.");
         }
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.DeviceId);
+        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
         if (fromDevice == null)
         {
             throw new NotFoundException("Device not found");
         }
 
-        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, request.Date, request.HardwareId);
+        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
 

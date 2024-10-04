@@ -38,7 +38,6 @@ public class NotificationControllerTest
         var req = new CreateNotificationRequest()
         {
             DeviceId = "1",
-            Date = DateTimeOffset.Now,
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
 
@@ -53,14 +52,12 @@ public class NotificationControllerTest
         var req = new CreateNotificationRequest()
         {
             DeviceId = "1",
-            Date = DateTimeOffset.Now,
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
         var device = new HomeDevice();
         var homeDevice = new HomeDevice();
         var expected = new Notification()
         {
-            Date = req.Date,
             Event = req.PersonDetectedId,
             Device = homeDevice,
             IsRead = false,
