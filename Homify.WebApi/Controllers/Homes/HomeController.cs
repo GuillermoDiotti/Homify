@@ -183,7 +183,7 @@ public sealed class HomeController : HomifyControllerBase
         var user = GetUserLogged();
         var list = _homeService.GetHomeMembers(homeId, user);
 
-        var responseList = list.Select(user => new GetMemberResponse([user])).ToList();
+        var responseList = list.Select(hu => new GetMemberResponse(hu)).ToList();
 
         return responseList;
     }

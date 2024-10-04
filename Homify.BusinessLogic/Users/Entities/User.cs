@@ -9,6 +9,7 @@ public class User
     public string Password { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string Id { get; init; }
+    public string ProfilePicture { get; set; } = null!;
     public Role Role { get; init; } = null!;
     public string RoleId { get; set; } = null!;
     public DateTimeOffset CreatedAt { get; init; }
