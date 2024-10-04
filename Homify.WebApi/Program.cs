@@ -75,7 +75,7 @@ services.AddScoped<IHomeUserService, HomeUserService>();
 services.AddScoped<IRepository<HomePermission>, HomePermissionRepository>();
 services.AddScoped<IHomePermissionService, HomePermissionService>();
 
-services.AddScoped<IRepository<HomeDevice>, Repository<HomeDevice>>();
+services.AddScoped<IRepository<HomeDevice>, HomeDeviceRepository>();
 services.AddScoped<IHomeDeviceService, HomeDeviceService>();
 
 services.AddScoped<IRepository<CompanyOwner>, CompanyOwnerRepository>();

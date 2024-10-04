@@ -1,10 +1,10 @@
-﻿using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeDevices;
+﻿using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
+using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Notifications;
@@ -37,6 +37,11 @@ public class NotificationController : HomifyControllerBase
             throw new NotFoundException("Device not found");
         }
 
+        if (fromDevice.Device.Type != Constants.CAMERA)
+        {
+            throw new InvalidOperationException("Only sensors are supported.");
+        }
+
         var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
@@ -45,7 +50,7 @@ public class NotificationController : HomifyControllerBase
     }
 
     [HttpPost("window-movement")]
-    public CreateNotificationResponse WindowMovementNotification(CreateNotificationRequest request)
+    public CreateGenericNotificationResponse WindowMovementNotification(CreateGenericNotificationRequest request)
     {
         if (request == null)
         {
@@ -64,14 +69,15 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddWindowNotification(arguments);
 
-        return new CreateNotificationResponse(notification);
+        return new CreateGenericNotificationResponse(notification);
     }
 
-    public CreateNotificationResponse MovementNotification(CreateNotificationRequest req)
+    [HttpPost("movement-detected")]
+    public CreateGenericNotificationResponse MovementNotification(CreateGenericNotificationRequest req)
     {
         if (req == null)
         {
@@ -90,14 +96,16 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        var arguments = new CreateNotificationArgs(req.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, req.HardwareId);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId);
 
         var notification = _notificationService.AddWindowNotification(arguments);
 
-        return new CreateNotificationResponse(notification);
+        return new CreateGenericNotificationResponse(notification);
     }
 
     [HttpGet]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.GetUserNotifications)]
     public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string user = "")
     {
         var list = _notificationService.GetAllByUserId(user);
@@ -111,7 +119,9 @@ public class NotificationController : HomifyControllerBase
     }
 
     [HttpPut("{notificationId}")]
-    public CreateNotificationResponse UpdateNotification([FromRoute] string notificationId)
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateUserNotification)]
+    public UpdateNotificationResponse UpdateNotification([FromRoute] string notificationId)
     {
         var noti = _notificationService.ReadNotificationById(notificationId);
 
@@ -120,6 +130,6 @@ public class NotificationController : HomifyControllerBase
             throw new NotFoundException("Notification not found");
         }
 
-        return new CreateNotificationResponse(noti);
+        return new UpdateNotificationResponse(noti);
     }
 }

@@ -73,7 +73,7 @@ public class NotificationServiceTest
             .Returns(new User { Id = "User1" });
 
         var createNotificationArgs =
-            new CreateNotificationArgs("1234567", homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
+            new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
 
         var result = _notificationService.AddWindowNotification(createNotificationArgs);
 

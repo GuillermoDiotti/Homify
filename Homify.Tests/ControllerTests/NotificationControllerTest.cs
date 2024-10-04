@@ -140,10 +140,9 @@ public class NotificationControllerTest
     [ExpectedException(typeof(NotFoundException))]
     public void WindowMovementNotification_ShouldThrowNotFoundException_WhenDeviceIsNotFound()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
-            HardwareId = "InvalidHardwareId",
-            PersonDetectedId = "Person1"
+            DeviceId = "1",
         };
 
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
@@ -156,10 +155,9 @@ public class NotificationControllerTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void WindowMovementNotification_ShouldThrowInvalidOperationException_WhenDeviceIsNotSensor()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             HardwareId = "ValidHardwareId",
-            PersonDetectedId = "Person1"
         };
 
         var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = "Camera" } };
@@ -173,10 +171,9 @@ public class NotificationControllerTest
     [TestMethod]
     public void WindowMovementNotification_ShouldReturnNotification_WhenRequestIsValid()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             HardwareId = "ValidHardwareId",
-            PersonDetectedId = "Person1",
         };
 
         var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = Constants.SENSOR }, HardwareId = "333" };
@@ -196,7 +193,7 @@ public class NotificationControllerTest
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
-        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()))
+        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()))
             .Returns(notification);
 
         var result = _controller.WindowMovementNotification(request);
@@ -205,7 +202,7 @@ public class NotificationControllerTest
         Assert.AreEqual("Notification123", result.Id);
         Assert.AreEqual("Window state switch detected", result.Event);
         _homeDeviceService.Verify(s => s.GetHomeDeviceByHardwareId(request.HardwareId), Times.Once);
-        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()), Times.Once);
+        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()), Times.Once);
     }
 
     [TestMethod]
@@ -219,7 +216,7 @@ public class NotificationControllerTest
     [ExpectedException(typeof(NotFoundException))]
     public void CreateMovementDetectionNotification_WhenHardwareIdIsNull_ShouldThrowException()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             HardwareId = null
         };
@@ -234,7 +231,7 @@ public class NotificationControllerTest
     [ExpectedException(typeof(NotFoundException))]
     public void CreateMovementDetectionNotification_WhenHardwareIdIsIncorrect_ShouldThrowException()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             HardwareId = "hardwareId"
         };
@@ -249,7 +246,7 @@ public class NotificationControllerTest
     [ExpectedException(typeof(NotFoundException))]
     public void CreateMovementDetectionNotification_WhenDeviceIsNull_ShouldThrowException()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             DeviceId = null,
             HardwareId = "hardwareId"
@@ -265,7 +262,7 @@ public class NotificationControllerTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void CreateMovementDetectionNotification_WhenDeviceIsSensor_ShouldThrowException()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             DeviceId = "id",
             HardwareId = "hardwareId"
@@ -287,10 +284,9 @@ public class NotificationControllerTest
     [TestMethod]
     public void MovementNotification_ShouldReturnNotification_WhenRequestIsValid()
     {
-        var request = new CreateNotificationRequest
+        var request = new CreateGenericNotificationRequest
         {
             HardwareId = "ValidHardwareId",
-            PersonDetectedId = "Perro",
         };
 
         var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = Constants.CAMERA }, HardwareId = "333" };
@@ -310,7 +306,7 @@ public class NotificationControllerTest
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
-        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()))
+        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()))
             .Returns(notification);
 
         var result = _controller.MovementNotification(request);
@@ -319,6 +315,6 @@ public class NotificationControllerTest
         Assert.AreEqual("Notification123", result.Id);
         Assert.AreEqual("Window state switch detected", result.Event);
         _homeDeviceService.Verify(s => s.GetHomeDeviceByHardwareId(request.HardwareId), Times.Once);
-        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()), Times.Once);
+        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()), Times.Once);
     }
 }

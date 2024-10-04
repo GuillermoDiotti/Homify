@@ -62,7 +62,7 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification AddWindowNotification(CreateNotificationArgs notification)
+    public Notification AddWindowNotification(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
         var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
