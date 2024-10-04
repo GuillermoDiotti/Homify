@@ -65,7 +65,7 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenEmailFormatInInvalid1_ShouldThrowException()
+    public void CreateUser_WhenEmailFormatIsInvalid_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -74,6 +74,9 @@ public class UserControllerTests
             Password = "password/",
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
