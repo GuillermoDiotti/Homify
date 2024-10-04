@@ -18,7 +18,7 @@ public class CompanyService : ICompanyService
     public Company Add(CreateCompanyArgs args, User user)
     {
         CompanyOwner owner = (CompanyOwner)user;
-
+        owner.IsIncomplete = false;
         var company = new Company
         {
             Id = Guid.NewGuid().ToString(),

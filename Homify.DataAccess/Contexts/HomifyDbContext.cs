@@ -311,7 +311,8 @@ public sealed class HomifyDbContext : DbContext
         Email = "companyowner@domain.com",
         Password = ".Popso212",
         LastName = "LastName",
-        RoleId = Constants.COMPANYOWNERID
+        RoleId = Constants.COMPANYOWNERID,
+        IsIncomplete = true,
     };
 
     modelBuilder.Entity<Admin>().HasData(admin);
