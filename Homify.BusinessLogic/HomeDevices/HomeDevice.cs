@@ -11,4 +11,5 @@ public class HomeDevice
     public Device Device { get; set; } = null!;
     public bool Connected { get; set; }
     public string HardwareId { get; set; } = null!;
+    public bool IsActive { get; set; }
 }

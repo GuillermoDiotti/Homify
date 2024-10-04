@@ -391,8 +391,8 @@ public class HomesControllerTest
     [TestMethod]
     public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
     {
-        var d1 = new Device { Name = "Device 1", Model = "Model A", IsActive = true, Photos = ["photo1.jpg"] };
-        var d2 = new Device { Name = "Device 2", Model = "Model B", IsActive = false, Photos = ["photo2.jpg"] };
+        var d1 = new Device { Name = "Device 1", Model = "Model A", };
+        var d2 = new Device { Name = "Device 2", Model = "Model B", };
         var homeDevices = new List<HomeDevice>()
         {
             new HomeDevice()

@@ -12,7 +12,6 @@ public class Device
     public List<string> Photos { get; init; } = null!;
     public Company Company { get; init; } = null!;
     public string? PpalPicture { get; init; }
-    public bool IsActive { get; set; }
     public string CompanyId { get; set; } = null!;
     public bool MovementDetection { get; init; }
     public bool PeopleDetection { get; init; }
@@ -21,6 +20,5 @@ public class Device
     public Device()
     {
         Id = Guid.NewGuid().ToString();
-        IsActive = false;
     }
 }
