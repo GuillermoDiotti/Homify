@@ -4,20 +4,20 @@ namespace Homify.BusinessLogic.Notifications.Entities;
 
 public class CreateNotificationArgs
 {
-    public string Event { get; init; }
+    public string PersonDetectedId { get; init; }
     public Device Device { get; init; }
     public bool IsRead { get; init; }
     public string? HardwareId { get; init; }
     public DateTimeOffset? Date { get; init; }
 
-    public CreateNotificationArgs(string eventShot, Device device, bool isRead, DateTimeOffset date, string hardwareId)
+    public CreateNotificationArgs(string personDetectedId, Device device, bool isRead, DateTimeOffset date, string hardwareId)
     {
-        if (string.IsNullOrEmpty(eventShot))
+        if (string.IsNullOrEmpty(personDetectedId))
         {
-            throw new ArgumentNullException("Event cannot be null");
+            throw new ArgumentNullException("PersonDetectedId cannot be null or empty");
         }
 
-        Event = eventShot;
+        PersonDetectedId = personDetectedId;
 
         if (hardwareId == null)
         {

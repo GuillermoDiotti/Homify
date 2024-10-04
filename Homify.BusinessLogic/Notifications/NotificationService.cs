@@ -27,7 +27,24 @@ public class NotificationService : INotificationService
 
     public Notification AddPersonDetectedNotification(CreateNotificationArgs notification)
     {
-        return new Notification();
+        var device = _homeDeviceService.GetHomeDeviceByHardwareId(notification.HardwareId);
+        if (device == null)
+        {
+            throw new ArgumentException("Device not found");
+        }
+
+        var returnNotification = new Notification()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Event = "Persona Detectada",
+            Device = device,
+            IsRead = notification.IsRead,
+            Date = notification.Date,
+            HomeDeviceId = device.Id,
+            PersonId = notification.PersonDetectedId,
+        };
+        _notificationRepository.Add(returnNotification);
+        return returnNotification;
     }
 
     public Notification ReadNotificationById(string id)
