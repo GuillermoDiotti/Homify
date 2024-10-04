@@ -37,7 +37,7 @@ public class NotificationController : HomifyControllerBase
 
         var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, request.Date, request.HardwareId);
 
-        var invitation = _notificationService.AddNotification(arguments);
+        var invitation = _notificationService.AddPersonDetectedNotification(arguments);
 
         return new CreateNotificationResponse(invitation);
     }

@@ -14,7 +14,7 @@ public class NotificationService : INotificationService
         throw new NotImplementedException();
     }
 
-    public Notification AddNotification(CreateNotificationArgs notification)
+    public Notification AddPersonDetectedNotification(CreateNotificationArgs notification)
     {
         throw new NotImplementedException();
     }
