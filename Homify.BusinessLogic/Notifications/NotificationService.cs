@@ -41,7 +41,7 @@ public class NotificationService : INotificationService
             IsRead = notification.IsRead,
             Date = notification.Date,
             HomeDeviceId = device.Id,
-            PersonId = notification.PersonDetectedId,
+            DetectedUserId = notification.PersonDetectedId,
         };
         _notificationRepository.Add(returnNotification);
         return returnNotification;

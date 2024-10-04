@@ -72,6 +72,20 @@ public sealed class HomifyDbContext : DbContext
         .WithOne(h => h.Home)
         .HasForeignKey(i => i.HomeId)
         .IsRequired();
+    modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(n => n.Id);
+
+                entity.HasOne(n => n.Device)
+                    .WithMany()
+                    .HasForeignKey(n => n.HomeDeviceId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(n => n.HomeUser)
+                    .WithMany()
+                    .HasForeignKey(n => n.HomeUserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
     modelBuilder.Entity<Home>()
         .HasMany(d => d.Devices)
