@@ -38,6 +38,16 @@ public class DeviceController : HomifyControllerBase
             req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, req.IsExterior, req.IsInterior);
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
+        if (companyOwner == null)
+        {
+            throw new NotFoundException("Owner not found");
+        }
+
+        if (companyOwner.IsIncomplete)
+        {
+            throw new InvalidOperationException("Account must be complete");
+        }
+
         Camera cam = _deviceService.AddCamera(args, companyOwner);
 
         return new CreateDeviceResponse(cam);
@@ -46,7 +56,6 @@ public class DeviceController : HomifyControllerBase
     [HttpPost("sensors")]
     public CreateDeviceResponse RegisterSensor(CreateSensorRequest req)
     {
-        // TODO: verificar que solo puedan acceder los de cuentas COMPLETAS
         if (req == null)
         {
             throw new NullRequestException();
@@ -58,6 +67,15 @@ public class DeviceController : HomifyControllerBase
         var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
             req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, isExterior, isExterior);
         var companyOwner = _companyOwnerService.GetById(user.Id);
+        if (companyOwner == null)
+        {
+            throw new NotFoundException("Owner not found");
+        }
+
+        if (companyOwner.IsIncomplete)
+        {
+            throw new InvalidOperationException("Account must be complete");
+        }
 
         Sensor sen = _deviceService.AddSensor(args, companyOwner);
 
