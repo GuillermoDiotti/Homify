@@ -393,23 +393,27 @@ public class UserControllerTests
     [TestMethod]
     public void AllAccounts_ShouldMapUserToUserBasicInfoCorrectly()
     {
+        // Arrange: Simulación de una lista de usuarios de prueba
         var users = new List<User>
         {
             new User
             {
                 Name = "John",
                 LastName = "Doe",
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                Role = new Role { Name = "Admin" } // Se puede agregar más información si es necesario
             }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
+        // Act: Llamada al método del controlador con parámetros de paginación vacíos
         var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
 
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Count);
-        Assert.AreEqual("John", result[0].Name);
-        Assert.AreEqual("Doe", result[0].LastName);
+        // Assert: Verificaciones del resultado
+        Assert.IsNotNull(result, "El resultado no debe ser nulo");
+        Assert.AreEqual(1, result.Count, "Debe haber exactamente un usuario en la lista");
+        Assert.AreEqual("John", result[0].Name, "El nombre del usuario debe ser 'John'");
+        Assert.AreEqual("Doe", result[0].LastName, "El apellido del usuario debe ser 'Doe'");
     }
 }
