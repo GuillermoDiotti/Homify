@@ -29,7 +29,8 @@ public class NotificationService : INotificationService
 
     public List<Notification> GetAllByUserId(string userId)
     {
-        throw new NotImplementedException();
+        var notifications = _notificationRepository.GetAll().ToList();
+        return notifications.Where(n => n.HomeUser.UserId == userId).ToList();
     }
 
     public Notification AddPersonDetectedNotification(CreateNotificationArgs notification)

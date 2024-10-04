@@ -106,15 +106,27 @@ public class NotificationController : HomifyControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetUserNotifications)]
-    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string user = "")
+    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string? eventTriggered, [FromQuery] string? date, [FromQuery] string? read)
     {
-        var list = _notificationService.GetAllByUserId(user);
-        var result = new List<NotificationBasicInfo>();
-        foreach (var noti in list)
+        var user = GetUserLogged();
+        var list = _notificationService.GetAllByUserId(user.Id);
+
+        if (!string.IsNullOrEmpty(eventTriggered))
         {
-            result.Add(new NotificationBasicInfo(noti));
+            list = list.Where(n => n.Event == eventTriggered).ToList();
         }
 
+        if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
+        {
+            list = list.Where(n => n.Date == parsedDate.Date).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(read) && bool.TryParse(read, out var isRead))
+        {
+            list = list.Where(n => n.IsRead == isRead).ToList();
+        }
+
+        var result = list.Select(n => new NotificationBasicInfo(n)).ToList();
         return result;
     }
 

@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using FluentAssertions;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications;
@@ -82,5 +84,24 @@ public class NotificationServiceTest
         Assert.AreEqual(homeDevice.Id, result.HomeDeviceId);
         Assert.AreEqual("User1", result.HomeUserId);
         _mockRepository.Verify(r => r.Add(It.IsAny<Notification>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void GetAllByUserId_ShouldReturnNotificationsForSpecificUser()
+    {
+        var userId = "user123";
+        var notifications = new List<Notification>
+        {
+            new Notification { Id = "1", HomeUser = new HomeUser { UserId = "user123" } },
+            new Notification { Id = "2", HomeUser = new HomeUser { UserId = "user456" } },
+            new Notification { Id = "3", HomeUser = new HomeUser { UserId = "user123" } }
+        };
+
+        _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Notification, bool>>>())).Returns(notifications);
+
+        var result = _notificationService.GetAllByUserId(userId);
+
+        Assert.AreEqual(2, result.Count);
+        result.Should().OnlyContain(n => n.HomeUser.UserId == userId);
     }
 }

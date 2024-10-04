@@ -81,7 +81,7 @@ public class NotificationControllerTest
     {
         var expected = new List<Notification>();
         _notificationService.Setup(n => n.GetAllByUserId(It.IsAny<string>())).Returns(expected);
-        var result = _controller.ObtainNotifications("pablito lescano");
+        var result = _controller.ObtainNotifications(string.Empty, "10/10/2024", "false");
 
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(expected);
