@@ -14,14 +14,14 @@ namespace Homify.Tests.ControllerTests;
 public class NotificationControllerTest
 {
     private readonly Mock<INotificationService> _notificationService;
-    private readonly Mock<IDeviceService> _deviceService;
+    private readonly Mock<IHomeDeviceService> _homeDeviceService;
     private readonly NotificationController _controller;
 
     public NotificationControllerTest()
     {
         _notificationService = new Mock<INotificationService>(MockBehavior.Strict);
-        _deviceService = new Mock<IDeviceService>(MockBehavior.Strict);
-        _controller = new NotificationController(_notificationService.Object, _deviceService.Object);
+        _homeDeviceService = new Mock<IHomeDeviceService>(MockBehavior.Strict);
+        _controller = new NotificationController(_notificationService.Object, _homeDeviceService.Object);
     }
 
     [TestMethod]
@@ -42,7 +42,7 @@ public class NotificationControllerTest
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
 
-        _deviceService.Setup(d => d.GetById(It.IsAny<string>())).Returns((Device?)null);
+        _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(It.IsAny<string>())).Returns((HomeDevice?)null);
 
         _controller.PersonDetectedNotification(req);
     }
@@ -56,7 +56,7 @@ public class NotificationControllerTest
             Date = DateTimeOffset.Now,
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
-        var device = new Device();
+        var device = new HomeDevice();
         var homeDevice = new HomeDevice();
         var expected = new Notification()
         {
@@ -66,7 +66,7 @@ public class NotificationControllerTest
             IsRead = false,
             Id = Guid.NewGuid().ToString()
         };
-        _deviceService.Setup(d => d.GetById(It.IsAny<string>())).Returns(device);
+        _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(It.IsAny<string>())).Returns(device);
         _notificationService.Setup(n => n.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
 
         var result = _controller.PersonDetectedNotification(req);

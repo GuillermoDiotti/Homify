@@ -1,16 +1,17 @@
 ﻿using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 
 public class CreateNotificationArgs
 {
     public string PersonDetectedId { get; init; }
-    public Device Device { get; init; }
+    public HomeDevice Device { get; init; }
     public bool IsRead { get; init; }
     public string? HardwareId { get; init; }
     public DateTimeOffset? Date { get; init; }
 
-    public CreateNotificationArgs(string personDetectedId, Device device, bool isRead, DateTimeOffset date, string hardwareId)
+    public CreateNotificationArgs(string personDetectedId, HomeDevice device, bool isRead, DateTimeOffset date, string hardwareId)
     {
         if (string.IsNullOrEmpty(personDetectedId))
         {

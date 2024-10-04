@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
@@ -12,12 +13,12 @@ namespace Homify.WebApi.Controllers.Notifications;
 public class NotificationController : HomifyControllerBase
 {
     private readonly INotificationService _notificationService;
-    private readonly IDeviceService _deviceService;
+    private readonly IHomeDeviceService _homeDeviceService;
 
-    public NotificationController(INotificationService notificationService, IDeviceService deviceService)
+    public NotificationController(INotificationService notificationService, IHomeDeviceService homeDeviceService)
     {
         _notificationService = notificationService;
-        _deviceService = deviceService;
+        _homeDeviceService = homeDeviceService;
     }
 
     [HttpPost("/person-detected")]
@@ -28,7 +29,12 @@ public class NotificationController : HomifyControllerBase
             throw new NullRequestException("Request cannot be null.");
         }
 
-        var fromDevice = _deviceService.GetById(request.DeviceId);
+        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.DeviceId);
+
+        if (fromDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
 
         var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, request.Date, request.HardwareId);
 
