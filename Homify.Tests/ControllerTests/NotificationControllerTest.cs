@@ -4,6 +4,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications;
 using Homify.WebApi.Controllers.Notifications.Models;
 using Moq;
@@ -164,5 +165,43 @@ public class NotificationControllerTest
             .Returns(homeDevice);
 
         _controller.WindowMovementNotification(request);
+    }
+
+    [TestMethod]
+    public void WindowMovementNotification_ShouldReturnNotification_WhenRequestIsValid()
+    {
+        var request = new CreateNotificationRequest
+        {
+            HardwareId = "ValidHardwareId",
+            PersonDetectedId = "Person1",
+        };
+
+        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = Constants.SENSOR }, HardwareId = "333" };
+
+        var notification = new Notification
+        {
+            Id = "Notification123",
+            Event = "Window state switch detected",
+            IsRead = false,
+            HomeDeviceId = homeDevice.Id,
+            HomeUserId = "User123",
+            Date = DateTimeOffset.Now,
+            Device = homeDevice,
+            DetectedUserId = null,
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns(homeDevice);
+
+        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()))
+            .Returns(notification);
+
+        var result = _controller.WindowMovementNotification(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Notification123", result.Id);
+        Assert.AreEqual("Window state switch detected", result.Event);
+        _homeDeviceService.Verify(s => s.GetHomeDeviceByHardwareId(request.HardwareId), Times.Once);
+        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()), Times.Once);
     }
 }
