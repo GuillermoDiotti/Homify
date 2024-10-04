@@ -61,7 +61,7 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public void UpdateHomeDevices(string deviceid, string homeid, User user)
+    public HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user)
     {
         var home = _repository.Get(x => x.Id == homeid);
         var homeUser = home.Members.FirstOrDefault(x => x.UserId == user.Id);
@@ -70,30 +70,32 @@ public class HomeService : IHomeService
             throw new InvalidOperationException("User doesn't belong to this house");
         }
 
-        var inHome = home.Members.Any(x => x.Id == user.Id);
-        if (home.OwnerId == user.Id || homeUser.Permissions.Any(x => x.Value == PermissionsGenerator.MemberCanAddDevice))
+        if (!(home.OwnerId == user.Id || homeUser.Permissions.Any(x => x.Value == PermissionsGenerator.MemberCanAddDevice)))
         {
-            var device = _deviceService.GetById(deviceid);
-            if (device == null)
-            {
-                throw new NotFoundException("Device not found");
-            }
-
-            var homeDevice = new HomeDevice()
-            {
-                Device = device,
-                DeviceId = device.Id,
-                Home = home,
-                HomeId = home.Id,
-                Connected = false,
-                HardwareId = Guid.NewGuid().ToString(),
-                MovementDetection = false,
-                PeopleDetection = false,
-            };
-            _homeDeviceService.AddHomeDevice(home, device);
-            _repository.Update(home);
-            home.Devices.Add(homeDevice);
+            throw new InvalidOperationException("User doesn't belong to this house or has no permission");
         }
+
+        var device = _deviceService.GetById(deviceid);
+        if (device == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        var homeDevice = new HomeDevice()
+        {
+            Device = device,
+            DeviceId = device.Id,
+            Home = home,
+            HomeId = home.Id,
+            Connected = false,
+            HardwareId = Guid.NewGuid().ToString(),
+            MovementDetection = false,
+            PeopleDetection = false,
+        };
+        var result = _homeDeviceService.AddHomeDevice(home, device);
+        _repository.Update(home);
+        home.Devices.Add(homeDevice);
+        return result;
     }
 
     public List<HomeUser> GetHomeMembers(string homeId, User user)

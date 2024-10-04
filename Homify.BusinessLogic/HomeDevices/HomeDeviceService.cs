@@ -15,7 +15,7 @@ public class HomeDeviceService : IHomeDeviceService
         _repository = repository;
     }
 
-    public HomeDevice? AddHomeDevice(Home home, Device device)
+    public HomeDevice AddHomeDevice(Home home, Device device)
     {
         if (home == null)
         {
