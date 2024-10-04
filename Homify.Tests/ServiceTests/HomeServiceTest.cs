@@ -170,7 +170,7 @@ public class HomeServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
-        Assert.AreEqual(userId, result.First().Id);
+        Assert.AreEqual(userId, result.First().User.Id);
     }
 
     [TestMethod]
