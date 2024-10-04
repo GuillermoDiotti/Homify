@@ -1,10 +1,10 @@
 ﻿using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Homes.Entities;
 
-namespace Homify.BusinessLogic.HomeDevices
-    ;
+namespace Homify.BusinessLogic.HomeDevices;
 public class HomeDevice
 {
+    public string Id { get; set; } = null!;
     public string HomeId { get; set; } = null!;
     public string DeviceId { get; set; } = null!;
     public Home Home { get; set; } = null!;

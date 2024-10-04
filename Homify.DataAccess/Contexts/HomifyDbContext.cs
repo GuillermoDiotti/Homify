@@ -81,11 +81,7 @@ public sealed class HomifyDbContext : DbContext
         .IsRequired();
 
     modelBuilder.Entity<HomeDevice>()
-        .HasKey(hd => new
-        {
-            hd.HomeId,
-            hd.DeviceId
-        });
+        .HasKey(hd => hd.Id);
 
     modelBuilder.Entity<User>()
         .HasOne(u => u.Role)
