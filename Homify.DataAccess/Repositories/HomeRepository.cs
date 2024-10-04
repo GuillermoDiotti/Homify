@@ -19,6 +19,8 @@ public class HomeRepository : Repository<Home>
                 .Include(u => u.Owner)
                 .Include(u => u.Members)
                 .ThenInclude(m => m.Permissions)
+                .Include(u => u.Members)
+                .ThenInclude(m => m.User)
                 .Where(predicate);
 
         var home = query.FirstOrDefault();

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
@@ -55,12 +56,13 @@ public class NotificationControllerTest
             Date = DateTimeOffset.Now,
             Event = "Me afanaron la jarra electrica",
         };
-        var device = new Device();
+        var device = new Device(){ Id = "1" };
+        var homeDevice = new HomeDevice(){ Device = device };
         var expected = new Notification()
         {
             Date = req.Date,
             Event = req.Event,
-            Device = device,
+            Device = homeDevice,
             IsRead = false,
             Id = Guid.NewGuid().ToString()
         };
@@ -108,12 +110,13 @@ public class NotificationControllerTest
             Id = "device123",
             Name = "Test Device"
         };
+        var homeDevice = new HomeDevice() { Device = device, };
 
         var notification = new Notification
         {
             Id = "notif123",
             Event = "Test Event",
-            Device = device,
+            Device = homeDevice,
             Date = DateTimeOffset.UtcNow,
             IsRead = false
         };

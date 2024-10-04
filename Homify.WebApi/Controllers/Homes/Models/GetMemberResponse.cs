@@ -8,7 +8,7 @@ public class GetMemberResponse
 {
     public string Fullname { get; set; }
     public string Email { get; set; }
-    public string Photo { get; set; }
+    public string? Photo { get; set; }
     public List<string> Permissions { get; set; }
     public bool MustBeNotified { get; set; }
 
@@ -18,6 +18,6 @@ public class GetMemberResponse
         Email = u.User.Email;
         Permissions = u.Permissions.Select(x => x.Value).ToList();
         MustBeNotified = u.IsNotificable;
-        Photo = u.User.ProfilePicture;
+        Photo = u.User?.ProfilePicture ?? string.Empty;
     }
 }

@@ -350,33 +350,21 @@ public class HomesControllerTest
     [TestMethod]
     public void GetMembers_WhenCalled_ShouldReturnListOfHomeMembers()
     {
-        var membersList = new List<User>
-        {
-        new User
-        {
-            Id = "1",
-            Name = "John Doe",
-            Email = "john@example.com"
-        },
-        new User
-        {
-            Id = "2",
-            Name = "Jane Smith",
-            Email = "jane@example.com"
-        }
-        };
+        var u1 = new User { Id = "1", Name = "John Doe", Email = "john@example.com", };
+        var u2 = new User { Id = "2", Name = "Jane Smith", Email = "jane@example.com" };
+        var huList = new List<HomeUser>() { new HomeUser() { User = u1 }, new HomeUser() { User = u2, } };
 
         var User = new User();
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers("home123", User)).Returns(membersList);
+        _homeServiceMock.Setup(service => service.GetHomeMembers("home123", User)).Returns(huList);
 
         var result = _controller.ObtainMembers("home123");
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(2, result.Count, "La lista debe contener 2 miembros");
 
-        Assert.AreEqual("John Doe", result[0].Members[0].Name);
-        Assert.AreEqual("jane@example.com", result[1].Members[0].Email);
+        Assert.AreEqual("John Doe", result[0].Fullname);
+        Assert.AreEqual("jane@example.com", result[1].Email);
     }
 
     [TestMethod]
