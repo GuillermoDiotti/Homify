@@ -104,4 +104,21 @@ public class NotificationServiceTest
         Assert.AreEqual(2, result.Count);
         result.Should().OnlyContain(n => n.HomeUser.UserId == userId);
     }
+
+    [TestMethod]
+    public void GetAllByUserId_ShouldReturnEmptyListForNonExistentUser()
+    {
+        var userId = "nonexistentUser";
+        var notifications = new List<Notification>
+        {
+            new Notification { Id = "1", HomeUser = new HomeUser { UserId = "user123" } },
+            new Notification { Id = "2", HomeUser = new HomeUser { UserId = "user456" } }
+        };
+
+        _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Notification, bool>>>())).Returns(notifications);
+
+        var result = _notificationService.GetAllByUserId(userId);
+
+        result.Should().BeEmpty();
+    }
 }
