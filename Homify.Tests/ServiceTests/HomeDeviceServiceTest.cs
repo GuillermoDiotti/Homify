@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Devices;
@@ -39,5 +40,19 @@ public class HomeDeviceServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(homeId, result.HomeId);
         Assert.AreEqual(deviceId, result.DeviceId);
+    }
+
+    [TestMethod]
+    public void GetHomeDeviceByHardwareId_WhenHardwareIdExists_ShouldReturnHomeDevice()
+    {
+        var hardwareId = "hardware1";
+        var expectedHomeDevice = new HomeDevice { HardwareId = hardwareId };
+        _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(expectedHomeDevice);
+
+        var result = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(hardwareId, result.HardwareId);
     }
 }

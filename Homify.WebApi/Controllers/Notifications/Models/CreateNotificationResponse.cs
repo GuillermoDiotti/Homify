@@ -16,5 +16,10 @@ public sealed record class CreateNotificationResponse
     {
         Id = n.Id;
         IsRead = n.IsRead;
+        Event = n.Event;
+        DeviceId = n.HomeDeviceId;
+        HardwareId = n.Device!.HardwareId;
+        Date = n.Date!.Value;
+        PersonDetected = n.PersonId;
     }
 }
