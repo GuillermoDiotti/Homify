@@ -55,4 +55,32 @@ public class NotificationServiceTest
         Assert.AreEqual("User1", result.HomeUserId);
         _mockRepository.Verify(r => r.Add(It.IsAny<Notification>()), Times.Once);
     }
+
+    [TestMethod]
+    public void AddWindowNotification_ShouldReturnNotification_WhenUserIsNotificable()
+    {
+        var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123", HardwareId = "555" };
+        var homeUsers = new List<HomeUser>
+        {
+            new HomeUser { UserId = "User1", IsNotificable = true },
+            new HomeUser { UserId = "User2", IsNotificable = false }
+        };
+
+        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId))
+            .Returns(homeUsers);
+
+        _mockUserService.Setup(s => s.GetById("User1"))
+            .Returns(new User { Id = "User1" });
+
+        var createNotificationArgs =
+            new CreateNotificationArgs("1234567", homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
+
+        var result = _notificationService.AddWindowNotification(createNotificationArgs);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Window state switch detected", result.Event);
+        Assert.AreEqual(homeDevice.Id, result.HomeDeviceId);
+        Assert.AreEqual("User1", result.HomeUserId);
+        _mockRepository.Verify(r => r.Add(It.IsAny<Notification>()), Times.Once);
+    }
 }
