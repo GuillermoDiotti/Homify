@@ -66,7 +66,7 @@ public sealed class AdminController : HomifyControllerBase
         _userService.Delete(adminId);
     }
 
-    [HttpGet]
+    [HttpGet("accounts")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
     public List<UserBasicInfo> AllAccounts([FromQuery] string? limit, [FromQuery] string? offset,
