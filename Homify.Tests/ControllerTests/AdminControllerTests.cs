@@ -114,6 +114,9 @@ public class UserControllerTests
             Password = null,
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
