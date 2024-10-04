@@ -37,7 +37,7 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateUser_WhenNameIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenNameIsNull_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -46,6 +46,9 @@ public class UserControllerTests
             Password = "password",
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
