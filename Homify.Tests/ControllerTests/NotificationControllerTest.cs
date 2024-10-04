@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
@@ -203,5 +204,12 @@ public class NotificationControllerTest
         Assert.AreEqual("Window state switch detected", result.Event);
         _homeDeviceService.Verify(s => s.GetHomeDeviceByHardwareId(request.HardwareId), Times.Once);
         _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateNotificationArgs>()), Times.Once);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void CreateMovementDetectionNotification_WhenRequestIsNull_ShouldThrowException()
+    {
+        _controller.MovementNotification(null);
     }
 }
