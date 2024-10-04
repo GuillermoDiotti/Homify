@@ -57,10 +57,13 @@ public sealed class AdminController : HomifyControllerBase
         {
             throw new NotFoundException("Admin not found");
         }
-        else
+
+        if (admin.Role.Name != Constants.ADMINISTRATOR)
         {
-            _userService.Delete(adminId);
+            throw new InvalidOperationException("Target user is not an admin");
         }
+
+        _userService.Delete(adminId);
     }
 
     [HttpGet]
