@@ -6,6 +6,8 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Notifications;
+using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions;
@@ -78,6 +80,9 @@ services.AddScoped<IHomeDeviceService, HomeDeviceService>();
 
 services.AddScoped<IRepository<CompanyOwner>, CompanyOwnerRepository>();
 services.AddScoped<ICompanyOwnerService, CompanyOwnerService>();
+
+services.AddScoped<IRepository<Notification>, NotificationRepository>();
+services.AddScoped<INotificationService, NotificationService>();
 
 services.AddScoped<AuthenticationFilterAttribute>();
 

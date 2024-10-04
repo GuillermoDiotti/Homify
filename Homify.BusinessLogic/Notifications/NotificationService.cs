@@ -32,19 +32,28 @@ public class NotificationService : INotificationService
     {
         var homeId = notification.Device.HomeId;
         var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
-        var returnNotification = new Notification()
+        var returnNotification = new Notification();
+        foreach (var users in homeUsers)
         {
-            Id = Guid.NewGuid().ToString(),
-            Event = "Persona Detectada",
-            Device = notification.Device,
-            IsRead = false,
-            Date = notification.Date,
-            HomeDeviceId = notification.Device.Id,
-            DetectedUserId = notification.PersonDetectedId,
-        };
+            if(users.IsNotificable)
+            {
+                var noti = new Notification()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Event = "Persona Detectada",
+                    Device = notification.Device,
+                    IsRead = false,
+                    Date = notification.Date,
+                    HomeDeviceId = notification.Device.Id,
+                    DetectedUserId = notification.PersonDetectedId,
+                    HomeUserId = users.UserId,
+                    HomeUser = users,
+                };
+                returnNotification = noti;
+                _notificationRepository.Add(noti);
+            }
+        }
 
-        // buscar casa a la que pertenece le homedevice y agarrar los homeuser
-        _notificationRepository.Add(returnNotification);
         return returnNotification;
     }
 
