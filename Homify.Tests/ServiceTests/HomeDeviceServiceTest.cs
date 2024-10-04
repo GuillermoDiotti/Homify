@@ -7,6 +7,7 @@ using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -54,5 +55,17 @@ public class HomeDeviceServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(hardwareId, result.HardwareId);
+    }
+
+    [TestMethod]
+    public void GetHomeDeviceByHardwareId_WhenHardwareIdDoesNotExist_ShouldReturnNull()
+    {
+        var hardwareId = "hardware1";
+        _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Throws(new NotFoundException("HomeDevice not found"));
+
+        var result = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
+
+        Assert.IsNull(result);
     }
 }
