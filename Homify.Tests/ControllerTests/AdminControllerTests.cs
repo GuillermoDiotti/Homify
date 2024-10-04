@@ -189,9 +189,12 @@ public class UserControllerTests
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
-            LastName = request.LastName
+            LastName = request.LastName,
+            Id = Guid.NewGuid().ToString()
         };
+
         _userServiceMock.Setup(user => user.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         var response = _controller.Create(request);
 
