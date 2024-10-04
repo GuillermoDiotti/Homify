@@ -72,20 +72,6 @@ public sealed class HomifyDbContext : DbContext
         .WithOne(h => h.Home)
         .HasForeignKey(i => i.HomeId)
         .IsRequired();
-    modelBuilder.Entity<Notification>(entity =>
-            {
-                entity.HasKey(n => n.Id);
-
-                entity.HasOne(n => n.Device)
-                    .WithMany()
-                    .HasForeignKey(n => n.HomeDeviceId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(n => n.HomeUser)
-                    .WithMany()
-                    .HasForeignKey(n => n.HomeUserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
 
     modelBuilder.Entity<Home>()
         .HasMany(d => d.Devices)
@@ -329,9 +315,20 @@ public sealed class HomifyDbContext : DbContext
         IsIncomplete = true,
     };
 
+    User companyowner_withNoCompany = new CompanyOwner()
+    {
+        Id = "SeedCompanyOwnerId2",
+        Name = "NoCompanyOwner",
+        Email = "nocompany@domain.com",
+        Password = ".Popso212",
+        LastName = "LastName",
+        RoleId = Constants.COMPANYOWNERID,
+        IsIncomplete = true,
+    };
+
     modelBuilder.Entity<Admin>().HasData(admin);
     modelBuilder.Entity<HomeOwner>().HasData(homeowner);
-    modelBuilder.Entity<CompanyOwner>().HasData(companyowner);
+    modelBuilder.Entity<CompanyOwner>().HasData(companyowner, companyowner_withNoCompany);
 
     modelBuilder.Entity<Session>().HasData(
         new Session
@@ -351,6 +348,12 @@ public sealed class HomifyDbContext : DbContext
             Id = "SeedCompanyOwnerSessionId",
             AuthToken = "SomeCompanyOwnerToken123",
             UserId = "SeedCompanyOwnerId"
+        },
+        new Session
+        {
+            Id = "SeedCompanyOwnerSessionId2",
+            AuthToken = "NoCompanyOwnerToken123",
+            UserId = "SeedCompanyOwnerId2"
         }
     );
 
