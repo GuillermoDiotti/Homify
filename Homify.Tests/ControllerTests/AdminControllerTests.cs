@@ -138,11 +138,7 @@ public class UserControllerTests
     [ExpectedException(typeof(InvalidFormatException))]
     public void CreateUser_WhenPasswordFormatIsInvalid2_ShouldThrowException()
     {
-        var password = string.Empty;
-        for (var i = 0; i < 4; i++)
-        {
-            password += "a";
-        }
+        var password = new string('a', 4);
 
         var request = new CreateAdminRequest()
         {
@@ -151,14 +147,9 @@ public class UserControllerTests
             Password = password + "!",
             LastName = "Doe"
         };
-        var expected = new Admin()
-        {
-            Name = request.Name,
-            Email = request.Email,
-            Password = request.Password,
-            LastName = request.LastName,
-        };
-        _userServiceMock.Setup(u => u.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expected);
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
