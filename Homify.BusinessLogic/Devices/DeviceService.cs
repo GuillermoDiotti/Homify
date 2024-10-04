@@ -108,10 +108,10 @@ public class DeviceService : IDeviceService
             devicesQuery = devicesQuery.Where(d => d.Company.Name.Contains(args.Company, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        // if (!string.IsNullOrEmpty(args.Type))
-        // {
-        //     devicesQuery = devicesQuery.Where(d => d.Type.Equals(args.Type, StringComparison.OrdinalIgnoreCase)).ToList();
-        // }
+        if (!string.IsNullOrEmpty(args.Type))
+        {
+            devicesQuery = devicesQuery.Where(d => d.Type.Equals(args.Type, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
 
         devicesQuery = devicesQuery.Skip(args.Offset).Take(args.Limit).ToList();
 

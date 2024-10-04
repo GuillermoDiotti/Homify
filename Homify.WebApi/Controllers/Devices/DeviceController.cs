@@ -29,7 +29,6 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterCamera)]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
-        // TODO: verificar que solo puedan acceder los de cuentas COMPLETAS
         if (req == null)
         {
             throw new NullRequestException();
@@ -55,6 +54,8 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("sensors")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterSensor(CreateSensorRequest req)
     {
         if (req == null)

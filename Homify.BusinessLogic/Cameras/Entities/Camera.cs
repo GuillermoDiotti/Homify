@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Devices;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Cameras.Entities;
 
@@ -10,5 +11,6 @@ public class Camera : Device
     public Camera()
         : base()
     {
+        Type = Constants.CAMERA;
     }
 }
