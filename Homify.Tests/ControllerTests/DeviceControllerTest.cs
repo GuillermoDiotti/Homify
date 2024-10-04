@@ -155,4 +155,14 @@ public class DeviceControllerTest
         result.Should().ContainSingle(r => r.Type == "DeviceTypeB");
         result.Should().ContainSingle(r => r.Type == "DeviceTypeC");
     }
+
+    [TestMethod]
+    public void ObtainSupportedDevices_ShouldReturnEmptyListWhenNoDevicesFound()
+    {
+        _deviceServiceMock.Setup(service => service.SearchSupportedDevices()).Returns(new List<string>());
+
+        var result = _controller.ObtainSupportedDevices();
+
+        result.Should().BeEmpty();
+    }
 }
