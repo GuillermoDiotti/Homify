@@ -30,8 +30,6 @@ public class HomeDeviceService : IHomeDeviceService
             Home = home,
             Connected = true,
             HardwareId = Guid.NewGuid().ToString(),
-            MovementDetection = false,
-            PeopleDetection = false
         };
         _repository.Add(homeDevice);
         return homeDevice;

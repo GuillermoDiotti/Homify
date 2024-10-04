@@ -89,8 +89,6 @@ public class HomeService : IHomeService
             HomeId = home.Id,
             Connected = false,
             HardwareId = Guid.NewGuid().ToString(),
-            MovementDetection = false,
-            PeopleDetection = false,
         };
         var result = _homeDeviceService.AddHomeDevice(home, device);
         _repository.Update(home);

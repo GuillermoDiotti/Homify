@@ -14,6 +14,9 @@ public class Device
     public string? PpalPicture { get; init; }
     public bool IsActive { get; set; }
     public string CompanyId { get; set; } = null!;
+    public bool MovementDetection { get; init; }
+    public bool PeopleDetection { get; init; }
+    public bool WindowDetection { get; init; }
 
     public Device()
     {

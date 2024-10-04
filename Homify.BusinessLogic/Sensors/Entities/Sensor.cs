@@ -9,5 +9,8 @@ public class Sensor : Device
         : base()
     {
         Type = Constants.SENSOR;
+        MovementDetection = false;
+        PeopleDetection = false;
+        WindowDetection = true;
     }
 }

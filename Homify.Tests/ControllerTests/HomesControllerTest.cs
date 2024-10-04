@@ -89,8 +89,6 @@ public class HomesControllerTest
             },
             Connected = true,
             HardwareId = "1001",
-            MovementDetection = true,
-            PeopleDetection = true
         };
 
         homedevice.HomeId.Should().Be("home123");

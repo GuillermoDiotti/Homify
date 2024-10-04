@@ -12,5 +12,8 @@ public class Camera : Device
         : base()
     {
         Type = Constants.CAMERA;
+        MovementDetection = true;
+        PeopleDetection = true;
+        WindowDetection = false;
     }
 }
