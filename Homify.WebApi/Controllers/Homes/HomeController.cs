@@ -149,7 +149,7 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/devices")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public void UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)
+    public UpdateHomeDeviceResponse UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)
     {
         if (request == null)
         {
@@ -163,7 +163,8 @@ public sealed class HomeController : HomifyControllerBase
 
         var user = GetUserLogged();
 
-        _homeService.UpdateHomeDevices(request.DeviceId, homeId, user);
+        var result = _homeService.UpdateHomeDevices(request.DeviceId, homeId, user);
+        return new UpdateHomeDeviceResponse(result);
     }
 
     [HttpGet("{homeId}/devices")]
