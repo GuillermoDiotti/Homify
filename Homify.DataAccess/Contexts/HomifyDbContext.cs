@@ -93,6 +93,12 @@ public sealed class HomifyDbContext : DbContext
         .HasForeignKey(u => u.RoleId)
         .IsRequired();
 
+    modelBuilder.Entity<Session>()
+        .HasOne(s => s.User)
+        .WithMany()
+        .HasForeignKey(s => s.UserId)
+        .IsRequired();
+
     modelBuilder.Entity<Role>()
         .HasMany(r => r.Permissions)
         .WithMany(p => p.Roles)
@@ -283,6 +289,7 @@ public sealed class HomifyDbContext : DbContext
 
     User admin = new Admin()
     {
+        Id = "SeedAdminId",
         Name = "Admin",
         Email = "admin@domain.com",
         Password = ".Popso212",
@@ -292,6 +299,7 @@ public sealed class HomifyDbContext : DbContext
 
     User homeowner = new HomeOwner()
     {
+        Id = "SeedHomeOwnerId",
         Name = "Homeowner",
         Email = "homeowner@domain.com",
         Password = ".Popso212",
@@ -302,6 +310,7 @@ public sealed class HomifyDbContext : DbContext
 
     User companyowner = new CompanyOwner()
     {
+        Id = "SeedCompanyOwnerId",
         Name = "CompanyOwner",
         Email = "companyowner@domain.com",
         Password = ".Popso212",
@@ -312,6 +321,27 @@ public sealed class HomifyDbContext : DbContext
     modelBuilder.Entity<Admin>().HasData(admin);
     modelBuilder.Entity<HomeOwner>().HasData(homeowner);
     modelBuilder.Entity<CompanyOwner>().HasData(companyowner);
+
+    modelBuilder.Entity<Session>().HasData(
+        new Session
+        {
+            Id = "SeedAdminSessionId",
+            AuthToken = "SomeAdminToken123",
+            UserId = "SeedAdminId",
+        },
+        new Session
+        {
+            Id = "SeedHomeOwnerSessionId",
+            AuthToken = "SomeHomeOwnerToken123",
+            UserId = "SeedHomeOwnerId"
+        },
+        new Session
+        {
+            Id = "SeedCompanyOwnerSessionId",
+            AuthToken = "SomeCompanyOwnerToken123",
+            UserId = "SeedCompanyOwnerId"
+        }
+    );
 
     base.OnModelCreating(modelBuilder);
 }
