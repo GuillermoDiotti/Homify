@@ -85,6 +85,11 @@ public class NotificationController : HomifyControllerBase
             throw new NotFoundException("Device not found");
         }
 
+        if (fromDevice.Device.Type != Constants.CAMERA)
+        {
+            throw new InvalidOperationException("Only sensors are supported.");
+        }
+
         return null;
     }
 
