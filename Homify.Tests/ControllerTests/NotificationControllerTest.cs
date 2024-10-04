@@ -240,4 +240,20 @@ public class NotificationControllerTest
 
         _controller.MovementNotification(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CreateMovementDetectionNotification_WhenDeviceIsNull_ShouldThrowException()
+    {
+        var request = new CreateNotificationRequest
+        {
+            DeviceId = null,
+            HardwareId = "hardwareId"
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns((HomeDevice?)null);
+
+        _controller.MovementNotification(request);
+    }
 }
