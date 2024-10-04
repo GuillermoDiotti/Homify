@@ -1,4 +1,5 @@
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.DataAccess.Repositories;
 
@@ -8,11 +9,13 @@ public class NotificationService : INotificationService
 {
     private readonly IRepository<Notification> _notificationRepository;
     private readonly IHomeDeviceService _homeDeviceService;
+    private readonly IHomeUserService _homeUserService;
 
-    public NotificationService(IRepository<Notification> notificationRepository, HomeDeviceService homeDeviceService)
+    public NotificationService(IRepository<Notification> notificationRepository, IHomeDeviceService homeDeviceService, IHomeUserService homeUserService)
     {
         _notificationRepository = notificationRepository;
         _homeDeviceService = homeDeviceService;
+        _homeUserService = homeUserService;
     }
 
     public Notification GetById(string id)
@@ -27,22 +30,20 @@ public class NotificationService : INotificationService
 
     public Notification AddPersonDetectedNotification(CreateNotificationArgs notification)
     {
-        var device = _homeDeviceService.GetHomeDeviceByHardwareId(notification.HardwareId);
-        if (device == null)
-        {
-            throw new ArgumentException("Device not found");
-        }
-
+        var homeId = notification.Device.HomeId;
+        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
         var returnNotification = new Notification()
         {
             Id = Guid.NewGuid().ToString(),
             Event = "Persona Detectada",
-            Device = device,
-            IsRead = notification.IsRead,
+            Device = notification.Device,
+            IsRead = false,
             Date = notification.Date,
-            HomeDeviceId = device.Id,
+            HomeDeviceId = notification.Device.Id,
             DetectedUserId = notification.PersonDetectedId,
         };
+
+        // buscar casa a la que pertenece le homedevice y agarrar los homeuser
         _notificationRepository.Add(returnNotification);
         return returnNotification;
     }

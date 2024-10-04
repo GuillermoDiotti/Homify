@@ -21,4 +21,9 @@ public class HomeUserService : IHomeUserService
         _repository.Update(hu);
         return hu;
     }
+
+    public List<HomeUser> GetHomeUsersByHomeId(string id)
+    {
+        return _repository.GetAll(x => x.HomeId == id);
+    }
 }

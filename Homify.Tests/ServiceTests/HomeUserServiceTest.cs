@@ -69,4 +69,27 @@ public class HomeUserServiceTest
             u.HomeId == homeUser.HomeId
             && u.UserId == homeUser.UserId)), Times.Once);
     }
+
+    [TestMethod]
+    public void GetHomeUsersByHomeId_ShouldReturnListOfHomeUsers_WhenHomeIdExists()
+    {
+        // Arrange
+        var homeId = "home1";
+        var homeUsers = new List<HomeUser>
+        {
+            new HomeUser { HomeId = homeId, UserId = "user1" },
+            new HomeUser { HomeId = homeId, UserId = "user2" }
+        };
+
+        _mockRepository.Setup(r => r.GetAll(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomeUser, bool>>>()))
+            .Returns(homeUsers);
+
+        // Act
+        var result = _homeUserService.GetHomeUsersByHomeId(homeId);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.IsTrue(result.All(hu => hu.HomeId == homeId));
+    }
 }
