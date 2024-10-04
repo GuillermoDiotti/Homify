@@ -19,4 +19,7 @@ public static class Constants
     public const string HOMEOWNER = "HOMEOWNER";
 
     #endregion
+
+    public const string SENSOR = "SENSOR";
+    public const string CAMERA = "CAMERA";
 }

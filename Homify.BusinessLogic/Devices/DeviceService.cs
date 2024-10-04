@@ -89,4 +89,32 @@ public class DeviceService : IDeviceService
             throw new NotFoundException("The user does not have a company");
         }
     }
+
+    public List<Device> SearchDevices(SearchDevicesArgs args)
+    {
+        var devicesQuery = _deviceRepository.GetAll();
+        if (!string.IsNullOrEmpty(args.DeviceName))
+        {
+            devicesQuery = devicesQuery.Where(d => d.Name.Contains(args.DeviceName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(args.Model))
+        {
+            devicesQuery = devicesQuery.Where(d => d.Model.Contains(args.Model, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(args.Company))
+        {
+            devicesQuery = devicesQuery.Where(d => d.Company.Name.Contains(args.Company, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        // if (!string.IsNullOrEmpty(args.Type))
+        // {
+        //     devicesQuery = devicesQuery.Where(d => d.Type.Equals(args.Type, StringComparison.OrdinalIgnoreCase)).ToList();
+        // }
+
+        devicesQuery = devicesQuery.Skip(args.Offset).Take(args.Limit).ToList();
+
+        return devicesQuery.ToList();
+    }
 }

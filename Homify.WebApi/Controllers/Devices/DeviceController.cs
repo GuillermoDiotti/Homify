@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Devices.Models;
+using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 

@@ -52,7 +52,7 @@ services.AddScoped<IUserService, UserService>();
 services.AddScoped<IRepository<Company>, CompanyRepository>();
 services.AddScoped<ICompanyService, CompanyService>();
 
-services.AddScoped<IRepository<Device>, Repository<Device>>();
+services.AddScoped<IRepository<Device>, DeviceRepository>();
 services.AddScoped<IRepository<Camera>, Repository<Camera>>();
 
 services.AddScoped<IRepository<Sensor>, Repository<Sensor>>();
