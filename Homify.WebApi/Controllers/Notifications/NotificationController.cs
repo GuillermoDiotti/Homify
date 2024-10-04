@@ -73,7 +73,12 @@ public class NotificationController : HomifyControllerBase
 
     public CreateNotificationResponse MovementNotification(CreateNotificationRequest req)
     {
-        throw new NullRequestException("Exception cannot be null");
+        if (req == null)
+        {
+            throw new NullRequestException("Exception cannot be null");
+        }
+
+        return null;
     }
 
     [HttpGet]
