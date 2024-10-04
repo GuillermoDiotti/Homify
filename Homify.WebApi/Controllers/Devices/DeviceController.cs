@@ -83,4 +83,26 @@ public class DeviceController : HomifyControllerBase
 
         return new CreateDeviceResponse(sen);
     }
+
+    [HttpGet]
+    [AuthenticationFilter]
+    public List<SearchDevicesResponse> ObtainDevices([FromQuery] string? deviceName, [FromQuery] string? model, [FromQuery] string? company,
+        [FromQuery] string? type, [FromQuery] string? limit, [FromQuery] string? offset)
+    {
+        var searchArgs = new SearchDevicesArgs
+        {
+            DeviceName = deviceName,
+            Model = model,
+            Company = company,
+            Type = type,
+            Limit = string.IsNullOrEmpty(limit) ? 10 : int.Parse(limit),
+            Offset = string.IsNullOrEmpty(offset) ? 0 : int.Parse(offset)
+        };
+
+        var devices = _deviceService.SearchDevices(searchArgs);
+
+        var response = devices.Select(d => new SearchDevicesResponse(d)).ToList();
+
+        return response;
+    }
 }

@@ -115,4 +115,30 @@ public class DeviceControllerTest
         expected.PpalPicture.Should().Be(args.PpalPicture);
         expected.Company.Should().NotBeNull();
     }
+
+    [TestMethod]
+    public void ObtainDevices_ReturnsListOfDevices_WhenValidParamsProvided()
+    {
+        var deviceList = new List<Device>
+        {
+            new Device { Id = "1", Name = "Camera 1", Model = "Model A", PpalPicture = "photo1.jpg", Company = new Company { Name = "Company A" }},
+            new Device { Id = "2", Name = "Sensor 1", Model = "Model B", PpalPicture = "photo2.jpg", Company = new Company { Name = "Company B" }},
+            new Device { Id = "3", Name = "Camera 2", Model = "Model C", PpalPicture = null, Company = new Company { Name = "Company A" }}
+        };
+
+        _deviceServiceMock
+            .Setup(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()))
+            .Returns(deviceList);
+
+        var result = _controller.ObtainDevices("Camera", null, null, null, null, null);
+
+        Assert.AreEqual(3, result.Count);
+        Assert.AreEqual("Camera 1", result[0].Name);
+        Assert.AreEqual("Model A", result[0].Model);
+        Assert.AreEqual("photo1.jpg", result[0].Photo);
+        Assert.AreEqual("Company A", result[0].CompanyName);
+        Assert.AreEqual("Camera 2", result[2].Name);
+        Assert.AreEqual(string.Empty, result[2].Photo);
+        _deviceServiceMock.Verify(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()), Times.Once);
+    }
 }
