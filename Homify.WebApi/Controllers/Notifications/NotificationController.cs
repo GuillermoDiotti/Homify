@@ -90,7 +90,11 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        return null;
+        var arguments = new CreateNotificationArgs(req.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, req.HardwareId);
+
+        var notification = _notificationService.AddWindowNotification(arguments);
+
+        return new CreateNotificationResponse(notification);
     }
 
     [HttpGet]
