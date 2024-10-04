@@ -210,6 +210,6 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        _homeService.UpdateNotificatedList(homeId, request.MemberId);
+        _homeService.UpdateNotificatedList(homeId, request.HomeUserId);
     }
 }

@@ -223,4 +223,36 @@ public class HomeServiceTest
         Assert.AreEqual(expectedDevices.Count, result.Count);
         CollectionAssert.AreEqual(expectedDevices, result);
     }
+
+    [TestMethod]
+    public void UpdateNotificatedList_ShouldUpdateUserAndReturnNotificableMembers_WhenUserExists()
+    {
+        // Arrange
+        var homeId = "testHomeId";
+        var memberId = "testMemberId";
+
+        var members = new List<HomeUser>
+        {
+            new HomeUser { UserId = "testMemberId", IsNotificable = false },
+            new HomeUser { UserId = "otherMemberId", IsNotificable = true }
+        };
+
+        var home = new Home
+        {
+            Id = homeId,
+            Members = members
+        };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(home);
+
+        // Act
+        var result = _homeService.UpdateNotificatedList(homeId, memberId);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.IsTrue(members.First(m => m.UserId == memberId).IsNotificable);
+        _mockRepository.Verify(r => r.Update(home), Times.Once);
+    }
 }

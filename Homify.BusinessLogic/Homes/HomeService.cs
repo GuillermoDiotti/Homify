@@ -109,9 +109,18 @@ public class HomeService : IHomeService
         return _repository.GetAll(x => x.Id == homeId).SelectMany(x => x.Members).ToList();
     }
 
-    public void UpdateNotificatedList(string homeId, string memberId)
+    public List<HomeUser> UpdateNotificatedList(string homeId, string memberId)
     {
-        throw new NotImplementedException();
+        var home = _repository.Get(x => x.Id == homeId);
+        var user = home.Members.Find(x => x.UserId == memberId);
+        if (user == null)
+        {
+            throw new InvalidOperationException("Member does not belong to the house");
+        }
+
+        user.IsNotificable = true;
+        _repository.Update(home);
+        return home.Members.Where(x => x.IsNotificable == true).ToList();
     }
 
     public List<HomeDevice> GetHomeDevices(string homeId, User u)

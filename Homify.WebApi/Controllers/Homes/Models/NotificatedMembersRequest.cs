@@ -2,5 +2,5 @@
 
 public class NotificatedMembersRequest
 {
-    public string MemberId { get; set; } = null!;
+    public string HomeUserId { get; set; } = null!;
 }
