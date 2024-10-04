@@ -117,7 +117,7 @@ public class HomeService : IHomeService
             throw new InvalidOperationException("Only the owner can set notificated members");
         }
 
-        var user = home.Members.Find(x => x.UserId == memberId);
+        var user = home.Members.Find(x => x.Id == memberId);
         if (user == null)
         {
             throw new InvalidOperationException("Member does not belong to the house");
