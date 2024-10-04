@@ -141,4 +141,28 @@ public class DeviceControllerTest
         Assert.AreEqual(string.Empty, result[2].Photo);
         _deviceServiceMock.Verify(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()), Times.Once);
     }
+
+    [TestMethod]
+    public void ObtainSupportedDevices_ShouldReturnCorrectSupportedDevicesResponse()
+    {
+        var devices = new List<string> { "DeviceTypeA", "DeviceTypeB", "DeviceTypeC" };
+        _deviceServiceMock.Setup(service => service.SearchSupportedDevices()).Returns(devices);
+
+        var result = _controller.ObtainSupportedDevices();
+
+        result.Count.Should().Be(3);
+        result.Should().ContainSingle(r => r.Type == "DeviceTypeA");
+        result.Should().ContainSingle(r => r.Type == "DeviceTypeB");
+        result.Should().ContainSingle(r => r.Type == "DeviceTypeC");
+    }
+
+    [TestMethod]
+    public void ObtainSupportedDevices_ShouldReturnEmptyListWhenNoDevicesFound()
+    {
+        _deviceServiceMock.Setup(service => service.SearchSupportedDevices()).Returns(new List<string>());
+
+        var result = _controller.ObtainSupportedDevices();
+
+        result.Should().BeEmpty();
+    }
 }

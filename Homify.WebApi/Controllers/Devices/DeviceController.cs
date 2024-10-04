@@ -84,7 +84,7 @@ public class DeviceController : HomifyControllerBase
         return new CreateDeviceResponse(sen);
     }
 
-    [HttpGet("devices")]
+    [HttpGet]
     [AuthenticationFilter]
     public List<SearchDevicesResponse> ObtainDevices([FromQuery] string? deviceName, [FromQuery] string? model, [FromQuery] string? company,
         [FromQuery] string? type, [FromQuery] string? limit, [FromQuery] string? offset)
@@ -104,5 +104,19 @@ public class DeviceController : HomifyControllerBase
         var response = devices.Select(d => new SearchDevicesResponse(d)).ToList();
 
         return response;
+    }
+
+    [HttpGet("supported")]
+    [AuthenticationFilter]
+    public List<SearchSupportedDevicesResponse> ObtainSupportedDevices()
+    {
+        var devices = _deviceService.SearchSupportedDevices();
+        var result = new List<SearchSupportedDevicesResponse>();
+        foreach (var d in devices)
+        {
+            result.Add(new SearchSupportedDevicesResponse(d));
+        }
+
+        return result;
     }
 }
