@@ -344,17 +344,20 @@ public class UserControllerTests
             new User
             {
                 Name = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Jane",
-                LastName = "Smith"
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Adam",
-                LastName = "Johnson"
+                LastName = "Johnson",
+                Role = new Role { Name = "Admin" }
             }
         };
 
