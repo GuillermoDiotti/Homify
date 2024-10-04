@@ -256,4 +256,27 @@ public class NotificationControllerTest
 
         _controller.MovementNotification(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void CreateMovementDetectionNotification_WhenDeviceIsSensor_ShouldThrowException()
+    {
+        var request = new CreateNotificationRequest
+        {
+            DeviceId = "id",
+            HardwareId = "hardwareId"
+        };
+
+        var expectedDevice = new Device
+        {
+            Type = Constants.SENSOR
+        };
+
+        var HomeDevice = new HomeDevice() { DeviceId = "id", Device = expectedDevice };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns(HomeDevice);
+
+        _controller.MovementNotification(request);
+    }
 }
