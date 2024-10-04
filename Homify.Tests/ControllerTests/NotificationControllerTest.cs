@@ -147,4 +147,22 @@ public class NotificationControllerTest
 
         _controller.WindowMovementNotification(request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void WindowMovementNotification_ShouldThrowInvalidOperationException_WhenDeviceIsNotSensor()
+    {
+        var request = new CreateNotificationRequest
+        {
+            HardwareId = "ValidHardwareId",
+            PersonDetectedId = "Person1"
+        };
+
+        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = "Camera" } };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns(homeDevice);
+
+        _controller.WindowMovementNotification(request);
+    }
 }
