@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.Notifications;
@@ -10,12 +11,15 @@ public class NotificationService : INotificationService
     private readonly IRepository<Notification> _notificationRepository;
     private readonly IHomeDeviceService _homeDeviceService;
     private readonly IHomeUserService _homeUserService;
+    private readonly IUserService _userService;
 
-    public NotificationService(IRepository<Notification> notificationRepository, IHomeDeviceService homeDeviceService, IHomeUserService homeUserService)
+    public NotificationService(IRepository<Notification> notificationRepository, IHomeDeviceService homeDeviceService,
+        IHomeUserService homeUserService, IUserService userService)
     {
         _notificationRepository = notificationRepository;
         _homeDeviceService = homeDeviceService;
         _homeUserService = homeUserService;
+        _userService = userService;
     }
 
     public Notification GetById(string id)
@@ -37,6 +41,7 @@ public class NotificationService : INotificationService
         {
             if(users.IsNotificable)
             {
+                var detectedUser = _userService.GetById(users.UserId);
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -45,7 +50,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = notification.PersonDetectedId,
+                    DetectedUserId = detectedUser?.Id,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
