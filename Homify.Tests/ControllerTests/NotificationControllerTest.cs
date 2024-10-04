@@ -131,4 +131,20 @@ public class NotificationControllerTest
     {
         _controller.WindowMovementNotification(null);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void WindowMovementNotification_ShouldThrowNotFoundException_WhenDeviceIsNotFound()
+    {
+        var request = new CreateNotificationRequest
+        {
+            HardwareId = "InvalidHardwareId",
+            PersonDetectedId = "Person1"
+        };
+
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns((HomeDevice)null);
+
+        _controller.WindowMovementNotification(request);
+    }
 }
