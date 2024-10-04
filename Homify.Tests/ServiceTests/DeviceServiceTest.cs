@@ -86,7 +86,11 @@ public class DeviceServiceTest
         );
 
         var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company };
+        var user = new CompanyOwner { Company = company, Id = "1"};
+
+        _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
+
+        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
 
         // Act
         var result = _deviceService.AddSensor(deviceArgs, user);
