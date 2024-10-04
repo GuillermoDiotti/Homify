@@ -22,6 +22,17 @@ public class ExceptionFilter : IExceptionFilter
                 }
         },
         {
+            typeof(ArgumentNullException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "InvalidNullArgument",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
+        {
             typeof(InvalidFormatException), exception =>
                 new ObjectResult(new
                 {

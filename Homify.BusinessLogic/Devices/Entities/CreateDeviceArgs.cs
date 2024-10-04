@@ -16,21 +16,21 @@ public class CreateDeviceArgs
 
         if (string.IsNullOrEmpty(name))
         {
-            throw new ArgumentNullException("name cannot be null");
+            throw new ArgumentNullException(name, "name cannot be null");
         }
 
         Name = name;
 
         if (string.IsNullOrEmpty(model))
         {
-            throw new ArgumentNullException("model cannot be null");
+            throw new ArgumentNullException(model, "model cannot be null");
         }
 
         Model = model;
 
         if (string.IsNullOrEmpty(description))
         {
-            throw new ArgumentNullException("description cannot be null");
+            throw new ArgumentNullException(description, "description cannot be null");
         }
 
         Description = description;

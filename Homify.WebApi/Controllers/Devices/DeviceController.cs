@@ -84,7 +84,7 @@ public class DeviceController : HomifyControllerBase
         return new CreateDeviceResponse(sen);
     }
 
-    [HttpGet("supported")]
+    [HttpGet("devices")]
     [AuthenticationFilter]
     public List<SearchDevicesResponse> ObtainDevices([FromQuery] string? deviceName, [FromQuery] string? model, [FromQuery] string? company,
         [FromQuery] string? type, [FromQuery] string? limit, [FromQuery] string? offset)

@@ -39,7 +39,7 @@ public class CreateHomeOwnerArgs
 
         if (string.IsNullOrWhiteSpace(pfp))
         {
-            throw new ArgsNullException("name cannot be null or empty");
+            throw new ArgsNullException("profile picture cannot be null or empty");
         }
 
         if (role == null)
