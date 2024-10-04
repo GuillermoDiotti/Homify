@@ -36,4 +36,16 @@ public class HomeDeviceService : IHomeDeviceService
         _repository.Add(homeDevice);
         return homeDevice;
     }
+
+    public HomeDevice? GetHomeDeviceByHardwareId(string id)
+    {
+        try
+        {
+            return _repository.Get(x => x.HardwareId == id);
+        }
+        catch (NotFoundException)
+        {
+            return null;
+        }
+    }
 }

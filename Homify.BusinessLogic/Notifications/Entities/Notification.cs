@@ -10,8 +10,9 @@ public class Notification
     public string HomeDeviceId { get; init; } = null!;
     public bool IsRead { get; init; }
     public DateTimeOffset? Date { get; init; }
+    public string? PersonId { get; init; } = null!;
 
-    public Notification(string? eventName, HomeDevice device, bool isRead, DateTimeOffset? date)
+    public Notification(string? eventName, HomeDevice device, bool isRead, DateTimeOffset? date, string personId)
     {
         Id = Guid.NewGuid().ToString();
         Event = eventName;
@@ -19,6 +20,7 @@ public class Notification
         IsRead = isRead;
         Date = date;
         HomeDeviceId = device.Id;
+        PersonId = personId;
     }
 
     public Notification()

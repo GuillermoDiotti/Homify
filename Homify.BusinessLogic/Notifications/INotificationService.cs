@@ -6,6 +6,6 @@ public interface INotificationService
 {
     Notification GetById(string id);
     List<Notification> GetAllByUserId(string userId);
-    Notification AddNotification(CreateNotificationArgs notification);
+    Notification AddPersonDetectedNotification(CreateNotificationArgs notification);
     Notification ReadNotificationById(string id);
 }
