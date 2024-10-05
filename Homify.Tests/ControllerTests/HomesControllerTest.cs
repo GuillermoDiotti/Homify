@@ -396,4 +396,21 @@ public class HomesControllerTest
     {
         _controller.UpdateMembersList("home123", null);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateMembersList_WhenHomeDoesNotExist_ShouldThrowNotFoundException()
+    {
+        var homeId = "homeNotFound";
+        var request = new UpdateMemberListRequest { Email = "newmember@example.com" };
+        var user = new User { Id = "ownerId", Role = new Role { Name = Constants.HOMEOWNER } };
+
+        _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns((Home)null); // Home not found
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _controller.UpdateMembersList(homeId, request);
+    }
 }
