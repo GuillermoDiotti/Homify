@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
-using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
