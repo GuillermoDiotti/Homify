@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
@@ -61,7 +60,10 @@ public class NotificationControllerTest
 
         var homeDevice = new HomeDevice
         {
-            Device = new Device { Type = Constants.CAMERA } // Asegúrate de que esto esté configurado correctamente
+            Device = new Device
+            {
+                Type = Constants.CAMERA
+            }
         };
 
         var expected = new Notification()
@@ -69,17 +71,15 @@ public class NotificationControllerTest
             Event = req.PersonDetectedId,
             Device = homeDevice,
             IsRead = false,
-            Id = Guid.NewGuid().ToString(), // Asegúrate de que Id no sea null
+            Id = Guid.NewGuid().ToString(),
             Detail = req.PersonDetectedId,
         };
 
         _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(req.HardwareId)).Returns(homeDevice);
         _notificationService.Setup(n => n.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
 
-        // Act
         var result = _controller.PersonDetectedNotification(req);
 
-        // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(expected.Id);
     }
@@ -118,7 +118,10 @@ public class NotificationControllerTest
         {
             Id = "device123",
         };
-        var homeDevice = new HomeDevice() { Device = device, };
+        var homeDevice = new HomeDevice()
+        {
+            Device = device,
+        };
 
         var notification = new Notification
         {
@@ -168,7 +171,14 @@ public class NotificationControllerTest
             HardwareId = "ValidHardwareId",
         };
 
-        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = "Camera" } };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            Device = new Device
+            {
+                Type = "Camera"
+            }
+        };
 
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
             .Returns(homeDevice);
@@ -184,7 +194,15 @@ public class NotificationControllerTest
             HardwareId = "ValidHardwareId",
         };
 
-        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = Constants.SENSOR }, HardwareId = "333" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            Device = new Device
+            {
+                Type = Constants.SENSOR
+            },
+            HardwareId = "333"
+        };
 
         var notification = new Notification
         {
@@ -281,7 +299,11 @@ public class NotificationControllerTest
             Type = Constants.SENSOR
         };
 
-        var HomeDevice = new HomeDevice() { DeviceId = "id", Device = expectedDevice };
+        var HomeDevice = new HomeDevice()
+        {
+            DeviceId = "id",
+            Device = expectedDevice
+        };
 
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
             .Returns(HomeDevice);

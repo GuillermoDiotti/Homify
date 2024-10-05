@@ -103,25 +103,101 @@ public sealed class HomifyDbContext : DbContext
         .HasKey(r => r.Id);
 
     modelBuilder.Entity<SystemPermission>().HasData(
-        new SystemPermission { Id = "1", Value = PermissionsGenerator.CreateAdmin },
-        new SystemPermission { Id = "2", Value = PermissionsGenerator.DeleteAdmin },
-        new SystemPermission { Id = "3", Value = PermissionsGenerator.GetAllAccounts },
-        new SystemPermission { Id = "4", Value = PermissionsGenerator.CreateCompanyOwner },
-        new SystemPermission { Id = "5", Value = PermissionsGenerator.GetCompanies },
-        new SystemPermission { Id = "6", Value = PermissionsGenerator.CreateCompany },
-        new SystemPermission { Id = "7", Value = PermissionsGenerator.RegisterCamera },
-        new SystemPermission { Id = "8", Value = PermissionsGenerator.RegisterSensor },
-        new SystemPermission { Id = "9", Value = PermissionsGenerator.CreateHome },
-        new SystemPermission { Id = "10", Value = PermissionsGenerator.UpdateHomeMembersList },
-        new SystemPermission { Id = "11", Value = PermissionsGenerator.UpdateHomeDevices },
-        new SystemPermission { Id = "12", Value = PermissionsGenerator.GetHomeMembers },
-        new SystemPermission { Id = "13", Value = PermissionsGenerator.GetHomeDevices },
-        new SystemPermission { Id = "14", Value = PermissionsGenerator.UpdateHomeNotificatedMembers },
-        new SystemPermission { Id = "15", Value = PermissionsGenerator.GetUserNotifications },
-        new SystemPermission { Id = "16", Value = PermissionsGenerator.UpdateUserNotification },
-        new SystemPermission { Id = "17", Value = PermissionsGenerator.ViewRegisteredDevices },
-        new SystemPermission { Id = "18", Value = PermissionsGenerator.ViewSupportedDevices },
-        new SystemPermission { Id = "19", Value = PermissionsGenerator.CreateNotification }
+        new SystemPermission
+        {
+            Id = "1",
+            Value = PermissionsGenerator.CreateAdmin
+        },
+        new SystemPermission
+        {
+            Id = "2",
+            Value = PermissionsGenerator.DeleteAdmin
+        },
+        new SystemPermission
+        {
+            Id = "3",
+            Value = PermissionsGenerator.GetAllAccounts
+        },
+        new SystemPermission
+        {
+            Id = "4",
+            Value = PermissionsGenerator.CreateCompanyOwner
+        },
+        new SystemPermission
+        {
+            Id = "5",
+            Value = PermissionsGenerator.GetCompanies
+        },
+        new SystemPermission
+        {
+            Id = "6",
+            Value = PermissionsGenerator.CreateCompany
+        },
+        new SystemPermission
+        {
+            Id = "7",
+            Value = PermissionsGenerator.RegisterCamera
+        },
+        new SystemPermission
+        {
+            Id = "8",
+            Value = PermissionsGenerator.RegisterSensor
+        },
+        new SystemPermission
+        {
+            Id = "9",
+            Value = PermissionsGenerator.CreateHome
+        },
+        new SystemPermission
+        {
+            Id = "10",
+            Value = PermissionsGenerator.UpdateHomeMembersList
+        },
+        new SystemPermission
+        {
+            Id = "11",
+            Value = PermissionsGenerator.UpdateHomeDevices
+        },
+        new SystemPermission
+        {
+            Id = "12",
+            Value = PermissionsGenerator.GetHomeMembers
+        },
+        new SystemPermission
+        {
+            Id = "13",
+            Value = PermissionsGenerator.GetHomeDevices
+        },
+        new SystemPermission
+        {
+            Id = "14",
+            Value = PermissionsGenerator.UpdateHomeNotificatedMembers
+        },
+        new SystemPermission
+        {
+            Id = "15",
+            Value = PermissionsGenerator.GetUserNotifications
+        },
+        new SystemPermission
+        {
+            Id = "16",
+            Value = PermissionsGenerator.UpdateUserNotification
+        },
+        new SystemPermission
+        {
+            Id = "17",
+            Value = PermissionsGenerator.ViewRegisteredDevices
+        },
+        new SystemPermission
+        {
+            Id = "18",
+            Value = PermissionsGenerator.ViewSupportedDevices
+        },
+        new SystemPermission
+        {
+            Id = "19",
+            Value = PermissionsGenerator.CreateNotification
+        }
     );
 
     modelBuilder.Entity<HomePermission>().HasData(

@@ -190,24 +190,49 @@ public class NotificationServiceTest
     [TestMethod]
     public void AddMovementNotification_WithNotificableUsers_ShouldAddNotification()
     {
-        // Arrange
         var homeDevice = new HomeDevice
         {
             Id = "Device123",
             HomeId = "Home123",
-            Device = new Device(){ Id = "device123" },
+            Device = new Device()
+            {
+                Id = "device123"
+            },
             HardwareId = "kkk"
         };
 
         var homeUsers = new List<HomeUser>
         {
-            new HomeUser { Id = "User1", UserId = "User1", IsNotificable = true },
-            new HomeUser { Id = "User2", UserId = "User2", IsNotificable = false },
-            new HomeUser { Id = "User3", UserId = "User3", IsNotificable = true }
+            new HomeUser
+            {
+                Id = "User1",
+                UserId = "User1",
+                IsNotificable = true
+            },
+            new HomeUser
+            {
+                Id = "User2",
+                UserId = "User2",
+                IsNotificable = false
+            },
+            new HomeUser
+            {
+                Id = "User3",
+                UserId = "User3",
+                IsNotificable = true
+            }
         };
 
-        var detectedUser1 = new User { Id = "User1", Name = "John Doe" };
-        var detectedUser3 = new User { Id = "User3", Name = "Jane Doe" };
+        var detectedUser1 = new User
+        {
+            Id = "User1",
+            Name = "John Doe"
+        };
+        var detectedUser3 = new User
+        {
+            Id = "User3",
+            Name = "Jane Doe"
+        };
 
         var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
 
