@@ -413,4 +413,24 @@ public class HomesControllerTest
 
         _controller.UpdateMembersList(homeId, request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateMembersList_WhenMaxMembersReached_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var homeId = "home123";
+        var request = new UpdateMemberListRequest { Email = "newmember@example.com" };
+        var user = new User { Id = "ownerId", Role = new Role { Name = Constants.HOMEOWNER } };
+        var home = new Home { Id = homeId, Members = new List<HomeUser> { new HomeUser() }, MaxMembers = 1 };
+
+        _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(home);
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        // Act
+        _controller.UpdateMembersList(homeId, request);
+    }
 }
