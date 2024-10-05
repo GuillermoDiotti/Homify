@@ -68,4 +68,23 @@ public class HomeDeviceServiceTest
 
         Assert.IsNull(result);
     }
+
+    [TestMethod]
+    public void Activate_ShouldActivateDeviceAndUpdateRepository()
+    {
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = false
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Update(It.IsAny<HomeDevice>()));
+        var result = _homeDeviceService.Activate(homeDevice);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsActive, "The HomeDevice should be activated (IsActive = true).");
+        Assert.AreEqual(homeDevice.Id, result.Id);
+
+        _homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once, "The repository update method should be called once.");
+    }
 }

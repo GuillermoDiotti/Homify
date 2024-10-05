@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Devices.Models;
@@ -17,11 +18,13 @@ public class DeviceController : HomifyControllerBase
 {
     private readonly IDeviceService _deviceService;
     private readonly ICompanyOwnerService _companyOwnerService;
+    private readonly IHomeDeviceService _homeDeviceService;
 
-    public DeviceController(IDeviceService deviceService, ICompanyOwnerService companyOwnerService)
+    public DeviceController(IDeviceService deviceService, ICompanyOwnerService companyOwnerService, IHomeDeviceService homeDeviceService)
     {
         _deviceService = deviceService;
         _companyOwnerService = companyOwnerService;
+        _homeDeviceService = homeDeviceService;
     }
 
     [HttpPost("cameras")]
@@ -118,5 +121,20 @@ public class DeviceController : HomifyControllerBase
         }
 
         return result;
+    }
+
+    [HttpPut("{hardwareId}/activate")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOnDevice([FromRoute] string hardwareId)
+    {
+        var homeDevice = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        var result = _homeDeviceService.Activate(homeDevice);
+        return new TurnOnDeviceResponse(result);
     }
 }

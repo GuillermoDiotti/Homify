@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.WebApi.Controllers.Devices;
@@ -20,12 +21,14 @@ public class DeviceControllerTest
     private readonly DeviceController _controller;
     private readonly Mock<IDeviceService> _deviceServiceMock;
     private readonly Mock<ICompanyOwnerService> _companyOwnerServiceMock;
+    private readonly Mock<IHomeDeviceService> _homeDeviceServiceMock;
 
     public DeviceControllerTest()
     {
         _companyOwnerServiceMock = new Mock<ICompanyOwnerService>(MockBehavior.Strict);
         _deviceServiceMock = new Mock<IDeviceService>(MockBehavior.Strict);
-        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object);
+        _homeDeviceServiceMock = new Mock<IHomeDeviceService>(MockBehavior.Strict);
+        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object, _homeDeviceServiceMock.Object);
         var httpContext = new DefaultHttpContext();
         httpContext.Items["UserLogged"] = new User { };
         _controller.ControllerContext = new ControllerContext
@@ -164,5 +167,43 @@ public class DeviceControllerTest
         var result = _controller.ObtainSupportedDevices();
 
         result.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
+    {
+        // Arrange
+        var hardwareId = "Device123";
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = false,
+            HardwareId = hardwareId
+        };
+
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId
+        };
+
+        _homeDeviceServiceMock
+            .Setup(service => service.GetHomeDeviceByHardwareId(hardwareId))
+            .Returns(homeDevice);
+
+        _homeDeviceServiceMock
+            .Setup(service => service.Activate(It.IsAny<HomeDevice>()))
+            .Returns(activatedDevice);
+
+        // Act
+        var result = _controller.TurnOnDevice(hardwareId);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsActive, "The device should be activated.");
+
+        _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once, "GetHomeDeviceByHardwareId should be called once.");
+        _homeDeviceServiceMock.Verify(service => service.Activate(homeDevice), Times.Once, "Activate should be called once.");
     }
 }
