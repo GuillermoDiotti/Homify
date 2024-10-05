@@ -47,4 +47,11 @@ public class HomeDeviceService : IHomeDeviceService
             return null;
         }
     }
+
+    public HomeDevice Activate(HomeDevice hd)
+    {
+        hd.IsActive = true;
+        _repository.Update(hd);
+        return hd;
+    }
 }
