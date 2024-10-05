@@ -43,7 +43,7 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        if (fromDevice.IsActive)
+        if (!fromDevice.IsActive)
         {
             throw new InvalidOperationException("Device is not active");
         }
@@ -75,7 +75,7 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        if (fromDevice.IsActive)
+        if (!fromDevice.IsActive)
         {
             throw new InvalidOperationException("Device is not active");
         }
@@ -107,7 +107,7 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        if (fromDevice.IsActive)
+        if (!fromDevice.IsActive)
         {
             throw new InvalidOperationException("Device is not active");
         }
