@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;

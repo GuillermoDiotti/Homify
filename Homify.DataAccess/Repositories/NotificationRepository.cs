@@ -35,12 +35,15 @@ public class NotificationRepository : Repository<Notification>
         if (predicate == null)
         {
             return _entities.Include(u => u.Device)
-                .Include(u => u.HomeUser).ToList();
+                .Include(u => u.HomeUser)
+                .ThenInclude(u => u.User)
+                .ToList();
         }
 
         var query =
                 _entities.Include(u => u.Device)
                     .Include(u => u.HomeUser)
+                    .ThenInclude(u => u.User)
                     .Where(predicate)
                 .ToList();
 
