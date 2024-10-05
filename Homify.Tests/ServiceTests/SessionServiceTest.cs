@@ -6,7 +6,6 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
-using Serilog.Core;
 using Constants = Homify.Utility.Constants;
 
 namespace Homify.Tests.ServiceTests;
