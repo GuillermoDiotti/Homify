@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homify.DataAccess.Migrations
 {
     [ExcludeFromCodeCoverage]
+    
     [DbContext(typeof(HomifyDbContext))]
     partial class HomifyDbContextModelSnapshot : ModelSnapshot
     {
