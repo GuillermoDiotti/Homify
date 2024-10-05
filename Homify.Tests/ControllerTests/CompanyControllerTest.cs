@@ -87,7 +87,7 @@ public class CompanyControllerTest
     [TestMethod]
     public void Create_WhenRequestIsNull_ShouldThrowArgumentNullException()
     {
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(),It.IsAny<User>())).Throws<NullRequestException>();
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Throws<NullRequestException>();
 
         var response = () => _controller.Create(null);
         response.Should().Throw<NullRequestException>().WithMessage("Request cannot be null");

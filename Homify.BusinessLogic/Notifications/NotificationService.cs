@@ -40,7 +40,7 @@ public class NotificationService : INotificationService
         var returnNotification = new Notification();
         foreach (var users in homeUsers)
         {
-            if(users.IsNotificable)
+            if (users.IsNotificable)
             {
                 var detectedUser = _userService.GetById(users.UserId);
                 var noti = new Notification()
@@ -70,7 +70,7 @@ public class NotificationService : INotificationService
         var returnNotification = new Notification();
         foreach (var users in homeUsers)
         {
-            if(users.IsNotificable)
+            if (users.IsNotificable)
             {
                 var detectedUser = _userService.GetById(users.UserId);
                 var noti = new Notification()

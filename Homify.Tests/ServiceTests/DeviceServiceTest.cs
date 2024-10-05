@@ -86,7 +86,7 @@ public class DeviceServiceTest
         );
 
         var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company, Id = "1"};
+        var user = new CompanyOwner { Company = company, Id = "1" };
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -167,33 +167,33 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-        public void SearchDevices_WithValidFilters_ReturnsFilteredDevices()
-        {
-            var deviceList = new List<Device>
+    public void SearchDevices_WithValidFilters_ReturnsFilteredDevices()
+    {
+        var deviceList = new List<Device>
             {
                 new Device { Id = "1", Name = "Camera 1", Model = "Model A", Company = new Company { Id = "1", Name = "Company A" }, },
                 new Device { Id = "2", Name = "Sensor 1", Model = "Model B", Company = new Company { Id = "2", Name = "Company B" }, },
                 new Device { Id = "3", Name = "Camera 2", Model = "Model C", Company = new Company { Id = "1", Name = "Company A" }, }
             };
 
-            _deviceRepositoryMock
-                .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
-                .Returns(deviceList);
+        _deviceRepositoryMock
+            .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
+            .Returns(deviceList);
 
-            var searchArgs = new SearchDevicesArgs
-            {
-                DeviceName = "Camera",
-                Model = "Model A",
-                Company = "Company A",
-                Limit = 10,
-                Offset = 0
-            };
-            var result = _deviceService.SearchDevices(searchArgs);
+        var searchArgs = new SearchDevicesArgs
+        {
+            DeviceName = "Camera",
+            Model = "Model A",
+            Company = "Company A",
+            Limit = 10,
+            Offset = 0
+        };
+        var result = _deviceService.SearchDevices(searchArgs);
 
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Camera 1", result.First().Name);
-            Assert.AreEqual("Model A", result.First().Model);
-        }
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("Camera 1", result.First().Name);
+        Assert.AreEqual("Model A", result.First().Model);
+    }
 
     [TestMethod]
     public void SearchSupportedDevices_ReturnsUniqueDeviceTypes()

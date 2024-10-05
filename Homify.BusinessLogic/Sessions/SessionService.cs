@@ -33,7 +33,9 @@ public class SessionService : ISessionService
 
         var newSession = new Session()
         {
-            AuthToken = Guid.NewGuid().ToString(), Id = Guid.NewGuid().ToString(), User = u,
+            AuthToken = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid().ToString(),
+            User = u,
         };
         _repository.Add(newSession);
         return newSession;

@@ -199,7 +199,7 @@ public class HomeServiceTest
     {
         // Arrange
         var homeId = "testHomeId";
-        var user = new User {};
+        var user = new User { };
         var expectedDevices = new List<HomeDevice>
         {
             new HomeDevice {},

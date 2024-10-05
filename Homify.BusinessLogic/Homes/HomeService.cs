@@ -127,6 +127,6 @@ public class HomeService : IHomeService
 
     public List<HomeDevice> GetHomeDevices(string homeId, User u)
     {
-       return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
+        return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
     }
 }

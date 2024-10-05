@@ -64,7 +64,7 @@ public class DeviceControllerTest
             CompanyId = comoany.Id
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture, false, false);
 
         _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(), It.IsAny<CompanyOwner>())).Returns(expected);
 
@@ -103,9 +103,9 @@ public class DeviceControllerTest
             Photos = request.Photos,
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture, false, false);
 
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(),It.IsAny<CompanyOwner>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(), It.IsAny<CompanyOwner>())).Returns(expected);
 
         var response = _controller.RegisterSensor(request);
 
