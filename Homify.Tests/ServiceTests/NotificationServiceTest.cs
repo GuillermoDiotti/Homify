@@ -269,7 +269,7 @@ public class NotificationServiceTest
         {
             Id = "Device123",
             HomeId = "Home123",
-            Device = new Device(){ Id = "device123" },
+            Device = new Device() { Id = "device123" },
             HardwareId = "kkk"
         };
 
@@ -304,7 +304,7 @@ public class NotificationServiceTest
         {
             Id = notificationId,
             IsRead = false,
-            HomeUser = new HomeUser(){ UserId = "User1"}
+            HomeUser = new HomeUser() { UserId = "User1" }
         };
 
         _mockRepository

@@ -95,7 +95,7 @@ public class NotificationService : INotificationService
         var returnNotification = new Notification();
         foreach (var users in homeUsers)
         {
-            if(users.IsNotificable)
+            if (users.IsNotificable)
             {
                 var noti = new Notification()
                 {
