@@ -31,47 +31,33 @@ public class NotificationServiceTest
         _notificationService = new NotificationService(_mockRepository.Object, _mockHomeDeviceService.Object, _mockHomeUserService.Object, _mockUserService.Object);
     }
 
-   /* [TestMethod]
-    public void AddPersonDetectedNotification_ShouldReturnNotification_WhenUserIsNotificable()
+    [TestMethod]
+    public void AddPersonDetectedNotification_ShouldAddNotifications_WhenUsersAreNotificable()
     {
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            HomeId = "Home123",
-            HardwareId = "4444"
-        };
+        // Arrange
+        var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123" };
         var homeUsers = new List<HomeUser>
         {
-            new HomeUser
-            {
-                UserId = "User1",
-                IsNotificable = true
-            },
-            new HomeUser
-            {
-                UserId = "User2",
-                IsNotificable = false
-            }
+            new HomeUser { UserId = "User1", IsNotificable = true },
+            new HomeUser { UserId = "User2", IsNotificable = false },
+            new HomeUser { UserId = "User3", IsNotificable = true }
         };
+        var detectedUser = new User { Id = "Person123", Name = "John", LastName = "Doe" };
+        var notificationArgs = new CreateNotificationArgs("Person123", homeDevice, false, DateTimeOffset.Now, "Hardware123");
 
-        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId))
-            .Returns(homeUsers);
+        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
+        _mockUserService.Setup(s => s.GetById("Person123")).Returns(detectedUser);
 
-        _mockUserService.Setup(s => s.GetById("User1"))
-            .Returns(new User { Id = "User1" });
+        // Act
+        var result = _notificationService.AddPersonDetectedNotification(notificationArgs);
 
-        var createNotificationArgs =
-            new CreateNotificationArgs("1234567", homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
-
-        var result = _notificationService.AddPersonDetectedNotification(createNotificationArgs);
-
-        Assert.IsNotNull(result);
-        Assert.AreEqual("Person Detected", result.Event);
-        Assert.AreEqual(homeDevice.Id, result.HomeDeviceId);
-        Assert.AreEqual("User1", result.HomeUserId);
-        _mockRepository.Verify(r => r.Add(It.IsAny<Notification>()), Times.Once);
+        // Assert
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Person Detected", result[0].Event);
+        Assert.AreEqual("John Doe", result[0].Detail);
     }
 
+/*
     [TestMethod]
     public void AddWindowNotification_ShouldReturnNotification_WhenUserIsNotificable()
     {
