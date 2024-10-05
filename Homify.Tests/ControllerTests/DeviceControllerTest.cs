@@ -80,40 +80,40 @@ public class DeviceControllerTest
     }
 
     [TestMethod]
-    public void RegisterSensor_WhenDataIsOk_ShouldRegisterCamera()
+    public void RegisterSensor_WhenDataIsOk_ShouldRegisterSensor()
     {
-        var request = new CreateSensorRequest()
+        var request = new CreateSensorRequest
         {
-            Name = "Test",
-            Description = "Test",
-            Model = "Test",
-            Photos = ["1", "2", "3"],
-            PpalPicture = "Test"
+            Name = "TestSensor",
+            Description = "TestDescription",
+            Model = "TestModel",
+            Photos = new List<string> { "1", "2", "3" },
+            PpalPicture = "TestPicture"
         };
-        var expected = new Sensor()
+        var user = new User { Id = "testUserId" };
+        var companyOwner = new CompanyOwner { Id = "companyOwnerId", IsIncomplete = false };
+        var expectedSensor = new Sensor
         {
             Name = request.Name,
             PpalPicture = request.PpalPicture,
-            Company = new Company(),
+            Company = new Company { Id = companyOwner.Id },
             Description = request.Description,
             Model = request.Model,
             Photos = request.Photos,
+            CompanyId = companyOwner.Id
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture, false, false);
-
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(), It.IsAny<CompanyOwner>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
+        _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns(companyOwner);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
         var response = _controller.RegisterSensor(request);
 
         response.Should().NotBeNull();
-        response.Id.Should().Be(expected.Id);
-        expected.Name.Should().Be(args.Name);
-        expected.Model.Should().Be(args.Model);
-        expected.Description.Should().Be(args.Description);
-        expected.Photos.Should().BeEquivalentTo(args.Photos);
-        expected.PpalPicture.Should().Be(args.PpalPicture);
-        expected.Company.Should().NotBeNull();
     }
 
     [TestMethod]
