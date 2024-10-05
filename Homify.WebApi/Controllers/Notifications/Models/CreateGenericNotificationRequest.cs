@@ -1,6 +1,4 @@
-﻿using Homify.BusinessLogic.Notifications.Entities;
-
-namespace Homify.WebApi.Controllers.Notifications.Models;
+﻿namespace Homify.WebApi.Controllers.Notifications.Models;
 
 public class CreateGenericNotificationRequest
 {

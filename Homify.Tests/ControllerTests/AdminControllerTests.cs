@@ -278,19 +278,28 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "Admin" }  // Asegúrate de que Role esté inicializado si se usa
+                Role = new Role
+                {
+                    Name = "Admin"
+                }
             },
             new User
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Role = new Role
+                {
+                    Name = "User"
+                }
             },
             new User
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role { Name = "Guest" }
+                Role = new Role
+                {
+                    Name = "Guest"
+                }
             }
         };
 
@@ -313,25 +322,37 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "Admin" }  // Asegúrate de inicializar Role si es necesario
+                Role = new Role
+                {
+                    Name = "Admin"
+                }
             },
             new User
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Role = new Role
+                {
+                    Name = "User"
+                }
             },
             new User
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role { Name = "Guest" }
+                Role = new Role
+                {
+                    Name = "Guest"
+                }
             },
             new User
             {
                 Name = "Lucy",
                 LastName = "Williams",
-                Role = new Role { Name = "Admin" }
+                Role = new Role
+                {
+                    Name = "Admin"
+                }
             }
         };
 
@@ -352,19 +373,28 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "User" }
+                Role = new Role
+                {
+                    Name = "User"
+                }
             },
             new User
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Role = new Role
+                {
+                    Name = "User"
+                }
             },
             new User
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role { Name = "Admin" }
+                Role = new Role
+                {
+                    Name = "Admin"
+                }
             }
         };
 
@@ -386,19 +416,28 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "User" }
+                Role = new Role
+                {
+                    Name = "User"
+                }
             },
             new User
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Role = new Role
+                {
+                    Name = "User"
+                }
             },
             new User
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role { Name = "Admin" }
+                Role = new Role
+                {
+                    Name = "Admin"
+                }
             }
         };
 
@@ -413,7 +452,6 @@ public class UserControllerTests
     [TestMethod]
     public void AllAccounts_ShouldMapUserToUserBasicInfoCorrectly()
     {
-        // Arrange: Simulación de una lista de usuarios de prueba
         var users = new List<User>
         {
             new User
@@ -421,16 +459,17 @@ public class UserControllerTests
                 Name = "John",
                 LastName = "Doe",
                 CreatedAt = DateTime.Now,
-                Role = new Role { Name = "Admin" } // Se puede agregar más información si es necesario
+                Role = new Role
+                {
+                    Name = "Admin"
+                }
             }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
-        // Act: Llamada al método del controlador con parámetros de paginación vacíos
         var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
 
-        // Assert: Verificaciones del resultado
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(1, result.Count, "Debe haber exactamente un usuario en la lista");
         Assert.AreEqual("John", result[0].Name, "El nombre del usuario debe ser 'John'");

@@ -33,11 +33,24 @@ public class NotificationServiceTest
     [TestMethod]
     public void AddPersonDetectedNotification_ShouldReturnNotification_WhenUserIsNotificable()
     {
-        var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123", HardwareId = "4444" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            HomeId = "Home123",
+            HardwareId = "4444"
+        };
         var homeUsers = new List<HomeUser>
         {
-            new HomeUser { UserId = "User1", IsNotificable = true },
-            new HomeUser { UserId = "User2", IsNotificable = false }
+            new HomeUser
+            {
+                UserId = "User1",
+                IsNotificable = true
+            },
+            new HomeUser
+            {
+                UserId = "User2",
+                IsNotificable = false
+            }
         };
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId))
@@ -61,18 +74,34 @@ public class NotificationServiceTest
     [TestMethod]
     public void AddWindowNotification_ShouldReturnNotification_WhenUserIsNotificable()
     {
-        var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123", HardwareId = "555" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            HomeId = "Home123",
+            HardwareId = "555"
+        };
         var homeUsers = new List<HomeUser>
         {
-            new HomeUser { UserId = "User1", IsNotificable = true },
-            new HomeUser { UserId = "User2", IsNotificable = false }
+            new HomeUser
+            {
+                UserId = "User1",
+                IsNotificable = true
+            },
+            new HomeUser
+            {
+                UserId = "User2",
+                IsNotificable = false
+            }
         };
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId))
             .Returns(homeUsers);
 
         _mockUserService.Setup(s => s.GetById("User1"))
-            .Returns(new User { Id = "User1" });
+            .Returns(new User
+            {
+                Id = "User1"
+            });
 
         var createNotificationArgs =
             new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
@@ -92,9 +121,30 @@ public class NotificationServiceTest
         var userId = "user123";
         var notifications = new List<Notification>
         {
-            new Notification { Id = "1", HomeUser = new HomeUser { UserId = "user123" } },
-            new Notification { Id = "2", HomeUser = new HomeUser { UserId = "user456" } },
-            new Notification { Id = "3", HomeUser = new HomeUser { UserId = "user123" } }
+            new Notification
+            {
+                Id = "1",
+                HomeUser = new HomeUser
+                {
+                    UserId = "user123"
+                }
+            },
+            new Notification
+            {
+                Id = "2",
+                HomeUser = new HomeUser
+                {
+                    UserId = "user456"
+                }
+            },
+            new Notification
+            {
+                Id = "3",
+                HomeUser = new HomeUser
+                {
+                    UserId = "user123"
+                }
+            }
         };
 
         _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Notification, bool>>>())).Returns(notifications);
@@ -111,8 +161,22 @@ public class NotificationServiceTest
         var userId = "nonexistentUser";
         var notifications = new List<Notification>
         {
-            new Notification { Id = "1", HomeUser = new HomeUser { UserId = "user123" } },
-            new Notification { Id = "2", HomeUser = new HomeUser { UserId = "user456" } }
+            new Notification
+            {
+                Id = "1",
+                HomeUser = new HomeUser
+                {
+                    UserId = "user123"
+                }
+            },
+            new Notification
+            {
+                Id = "2",
+                HomeUser = new HomeUser
+                {
+                    UserId = "user456"
+                }
+            }
         };
 
         _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Notification, bool>>>())).Returns(notifications);

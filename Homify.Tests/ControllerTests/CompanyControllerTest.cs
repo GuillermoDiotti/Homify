@@ -2,10 +2,8 @@
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -136,9 +134,24 @@ public class CompanyControllerTest
     {
         var companies = new List<Company>
         {
-            new Company { Id = "1", Name = "Company A", Owner = new CompanyOwner() },
-            new Company { Id = "2", Name = "Company B", Owner = new CompanyOwner() },
-            new Company { Id = "3", Name = "Company C", Owner = new CompanyOwner() },
+            new Company
+            {
+                Id = "1",
+                Name = "Company A",
+                Owner = new CompanyOwner()
+            },
+            new Company
+            {
+                Id = "2",
+                Name = "Company B",
+                Owner = new CompanyOwner()
+            },
+            new Company
+            {
+                Id = "3",
+                Name = "Company C",
+                Owner = new CompanyOwner()
+            },
         };
 
         _companyServiceMock.Setup(s => s.GetAll()).Returns(companies);

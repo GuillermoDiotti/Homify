@@ -157,7 +157,10 @@ public class HomesControllerTest
             MaxMembers = 1
         };
 
-        var user = new User { Id = "User123" };
+        var user = new User
+        {
+            Id = "User123"
+        };
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
@@ -177,7 +180,10 @@ public class HomesControllerTest
             MaxMembers = 1
         };
 
-        var user = new User { Id = "User123" };
+        var user = new User
+        {
+            Id = "User123"
+        };
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
@@ -195,7 +201,12 @@ public class HomesControllerTest
             Latitude = null
         };
 
-        var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
+        var owner = new HomeOwner
+        {
+            Id = "Owner123",
+            Name = "John Doe",
+            Role = RolesGenerator.HomeOwner()
+        };
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = owner;
@@ -216,7 +227,10 @@ public class HomesControllerTest
             Longitud = null
         };
 
-        var user = new User { Id = "User123" };
+        var user = new User
+        {
+            Id = "User123"
+        };
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
@@ -236,7 +250,10 @@ public class HomesControllerTest
             MaxMembers = 0
         };
 
-        var user = new User { Id = "User123" };
+        var user = new User
+        {
+            Id = "User123"
+        };
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
@@ -256,7 +273,12 @@ public class HomesControllerTest
             MaxMembers = 3,
         };
 
-        var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
+        var owner = new HomeOwner
+        {
+            Id = "Owner123",
+            Name = "John Doe",
+            Role = RolesGenerator.HomeOwner()
+        };
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = owner;
@@ -289,7 +311,10 @@ public class HomesControllerTest
             DeviceId = "device123"
         };
 
-        var user = new User { Id = "user123" };
+        var user = new User
+        {
+            Id = "user123"
+        };
         var updatedDevice = new HomeDevice
         {
             DeviceId = "device123",
@@ -321,11 +346,41 @@ public class HomesControllerTest
     public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
     {
         var homeId = "home123";
-        var user = new User { Id = "user123", Name = "John Doe" };
+        var user = new User
+        {
+            Id = "user123",
+            Name = "John Doe"
+        };
         var devices = new List<HomeDevice>
         {
-            new HomeDevice { Id = "1", DeviceId = "device1", HomeId = homeId, Connected = true, IsActive = true, HardwareId = "hardware1", Device = new Device { Name = "Device 1", Model = "Model A" } },
-            new HomeDevice { Id = "2", DeviceId = "device2", HomeId = homeId, Connected = false, IsActive = false, HardwareId = "hardware2", Device = new Device { Name = "Device 2", Model = "Model B" } }
+            new HomeDevice
+            {
+                Id = "1",
+                DeviceId = "device1",
+                HomeId = homeId,
+                Connected = true,
+                IsActive = true,
+                HardwareId = "hardware1",
+                Device = new Device
+                {
+                    Name = "Device 1",
+                    Model = "Model A"
+                }
+            },
+            new HomeDevice
+            {
+                Id = "2",
+                DeviceId = "device2",
+                HomeId = homeId,
+                Connected = false,
+                IsActive = false,
+                HardwareId = "hardware2",
+                Device = new Device
+                {
+                    Name = "Device 2",
+                    Model = "Model B"
+                }
+            }
         };
 
         var httpContext = new DefaultHttpContext();
@@ -359,7 +414,10 @@ public class HomesControllerTest
     public void ObtainMembers_WhenHomeDoesNotExist_ShouldThrowNotFoundException()
     {
         var homeId = "homeNotFound";
-        var user = new User { Id = "user123" };
+        var user = new User
+        {
+            Id = "user123"
+        };
 
         _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Throws(new NotFoundException("Home not found"));
 
@@ -375,10 +433,17 @@ public class HomesControllerTest
     public void ObtainMembers_WhenUserIsNotHomeOwner_ShouldThrowInvalidOperationException()
     {
         var homeId = "home123";
-        var user = new User { Id = "userNotOwner" };
+        var user = new User
+        {
+            Id = "userNotOwner"
+        };
         var members = new List<HomeUser>
         {
-            new HomeUser { UserId = "member1", HomeId = homeId }
+            new HomeUser
+            {
+                UserId = "member1",
+                HomeId = homeId
+            }
         };
 
         _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Throws(new InvalidOperationException("Only the owner can see the members"));
@@ -402,8 +467,18 @@ public class HomesControllerTest
     public void UpdateMembersList_WhenHomeDoesNotExist_ShouldThrowNotFoundException()
     {
         var homeId = "homeNotFound";
-        var request = new UpdateMemberListRequest { Email = "newmember@example.com" };
-        var user = new User { Id = "ownerId", Role = new Role { Name = Constants.HOMEOWNER } };
+        var request = new UpdateMemberListRequest
+        {
+            Email = "newmember@example.com"
+        };
+        var user = new User
+        {
+            Id = "ownerId",
+            Role = new Role
+            {
+                Name = Constants.HOMEOWNER
+            }
+        };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns((Home)null); // Home not found
 
@@ -419,9 +494,24 @@ public class HomesControllerTest
     public void UpdateMembersList_WhenMaxMembersReached_ShouldThrowInvalidOperationException()
     {
         var homeId = "home123";
-        var request = new UpdateMemberListRequest { Email = "newmember@example.com" };
-        var user = new User { Id = "ownerId", Role = new Role { Name = Constants.HOMEOWNER } };
-        var home = new Home { Id = homeId, Members = new List<HomeUser> { new HomeUser() }, MaxMembers = 1 };
+        var request = new UpdateMemberListRequest
+        {
+            Email = "newmember@example.com"
+        };
+        var user = new User
+        {
+            Id = "ownerId",
+            Role = new Role
+            {
+                Name = Constants.HOMEOWNER
+            }
+        };
+        var home = new Home
+        {
+            Id = homeId,
+            Members = [new HomeUser()],
+            MaxMembers = 1
+        };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(home);
 

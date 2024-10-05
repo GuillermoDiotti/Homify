@@ -32,14 +32,17 @@ public class HomeServiceTest
     public void AddHome_ShouldCallRepositoryAdd_WithCorrectHome()
     {
         // Arrange
-        var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
+        var owner = new HomeOwner
+        {
+            Id = "Owner123",
+            Name = "John Doe",
+            Role = RolesGenerator.HomeOwner()
+        };
 
         var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner);
 
-        // Act
         var result = _homeService.AddHome(createHomeArgs);
 
-        // Assert
         _mockRepository.Verify(r => r.Add(It.Is<Home>(h =>
             h.Latitude == createHomeArgs.Latitude &&
             h.Longitude == createHomeArgs.Longitude &&
@@ -57,7 +60,6 @@ public class HomeServiceTest
     [TestMethod]
     public void GetHomeById_ShouldReturnHome_WhenHomeExists()
     {
-        // Arrange
         var homeId = "home123";
         var expectedHome = new Home
         {
@@ -72,10 +74,8 @@ public class HomeServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(expectedHome);
 
-        // Act
         var result = _homeService.GetHomeById(homeId);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedHome.Id, result.Id);
         Assert.AreEqual(expectedHome.Number, result.Number);
@@ -84,14 +84,16 @@ public class HomeServiceTest
     [TestMethod]
     public void UpdateMemberList_ShouldAddMemberAndUpdateHome()
     {
-        // Arrange
         var homeId = "home123";
-        var homeOwner = new HomeUser { UserId = "owner123" };
+        var homeOwner = new HomeUser
+        {
+            UserId = "owner123"
+        };
 
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>(),  // Initially no members
+            Members = [],
             Number = "123",
             Street = "Main St",
             Latitude = "45.0",
@@ -99,23 +101,18 @@ public class HomeServiceTest
             MaxMembers = 5
         };
 
-        // Setup mock to return the home when Get is called
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(home);
 
-        // Act
         var updatedHome = _homeService.UpdateMemberList(homeId, homeOwner);
 
-        // Assert
         Assert.IsNotNull(updatedHome);
         Assert.AreEqual(homeId, updatedHome.Id);
-        Assert.AreEqual(1, updatedHome.Members.Count);  // Check if member was added
-        Assert.AreEqual(homeOwner.UserId, updatedHome.Members[0].UserId);  // Check if correct member was added
+        Assert.AreEqual(1, updatedHome.Members.Count);
+        Assert.AreEqual(homeOwner.UserId, updatedHome.Members[0].UserId);
 
-        // Verify that the repository's Update method was called
         _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Id == homeId && h.Members.Contains(homeOwner))), Times.Once);
 
-        // Verify that the repository's Get method was called once
         _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()), Times.Once);
     }
 
@@ -125,18 +122,34 @@ public class HomeServiceTest
         var homeId = "home1";
         var deviceId = "device1";
         var userId = "user1";
-        var user = new User { Id = userId };
+        var user = new User
+        {
+            Id = userId
+        };
         var home = new Home
         {
             Id = homeId,
             OwnerId = userId,
-            Members = new List<HomeUser>
-            {
-                new HomeUser { Id = userId, Permissions = new List<HomePermission> { new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice } } }
-            },
+            Members =
+            [
+                new HomeUser
+                {
+                    Id = userId,
+                    Permissions = [new HomePermission()
+                    {
+                        Value = PermissionsGenerator.MemberCanAddDevice
+                    }
+
+                    ]
+                }
+
+            ],
             Devices = new List<HomeDevice>()
         };
-        var device = new Device { Id = deviceId };
+        var device = new Device
+        {
+            Id = deviceId
+        };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
         _deviceService.Setup(d => d.GetById(deviceId)).Returns(device);
@@ -151,15 +164,24 @@ public class HomeServiceTest
     {
         var homeId = "home1";
         var userId = "user1";
-        var user = new User { Id = userId };
-        var homeUser = new HomeUser { User = user };
+        var user = new User
+        {
+            Id = userId
+        };
+        var homeUser = new HomeUser
+        {
+            User = user
+        };
         var home = new Home
         {
             Id = homeId,
             OwnerId = userId,
-            Members = new List<HomeUser> { homeUser }
+            Members = [homeUser]
         };
-        var homes = new List<Home> { home };
+        var homes = new List<Home>
+        {
+            home
+        };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Home, bool>>>()))
             .Returns(home);
@@ -180,12 +202,15 @@ public class HomeServiceTest
         var homeId = "home1";
         var userId = "user1";
         var ownerId = "owner1";
-        var user = new User { Id = userId };
+        var user = new User
+        {
+            Id = userId
+        };
         var home = new Home
         {
             Id = homeId,
             OwnerId = ownerId,
-            Members = new List<HomeUser>()
+            Members = []
         };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Home, bool>>>()))
@@ -215,10 +240,8 @@ public class HomeServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(home);
 
-        // Act
         var result = _homeService.GetHomeDevices(homeId, user);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedDevices.Count, result.Count);
         CollectionAssert.AreEqual(expectedDevices, result);
@@ -227,18 +250,30 @@ public class HomeServiceTest
     [TestMethod]
     public void UpdateNotificatedList_ShouldUpdateUserAndReturnNotificableMembers_WhenUserExists()
     {
-        // Arrange
         var homeId = "testHomeId";
-        var memberId = "testMemberId"; // Este debe coincidir con el campo "Id" de HomeUser
+        var memberId = "testMemberId";
         var houseId = "HouseId";
 
         var members = new List<HomeUser>
         {
-            new HomeUser { HomeId = houseId, Id = memberId, IsNotificable = false }, // Cambiar UserId a Id
-            new HomeUser { HomeId = houseId, Id = "otherMemberId", IsNotificable = true } // Cambiar UserId a Id
+            new HomeUser
+            {
+                HomeId = houseId,
+                Id = memberId,
+                IsNotificable = false
+            },
+            new HomeUser
+            {
+                HomeId = houseId,
+                Id = "otherMemberId",
+                IsNotificable = true
+            }
         };
 
-        var homeOwner = new HomeOwner { Id = "123" };
+        var homeOwner = new HomeOwner
+        {
+            Id = "123"
+        };
         var home = new Home
         {
             Id = homeId,
@@ -248,21 +283,16 @@ public class HomeServiceTest
         };
         homeOwner.Homes.Add(home);
 
-        // Simular la obtención del hogar desde el repositorio
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(home);
 
-        // Act
         var result = _homeService.UpdateNotificatedList(homeId, memberId, homeOwner);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
 
-        // Verificar que el miembro ahora sea notificable
         Assert.IsTrue(members.First(m => m.Id == memberId).IsNotificable); // Cambiar UserId a Id
 
-        // Verificar que la lista de miembros notificables sea correcta
         var notificableMembers = result.Where(m => m.IsNotificable).ToList();
         Assert.AreEqual(2, notificableMembers.Count);
     }
@@ -270,21 +300,27 @@ public class HomeServiceTest
     [TestMethod]
     public void GetHomeDevices_ShouldReturnHomeDevices()
     {
-        // Arrange
         var homeId = "homeId";
-        var user = new User { Id = "userId" };
+        var user = new User
+        {
+            Id = "userId"
+        };
         var homeDevices = new List<HomeDevice>
         {
-            new HomeDevice { DeviceId = "deviceId1" },
-            new HomeDevice { DeviceId = "deviceId2" }
+            new HomeDevice
+            {
+                DeviceId = "deviceId1"
+            },
+            new HomeDevice
+            {
+                DeviceId = "deviceId2"
+            }
         };
 
         _homeDeviceService.Setup(service => service.GetHomeDeviceByHomeId(homeId)).Returns(homeDevices);
 
-        // Act
         var result = _homeService.GetHomeDevices(homeId, user);
 
-        // Assert
         Assert.AreEqual(homeDevices, result);
     }
 }

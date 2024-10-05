@@ -5,7 +5,6 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;
@@ -38,7 +37,11 @@ public class DeviceServiceTest
             "Test Camera",
             "Model X",
             "Test Description",
-            new List<string> { "photo1.jpg", "photo2.jpg" },
+            new List<string>
+            {
+                "photo1.jpg",
+                "photo2.jpg"
+            },
             "photo1.jpg",
             true,
             false
@@ -49,7 +52,11 @@ public class DeviceServiceTest
             Id = "1",
             Name = "John",
             Email = "john@example.com",
-            Company = new Company { Id = "company1", Name = "Test Company" }
+            Company = new Company
+            {
+                Id = "company1",
+                Name = "Test Company"
+            }
         };
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
@@ -79,7 +86,11 @@ public class DeviceServiceTest
             "Test Sensor",
             "Model X",
             "Test Description",
-            new List<string> { "photo1.jpg", "photo2.jpg" },
+            new List<string>
+            {
+                "photo1.jpg",
+                "photo2.jpg"
+            },
             "mainphoto.jpg",
             true,
             false
@@ -149,7 +160,11 @@ public class DeviceServiceTest
             "Test Camera",
             "Model X",
             "Test Description",
-            new List<string> { "photo1.jpg", "photo2.jpg" },
+            new List<string>
+            {
+                "photo1.jpg",
+                "photo2.jpg"
+            },
             "photo1.jpg",
             true,
             false
@@ -171,9 +186,39 @@ public class DeviceServiceTest
     {
         var deviceList = new List<Device>
             {
-                new Device { Id = "1", Name = "Camera 1", Model = "Model A", Company = new Company { Id = "1", Name = "Company A" }, },
-                new Device { Id = "2", Name = "Sensor 1", Model = "Model B", Company = new Company { Id = "2", Name = "Company B" }, },
-                new Device { Id = "3", Name = "Camera 2", Model = "Model C", Company = new Company { Id = "1", Name = "Company A" }, }
+                new Device
+                {
+                    Id = "1",
+                    Name = "Camera 1",
+                    Model = "Model A",
+                    Company = new Company
+                    {
+                        Id = "1",
+                        Name = "Company A"
+                    },
+                },
+                new Device
+                {
+                    Id = "2",
+                    Name = "Sensor 1",
+                    Model = "Model B",
+                    Company = new Company
+                    {
+                        Id = "2",
+                        Name = "Company B"
+                    },
+                },
+                new Device
+                {
+                    Id = "3",
+                    Name = "Camera 2",
+                    Model = "Model C",
+                    Company = new Company
+                    {
+                        Id = "1",
+                        Name = "Company A"
+                    },
+                }
             };
 
         _deviceRepositoryMock
@@ -200,10 +245,34 @@ public class DeviceServiceTest
     {
         var deviceList = new List<Device>
         {
-            new Device { Id = "1", Name = "Camera", Model = "Model A", Type = "Camera" },
-            new Device { Id = "2", Name = "Sensor", Model = "Model B", Type = "Sensor" },
-            new Device { Id = "3", Name = "Camera 2", Model = "Model C", Type = "Camera" },
-            new Device { Id = "4", Name = "Thermostat", Model = "Model D", Type = "Thermostat" }
+            new Device
+            {
+                Id = "1",
+                Name = "Camera",
+                Model = "Model A",
+                Type = "Camera"
+            },
+            new Device
+            {
+                Id = "2",
+                Name = "Sensor",
+                Model = "Model B",
+                Type = "Sensor"
+            },
+            new Device
+            {
+                Id = "3",
+                Name = "Camera 2",
+                Model = "Model C",
+                Type = "Camera"
+            },
+            new Device
+            {
+                Id = "4",
+                Name = "Thermostat",
+                Model = "Model D",
+                Type = "Thermostat"
+            }
         };
 
         _deviceRepositoryMock

@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 

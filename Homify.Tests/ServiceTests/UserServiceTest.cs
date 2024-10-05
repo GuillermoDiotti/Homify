@@ -16,7 +16,6 @@ namespace Homify.Tests.ServiceTests;
 public class UserServiceTest
 {
     private Mock<IRepository<User>>? _userRepositoryMock;
-    private Mock<UserService>? _userServiceMock;
 
     private UserService? _service;
 
@@ -24,7 +23,6 @@ public class UserServiceTest
     public void Setup()
     {
         _userRepositoryMock = new Mock<IRepository<User>>();
-        _userServiceMock = new Mock<UserService>(_userRepositoryMock.Object);
         _service = new UserService(_userRepositoryMock.Object);
     }
 
@@ -174,8 +172,24 @@ public class UserServiceTest
     {
         var users = new List<User>
         {
-            new User { Id = "1", Name = "John", Email = "john@example.com", Password = "password123", LastName = "Doe", Role = new Role() },
-            new User { Id = "2", Name = "Jane", Email = "jane@example.com", Password = "password456", LastName = "Smith", Role = new Role() }
+            new User
+            {
+                Id = "1",
+                Name = "John",
+                Email = "john@example.com",
+                Password = "password123",
+                LastName = "Doe",
+                Role = new Role()
+            },
+            new User
+            {
+                Id = "2",
+                Name = "Jane",
+                Email = "jane@example.com",
+                Password = "password456",
+                LastName = "Smith",
+                Role = new Role()
+            }
         };
 
         _userRepositoryMock

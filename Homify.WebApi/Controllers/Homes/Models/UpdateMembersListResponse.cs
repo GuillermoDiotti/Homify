@@ -1,5 +1,4 @@
 ﻿using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
 
 namespace Homify.WebApi.Controllers.Homes.Models;
 

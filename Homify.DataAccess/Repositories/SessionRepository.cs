@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Sessions.Entities;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
