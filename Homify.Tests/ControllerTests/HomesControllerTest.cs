@@ -368,4 +368,24 @@ public class HomesControllerTest
 
         _controller.ObtainMembers(homeId);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ObtainMembers_WhenUserIsNotHomeOwner_ShouldThrowInvalidOperationException()
+    {
+        var homeId = "home123";
+        var user = new User { Id = "userNotOwner" };
+        var members = new List<HomeUser>
+        {
+            new HomeUser { UserId = "member1", HomeId = homeId }
+        };
+
+        _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Throws(new InvalidOperationException("Only the owner can see the members"));
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _controller.ObtainMembers(homeId);
+    }
 }
