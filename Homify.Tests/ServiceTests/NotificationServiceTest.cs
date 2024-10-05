@@ -171,4 +171,39 @@ public class NotificationServiceTest
         _mockHomeUserService.Verify(service => service.GetHomeUsersByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
         _mockUserService.Verify(service => service.GetById(It.IsAny<string>()), Times.Exactly(2), "Detected users should be fetched for each notificable user.");
     }
+
+    [TestMethod]
+    public void AddMovementNotification_WithNoNotificableUsers_ShouldNotAddNotification()
+    {
+        // Arrange
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            HomeId = "Home123",
+            Device = new Device(){ Id = "device123" },
+            HardwareId = "kkk"
+        };
+
+        var homeUsers = new List<HomeUser>
+        {
+            new HomeUser { Id = "User1", UserId = "User1", IsNotificable = false },
+            new HomeUser { Id = "User2", UserId = "User2", IsNotificable = false }
+        };
+
+        var notificationArgs =
+            new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
+
+        _mockHomeUserService
+            .Setup(service => service.GetHomeUsersByHomeId("Home123"))
+            .Returns(homeUsers);
+
+        // Act
+        var result = _notificationService.AddMovementNotification(notificationArgs);
+
+        // Assert
+        Assert.IsNotNull(result);
+        _mockRepository.Verify(repo => repo.Add(It.IsAny<Notification>()), Times.Never, "No notifications should be added if no users are notificable.");
+        _mockHomeUserService.Verify(service => service.GetHomeUsersByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
+        _mockUserService.Verify(service => service.GetById(It.IsAny<string>()), Times.Never, "No users should be fetched if no users are notificable.");
+    }
 }
