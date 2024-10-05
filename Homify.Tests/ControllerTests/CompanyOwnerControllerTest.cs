@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -40,14 +41,25 @@ public class CompanyOwnerControllerTest
             LastName = "lastName"
         };
 
+        var expectedRole = new Role
+        {
+            Name = "COMPANYOWNER",
+            Permissions = new List<SystemPermission>
+            {
+                new SystemPermission() { Value = "companies-Create" }
+            }
+        };
+
         var expectedOwner = new CompanyOwner()
         {
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName,
-            Role = RolesGenerator.CompanyOwner()
+            Role = expectedRole
         };
+
+        _roleServiceMock.Setup(r => r.GetRole("COMPANYOWNER")).Returns(expectedRole);
         _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Returns(expectedOwner);
 
         var response = _controller.Create(request);
