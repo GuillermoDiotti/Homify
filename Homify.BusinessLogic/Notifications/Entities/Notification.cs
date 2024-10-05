@@ -10,7 +10,7 @@ public class Notification
     public string? Event { get; init; }
     public HomeDevice? Device { get; init; }
     public string HomeDeviceId { get; init; } = null!;
-    public bool IsRead { get; init; }
+    public bool IsRead { get; set; }
     public DateTimeOffset? Date { get; init; }
     public string? HomeUserId { get; init; } = null!;
     public string? Detail { get; init; } = null!;

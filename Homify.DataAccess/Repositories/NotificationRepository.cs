@@ -24,7 +24,7 @@ public class NotificationRepository : Repository<Notification>
 
         if (user == null)
         {
-            throw new NotFoundException($"User not found");
+            throw new NotFoundException($"Notification not found");
         }
 
         return user;

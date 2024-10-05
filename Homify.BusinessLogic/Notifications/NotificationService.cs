@@ -22,11 +22,6 @@ public class NotificationService : INotificationService
         _userService = userService;
     }
 
-    public Notification GetById(string id)
-    {
-        throw new NotImplementedException();
-    }
-
     public List<Notification> GetAllByUserId(string userId)
     {
         var notifications = _notificationRepository.GetAll().ToList();
@@ -123,6 +118,9 @@ public class NotificationService : INotificationService
 
     public Notification ReadNotificationById(string id)
     {
-        throw new NotImplementedException();
+        var noti = _notificationRepository.Get(x => x.Id == id);
+        noti.IsRead = true;
+        _notificationRepository.Update(noti);
+        return noti;
     }
 }

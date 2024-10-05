@@ -206,4 +206,27 @@ public class NotificationServiceTest
         _mockHomeUserService.Verify(service => service.GetHomeUsersByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
         _mockUserService.Verify(service => service.GetById(It.IsAny<string>()), Times.Never, "No users should be fetched if no users are notificable.");
     }
+
+    [TestMethod]
+    public void ReadNotificationById_WithValidId_ShouldMarkAsRead()
+    {
+        var notificationId = "12345";
+        var notification = new Notification
+        {
+            Id = notificationId,
+            IsRead = false
+        };
+
+        _mockRepository
+            .Setup(repo => repo.Get(It.IsAny<Expression<Func<Notification, bool>>>()))
+            .Returns(notification);
+
+        var result = _notificationService.ReadNotificationById(notificationId);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsRead);
+
+        _mockRepository.Verify(repo => repo.Get(It.IsAny<Expression<Func<Notification, bool>>>()), Times.Once);
+        _mockRepository.Verify(repo => repo.Update(notification), Times.Once);
+    }
 }
