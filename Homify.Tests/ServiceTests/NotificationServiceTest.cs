@@ -152,79 +152,26 @@ public class NotificationServiceTest
         result.Should().BeEmpty();
     }
 
-    /*[TestMethod]
-    public void AddMovementNotification_WithNotificableUsers_ShouldAddNotification()
+    [TestMethod]
+    public void AddMovementNotification_WhenUsersAreNotificable_ShouldAddNotifications()
     {
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            HomeId = "Home123",
-            Device = new Device()
-            {
-                Id = "device123"
-            },
-            HardwareId = "kkk"
-        };
-
+        var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123" };
         var homeUsers = new List<HomeUser>
         {
-            new HomeUser
-            {
-                Id = "User1",
-                UserId = "User1",
-                IsNotificable = true
-            },
-            new HomeUser
-            {
-                Id = "User2",
-                UserId = "User2",
-                IsNotificable = false
-            },
-            new HomeUser
-            {
-                Id = "User3",
-                UserId = "User3",
-                IsNotificable = true
-            }
+            new HomeUser { UserId = "User1", IsNotificable = true },
+            new HomeUser { UserId = "User2", IsNotificable = false },
+            new HomeUser { UserId = "User3", IsNotificable = true }
         };
+        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Movement detected");
 
-        var detectedUser1 = new User
-        {
-            Id = "User1",
-            Name = "John Doe"
-        };
-        var detectedUser3 = new User
-        {
-            Id = "User3",
-            Name = "Jane Doe"
-        };
+        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
 
-        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
-
-        _mockHomeUserService
-            .Setup(service => service.GetHomeUsersByHomeId("Home123"))
-            .Returns(homeUsers);
-
-        _mockUserService
-            .Setup(service => service.GetById("User1"))
-            .Returns(detectedUser1);
-
-        _mockUserService
-            .Setup(service => service.GetById("User3"))
-            .Returns(detectedUser3);
-
-        // Act
         var result = _notificationService.AddMovementNotification(notificationArgs);
 
-        // Assert
-        Assert.IsNotNull(result);
-        Assert.AreEqual("Movement detected in home", result.Event);
-        Assert.AreEqual(homeDevice.Id, result.HomeDeviceId);
-
-        _mockRepository.Verify(repo => repo.Add(It.IsAny<Notification>()), Times.Exactly(2), "Notifications should be added for each notificable user.");
-        _mockHomeUserService.Verify(service => service.GetHomeUsersByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
-        _mockUserService.Verify(service => service.GetById(It.IsAny<string>()), Times.Exactly(2), "Detected users should be fetched for each notificable user.");
-    }*/
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Movement detected in home", result[0].Event);
+        Assert.AreEqual("Movement detected", result[0].Detail);
+    }
 
     [TestMethod]
     public void AddMovementNotification_WithNoNotificableUsers_ShouldNotAddNotification()
