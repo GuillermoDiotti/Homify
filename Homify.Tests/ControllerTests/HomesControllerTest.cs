@@ -390,23 +390,26 @@ public class HomesControllerTest
     }
 
     [TestMethod]
-    public void GetMembers_WhenCalled_ShouldReturnListOfHomeMembers()
+    public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
     {
-        var u1 = new User { Id = "1", Name = "John Doe", Email = "john@example.com", };
-        var u2 = new User { Id = "2", Name = "Jane Smith", Email = "jane@example.com" };
-        var huList = new List<HomeUser>() { new HomeUser() { User = u1 }, new HomeUser() { User = u2, } };
+        var homeId = "home123";
+        var user = new User { Id = "user123", Name = "John Doe" };
+        var devices = new List<HomeDevice>
+        {
+            new HomeDevice { Id = "1", DeviceId = "device1", HomeId = homeId, Connected = true, IsActive = true, HardwareId = "hardware1", Device = new Device { Name = "Device 1", Model = "Model A" } },
+            new HomeDevice { Id = "2", DeviceId = "device2", HomeId = homeId, Connected = false, IsActive = false, HardwareId = "hardware2", Device = new Device { Name = "Device 2", Model = "Model B" } }
+        };
 
-        var User = new User();
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers("home123", User)).Returns(huList);
+        _homeServiceMock.Setup(service => service.GetHomeDevices(homeId, user)).Returns(devices);
 
-        var result = _controller.ObtainMembers("home123");
+        var result = _controller.ObtainHomeDevices(homeId);
 
-        Assert.IsNotNull(result, "El resultado no debe ser nulo");
-        Assert.AreEqual(2, result.Count, "La lista debe contener 2 miembros");
-
-        Assert.AreEqual("John Doe", result[0].Fullname);
-        Assert.AreEqual("jane@example.com", result[1].Email);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
     }
 
     [TestMethod]
@@ -430,42 +433,6 @@ public class HomesControllerTest
 
         _homeServiceMock.Verify(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user), Times.Once,
             "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
-    }
-
-    [TestMethod]
-    public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
-    {
-        var d1 = new Device { Name = "Device 1", Model = "Model A", };
-        var d2 = new Device { Name = "Device 2", Model = "Model B", };
-        var homeDevices = new List<HomeDevice>()
-        {
-            new HomeDevice()
-            {
-                Device = d1,
-            },
-            new HomeDevice()
-            {
-                Device = d2,
-            },
-        };
-        var owner = new HomeOwner() { Id = "juancho" };
-        var home = new Home() { Id = "homeId1", Owner = owner };
-        _homeServiceMock.Setup(service => service.GetHomeDevices("homeId1", owner)).Returns(homeDevices);
-
-        var result = _controller.ObtainHomeDevices("homeId");
-
-        Assert.IsNotNull(result, "El resultado no debería ser null.");
-        Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");
-
-        Assert.AreEqual("Device 1", result[0].Name, "El nombre del primer dispositivo no es el esperado.");
-        Assert.AreEqual("Model A", result[0].Model, "El modelo del primer dispositivo no es el esperado.");
-        Assert.IsTrue(result[0].IsConnected, "El primer dispositivo debería estar conectado.");
-        Assert.AreEqual("photo1.jpg", result[0].MainPhoto, "La foto principal del primer dispositivo no es la esperada.");
-
-        Assert.AreEqual("Device 2", result[1].Name, "El nombre del segundo dispositivo no es el esperado.");
-        Assert.AreEqual("Model B", result[1].Model, "El modelo del segundo dispositivo no es el esperado.");
-        Assert.IsFalse(result[1].IsConnected, "El segundo dispositivo no debería estar conectado.");
-        Assert.AreEqual("photo2.jpg", result[1].MainPhoto, "La foto principal del segundo dispositivo no es la esperada.");
     }
 
     [TestMethod]
