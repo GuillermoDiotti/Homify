@@ -219,31 +219,40 @@ public class HomeServiceTest
     }
 
     [TestMethod]
-    public void GetHomeDevices_ShouldReturnDevices_WhenHomeExists()
+    public void GetHomeDevices_WhenUserHasPermission_ShouldReturnDevices()
     {
-        // Arrange
         var homeId = "testHomeId";
-        var user = new User { };
-        var expectedDevices = new List<HomeDevice>
+        var userId = "testUserId";
+        var user = new User { Id = userId };
+        var homeDevices = new List<HomeDevice>
         {
-            new HomeDevice {},
-            new HomeDevice {}
+            new HomeDevice { DeviceId = "device1" },
+            new HomeDevice { DeviceId = "device2" }
+        };
+
+        var homeUser = new HomeUser
+        {
+            User = user,
+            Permissions = new List<HomePermission>
+            {
+                new HomePermission { Value = PermissionsGenerator.MemberCanListDevices }
+            }
         };
 
         var home = new Home
         {
             Id = homeId,
-            Devices = expectedDevices
+            Members = new List<HomeUser> { homeUser }
         };
 
-        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
-            .Returns(home);
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHomeId(homeId)).Returns(homeDevices);
 
         var result = _homeService.GetHomeDevices(homeId, user);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(expectedDevices.Count, result.Count);
-        CollectionAssert.AreEqual(expectedDevices, result);
+        Assert.AreEqual(homeDevices.Count, result.Count);
+        CollectionAssert.AreEqual(homeDevices, result);
     }
 
     [TestMethod]
