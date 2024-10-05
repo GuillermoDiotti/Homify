@@ -5,10 +5,10 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
+[ExcludeFromCodeCoverage]
 
 public class HomePermissionRepository : Repository<HomePermission>
 {
-    [ExcludeFromCodeCoverage]
     public HomePermissionRepository(DbContext context)
         : base(context)
     {

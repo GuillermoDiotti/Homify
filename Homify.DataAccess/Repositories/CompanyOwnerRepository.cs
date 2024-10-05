@@ -5,10 +5,9 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-
+[ExcludeFromCodeCoverage]
 public class CompanyOwnerRepository : Repository<CompanyOwner>
 {
-    [ExcludeFromCodeCoverage]
     public CompanyOwnerRepository(DbContext context)
         : base(context)
     {

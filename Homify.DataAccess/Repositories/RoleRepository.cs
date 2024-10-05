@@ -6,10 +6,10 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
+[ExcludeFromCodeCoverage]
 
 public class RoleRepository : Repository<Role>
 {
-    [ExcludeFromCodeCoverage]
     public RoleRepository(DbContext context)
         : base(context)
     {

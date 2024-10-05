@@ -418,7 +418,6 @@ public class HomesControllerTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateMembersList_WhenMaxMembersReached_ShouldThrowInvalidOperationException()
     {
-        // Arrange
         var homeId = "home123";
         var request = new UpdateMemberListRequest { Email = "newmember@example.com" };
         var user = new User { Id = "ownerId", Role = new Role { Name = Constants.HOMEOWNER } };
@@ -430,7 +429,6 @@ public class HomesControllerTest
         httpContext.Items[Items.UserLogged] = user;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        // Act
         _controller.UpdateMembersList(homeId, request);
     }
 }

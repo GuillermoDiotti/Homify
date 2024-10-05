@@ -6,10 +6,10 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
+[ExcludeFromCodeCoverage]
 
 public class NotificationRepository : Repository<Notification>
 {
-    [ExcludeFromCodeCoverage]
     public NotificationRepository(DbContext context)
         : base(context)
     {

@@ -6,10 +6,10 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
+[ExcludeFromCodeCoverage]
 
 public class HomeDeviceRepository : Repository<HomeDevice>
 {
-    [ExcludeFromCodeCoverage]
     public HomeDeviceRepository(DbContext context)
         : base(context)
     {

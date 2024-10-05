@@ -4,10 +4,10 @@ using Homify.BusinessLogic.Devices;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
+[ExcludeFromCodeCoverage]
 
 public class DeviceRepository : Repository<Device>
 {
-    [ExcludeFromCodeCoverage]
     public DeviceRepository(DbContext context)
         : base(context)
     {
