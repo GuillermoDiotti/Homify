@@ -100,10 +100,33 @@ public class CompanyControllerTest
             Rut = "TestRut",
             LogoUrl = "TestLogoUrl",
         };
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(),It.IsAny<User>())).Throws(new ArgsNullException("name cannot be null or empty"));
 
-        var response = () => _controller.Create(request);
-        response.Should().Throw<ArgsNullException>().WithMessage("name cannot be null or empty");
+        var companyOwner = new CompanyOwner
+        {
+            Id = "ownerId",
+            IsIncomplete = true
+        };
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = companyOwner;
+
+        var mockController = new TestableCompanyController(_companyServiceMock.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
+
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>()))
+            .Throws(new ArgsNullException("name cannot be null or empty"));
+
+        var action = () => mockController.Create(request);
+
+        action.Should().Throw<ArgsNullException>()
+            .WithMessage("name cannot be null or empty");
     }
 
     [TestMethod]
