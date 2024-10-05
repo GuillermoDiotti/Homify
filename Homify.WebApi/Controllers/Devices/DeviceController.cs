@@ -122,4 +122,19 @@ public class DeviceController : HomifyControllerBase
 
         return result;
     }
+
+    [HttpPut("{hardwareId}/activate")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOnDevice([FromRoute] string hardwareId)
+    {
+        var homeDevice = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        var result = _homeDeviceService.Activate(homeDevice);
+        return new TurnOnDeviceResponse(result);
+    }
 }

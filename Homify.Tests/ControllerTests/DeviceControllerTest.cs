@@ -168,4 +168,42 @@ public class DeviceControllerTest
 
         result.Should().BeEmpty();
     }
+
+    [TestMethod]
+    public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
+    {
+        // Arrange
+        var hardwareId = "Device123";
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = false,
+            HardwareId = hardwareId
+        };
+
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId
+        };
+
+        _homeDeviceServiceMock
+            .Setup(service => service.GetHomeDeviceByHardwareId(hardwareId))
+            .Returns(homeDevice);
+
+        _homeDeviceServiceMock
+            .Setup(service => service.Activate(It.IsAny<HomeDevice>()))
+            .Returns(activatedDevice);
+
+        // Act
+        var result = _controller.TurnOnDevice(hardwareId);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsActive, "The device should be activated.");
+
+        _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once, "GetHomeDeviceByHardwareId should be called once.");
+        _homeDeviceServiceMock.Verify(service => service.Activate(homeDevice), Times.Once, "Activate should be called once.");
+    }
 }
