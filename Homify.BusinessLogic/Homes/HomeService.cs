@@ -127,6 +127,21 @@ public class HomeService : IHomeService
 
     public List<HomeDevice> GetHomeDevices(string homeId, User u)
     {
-       return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
+        var home = _repository
+            .Get(x => x.Id == homeId);
+
+        var user = home.Members.FirstOrDefault(x => x.User.Id == u.Id);
+
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found in this home");
+        }
+
+        if (!user.Permissions.Any(x => x.Value == PermissionsGenerator.MemberCanListDevices))
+        {
+            throw new InvalidOperationException("User has no permission to list devices");
+        }
+
+        return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
     }
 }
