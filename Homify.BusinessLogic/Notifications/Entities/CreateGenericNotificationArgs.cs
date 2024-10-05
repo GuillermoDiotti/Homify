@@ -31,5 +31,6 @@ public class CreateGenericNotificationArgs
 
         Date = date;
         IsRead = isRead;
+        Action = action;
     }
 }

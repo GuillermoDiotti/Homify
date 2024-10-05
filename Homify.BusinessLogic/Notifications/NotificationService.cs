@@ -42,7 +42,7 @@ public class NotificationService : INotificationService
         {
             if(users.IsNotificable)
             {
-                var detectedUser = _userService.GetById(users.UserId);
+                var detectedUser = _userService.GetById(notification.PersonDetectedId);
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),

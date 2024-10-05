@@ -47,7 +47,7 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Device is not active");
         }
 
-        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+        var arguments = new CreateNotificationArgs(request.PersonDetectedId ?? string.Empty, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
 
@@ -79,7 +79,7 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Device is not active");
         }
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action);
 
         var notification = _notificationService.AddWindowNotification(arguments);
 
@@ -111,7 +111,7 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Device is not active");
         }
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action);
 
         var notification = _notificationService.AddMovementNotification(arguments);
 
