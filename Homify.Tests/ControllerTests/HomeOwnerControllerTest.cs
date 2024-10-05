@@ -45,6 +45,9 @@ public class HomeOwnerControllerTest
             CreatedAt = DateTime.Now,
         };
 
+        var role = new Role { Name = "HOMEOWNER" };
+
+        _roleService.Setup(r => r.GetRole("HOMEOWNER")).Returns(role);
         _userService.Setup(u => u.AddHomeOwner(It.IsAny<CreateHomeOwnerArgs>())).Returns(ho);
 
         var response = _controller.Create(req);
