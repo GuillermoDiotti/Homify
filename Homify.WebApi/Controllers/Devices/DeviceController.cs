@@ -134,6 +134,15 @@ public class DeviceController : HomifyControllerBase
             throw new NotFoundException("Device not found");
         }
 
+        var user = GetUserLogged();
+        var isMember = homeDevice.Home.Members.Any(x => x.UserId == user.Id);
+        var isOwner = homeDevice.Home.OwnerId == user.Id;
+
+        if (!isMember && !isOwner)
+        {
+            throw new InvalidOperationException("You are not member of this house");
+        }
+
         var result = _homeDeviceService.Activate(homeDevice);
         return new TurnOnDeviceResponse(result);
     }

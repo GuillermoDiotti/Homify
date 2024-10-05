@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications;
 
@@ -47,7 +48,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    Detail = detectedUser?.Id,
+                    Detail = (detectedUser != null) ? Helpers.GetUserFullName(detectedUser.Name, detectedUser.LastName) : null,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
