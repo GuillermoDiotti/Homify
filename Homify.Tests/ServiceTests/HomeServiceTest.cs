@@ -306,29 +306,23 @@ public class HomeServiceTest
     }
 
     [TestMethod]
-    public void GetHomeDevices_ShouldReturnHomeDevices()
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void GetHomeDevices_WhenUserNotInHome_ShouldThrowException()
     {
-        var homeId = "homeId";
-        var user = new User
+        // Arrange
+        var homeId = "testHomeId";
+        var userId = "testUserId";
+        var user = new User { Id = userId };
+
+        var home = new Home
         {
-            Id = "userId"
-        };
-        var homeDevices = new List<HomeDevice>
-        {
-            new HomeDevice
-            {
-                DeviceId = "deviceId1"
-            },
-            new HomeDevice
-            {
-                DeviceId = "deviceId2"
-            }
+            Id = homeId,
+            Members = new List<HomeUser>() // No members
         };
 
-        _homeDeviceService.Setup(service => service.GetHomeDeviceByHomeId(homeId)).Returns(homeDevices);
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
-        var result = _homeService.GetHomeDevices(homeId, user);
-
-        Assert.AreEqual(homeDevices, result);
+        // Act
+        _homeService.GetHomeDevices(homeId, user);
     }
 }
