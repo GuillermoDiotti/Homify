@@ -9,6 +9,7 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Homes;
 using Homify.WebApi.Controllers.Homes.Models;
@@ -387,5 +388,12 @@ public class HomesControllerTest
         _controller.ControllerContext.HttpContext = httpContext;
 
         _controller.ObtainMembers(homeId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void UpdateMembersList_WhenRequestIsNull_ShouldThrowNullRequestException()
+    {
+        _controller.UpdateMembersList("home123", null);
     }
 }
