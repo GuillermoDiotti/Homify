@@ -115,22 +115,6 @@ public class NotificationControllerTest
     }
 
     [TestMethod]
-    public void ReadNotification_ShouldReadNotification()
-    {
-        var expected = new Notification()
-        {
-            Id = "a1",
-            IsRead = true,
-        };
-        _notificationService.Setup(n => n.ReadNotificationById(It.IsAny<string>(), It.IsAny<User>())).Returns(expected);
-        var result = _controller.UpdateNotification("lucas sugo");
-
-        result.Should().NotBeNull();
-        result.Id.Should().BeEquivalentTo(expected.Id);
-        result.IsRead.Should().BeTrue();
-    }
-
-    [TestMethod]
     public void UpdateNotification_WhenNotificationExists_ShouldReturnUpdatedNotification()
     {
         var userId = "testUserId";
@@ -155,6 +139,31 @@ public class NotificationControllerTest
 
         result.Should().NotBeNull();
         result.Id.Should().Be(notificationId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateNotification_WhenNotificationDoesNotExist_ShouldThrowNotFoundException()
+    {
+        // Arrange
+        var userId = "testUserId";
+        var user = new User { Id = userId };
+        var notificationId = "nonExistentNotificationId";
+
+        _notificationService.Setup(n => n.ReadNotificationById(notificationId, user)).Returns((Notification)null);
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = user;
+
+        var mockController = new NotificationController(_notificationService.Object, _homeDeviceService.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        mockController.UpdateNotification(notificationId);
     }
 
     [TestMethod]
