@@ -4,6 +4,7 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
 using Microsoft.AspNetCore.Http;
@@ -33,28 +34,50 @@ public class CompanyControllerTest
     [TestMethod]
     public void Create_WhenDataIsOk_ShouldCreateCompany()
     {
-        // Arrange
         var request = new CreateCompanyRequest()
         {
             Name = "TestCompany",
             Rut = "TestRut",
             LogoUrl = "TestLogoUrl",
         };
+
+        var companyOwner = new CompanyOwner
+        {
+            Id = "ownerId",
+            IsIncomplete = true
+        };
+
+        var user = new User
+        {
+            Id = companyOwner.Id,
+        };
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = companyOwner;
+
+        var mockController = new TestableCompanyController(_companyServiceMock.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
         var expected = new Company()
         {
             Id = Guid.NewGuid().ToString(),
             Name = request.Name,
             LogoUrl = request.LogoUrl,
             Rut = request.Rut,
-            Owner = new CompanyOwner(),
+            Owner = companyOwner,
             Devices = new List<Device>()
         };
+
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Returns(expected);
+        _companyServiceMock.Setup(c => c.GetByUserId(user.Id)).Returns((Company)null);
 
-        // Act
-        var response = _controller.Create(request);
+        var response = mockController.Create(request);
 
-        // Assert
         response.Should().NotBeNull();
         response.Id.Should().Be(expected.Id);
     }
@@ -139,3 +162,15 @@ public class CompanyControllerTest
         CollectionAssert.AreEqual(expectedResult, result);
     }
 }
+
+public class TestableCompanyController : CompanyController
+{
+    public TestableCompanyController(ICompanyService companyService)
+        : base(companyService) { }
+
+    public virtual User GetUserLogged()
+    {
+        return base.GetUserLogged();
+    }
+}
+

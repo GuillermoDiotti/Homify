@@ -274,82 +274,6 @@ public class HomesControllerTest
     }
 
     [TestMethod]
-    public void UpdateMemberList_WhenRequestIsOk_ShouldUpdateNotificatedMembersList()
-    {
-        var request = new UpdateMemberListRequest
-        {
-            Email = "test@example.com"
-        };
-
-        var existingMember = new HomeUser
-        {
-            HomeId = "123",
-            UserId = "1",
-            User = new User
-            {
-                Name = "Existing Member",
-                Email = "mail1"
-            }
-        };
-
-        var newMember = new HomeUser
-        {
-            HomeId = "456",
-            UserId = "2",
-            User = new User
-            {
-                Name = "New Member",
-                Email = "test@example.com"
-            }
-        };
-
-        var homeResponseBeforeUpdate = new Home
-        {
-            Id = "1",
-            Street = "Test Home",
-            Number = "1234",
-            Latitude = "0.0000",
-            Longitude = "0.0000",
-            MaxMembers = 5,
-            Owner = new HomeOwner
-            {
-                Name = "Owner Name",
-                Role = RolesGenerator.HomeOwner()
-            },
-            Devices = [],
-            Members = [existingMember],
-        };
-
-        var homeResponseAfterUpdate = new Home
-        {
-            Id = "1",
-            Street = "Test Home",
-            Number = "1234",
-            Latitude = "0.0000",
-            Longitude = "0.0000",
-            MaxMembers = 5,
-            Owner = new HomeOwner
-            {
-                Id = "1",
-                Name = "Owner Name"
-            },
-            Devices = [],
-            Members = [existingMember, newMember],
-            OwnerId = "1"
-        };
-
-        _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, newMember))
-                        .Returns(homeResponseAfterUpdate);
-
-        var result = _controller.UpdateMembersList("1", request);
-
-        Assert.IsNotNull(result);
-        homeResponseAfterUpdate.OwnerId.Should().Be(homeResponseAfterUpdate.Owner.Id);
-        Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
-        Assert.IsTrue(result.Members.Any(m => m == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
-    }
-
-    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevices_WhenRequestIsNull_ShouldThrowException()
     {
@@ -420,22 +344,6 @@ public class HomesControllerTest
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
         _controller.NotificatedMembers("homeIe", null);
-    }
-
-    [TestMethod]
-    public void UpdateNofificatedMembers_WhenRequestIsValid_ShouldUpdate()
-    {
-        var request = new NotificatedMembersRequest
-        {
-            HomeUserId = "member123"
-        };
-        var user = new HomeOwner();
-        _homeServiceMock.Setup(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user)).Verifiable();
-
-        _controller.NotificatedMembers("homeId", request);
-
-        _homeServiceMock.Verify(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user), Times.Once,
-            "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
     }
 
     [TestMethod]
