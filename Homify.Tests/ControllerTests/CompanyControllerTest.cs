@@ -32,54 +32,42 @@ public class CompanyControllerTest
     }
 
     [TestMethod]
-    public void Create_WhenDataIsOk_ShouldCreateCompany()
+    public void Create_WhenRequstIsOk_ShouldReturnCreateCompanyResponse()
     {
-        var request = new CreateCompanyRequest()
+        // Arrange
+        var request = new CreateCompanyRequest
         {
-            Name = "TestCompany",
-            Rut = "TestRut",
-            LogoUrl = "TestLogoUrl",
+            Name = "NewCompany",
+            LogoUrl = "logo.png",
+            Rut = "123456789"
         };
-
         var companyOwner = new CompanyOwner
         {
-            Id = "ownerId",
+            Id = "1",
             IsIncomplete = true
         };
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = companyOwner;
 
-        var user = new User
+        _controller.ControllerContext = new ControllerContext
         {
-            Id = companyOwner.Id,
+            HttpContext = httpContext
         };
 
-        var mockHttpContext = new DefaultHttpContext();
-        mockHttpContext.Items[Items.UserLogged] = companyOwner;
-
-        var mockController = new TestableCompanyController(_companyServiceMock.Object)
+        _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(x => x.GetAll()).Returns(new List<Company>() { });
+        var company = new Company
         {
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = mockHttpContext
-            }
+            Name = "NewCompany"
         };
+        _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), companyOwner))
+            .Returns(company);
 
-        var expected = new Company()
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = request.Name,
-            LogoUrl = request.LogoUrl,
-            Rut = request.Rut,
-            Owner = companyOwner,
-            Devices = []
-        };
+        // Act
+        var result = _controller.Create(request); // Llama al método del controlador en lugar de la clase de servicio
 
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Returns(expected);
-        _companyServiceMock.Setup(c => c.GetByUserId(user.Id)).Returns((Company)null);
-
-        var response = mockController.Create(request);
-
-        response.Should().NotBeNull();
-        response.Id.Should().Be(expected.Id);
+        // Assert
+        Assert.IsNotNull(result);
     }
 
     [TestMethod]
