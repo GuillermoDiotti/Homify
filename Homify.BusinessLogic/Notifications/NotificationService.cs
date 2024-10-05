@@ -72,7 +72,6 @@ public class NotificationService : INotificationService
         {
             if(users.IsNotificable)
             {
-                var detectedUser = _userService.GetById(users.UserId);
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -81,7 +80,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = detectedUser?.Id,
+                    DetectedUserId = notification.Action,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
@@ -102,7 +101,6 @@ public class NotificationService : INotificationService
         {
             if(users.IsNotificable)
             {
-                var detectedUser = _userService.GetById(users.UserId);
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -111,7 +109,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = detectedUser?.Id,
+                    DetectedUserId = notification.Action,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
