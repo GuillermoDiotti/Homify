@@ -176,6 +176,14 @@ public class HomesControllerTest
             Number = "3",
             Latitude = null
         };
+
+        var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = owner;
+
+        _controller.ControllerContext.HttpContext = httpContext;
+
         _controller.Create(request);
     }
 
