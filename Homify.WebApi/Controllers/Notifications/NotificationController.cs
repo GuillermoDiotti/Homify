@@ -42,6 +42,11 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
+        if (fromDevice.IsActive)
+        {
+            throw new InvalidOperationException("Device is not active");
+        }
+
         var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
@@ -67,6 +72,11 @@ public class NotificationController : HomifyControllerBase
         if (fromDevice.Device.Type != Constants.SENSOR)
         {
             throw new InvalidOperationException("Only sensors are supported.");
+        }
+
+        if (fromDevice.IsActive)
+        {
+            throw new InvalidOperationException("Device is not active");
         }
 
         var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId);
@@ -96,9 +106,14 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
+        if (fromDevice.IsActive)
+        {
+            throw new InvalidOperationException("Device is not active");
+        }
+
         var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId);
 
-        var notification = _notificationService.AddWindowNotification(arguments);
+        var notification = _notificationService.AddMovementNotification(arguments);
 
         return new CreateGenericNotificationResponse(notification);
     }

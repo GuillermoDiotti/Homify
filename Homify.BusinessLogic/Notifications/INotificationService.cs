@@ -8,5 +8,6 @@ public interface INotificationService
     List<Notification> GetAllByUserId(string userId);
     Notification AddPersonDetectedNotification(CreateNotificationArgs notification);
     Notification AddWindowNotification(CreateGenericNotificationArgs notification);
+    Notification AddMovementNotification(CreateGenericNotificationArgs notification);
     Notification ReadNotificationById(string id);
 }

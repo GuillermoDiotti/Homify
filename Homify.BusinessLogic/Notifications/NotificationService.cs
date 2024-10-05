@@ -93,6 +93,36 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
+    public Notification AddMovementNotification(CreateGenericNotificationArgs notification)
+    {
+        var homeId = notification.Device.HomeId;
+        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var returnNotification = new Notification();
+        foreach (var users in homeUsers)
+        {
+            if(users.IsNotificable)
+            {
+                var detectedUser = _userService.GetById(users.UserId);
+                var noti = new Notification()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Event = "Movement detected in home",
+                    Device = notification.Device,
+                    IsRead = false,
+                    Date = notification.Date,
+                    HomeDeviceId = notification.Device.Id,
+                    DetectedUserId = detectedUser?.Id,
+                    HomeUserId = users.UserId,
+                    HomeUser = users,
+                };
+                returnNotification = noti;
+                _notificationRepository.Add(noti);
+            }
+        }
+
+        return returnNotification;
+    }
+
     public Notification ReadNotificationById(string id)
     {
         throw new NotImplementedException();

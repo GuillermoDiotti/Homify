@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using FluentAssertions;
+using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications;
@@ -120,5 +121,54 @@ public class NotificationServiceTest
         var result = _notificationService.GetAllByUserId(userId);
 
         result.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void AddMovementNotification_WithNotificableUsers_ShouldAddNotification()
+    {
+        // Arrange
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            HomeId = "Home123",
+            Device = new Device(){ Id = "device123" },
+            HardwareId = "kkk"
+        };
+
+        var homeUsers = new List<HomeUser>
+        {
+            new HomeUser { Id = "User1", UserId = "User1", IsNotificable = true },
+            new HomeUser { Id = "User2", UserId = "User2", IsNotificable = false },
+            new HomeUser { Id = "User3", UserId = "User3", IsNotificable = true }
+        };
+
+        var detectedUser1 = new User { Id = "User1", Name = "John Doe" };
+        var detectedUser3 = new User { Id = "User3", Name = "Jane Doe" };
+
+        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
+
+        _mockHomeUserService
+            .Setup(service => service.GetHomeUsersByHomeId("Home123"))
+            .Returns(homeUsers);
+
+        _mockUserService
+            .Setup(service => service.GetById("User1"))
+            .Returns(detectedUser1);
+
+        _mockUserService
+            .Setup(service => service.GetById("User3"))
+            .Returns(detectedUser3);
+
+        // Act
+        var result = _notificationService.AddMovementNotification(notificationArgs);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Movement detected in home", result.Event);
+        Assert.AreEqual(homeDevice.Id, result.HomeDeviceId);
+
+        _mockRepository.Verify(repo => repo.Add(It.IsAny<Notification>()), Times.Exactly(2), "Notifications should be added for each notificable user.");
+        _mockHomeUserService.Verify(service => service.GetHomeUsersByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
+        _mockUserService.Verify(service => service.GetById(It.IsAny<string>()), Times.Exactly(2), "Detected users should be fetched for each notificable user.");
     }
 }
