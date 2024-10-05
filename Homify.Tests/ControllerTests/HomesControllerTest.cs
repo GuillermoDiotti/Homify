@@ -9,8 +9,10 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.Homes;
 using Homify.WebApi.Controllers.Homes.Models;
+using Microsoft.AspNetCore.Http;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -209,6 +211,7 @@ public class HomesControllerTest
     [TestMethod]
     public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
     {
+        // Arrange
         var request = new CreateHomeRequest
         {
             Street = "calle 1",
@@ -217,16 +220,23 @@ public class HomesControllerTest
             Longitud = "202",
             MaxMembers = 3,
         };
+
         var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
-        var expectedHome = new Home("calle 1", "1", "101", "202", 3, new HomeOwner(), [], []);
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = owner;
+
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        var expectedHome = new Home("calle 1", "1", "101", "202", 3, owner, new List<HomeDevice>(), new List<HomeUser>());
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
-                        .Returns(expectedHome);
+            .Returns(expectedHome);
 
         var response = _controller.Create(request);
 
-        Assert.IsNotNull(response, "La respuesta no debería ser null");
-        Assert.AreEqual(expectedHome.Id, response.Id, "El ID del hogar devuelto no es el esperado");
+        Assert.IsNotNull(response);
+        Assert.AreEqual(expectedHome.Id, response.Id);
     }
 
     [TestMethod]
