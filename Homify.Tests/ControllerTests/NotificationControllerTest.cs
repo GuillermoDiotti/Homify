@@ -85,7 +85,6 @@ public class NotificationControllerTest
     [TestMethod]
     public void ObtainNotifications_ShouldReturnFilteredNotifications()
     {
-        // Arrange
         var userId = "testUserId";
         var user = new User { Id = userId };
         var notifications = new List<Notification>
@@ -107,10 +106,8 @@ public class NotificationControllerTest
             }
         };
 
-        // Act
         var result = mockController.ObtainNotifications("Event1", "10/10/2024", "false");
 
-        // Assert
         result.Should().NotBeNull();
         result.Count.Should().Be(1);
         result[0].Event.Should().Be("Event1");
@@ -131,6 +128,33 @@ public class NotificationControllerTest
         result.Should().NotBeNull();
         result.Id.Should().BeEquivalentTo(expected.Id);
         result.IsRead.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public void UpdateNotification_WhenNotificationExists_ShouldReturnUpdatedNotification()
+    {
+        var userId = "testUserId";
+        var user = new User { Id = userId };
+        var notificationId = "testNotificationId";
+        var notification = new Notification { Id = notificationId, Event = "Event1", IsRead = false };
+
+        _notificationService.Setup(n => n.ReadNotificationById(notificationId, user)).Returns(notification);
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = user;
+
+        var mockController = new NotificationController(_notificationService.Object, _homeDeviceService.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        var result = mockController.UpdateNotification(notificationId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(notificationId);
     }
 
     [TestMethod]
