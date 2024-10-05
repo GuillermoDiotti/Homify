@@ -364,8 +364,8 @@ public class HomesControllerTest
             DeviceId = "device123"
         };
 
-        var user = new User();
-        var homeDevice = new HomeDevice
+        var user = new User { Id = "user123" };
+        var updatedDevice = new HomeDevice
         {
             DeviceId = "device123",
             HomeId = "home1",
@@ -381,12 +381,15 @@ public class HomesControllerTest
             HardwareId = "1001"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId, user)).Verifiable();
+        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, "home1", user)).Returns(updatedDevice);
 
-        _controller.UpdateHomeDevice(request, "home1");
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId, user), Times.Once,
-            "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
+        var result = _controller.UpdateHomeDevice(request, "home1");
+
+        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, "home1", user), Times.Once);
     }
 
     [TestMethod]
