@@ -404,6 +404,35 @@ public class HomesControllerTest
     }
 
     [TestMethod]
+    public void NotificatedMembers_WhenRequestIsValid_ShouldReturnNotificatedMembersResponse()
+    {
+        var homeId = "home123";
+        var request = new NotificatedMembersRequest
+        {
+            HomeUserId = "user1"
+        };
+        var user = new User { Id = "testUserId" };
+        var updatedMembers = new List<HomeUser>
+        {
+            new HomeUser { Id = "user1" },
+            new HomeUser { Id = "user2" }
+        };
+
+        _homeServiceMock.Setup(service => service.UpdateNotificatedList(homeId, request.HomeUserId, user)).Returns(updatedMembers);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        var result = _controller.NotificatedMembers(homeId, request);
+
+        result.Should().NotBeNull();
+        result.MembersToNotify.Should().BeEquivalentTo(new List<string> { "user1", "user2" });
+        _homeServiceMock.Verify(service => service.UpdateNotificatedList(homeId, request.HomeUserId, user), Times.Once);
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void ChangeHomeMemberPermissions_ShouldThrowNullRequestException_WhenRequestIsNull()
     {
