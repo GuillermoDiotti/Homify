@@ -151,7 +151,8 @@ public class NotificationController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.UpdateUserNotification)]
     public UpdateNotificationResponse UpdateNotification([FromRoute] string notificationId)
     {
-        var noti = _notificationService.ReadNotificationById(notificationId);
+        var user = GetUserLogged();
+        var noti = _notificationService.ReadNotificationById(notificationId, user);
 
         if (noti == null)
         {

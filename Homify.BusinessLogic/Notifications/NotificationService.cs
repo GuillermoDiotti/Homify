@@ -2,6 +2,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.Notifications;
@@ -116,9 +117,14 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification ReadNotificationById(string id)
+    public Notification ReadNotificationById(string id, User u)
     {
         var noti = _notificationRepository.Get(x => x.Id == id);
+        if (noti.HomeUser.UserId != u.Id)
+        {
+            throw new InvalidOperationException("This notification is not yours");
+        }
+
         noti.IsRead = true;
         _notificationRepository.Update(noti);
         return noti;

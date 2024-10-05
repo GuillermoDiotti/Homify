@@ -214,14 +214,18 @@ public class NotificationServiceTest
         var notification = new Notification
         {
             Id = notificationId,
-            IsRead = false
+            IsRead = false,
+            HomeUser = new HomeUser(){ UserId = "User1"}
         };
 
         _mockRepository
             .Setup(repo => repo.Get(It.IsAny<Expression<Func<Notification, bool>>>()))
             .Returns(notification);
 
-        var result = _notificationService.ReadNotificationById(notificationId);
+        var result = _notificationService.ReadNotificationById(notificationId, new User()
+        {
+            Id = "User1"
+        });
 
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsRead);

@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Notifications.Entities;
+using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.Notifications;
 
@@ -8,5 +9,5 @@ public interface INotificationService
     Notification AddPersonDetectedNotification(CreateNotificationArgs notification);
     Notification AddWindowNotification(CreateGenericNotificationArgs notification);
     Notification AddMovementNotification(CreateGenericNotificationArgs notification);
-    Notification ReadNotificationById(string id);
+    Notification ReadNotificationById(string id, User u);
 }

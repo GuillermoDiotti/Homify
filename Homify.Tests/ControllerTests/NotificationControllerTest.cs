@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications;
@@ -102,7 +103,7 @@ public class NotificationControllerTest
             Id = "a1",
             IsRead = true,
         };
-        _notificationService.Setup(n => n.ReadNotificationById(It.IsAny<string>())).Returns(expected);
+        _notificationService.Setup(n => n.ReadNotificationById(It.IsAny<string>(), It.IsAny<User>())).Returns(expected);
         var result = _controller.UpdateNotification("lucas sugo");
 
         result.Should().NotBeNull();
