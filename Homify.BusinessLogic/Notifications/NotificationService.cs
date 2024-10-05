@@ -2,6 +2,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.Notifications;
@@ -22,11 +23,6 @@ public class NotificationService : INotificationService
         _userService = userService;
     }
 
-    public Notification GetById(string id)
-    {
-        throw new NotImplementedException();
-    }
-
     public List<Notification> GetAllByUserId(string userId)
     {
         var notifications = _notificationRepository.GetAll().ToList();
@@ -42,7 +38,7 @@ public class NotificationService : INotificationService
         {
             if (users.IsNotificable)
             {
-                var detectedUser = _userService.GetById(users.UserId);
+                var detectedUser = _userService.GetById(notification.PersonDetectedId);
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -51,7 +47,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = detectedUser?.Id,
+                    Detail = detectedUser?.Id,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
@@ -72,7 +68,6 @@ public class NotificationService : INotificationService
         {
             if (users.IsNotificable)
             {
-                var detectedUser = _userService.GetById(users.UserId);
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -81,7 +76,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = detectedUser?.Id,
+                    Detail = notification.Action,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
@@ -93,8 +88,45 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification ReadNotificationById(string id)
+    public Notification AddMovementNotification(CreateGenericNotificationArgs notification)
     {
-        throw new NotImplementedException();
+        var homeId = notification.Device.HomeId;
+        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var returnNotification = new Notification();
+        foreach (var users in homeUsers)
+        {
+            if(users.IsNotificable)
+            {
+                var noti = new Notification()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Event = "Movement detected in home",
+                    Device = notification.Device,
+                    IsRead = false,
+                    Date = notification.Date,
+                    HomeDeviceId = notification.Device.Id,
+                    Detail = notification.Action,
+                    HomeUserId = users.UserId,
+                    HomeUser = users,
+                };
+                returnNotification = noti;
+                _notificationRepository.Add(noti);
+            }
+        }
+
+        return returnNotification;
+    }
+
+    public Notification ReadNotificationById(string id, User u)
+    {
+        var noti = _notificationRepository.Get(x => x.Id == id);
+        if (noti.HomeUser.UserId != u.Id)
+        {
+            throw new InvalidOperationException("This notification is not yours");
+        }
+
+        noti.IsRead = true;
+        _notificationRepository.Update(noti);
+        return noti;
     }
 }

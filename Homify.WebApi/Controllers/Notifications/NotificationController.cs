@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
@@ -42,7 +43,12 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        var arguments = new CreateNotificationArgs(request.PersonDetectedId, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+        if (fromDevice.IsActive)
+        {
+            throw new InvalidOperationException("Device is not active");
+        }
+
+        var arguments = new CreateNotificationArgs(request.PersonDetectedId ?? string.Empty, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
 
@@ -69,7 +75,12 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+        if (fromDevice.IsActive)
+        {
+            throw new InvalidOperationException("Device is not active");
+        }
+
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action);
 
         var notification = _notificationService.AddWindowNotification(arguments);
 
@@ -96,9 +107,14 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Only sensors are supported.");
         }
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId);
+        if (fromDevice.IsActive)
+        {
+            throw new InvalidOperationException("Device is not active");
+        }
 
-        var notification = _notificationService.AddWindowNotification(arguments);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action);
+
+        var notification = _notificationService.AddMovementNotification(arguments);
 
         return new CreateGenericNotificationResponse(notification);
     }
@@ -135,7 +151,8 @@ public class NotificationController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.UpdateUserNotification)]
     public UpdateNotificationResponse UpdateNotification([FromRoute] string notificationId)
     {
-        var noti = _notificationService.ReadNotificationById(notificationId);
+        var user = GetUserLogged();
+        var noti = _notificationService.ReadNotificationById(notificationId, user);
 
         if (noti == null)
         {

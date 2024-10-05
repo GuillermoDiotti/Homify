@@ -13,11 +13,6 @@ public class CreateNotificationArgs
 
     public CreateNotificationArgs(string personDetectedId, HomeDevice device, bool isRead, DateTimeOffset date, string hardwareId)
     {
-        if (string.IsNullOrEmpty(personDetectedId))
-        {
-            throw new ArgumentNullException("PersonDetectedId cannot be null or empty");
-        }
-
         PersonDetectedId = personDetectedId;
 
         if (hardwareId == null)
