@@ -188,7 +188,6 @@ public class HomesControllerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgsNullException))]
     public void CreateHome_WhenLongitudIsNull_ShouldThrowException()
     {
         var request = new CreateHomeRequest()
@@ -198,7 +197,12 @@ public class HomesControllerTest
             Latitude = "141",
             Longitud = null
         };
-        _controller.Create(request);
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        Assert.ThrowsException<ArgsNullException>(() => _controller.Create(request));
     }
 
     [TestMethod]
