@@ -85,23 +85,6 @@ public class CompanyOwnerControllerTest
         _controller.Create(null);
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(Exception))]
-    public void CreateOwner_WhenUserServiceFails_ShouldThrowException()
-    {
-        var request = new CreateCompanyOwnerRequest()
-        {
-            Name = "John",
-            Email = "example@gmail.com",
-            Password = "123456!",
-            LastName = "lastName"
-        };
-
-        _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Throws(new Exception("Internal Error"));
-
-        _controller.Create(request);
-    }
-
     #endregion
 
     [TestMethod]

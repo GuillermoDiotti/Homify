@@ -14,6 +14,7 @@ using Homify.WebApi;
 using Homify.WebApi.Controllers.Homes;
 using Homify.WebApi.Controllers.Homes.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -520,5 +521,49 @@ public class HomesControllerTest
         _controller.ControllerContext.HttpContext = httpContext;
 
         _controller.UpdateMembersList(homeId, request);
+    }
+
+    [TestMethod]
+    public void ObtainMembers_WhenHomeIdIsValid_ShouldReturnMembersList()
+    {
+        // Arrange
+        var homeId = "home123";
+        var user = new User { Id = "testUserId" };
+        var homeMembers = new List<HomeUser>
+        {
+            new HomeUser
+            {
+                UserId = "user1",
+                HomeId = homeId,
+                User = new User { Id = "user1" },
+                Home = new Home { Id = homeId },
+                IsNotificable = true
+            },
+            new HomeUser
+            {
+                UserId = "user2",
+                HomeId = homeId,
+                User = new User { Id = "user2" },
+                Home = new Home { Id = homeId },
+                IsNotificable = true
+            }
+        };
+
+        _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Returns(homeMembers);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        // Act
+        var result = _controller.ObtainMembers(homeId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Count.Should().Be(2);
+        result[0].Should().BeEquivalentTo(new GetMemberResponse(homeMembers[0]));
+        result[1].Should().BeEquivalentTo(new GetMemberResponse(homeMembers[1]));
+        _homeServiceMock.Verify(service => service.GetHomeMembers(homeId, user), Times.Once);
     }
 }
