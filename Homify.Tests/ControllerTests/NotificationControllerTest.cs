@@ -6,8 +6,11 @@ using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.Notifications;
 using Homify.WebApi.Controllers.Notifications.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -80,14 +83,38 @@ public class NotificationControllerTest
     }
 
     [TestMethod]
-    public void GetNotifications_ShouldReturnUserNotifications()
+    public void ObtainNotifications_ShouldReturnFilteredNotifications()
     {
-        var expected = new List<Notification>();
-        _notificationService.Setup(n => n.GetAllByUserId(It.IsAny<string>())).Returns(expected);
-        var result = _controller.ObtainNotifications(string.Empty, "10/10/2024", "false");
+        // Arrange
+        var userId = "testUserId";
+        var user = new User { Id = userId };
+        var notifications = new List<Notification>
+        {
+            new Notification { Event = "Event1", Date = new DateTime(2024, 10, 10), IsRead = false, Device = new HomeDevice { Id = "Device1" } },
+            new Notification { Event = "Event2", Date = new DateTime(2024, 10, 11), IsRead = true, Device = new HomeDevice { Id = "Device2" } }
+        };
 
+        _notificationService.Setup(n => n.GetAllByUserId(userId)).Returns(notifications);
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = user;
+
+        var mockController = new NotificationController(_notificationService.Object, _homeDeviceService.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        // Act
+        var result = mockController.ObtainNotifications("Event1", "10/10/2024", "false");
+
+        // Assert
         result.Should().NotBeNull();
-        result.Should().BeEquivalentTo(expected);
+        result.Count.Should().Be(1);
+        result[0].Event.Should().Be("Event1");
+        result[0].IsRead.Should().BeFalse();
     }
 
     [TestMethod]
