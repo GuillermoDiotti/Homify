@@ -186,28 +186,15 @@ public class NotificationControllerTest
         _controller.WindowMovementNotification(request);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void WindowMovementNotification_ShouldReturnNotification_WhenRequestIsValid()
     {
-        var request = new CreateGenericNotificationRequest
-        {
-            HardwareId = "ValidHardwareId",
-        };
-
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            Device = new Device
-            {
-                Type = Constants.SENSOR
-            },
-            HardwareId = "333"
-        };
-
+        var request = new CreateGenericNotificationRequest { HardwareId = "validHardwareId", Action = "action" };
+        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = "SENSOR" }, IsActive = true };
         var notification = new Notification
         {
             Id = "Notification123",
-            Event = "Window state switch detected",
+            Event = "Window movement detected",
             IsRead = false,
             HomeDeviceId = homeDevice.Id,
             HomeUserId = "User123",
@@ -220,16 +207,15 @@ public class NotificationControllerTest
             .Returns(homeDevice);
 
         _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()))
-            .Returns(notification);
+            .Returns(new List<Notification> { notification });
 
         var result = _controller.WindowMovementNotification(request);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual("Notification123", result.Id);
-        Assert.AreEqual("Window state switch detected", result.Event);
-        _homeDeviceService.Verify(s => s.GetHomeDeviceByHardwareId(request.HardwareId), Times.Once);
-        _notificationService.Verify(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()), Times.Once);
-    }*/
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("Notification123", result[0].Id);
+        Assert.AreEqual("Window movement detected", result[0].Event);
+    }
 
     [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
