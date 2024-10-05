@@ -315,20 +315,9 @@ public sealed class HomifyDbContext : DbContext
         IsIncomplete = true,
     };
 
-    User companyowner_withNoCompany = new CompanyOwner()
-    {
-        Id = "SeedCompanyOwnerId2",
-        Name = "NoCompanyOwner",
-        Email = "nocompany@domain.com",
-        Password = ".Popso212",
-        LastName = "LastName",
-        RoleId = Constants.COMPANYOWNERID,
-        IsIncomplete = true,
-    };
-
     modelBuilder.Entity<Admin>().HasData(admin);
     modelBuilder.Entity<HomeOwner>().HasData(homeowner);
-    modelBuilder.Entity<CompanyOwner>().HasData(companyowner, companyowner_withNoCompany);
+    modelBuilder.Entity<CompanyOwner>().HasData(companyowner);
 
     modelBuilder.Entity<Session>().HasData(
         new Session
@@ -348,12 +337,6 @@ public sealed class HomifyDbContext : DbContext
             Id = "SeedCompanyOwnerSessionId",
             AuthToken = "SomeCompanyOwnerToken123",
             UserId = "SeedCompanyOwnerId"
-        },
-        new Session
-        {
-            Id = "SeedCompanyOwnerSessionId2",
-            AuthToken = "NoCompanyOwnerToken123",
-            UserId = "SeedCompanyOwnerId2"
         }
     );
 

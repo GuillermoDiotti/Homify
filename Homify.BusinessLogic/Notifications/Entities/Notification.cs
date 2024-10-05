@@ -13,7 +13,7 @@ public class Notification
     public bool IsRead { get; init; }
     public DateTimeOffset? Date { get; init; }
     public string? HomeUserId { get; init; } = null!;
-    public string? DetectedUserId { get; init; } = null!;
+    public string? Detail { get; init; } = null!;
     public HomeUser HomeUser { get; init; } = null!;
 
     public Notification(string? eventName, HomeDevice device, bool isRead, DateTimeOffset? date, HomeUser hu)

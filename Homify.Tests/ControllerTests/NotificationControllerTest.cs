@@ -69,7 +69,7 @@ public class NotificationControllerTest
             Device = homeDevice,
             IsRead = false,
             Id = Guid.NewGuid().ToString(), // Asegúrate de que Id no sea null
-            DetectedUserId = req.PersonDetectedId,
+            Detail = req.PersonDetectedId,
         };
 
         _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(req.HardwareId)).Returns(homeDevice);
@@ -194,7 +194,7 @@ public class NotificationControllerTest
             HomeUserId = "User123",
             Date = DateTimeOffset.Now,
             Device = homeDevice,
-            DetectedUserId = null,
+            Detail = null,
         };
 
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
@@ -307,7 +307,7 @@ public class NotificationControllerTest
             HomeUserId = "User123",
             Date = DateTimeOffset.Now,
             Device = homeDevice,
-            DetectedUserId = null,
+            Detail = null,
         };
 
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))

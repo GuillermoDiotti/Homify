@@ -51,7 +51,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = detectedUser?.Id,
+                    Detail = detectedUser?.Id,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
@@ -80,7 +80,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = notification.Action,
+                    Detail = notification.Action,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
@@ -109,7 +109,7 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    DetectedUserId = notification.Action,
+                    Detail = notification.Action,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
