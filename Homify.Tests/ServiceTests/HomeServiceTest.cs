@@ -309,7 +309,6 @@ public class HomeServiceTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void GetHomeDevices_WhenUserNotInHome_ShouldThrowException()
     {
-        // Arrange
         var homeId = "testHomeId";
         var userId = "testUserId";
         var user = new User { Id = userId };
@@ -322,7 +321,31 @@ public class HomeServiceTest
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
-        // Act
+        _homeService.GetHomeDevices(homeId, user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void GetHomeDevices_ShouldThrowException_WhenUserHasNoPermission()
+    {
+        var homeId = "testHomeId";
+        var userId = "testUserId";
+        var user = new User { Id = userId };
+
+        var homeUser = new HomeUser
+        {
+            User = user,
+            Permissions = new List<HomePermission>() // No permissions
+        };
+
+        var home = new Home
+        {
+            Id = homeId,
+            Members = new List<HomeUser> { homeUser }
+        };
+
+        _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
+
         _homeService.GetHomeDevices(homeId, user);
     }
 }
