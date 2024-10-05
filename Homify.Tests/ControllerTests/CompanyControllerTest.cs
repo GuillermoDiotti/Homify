@@ -108,6 +108,9 @@ public class CompanyControllerTest
 
         _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
 
+        // Setup the GetAll method to return an empty list
+        _companyServiceMock.Setup(c => c.GetAll()).Returns(new List<Company>());
+
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>()))
             .Throws(new ArgsNullException("name cannot be null or empty"));
 
