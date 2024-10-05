@@ -149,8 +149,17 @@ public class HomesControllerTest
     {
         var request = new CreateHomeRequest()
         {
-            Street = null
+            Street = null,
+            Number = "3",
+            Latitude = "141",
+            Longitud = "231",
+            MaxMembers = 1
         };
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
         _controller.Create(request);
     }
 
