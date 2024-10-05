@@ -74,7 +74,7 @@ public sealed class HomeController : HomifyControllerBase
 
         if (userFound == null)
         {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User is not a home owner");
         }
 
         var userIsAlreadyInHouse = homeFound.Members.Any(m => m.UserId == userFound.Id);

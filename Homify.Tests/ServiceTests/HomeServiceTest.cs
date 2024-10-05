@@ -258,4 +258,25 @@ public class HomeServiceTest
         Assert.IsTrue(members.First(m => m.UserId == memberId).IsNotificable);
         _mockRepository.Verify(r => r.Update(home), Times.Once);
     }
+
+    [TestMethod]
+    public void GetHomeDevices_ShouldReturnHomeDevices()
+    {
+        // Arrange
+        var homeId = "homeId";
+        var user = new User { Id = "userId" };
+        var homeDevices = new List<HomeDevice>
+        {
+            new HomeDevice { DeviceId = "deviceId1" },
+            new HomeDevice { DeviceId = "deviceId2" }
+        };
+
+        _homeDeviceService.Setup(service => service.GetHomeDeviceByHomeId(homeId)).Returns(homeDevices);
+
+        // Act
+        var result = _homeService.GetHomeDevices(homeId, user);
+
+        // Assert
+        Assert.AreEqual(homeDevices, result);
+    }
 }

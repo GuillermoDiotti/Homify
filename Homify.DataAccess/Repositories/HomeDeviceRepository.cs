@@ -29,4 +29,20 @@ public class HomeDeviceRepository : Repository<HomeDevice>
 
         return user;
     }
+
+    public override List<HomeDevice> GetAll(Expression<Func<HomeDevice, bool>>? predicate)
+    {
+        if (predicate == null)
+        {
+            return _entities.Include(u => u.Home)
+                .Include(u => u.Device).ToList();
+        }
+
+        var query =
+            _entities.Include(u => u.Home)
+                .Include(u => u.Device)
+                .Where(predicate).ToList();
+
+        return query;
+    }
 }

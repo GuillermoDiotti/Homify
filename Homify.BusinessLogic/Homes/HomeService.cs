@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Users.Entities;
@@ -128,6 +127,6 @@ public class HomeService : IHomeService
 
     public List<HomeDevice> GetHomeDevices(string homeId, User u)
     {
-       return _repository.Get(x => x.Id == homeId).Devices.ToList();
+       return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
     }
 }
