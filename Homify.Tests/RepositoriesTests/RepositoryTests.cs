@@ -157,7 +157,11 @@ public class RepositoryTests
 
         _context.Entry(entity).State = EntityState.Detached;
 
-        entity = new EntityTest { Id = entity.Id, Name = "new name" };
+        entity = new EntityTest
+        {
+            Id = entity.Id,
+            Name = "new name"
+        };
         _repository.Update(entity);
 
         var updatedEntity = _context.EntitiesTest.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
@@ -168,7 +172,11 @@ public class RepositoryTests
     [TestMethod]
     public void Update_WhenEntityDoesNotExist_ShouldThrowException()
     {
-        var entity = new EntityTest { Id = Guid.NewGuid().ToString(), Name = "non-existing entity" };
+        var entity = new EntityTest
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "non-existing entity"
+        };
 
         Action action = () => _repository.Update(entity);
 

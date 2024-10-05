@@ -64,7 +64,7 @@ public class DeviceControllerTest
             CompanyId = comoany.Id
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture, false, false);
 
         _deviceServiceMock.Setup(d => d.AddCamera(It.IsAny<CreateDeviceArgs>(), It.IsAny<CompanyOwner>())).Returns(expected);
 
@@ -103,9 +103,9 @@ public class DeviceControllerTest
             Photos = request.Photos,
         };
 
-        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture,false,false);
+        var args = new CreateDeviceArgs(request.Name, request.Model, request.Description, request.Photos, request.PpalPicture, false, false);
 
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(),It.IsAny<CompanyOwner>())).Returns(expected);
+        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(), It.IsAny<CompanyOwner>())).Returns(expected);
 
         var response = _controller.RegisterSensor(request);
 
@@ -124,9 +124,39 @@ public class DeviceControllerTest
     {
         var deviceList = new List<Device>
         {
-            new Device { Id = "1", Name = "Camera 1", Model = "Model A", PpalPicture = "photo1.jpg", Company = new Company { Name = "Company A" }},
-            new Device { Id = "2", Name = "Sensor 1", Model = "Model B", PpalPicture = "photo2.jpg", Company = new Company { Name = "Company B" }},
-            new Device { Id = "3", Name = "Camera 2", Model = "Model C", PpalPicture = null, Company = new Company { Name = "Company A" }}
+            new Device
+            {
+                Id = "1",
+                Name = "Camera 1",
+                Model = "Model A",
+                PpalPicture = "photo1.jpg",
+                Company = new Company
+                {
+                    Name = "Company A"
+                }
+            },
+            new Device
+            {
+                Id = "2",
+                Name = "Sensor 1",
+                Model = "Model B",
+                PpalPicture = "photo2.jpg",
+                Company = new Company
+                {
+                    Name = "Company B"
+                }
+            },
+            new Device
+            {
+                Id = "3",
+                Name = "Camera 2",
+                Model = "Model C",
+                PpalPicture = null,
+                Company = new Company
+                {
+                    Name = "Company A"
+                }
+            }
         };
 
         _deviceServiceMock
@@ -148,7 +178,12 @@ public class DeviceControllerTest
     [TestMethod]
     public void ObtainSupportedDevices_ShouldReturnCorrectSupportedDevicesResponse()
     {
-        var devices = new List<string> { "DeviceTypeA", "DeviceTypeB", "DeviceTypeC" };
+        var devices = new List<string>
+        {
+            "DeviceTypeA",
+            "DeviceTypeB",
+            "DeviceTypeC"
+        };
         _deviceServiceMock.Setup(service => service.SearchSupportedDevices()).Returns(devices);
 
         var result = _controller.ObtainSupportedDevices();
@@ -162,7 +197,7 @@ public class DeviceControllerTest
     [TestMethod]
     public void ObtainSupportedDevices_ShouldReturnEmptyListWhenNoDevicesFound()
     {
-        _deviceServiceMock.Setup(service => service.SearchSupportedDevices()).Returns(new List<string>());
+        _deviceServiceMock.Setup(service => service.SearchSupportedDevices()).Returns([]);
 
         var result = _controller.ObtainSupportedDevices();
 
@@ -196,10 +231,8 @@ public class DeviceControllerTest
             .Setup(service => service.Activate(It.IsAny<HomeDevice>()))
             .Returns(activatedDevice);
 
-        // Act
         var result = _controller.TurnOnDevice(hardwareId);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsActive, "The device should be activated.");
 

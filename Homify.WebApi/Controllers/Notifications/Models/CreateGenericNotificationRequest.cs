@@ -1,10 +1,8 @@
-﻿using Homify.BusinessLogic.Notifications.Entities;
-
-namespace Homify.WebApi.Controllers.Notifications.Models;
+﻿namespace Homify.WebApi.Controllers.Notifications.Models;
 
 public class CreateGenericNotificationRequest
 {
     public string DeviceId { get; init; } = null!;
     public string HardwareId { get; init; } = null!;
-    public string Action { get; init; } = null!;
+    public string? Action { get; init; } = null!;
 }

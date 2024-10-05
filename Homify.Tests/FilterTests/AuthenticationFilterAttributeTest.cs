@@ -14,10 +14,10 @@ namespace Homify.Tests.FilterTests;
 [TestClass]
 public class AuthenticationFilterAttributeTest
 {
-    private Mock<HttpContext> _httpContextMock;
-    private Mock<ISessionService> _sessionServiceMock;
-    private AuthorizationFilterContext _context;
-    private AuthenticationFilterAttribute _attribute;
+    private readonly Mock<HttpContext> _httpContextMock;
+    private readonly Mock<ISessionService> _sessionServiceMock;
+    private readonly AuthorizationFilterContext _context;
+    private readonly AuthenticationFilterAttribute _attribute;
 
     public AuthenticationFilterAttributeTest(Mock<HttpContext> httpContextMock, Mock<ISessionService> sessionServiceMock, AuthorizationFilterContext context)
     {
@@ -32,7 +32,7 @@ public class AuthenticationFilterAttributeTest
     {
         var AUTHORIZATION_HEADER = "Authorization";
         var validToken = Guid.NewGuid().ToString();
-        User user = new User
+        var user = new User
         {
             Name = "BBB",
             LastName = "AAA",
@@ -61,11 +61,11 @@ public class AuthenticationFilterAttributeTest
         _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(String.Empty);
 
         _attribute.OnAuthorization(_context);
-        IActionResult? response = _context.Result;
+        var response = _context.Result;
         _httpContextMock.VerifyAll();
         _sessionServiceMock.VerifyAll();
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
         if (concreteResponse.Value != null)
@@ -88,11 +88,11 @@ public class AuthenticationFilterAttributeTest
         _httpContextMock.SetupSet(h => h.Items[Items.UserLogged] = (User?)null);
 
         _attribute.OnAuthorization(_context);
-        IActionResult? response = _context.Result;
+        var response = _context.Result;
         _httpContextMock.VerifyAll();
         _sessionServiceMock.VerifyAll();
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
         if (concreteResponse.Value != null)

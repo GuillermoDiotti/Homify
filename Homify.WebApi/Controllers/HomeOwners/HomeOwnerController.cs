@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.Utility;

@@ -4,7 +4,6 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Homify.WebApi.Filters;
 

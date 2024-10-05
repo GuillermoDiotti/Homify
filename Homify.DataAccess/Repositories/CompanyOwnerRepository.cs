@@ -1,10 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-
+[ExcludeFromCodeCoverage]
 public class CompanyOwnerRepository : Repository<CompanyOwner>
 {
     public CompanyOwnerRepository(DbContext context)

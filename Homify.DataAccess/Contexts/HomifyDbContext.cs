@@ -47,318 +47,377 @@ public sealed class HomifyDbContext : DbContext
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Sensor>().ToTable("Sensors");
-    modelBuilder.Entity<Camera>().ToTable("Cameras");
+    {
+        modelBuilder.Entity<Sensor>().ToTable("Sensors");
+        modelBuilder.Entity<Camera>().ToTable("Cameras");
 
-    modelBuilder.Entity<Admin>().ToTable("Admins");
-    modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");
-    modelBuilder.Entity<HomeOwner>().ToTable("HomeOwners");
+        modelBuilder.Entity<Admin>().ToTable("Admins");
+        modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");
+        modelBuilder.Entity<HomeOwner>().ToTable("HomeOwners");
 
-    modelBuilder.Entity<HomeOwner>()
-        .HasMany(h => h.Homes)
-        .WithOne(o => o.Owner)
-        .HasForeignKey(i => i.OwnerId)
-        .IsRequired();
+        modelBuilder.Entity<HomeOwner>()
+            .HasMany(h => h.Homes)
+            .WithOne(o => o.Owner)
+            .HasForeignKey(i => i.OwnerId)
+            .IsRequired();
 
-    modelBuilder.Entity<Company>()
-        .HasMany(d => d.Devices)
-        .WithOne(c => c.Company)
-        .HasForeignKey(i => i.CompanyId)
-        .IsRequired();
+        modelBuilder.Entity<Company>()
+            .HasMany(d => d.Devices)
+            .WithOne(c => c.Company)
+            .HasForeignKey(i => i.CompanyId)
+            .IsRequired();
 
-    modelBuilder.Entity<Home>()
-        .HasMany(u => u.Members)
-        .WithOne(h => h.Home)
-        .HasForeignKey(i => i.HomeId)
-        .IsRequired();
+        modelBuilder.Entity<Home>()
+            .HasMany(u => u.Members)
+            .WithOne(h => h.Home)
+            .HasForeignKey(i => i.HomeId)
+            .IsRequired();
 
-    modelBuilder.Entity<Home>()
-        .HasMany(d => d.Devices)
-        .WithOne(h => h.Home)
-        .HasForeignKey(i => i.HomeId)
-        .OnDelete(DeleteBehavior.Restrict)
-        .IsRequired();
+        modelBuilder.Entity<Home>()
+            .HasMany(d => d.Devices)
+            .WithOne(h => h.Home)
+            .HasForeignKey(i => i.HomeId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
-    modelBuilder.Entity<HomeDevice>()
-        .HasKey(hd => hd.Id);
+        modelBuilder.Entity<HomeDevice>()
+            .HasKey(hd => hd.Id);
 
-    modelBuilder.Entity<User>()
-        .HasOne(u => u.Role)
-        .WithMany()
-        .HasForeignKey(u => u.RoleId)
-        .IsRequired();
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Role)
+            .WithMany()
+            .HasForeignKey(u => u.RoleId)
+            .IsRequired();
 
-    modelBuilder.Entity<Session>()
-        .HasOne(s => s.User)
-        .WithMany()
-        .HasForeignKey(s => s.UserId)
-        .IsRequired();
+        modelBuilder.Entity<Session>()
+            .HasOne(s => s.User)
+            .WithMany()
+            .HasForeignKey(s => s.UserId)
+            .IsRequired();
 
-    modelBuilder.Entity<Role>()
-        .HasMany(r => r.Permissions)
-        .WithMany(p => p.Roles)
-        .UsingEntity<RoleSystemPermission>();
-    modelBuilder.Entity<Role>()
-        .HasKey(r => r.Id);
+        modelBuilder.Entity<Role>()
+            .HasMany(r => r.Permissions)
+            .WithMany(p => p.Roles)
+            .UsingEntity<RoleSystemPermission>();
+        modelBuilder.Entity<Role>()
+            .HasKey(r => r.Id);
 
-    modelBuilder.Entity<SystemPermission>().HasData(
-        new SystemPermission { Id = "1", Value = PermissionsGenerator.CreateAdmin },
-        new SystemPermission { Id = "2", Value = PermissionsGenerator.DeleteAdmin },
-        new SystemPermission { Id = "3", Value = PermissionsGenerator.GetAllAccounts },
-        new SystemPermission { Id = "4", Value = PermissionsGenerator.CreateCompanyOwner },
-        new SystemPermission { Id = "5", Value = PermissionsGenerator.GetCompanies },
-        new SystemPermission { Id = "6", Value = PermissionsGenerator.CreateCompany },
-        new SystemPermission { Id = "7", Value = PermissionsGenerator.RegisterCamera },
-        new SystemPermission { Id = "8", Value = PermissionsGenerator.RegisterSensor },
-        new SystemPermission { Id = "9", Value = PermissionsGenerator.CreateHome },
-        new SystemPermission { Id = "10", Value = PermissionsGenerator.UpdateHomeMembersList },
-        new SystemPermission { Id = "11", Value = PermissionsGenerator.UpdateHomeDevices },
-        new SystemPermission { Id = "12", Value = PermissionsGenerator.GetHomeMembers },
-        new SystemPermission { Id = "13", Value = PermissionsGenerator.GetHomeDevices },
-        new SystemPermission { Id = "14", Value = PermissionsGenerator.UpdateHomeNotificatedMembers },
-        new SystemPermission { Id = "15", Value = PermissionsGenerator.GetUserNotifications },
-        new SystemPermission { Id = "16", Value = PermissionsGenerator.UpdateUserNotification },
-        new SystemPermission { Id = "17", Value = PermissionsGenerator.ViewRegisteredDevices },
-        new SystemPermission { Id = "18", Value = PermissionsGenerator.ViewSupportedDevices },
-        new SystemPermission { Id = "19", Value = PermissionsGenerator.CreateNotification }
-    );
-
-    modelBuilder.Entity<HomePermission>().HasData(
-        new HomePermission
-        {
-            Id = "2",
-            Value = "AddDevices"
-        },
-        new HomePermission
-        {
-            Id = "3",
-            Value = "ListDevices"
-        }
-    );
-
-    modelBuilder.Entity<Role>().HasData(
-        new Role
-        {
-            Id = Constants.ADMINISTRATORID,
-            Name = Constants.ADMINISTRATOR
-        },
-        new Role
-        {
-            Id = Constants.COMPANYOWNERID,
-            Name = Constants.COMPANYOWNER
-        },
-        new Role
-        {
-            Id = Constants.HOMEOWNERID,
-            Name = Constants.HOMEOWNER
-        }
-    );
-    modelBuilder.Entity<RoleSystemPermission>()
-        .HasKey(rp => new { rp.RoleSystemPermissionId });
-
-    modelBuilder.Entity<RoleSystemPermission>().HasOne(r => r.Role)
-        .WithMany()
-        .HasForeignKey(r => r.RoleId);
-
-    modelBuilder.Entity<RoleSystemPermission>().HasOne(r => r.Permission)
-        .WithMany()
-        .HasForeignKey(r => r.PermissionId);
-
-    modelBuilder.Entity<HomeUserHomePermission>()
-        .HasKey(hp => hp.Id);
-
-    modelBuilder.Entity<HomeUserHomePermission>()
-        .HasOne(hp => hp.HomeUser)
-        .WithMany()
-        .HasForeignKey(hp => hp.HomeUserId)
-        .IsRequired();
-
-    modelBuilder.Entity<HomeUserHomePermission>()
-        .HasOne(hp => hp.HomePermission)
-        .WithMany()
-        .HasForeignKey(hp => hp.HomePermissionId)
-        .IsRequired();
-
-    modelBuilder.Entity<HomeUser>()
-        .HasMany(hu => hu.Permissions)
-        .WithMany(hp => hp.HomeUsers)
-        .UsingEntity<HomeUserHomePermission>();
-
-    modelBuilder.Entity<RoleSystemPermission>().HasData(
-            new RoleSystemPermission
+        modelBuilder.Entity<SystemPermission>().HasData(
+            new SystemPermission
             {
-                RoleId = Constants.ADMINISTRATORID,
-                PermissionId = "1"
+                Id = "1",
+                Value = PermissionsGenerator.CreateAdmin
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.ADMINISTRATORID,
-                PermissionId = "2"
+                Id = "2",
+                Value = PermissionsGenerator.DeleteAdmin
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.ADMINISTRATORID,
-                PermissionId = "3"
+                Id = "3",
+                Value = PermissionsGenerator.GetAllAccounts
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.ADMINISTRATORID,
-                PermissionId = "4"
+                Id = "4",
+                Value = PermissionsGenerator.CreateCompanyOwner
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.ADMINISTRATORID,
-                PermissionId = "5"
+                Id = "5",
+                Value = PermissionsGenerator.GetCompanies
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.COMPANYOWNERID,
-                PermissionId = "6"
+                Id = "6",
+                Value = PermissionsGenerator.CreateCompany
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.COMPANYOWNERID,
-                PermissionId = "7"
+                Id = "7",
+                Value = PermissionsGenerator.RegisterCamera
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.COMPANYOWNERID,
-                PermissionId = "8"
+                Id = "8",
+                Value = PermissionsGenerator.RegisterSensor
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "9"
+                Id = "9",
+                Value = PermissionsGenerator.CreateHome
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "10"
+                Id = "10",
+                Value = PermissionsGenerator.UpdateHomeMembersList
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "11"
+                Id = "11",
+                Value = PermissionsGenerator.UpdateHomeDevices
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "12"
+                Id = "12",
+                Value = PermissionsGenerator.GetHomeMembers
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "13"
+                Id = "13",
+                Value = PermissionsGenerator.GetHomeDevices
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "14"
+                Id = "14",
+                Value = PermissionsGenerator.UpdateHomeNotificatedMembers
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "15"
+                Id = "15",
+                Value = PermissionsGenerator.GetUserNotifications
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "16"
+                Id = "16",
+                Value = PermissionsGenerator.UpdateUserNotification
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "17"
+                Id = "17",
+                Value = PermissionsGenerator.ViewRegisteredDevices
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "18"
+                Id = "18",
+                Value = PermissionsGenerator.ViewSupportedDevices
             },
-            new RoleSystemPermission
+            new SystemPermission
             {
-                RoleId = Constants.HOMEOWNERID,
-                PermissionId = "19"
+                Id = "19",
+                Value = PermissionsGenerator.CreateNotification
             }
         );
 
-    User admin = new Admin()
-    {
-        Id = "SeedAdminId",
-        Name = "Admin",
-        Email = "admin@domain.com",
-        Password = ".Popso212",
-        LastName = "LastName",
-        RoleId = Constants.ADMINISTRATORID,
-    };
+        modelBuilder.Entity<HomePermission>().HasData(
+            new HomePermission
+            {
+                Id = "2",
+                Value = "AddDevices"
+            },
+            new HomePermission
+            {
+                Id = "3",
+                Value = "ListDevices"
+            }
+        );
 
-    User homeowner = new HomeOwner()
-    {
-        Id = "SeedHomeOwnerId",
-        Name = "Homeowner",
-        Email = "homeowner@domain.com",
-        Password = ".Popso212",
-        LastName = "LastName",
-        ProfilePicture = "picture",
-        RoleId = Constants.HOMEOWNERID
-    };
+        modelBuilder.Entity<Role>().HasData(
+            new Role
+            {
+                Id = Constants.ADMINISTRATORID,
+                Name = Constants.ADMINISTRATOR
+            },
+            new Role
+            {
+                Id = Constants.COMPANYOWNERID,
+                Name = Constants.COMPANYOWNER
+            },
+            new Role
+            {
+                Id = Constants.HOMEOWNERID,
+                Name = Constants.HOMEOWNER
+            }
+        );
+        modelBuilder.Entity<RoleSystemPermission>()
+            .HasKey(rp => new { rp.RoleSystemPermissionId });
 
-    User companyowner = new CompanyOwner()
-    {
-        Id = "SeedCompanyOwnerId",
-        Name = "CompanyOwner",
-        Email = "companyowner@domain.com",
-        Password = ".Popso212",
-        LastName = "LastName",
-        RoleId = Constants.COMPANYOWNERID,
-        IsIncomplete = true,
-    };
+        modelBuilder.Entity<RoleSystemPermission>().HasOne(r => r.Role)
+            .WithMany()
+            .HasForeignKey(r => r.RoleId);
 
-    User companyowner_withNoCompany = new CompanyOwner()
-    {
-        Id = "SeedCompanyOwnerId2",
-        Name = "NoCompanyOwner",
-        Email = "nocompany@domain.com",
-        Password = ".Popso212",
-        LastName = "LastName",
-        RoleId = Constants.COMPANYOWNERID,
-        IsIncomplete = true,
-    };
+        modelBuilder.Entity<RoleSystemPermission>().HasOne(r => r.Permission)
+            .WithMany()
+            .HasForeignKey(r => r.PermissionId);
 
-    modelBuilder.Entity<Admin>().HasData(admin);
-    modelBuilder.Entity<HomeOwner>().HasData(homeowner);
-    modelBuilder.Entity<CompanyOwner>().HasData(companyowner, companyowner_withNoCompany);
+        modelBuilder.Entity<HomeUserHomePermission>()
+            .HasKey(hp => hp.Id);
 
-    modelBuilder.Entity<Session>().HasData(
-        new Session
+        modelBuilder.Entity<HomeUserHomePermission>()
+            .HasOne(hp => hp.HomeUser)
+            .WithMany()
+            .HasForeignKey(hp => hp.HomeUserId)
+            .IsRequired();
+
+        modelBuilder.Entity<HomeUserHomePermission>()
+            .HasOne(hp => hp.HomePermission)
+            .WithMany()
+            .HasForeignKey(hp => hp.HomePermissionId)
+            .IsRequired();
+
+        modelBuilder.Entity<HomeUser>()
+            .HasMany(hu => hu.Permissions)
+            .WithMany(hp => hp.HomeUsers)
+            .UsingEntity<HomeUserHomePermission>();
+
+        modelBuilder.Entity<RoleSystemPermission>().HasData(
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.ADMINISTRATORID,
+                    PermissionId = "1"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.ADMINISTRATORID,
+                    PermissionId = "2"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.ADMINISTRATORID,
+                    PermissionId = "3"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.ADMINISTRATORID,
+                    PermissionId = "4"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.ADMINISTRATORID,
+                    PermissionId = "5"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.COMPANYOWNERID,
+                    PermissionId = "6"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.COMPANYOWNERID,
+                    PermissionId = "7"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.COMPANYOWNERID,
+                    PermissionId = "8"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "9"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "10"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "11"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "12"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "13"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "14"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "15"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "16"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "17"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "18"
+                },
+                new RoleSystemPermission
+                {
+                    RoleId = Constants.HOMEOWNERID,
+                    PermissionId = "19"
+                }
+            );
+
+        User admin = new Admin()
         {
-            Id = "SeedAdminSessionId",
-            AuthToken = "SomeAdminToken123",
-            UserId = "SeedAdminId",
-        },
-        new Session
-        {
-            Id = "SeedHomeOwnerSessionId",
-            AuthToken = "SomeHomeOwnerToken123",
-            UserId = "SeedHomeOwnerId"
-        },
-        new Session
-        {
-            Id = "SeedCompanyOwnerSessionId",
-            AuthToken = "SomeCompanyOwnerToken123",
-            UserId = "SeedCompanyOwnerId"
-        },
-        new Session
-        {
-            Id = "SeedCompanyOwnerSessionId2",
-            AuthToken = "NoCompanyOwnerToken123",
-            UserId = "SeedCompanyOwnerId2"
-        }
-    );
+            Id = "SeedAdminId",
+            Name = "Admin",
+            Email = "admin@domain.com",
+            Password = ".Popso212",
+            LastName = "LastName",
+            RoleId = Constants.ADMINISTRATORID,
+        };
 
-    base.OnModelCreating(modelBuilder);
-}
+        User homeowner = new HomeOwner()
+        {
+            Id = "SeedHomeOwnerId",
+            Name = "Homeowner",
+            Email = "homeowner@domain.com",
+            Password = ".Popso212",
+            LastName = "LastName",
+            ProfilePicture = "picture",
+            RoleId = Constants.HOMEOWNERID
+        };
+
+        User companyowner = new CompanyOwner()
+        {
+            Id = "SeedCompanyOwnerId",
+            Name = "CompanyOwner",
+            Email = "companyowner@domain.com",
+            Password = ".Popso212",
+            LastName = "LastName",
+            RoleId = Constants.COMPANYOWNERID,
+            IsIncomplete = true,
+        };
+
+        modelBuilder.Entity<Admin>().HasData(admin);
+        modelBuilder.Entity<HomeOwner>().HasData(homeowner);
+        modelBuilder.Entity<CompanyOwner>().HasData(companyowner);
+
+        modelBuilder.Entity<Session>().HasData(
+            new Session
+            {
+                Id = "SeedAdminSessionId",
+                AuthToken = "SomeAdminToken123",
+                UserId = "SeedAdminId",
+            },
+            new Session
+            {
+                Id = "SeedHomeOwnerSessionId",
+                AuthToken = "SomeHomeOwnerToken123",
+                UserId = "SeedHomeOwnerId"
+            },
+            new Session
+            {
+                Id = "SeedCompanyOwnerSessionId",
+                AuthToken = "SomeCompanyOwnerToken123",
+                UserId = "SeedCompanyOwnerId"
+            }
+        );
+
+        base.OnModelCreating(modelBuilder);
+    }
 
     private static readonly SqliteConnection _connection = new("Data Source=:memory:");
 

@@ -1,7 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Users;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
 
@@ -11,7 +9,6 @@ namespace Homify.Tests.ServiceTests;
 public class RoleServiceTest
 {
     private Mock<IRepository<Role>>? _roleRepositoryMock;
-    private Mock<RoleService>? _roleServiceMock;
 
     private RoleService? _service;
 
@@ -19,7 +16,6 @@ public class RoleServiceTest
     public void Setup()
     {
         _roleRepositoryMock = new Mock<IRepository<Role>>();
-        _roleServiceMock = new Mock<RoleService>(_roleRepositoryMock.Object);
         _service = new RoleService(_roleRepositoryMock.Object);
     }
 
@@ -27,7 +23,11 @@ public class RoleServiceTest
     public void GetById_WhenDeviceExists_ShouldReturnRole()
     {
         var roleId = "test-role-id";
-        var role = new Role { Id = roleId, Name = "Test role" };
+        var role = new Role
+        {
+            Id = roleId,
+            Name = "Test role"
+        };
         _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
             .Returns(role);
 

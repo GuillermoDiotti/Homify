@@ -13,7 +13,6 @@ namespace Homify.Tests.ServiceTests;
 public class SessionServiceTest
 {
     private Mock<IRepository<Session>>? _sessionRepositoryMock;
-    private Mock<SessionService>? _sessionServiceMock;
 
     private SessionService? _service;
 
@@ -21,7 +20,6 @@ public class SessionServiceTest
     public void Setup()
     {
         _sessionRepositoryMock = new Mock<IRepository<Session>>();
-        _sessionServiceMock = new Mock<SessionService>(_sessionRepositoryMock.Object);
         _service = new SessionService(_sessionRepositoryMock.Object);
     }
 
@@ -38,7 +36,12 @@ public class SessionServiceTest
             LastName = "Doe",
             Role = new Role()
         };
-        var session = new Session { AuthToken = token, User = expectedUser, Id = "123456789" };
+        var session = new Session
+        {
+            AuthToken = token,
+            User = expectedUser,
+            Id = "123456789"
+        };
 
         _sessionRepositoryMock.Setup(repo =>
             repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);
@@ -62,7 +65,12 @@ public class SessionServiceTest
             LastName = "Doe",
             RoleId = Constants.ADMINISTRATORID
         };
-        var session = new Session() { AuthToken = "token", User = expectedUser, Id = "123456789" };
+        var session = new Session()
+        {
+            AuthToken = "token",
+            User = expectedUser,
+            Id = "123456789"
+        };
 
         _sessionRepositoryMock.Setup(repo =>
             repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);

@@ -5,7 +5,6 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;
@@ -38,7 +37,10 @@ public class DeviceServiceTest
             "Test Camera",
             "Model X",
             "Test Description",
-            new List<string> { "photo1.jpg", "photo2.jpg" },
+            [
+                "photo1.jpg",
+                "photo2.jpg"
+            ],
             "photo1.jpg",
             true,
             false
@@ -49,7 +51,11 @@ public class DeviceServiceTest
             Id = "1",
             Name = "John",
             Email = "john@example.com",
-            Company = new Company { Id = "company1", Name = "Test Company" }
+            Company = new Company
+            {
+                Id = "company1",
+                Name = "Test Company"
+            }
         };
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
@@ -79,23 +85,24 @@ public class DeviceServiceTest
             "Test Sensor",
             "Model X",
             "Test Description",
-            new List<string> { "photo1.jpg", "photo2.jpg" },
+            [
+                "photo1.jpg",
+                "photo2.jpg"
+            ],
             "mainphoto.jpg",
             true,
             false
         );
 
         var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company, Id = "1"};
+        var user = new CompanyOwner { Company = company, Id = "1" };
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
         _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
 
-        // Act
         var result = _deviceService.AddSensor(deviceArgs, user);
 
-        // Assert
         _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<Sensor>()), Times.Once);
         Assert.IsNotNull(result);
         Assert.AreEqual(deviceArgs.Name, result.Name);
@@ -130,7 +137,7 @@ public class DeviceServiceTest
         _deviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Device, bool>>>()))
             .Returns((Device)null);
 
-        var device = _deviceService.GetById(deviceId);
+        _deviceService.GetById(deviceId);
     }
 
     [TestMethod]
@@ -138,7 +145,7 @@ public class DeviceServiceTest
     public void GetById_WhenDeviceIdIsNullOrEmpty_ShouldThrowArgumentException()
     {
         var deviceId = string.Empty;
-        var device = _deviceService.GetById(deviceId);
+        _deviceService.GetById(deviceId);
     }
 
     [TestMethod]
@@ -149,7 +156,10 @@ public class DeviceServiceTest
             "Test Camera",
             "Model X",
             "Test Description",
-            new List<string> { "photo1.jpg", "photo2.jpg" },
+            [
+                "photo1.jpg",
+                "photo2.jpg"
+            ],
             "photo1.jpg",
             true,
             false
@@ -163,47 +173,101 @@ public class DeviceServiceTest
             Company = null
         };
 
-        var device = _deviceService.AddCamera(createDeviceArgs, user);
+        _deviceService.AddCamera(createDeviceArgs, user);
     }
 
     [TestMethod]
-        public void SearchDevices_WithValidFilters_ReturnsFilteredDevices()
+    public void SearchDevices_WithValidFilters_ReturnsFilteredDevices()
+    {
+        var deviceList = new List<Device>
+            {
+                new Device
+                {
+                    Id = "1",
+                    Name = "Camera 1",
+                    Model = "Model A",
+                    Company = new Company
+                    {
+                        Id = "1",
+                        Name = "Company A"
+                    },
+                },
+                new Device
+                {
+                    Id = "2",
+                    Name = "Sensor 1",
+                    Model = "Model B",
+                    Company = new Company
+                    {
+                        Id = "2",
+                        Name = "Company B"
+                    },
+                },
+                new Device
+                {
+                    Id = "3",
+                    Name = "Camera 2",
+                    Model = "Model C",
+                    Company = new Company
+                    {
+                        Id = "1",
+                        Name = "Company A"
+                    },
+                }
+            };
+
+        _deviceRepositoryMock
+            .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
+            .Returns(deviceList);
+
+        var searchArgs = new SearchDevicesArgs
         {
-            var deviceList = new List<Device>
-            {
-                new Device { Id = "1", Name = "Camera 1", Model = "Model A", Company = new Company { Id = "1", Name = "Company A" }, },
-                new Device { Id = "2", Name = "Sensor 1", Model = "Model B", Company = new Company { Id = "2", Name = "Company B" }, },
-                new Device { Id = "3", Name = "Camera 2", Model = "Model C", Company = new Company { Id = "1", Name = "Company A" }, }
-            };
+            DeviceName = "Camera",
+            Model = "Model A",
+            Company = "Company A",
+            Limit = 10,
+            Offset = 0
+        };
+        var result = _deviceService.SearchDevices(searchArgs);
 
-            _deviceRepositoryMock
-                .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
-                .Returns(deviceList);
-
-            var searchArgs = new SearchDevicesArgs
-            {
-                DeviceName = "Camera",
-                Model = "Model A",
-                Company = "Company A",
-                Limit = 10,
-                Offset = 0
-            };
-            var result = _deviceService.SearchDevices(searchArgs);
-
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Camera 1", result.First().Name);
-            Assert.AreEqual("Model A", result.First().Model);
-        }
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("Camera 1", result.First().Name);
+        Assert.AreEqual("Model A", result.First().Model);
+    }
 
     [TestMethod]
     public void SearchSupportedDevices_ReturnsUniqueDeviceTypes()
     {
         var deviceList = new List<Device>
         {
-            new Device { Id = "1", Name = "Camera", Model = "Model A", Type = "Camera" },
-            new Device { Id = "2", Name = "Sensor", Model = "Model B", Type = "Sensor" },
-            new Device { Id = "3", Name = "Camera 2", Model = "Model C", Type = "Camera" },
-            new Device { Id = "4", Name = "Thermostat", Model = "Model D", Type = "Thermostat" }
+            new Device
+            {
+                Id = "1",
+                Name = "Camera",
+                Model = "Model A",
+                Type = "Camera"
+            },
+            new Device
+            {
+                Id = "2",
+                Name = "Sensor",
+                Model = "Model B",
+                Type = "Sensor"
+            },
+            new Device
+            {
+                Id = "3",
+                Name = "Camera 2",
+                Model = "Model C",
+                Type = "Camera"
+            },
+            new Device
+            {
+                Id = "4",
+                Name = "Thermostat",
+                Model = "Model D",
+                Type = "Thermostat"
+            }
         };
 
         _deviceRepositoryMock

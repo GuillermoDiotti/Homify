@@ -2,10 +2,8 @@
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -72,7 +70,7 @@ public class CompanyControllerTest
             LogoUrl = request.LogoUrl,
             Rut = request.Rut,
             Owner = companyOwner,
-            Devices = new List<Device>()
+            Devices = []
         };
 
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Returns(expected);
@@ -87,7 +85,7 @@ public class CompanyControllerTest
     [TestMethod]
     public void Create_WhenRequestIsNull_ShouldThrowArgumentNullException()
     {
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(),It.IsAny<User>())).Throws<NullRequestException>();
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Throws<NullRequestException>();
 
         var response = () => _controller.Create(null);
         response.Should().Throw<NullRequestException>().WithMessage("Request cannot be null");
@@ -136,9 +134,24 @@ public class CompanyControllerTest
     {
         var companies = new List<Company>
         {
-            new Company { Id = "1", Name = "Company A", Owner = new CompanyOwner() },
-            new Company { Id = "2", Name = "Company B", Owner = new CompanyOwner() },
-            new Company { Id = "3", Name = "Company C", Owner = new CompanyOwner() },
+            new Company
+            {
+                Id = "1",
+                Name = "Company A",
+                Owner = new CompanyOwner()
+            },
+            new Company
+            {
+                Id = "2",
+                Name = "Company B",
+                Owner = new CompanyOwner()
+            },
+            new Company
+            {
+                Id = "3",
+                Name = "Company C",
+                Owner = new CompanyOwner()
+            },
         };
 
         _companyServiceMock.Setup(s => s.GetAll()).Returns(companies);

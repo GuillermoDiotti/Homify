@@ -6,7 +6,6 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Devices.Models;
-using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,8 +68,14 @@ public class DeviceController : HomifyControllerBase
         var isExterior = false;
         var user = GetUserLogged();
 
-        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, isExterior, isExterior);
+        var args = new CreateDeviceArgs(
+            req.Name ?? string.Empty,
+            req.Model ?? string.Empty,
+            req.Description ?? string.Empty,
+            req.Photos ?? [],
+            req.PpalPicture ?? string.Empty,
+            isExterior,
+            isExterior);
         var companyOwner = _companyOwnerService.GetById(user.Id);
         if (companyOwner == null)
         {
