@@ -70,7 +70,7 @@ public class CompanyControllerTest
             LogoUrl = request.LogoUrl,
             Rut = request.Rut,
             Owner = companyOwner,
-            Devices = new List<Device>()
+            Devices = []
         };
 
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Returns(expected);

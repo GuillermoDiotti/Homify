@@ -285,7 +285,7 @@ public class HomesControllerTest
 
         _controller.ControllerContext.HttpContext = httpContext;
 
-        var expectedHome = new Home("calle 1", "1", "101", "202", 3, owner, new List<HomeDevice>(), new List<HomeUser>());
+        var expectedHome = new Home("calle 1", "1", "101", "202", 3, owner, [], []);
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
             .Returns(expectedHome);

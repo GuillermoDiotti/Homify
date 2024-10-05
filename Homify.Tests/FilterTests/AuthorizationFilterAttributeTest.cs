@@ -20,16 +20,16 @@ namespace Homify.Tests.FilterTests;
 [TestClass]
 public class AuthorizationFilterAttributeTest
 {
-    private Mock<HttpContext> _httpContextMock;
-    private Mock<ISessionService> _sessionServiceMock;
-    private AuthorizationFilterContext _context;
+    private readonly Mock<HttpContext> _httpContextMock;
+    private readonly Mock<ISessionService> _sessionServiceMock;
+    private readonly AuthorizationFilterContext _context;
     private AuthorizationFilter _attribute = null!;
 
-    private SystemPermission _permission;
-    private Role _roleForTest;
-    private User _user;
-    private string _validToken;
-    private string _authorizationHeader;
+    private readonly SystemPermission _permission;
+    private readonly Role _roleForTest;
+    private readonly User _user;
+    private readonly string _validToken;
+    private readonly string _authorizationHeader;
 
     public AuthorizationFilterAttributeTest()
     {
@@ -106,9 +106,9 @@ public class AuthorizationFilterAttributeTest
         _attribute = new AuthorizationFilter("admins-Create");
         _attribute.OnAuthorization(_context);
 
-        IActionResult? response = _context.Result;
+        var response = _context.Result;
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Forbidden);
         if (concreteResponse.Value != null)

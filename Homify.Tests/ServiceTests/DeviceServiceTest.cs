@@ -37,11 +37,10 @@ public class DeviceServiceTest
             "Test Camera",
             "Model X",
             "Test Description",
-            new List<string>
-            {
+            [
                 "photo1.jpg",
                 "photo2.jpg"
-            },
+            ],
             "photo1.jpg",
             true,
             false
@@ -86,11 +85,10 @@ public class DeviceServiceTest
             "Test Sensor",
             "Model X",
             "Test Description",
-            new List<string>
-            {
+            [
                 "photo1.jpg",
                 "photo2.jpg"
-            },
+            ],
             "mainphoto.jpg",
             true,
             false
@@ -103,10 +101,8 @@ public class DeviceServiceTest
 
         _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
 
-        // Act
         var result = _deviceService.AddSensor(deviceArgs, user);
 
-        // Assert
         _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<Sensor>()), Times.Once);
         Assert.IsNotNull(result);
         Assert.AreEqual(deviceArgs.Name, result.Name);
@@ -141,7 +137,7 @@ public class DeviceServiceTest
         _deviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Device, bool>>>()))
             .Returns((Device)null);
 
-        var device = _deviceService.GetById(deviceId);
+        _deviceService.GetById(deviceId);
     }
 
     [TestMethod]
@@ -149,7 +145,7 @@ public class DeviceServiceTest
     public void GetById_WhenDeviceIdIsNullOrEmpty_ShouldThrowArgumentException()
     {
         var deviceId = string.Empty;
-        var device = _deviceService.GetById(deviceId);
+        _deviceService.GetById(deviceId);
     }
 
     [TestMethod]
@@ -160,11 +156,10 @@ public class DeviceServiceTest
             "Test Camera",
             "Model X",
             "Test Description",
-            new List<string>
-            {
+            [
                 "photo1.jpg",
                 "photo2.jpg"
-            },
+            ],
             "photo1.jpg",
             true,
             false
@@ -178,7 +173,7 @@ public class DeviceServiceTest
             Company = null
         };
 
-        var device = _deviceService.AddCamera(createDeviceArgs, user);
+        _deviceService.AddCamera(createDeviceArgs, user);
     }
 
     [TestMethod]

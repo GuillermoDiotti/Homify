@@ -15,10 +15,10 @@ namespace Homify.Tests.ServiceTests;
 [TestClass]
 public class HomeServiceTest
 {
-    private Mock<IRepository<Home>> _mockRepository;
-    private HomeService _homeService;
-    private Mock<IDeviceService> _deviceService;
-    private Mock<IHomeDeviceService> _homeDeviceService;
+    private readonly Mock<IRepository<Home>> _mockRepository;
+    private readonly HomeService _homeService;
+    private readonly Mock<IDeviceService> _deviceService;
+    private readonly Mock<IHomeDeviceService> _homeDeviceService;
 
     public HomeServiceTest()
     {
@@ -31,7 +31,6 @@ public class HomeServiceTest
     [TestMethod]
     public void AddHome_ShouldCallRepositoryAdd_WithCorrectHome()
     {
-        // Arrange
         var owner = new HomeOwner
         {
             Id = "Owner123",
@@ -144,7 +143,7 @@ public class HomeServiceTest
                 }
 
             ],
-            Devices = new List<HomeDevice>()
+            Devices = []
         };
         var device = new Device
         {
