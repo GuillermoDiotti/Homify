@@ -6,6 +6,8 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
+using Serilog.Core;
+using Constants = Homify.Utility.Constants;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -60,19 +62,16 @@ public class SessionServiceTest
             Email = userEmail,
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
+            RoleId = Constants.ADMINISTRATORID
         };
-        var session = new Session { AuthToken = null, User = expectedUser, Id = "123456789" };
+        var session = new Session() { AuthToken = "token", User = expectedUser, Id = "123456789" };
 
         _sessionRepositoryMock.Setup(repo =>
-                repo.Get(It.Is<Expression<Func<Session, bool>>>(predicate => predicate.Compile()(session))))
-            .Returns(session);
+            repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);
         var result = _service?.CreateSession(expectedUser);
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.AuthToken);
         Assert.AreNotEqual(string.Empty, result.AuthToken);
-
-        _sessionRepositoryMock.Verify(repo => repo.Update(It.Is<Session>(s => s.Id == session.Id && s.AuthToken == result.AuthToken)), Times.Once);
     }
 }

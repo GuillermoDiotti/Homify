@@ -37,7 +37,7 @@ public class UserControllerTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateUser_WhenNameIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenNameIsNull_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -46,12 +46,15 @@ public class UserControllerTests
             Password = "password",
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateUser_WhenEmailIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenEmailIsNull_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -60,12 +63,15 @@ public class UserControllerTests
             Password = "password!",
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenEmailFormatInInvalid1_ShouldThrowException()
+    public void CreateUser_WhenEmailFormatIsInvalid_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -74,12 +80,15 @@ public class UserControllerTests
             Password = "password/",
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
-    public void CreateUser_WhenEmailFormatInInvalid2_ShouldThrowExceptionn()
+    public void CreateUser_WhenEmailFormatIsInvalid2_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -88,6 +97,9 @@ public class UserControllerTests
             Password = "password!",
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
@@ -102,6 +114,9 @@ public class UserControllerTests
             Password = null,
             LastName = "Doe"
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
@@ -116,14 +131,9 @@ public class UserControllerTests
             Password = "123456",
             LastName = "Doe"
         };
-        var expected = new Admin()
-        {
-            Name = request.Name,
-            Email = request.Email,
-            Password = request.Password,
-            LastName = request.LastName,
-        };
-        _userServiceMock.Setup(u => u.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expected);
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
@@ -131,11 +141,7 @@ public class UserControllerTests
     [ExpectedException(typeof(InvalidFormatException))]
     public void CreateUser_WhenPasswordFormatIsInvalid2_ShouldThrowException()
     {
-        var password = string.Empty;
-        for (var i = 0; i < 4; i++)
-        {
-            password += "a";
-        }
+        var password = new string('a', 4);
 
         var request = new CreateAdminRequest()
         {
@@ -144,20 +150,15 @@ public class UserControllerTests
             Password = password + "!",
             LastName = "Doe"
         };
-        var expected = new Admin()
-        {
-            Name = request.Name,
-            Email = request.Email,
-            Password = request.Password,
-            LastName = request.LastName,
-        };
-        _userServiceMock.Setup(u => u.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expected);
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
-    public void CreateUser_WhenLastNameIsNull_ShouldThrowExceptionn()
+    public void CreateUser_WhenLastNameIsNull_ShouldThrowException()
     {
         var request = new CreateAdminRequest()
         {
@@ -166,6 +167,9 @@ public class UserControllerTests
             Password = "123456!",
             LastName = null
         };
+
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+
         _controller.Create(request);
     }
 
@@ -189,9 +193,12 @@ public class UserControllerTests
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
-            LastName = request.LastName
+            LastName = request.LastName,
+            Id = Guid.NewGuid().ToString()
         };
+
         _userServiceMock.Setup(user => user.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
+        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         var response = _controller.Create(request);
 
@@ -270,17 +277,20 @@ public class UserControllerTests
             new User
             {
                 Name = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Role = new Role { Name = "Admin" }  // Asegúrate de que Role esté inicializado si se usa
             },
             new User
             {
                 Name = "Jane",
-                LastName = "Smith"
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Adam",
-                LastName = "Johnson"
+                LastName = "Johnson",
+                Role = new Role { Name = "Guest" }
             }
         };
 
@@ -302,22 +312,26 @@ public class UserControllerTests
             new User
             {
                 Name = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Role = new Role { Name = "Admin" }  // Asegúrate de inicializar Role si es necesario
             },
             new User
             {
                 Name = "Jane",
-                LastName = "Smith"
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Adam",
-                LastName = "Johnson"
+                LastName = "Johnson",
+                Role = new Role { Name = "Guest" }
             },
             new User
             {
                 Name = "Lucy",
-                LastName = "Williams"
+                LastName = "Williams",
+                Role = new Role { Name = "Admin" }
             }
         };
 
@@ -337,17 +351,20 @@ public class UserControllerTests
             new User
             {
                 Name = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Jane",
-                LastName = "Smith"
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Adam",
-                LastName = "Johnson"
+                LastName = "Johnson",
+                Role = new Role { Name = "Admin" }
             }
         };
 
@@ -368,17 +385,20 @@ public class UserControllerTests
             new User
             {
                 Name = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Jane",
-                LastName = "Smith"
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
             },
             new User
             {
                 Name = "Adam",
-                LastName = "Johnson"
+                LastName = "Johnson",
+                Role = new Role { Name = "Admin" }
             }
         };
 
@@ -393,23 +413,27 @@ public class UserControllerTests
     [TestMethod]
     public void AllAccounts_ShouldMapUserToUserBasicInfoCorrectly()
     {
+        // Arrange: Simulación de una lista de usuarios de prueba
         var users = new List<User>
         {
             new User
             {
                 Name = "John",
                 LastName = "Doe",
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                Role = new Role { Name = "Admin" } // Se puede agregar más información si es necesario
             }
         };
 
         _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
+        // Act: Llamada al método del controlador con parámetros de paginación vacíos
         var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
 
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Count);
-        Assert.AreEqual("John", result[0].Name);
-        Assert.AreEqual("Doe", result[0].LastName);
+        // Assert: Verificaciones del resultado
+        Assert.IsNotNull(result, "El resultado no debe ser nulo");
+        Assert.AreEqual(1, result.Count, "Debe haber exactamente un usuario en la lista");
+        Assert.AreEqual("John", result[0].Name, "El nombre del usuario debe ser 'John'");
+        Assert.AreEqual("Doe", result[0].LastName, "El apellido del usuario debe ser 'Doe'");
     }
 }

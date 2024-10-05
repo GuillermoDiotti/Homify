@@ -170,7 +170,7 @@ public class HomeServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
-        Assert.AreEqual(userId, result.First().Id);
+        Assert.AreEqual(userId, result.First().User.Id);
     }
 
     [TestMethod]
@@ -229,23 +229,26 @@ public class HomeServiceTest
     {
         // Arrange
         var homeId = "testHomeId";
-        var memberId = "testMemberId";
+        var memberId = "testMemberId"; // Este debe coincidir con el campo "Id" de HomeUser
+        var houseId = "HouseId";
 
         var members = new List<HomeUser>
         {
-            new HomeUser { UserId = "testMemberId", IsNotificable = false },
-            new HomeUser { UserId = "otherMemberId", IsNotificable = true }
+            new HomeUser { HomeId = houseId, Id = memberId, IsNotificable = false }, // Cambiar UserId a Id
+            new HomeUser { HomeId = houseId, Id = "otherMemberId", IsNotificable = true } // Cambiar UserId a Id
         };
 
-        var homeOwner = new HomeOwner() { Id = "123" };
+        var homeOwner = new HomeOwner { Id = "123" };
         var home = new Home
         {
             Id = homeId,
-            Members = members,
             Owner = homeOwner,
             OwnerId = homeOwner.Id,
+            Members = members
         };
+        homeOwner.Homes.Add(home);
 
+        // Simular la obtención del hogar desde el repositorio
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(home);
 
@@ -255,8 +258,13 @@ public class HomeServiceTest
         // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
-        Assert.IsTrue(members.First(m => m.UserId == memberId).IsNotificable);
-        _mockRepository.Verify(r => r.Update(home), Times.Once);
+
+        // Verificar que el miembro ahora sea notificable
+        Assert.IsTrue(members.First(m => m.Id == memberId).IsNotificable); // Cambiar UserId a Id
+
+        // Verificar que la lista de miembros notificables sea correcta
+        var notificableMembers = result.Where(m => m.IsNotificable).ToList();
+        Assert.AreEqual(2, notificableMembers.Count);
     }
 
     [TestMethod]

@@ -57,22 +57,29 @@ public class NotificationControllerTest
             DeviceId = "1",
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
-        var device = new HomeDevice();
-        var homeDevice = new HomeDevice();
+
+        var homeDevice = new HomeDevice
+        {
+            Device = new Device { Type = Constants.CAMERA } // Asegúrate de que esto esté configurado correctamente
+        };
+
         var expected = new Notification()
         {
             Event = req.PersonDetectedId,
             Device = homeDevice,
             IsRead = false,
-            Id = Guid.NewGuid().ToString(),
-            DetectedUserId = req.PersonDetectedId
+            Id = Guid.NewGuid().ToString(), // Asegúrate de que Id no sea null
+            DetectedUserId = req.PersonDetectedId,
         };
-        _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(It.IsAny<string>())).Returns(device);
+
+        _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(req.HardwareId)).Returns(homeDevice);
         _notificationService.Setup(n => n.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
 
+        // Act
         var result = _controller.PersonDetectedNotification(req);
 
-        result.Id.Should().NotBeNull();
+        // Assert
+        result.Should().NotBeNull();
         result.Id.Should().Be(expected.Id);
     }
 

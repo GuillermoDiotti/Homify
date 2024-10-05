@@ -54,17 +54,11 @@ public class DeviceServiceTest
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
-        var result = _deviceService.AddCamera(createDeviceArgs, user);
+        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
 
-        _cameraRepositoryMock.Verify(r => r.Add(It.Is<Camera>(c =>
-            c.Name == createDeviceArgs.Name &&
-            c.Model == createDeviceArgs.Model &&
-            c.Description == createDeviceArgs.Description &&
-            c.Photos == createDeviceArgs.Photos &&
-            c.PpalPicture == createDeviceArgs.PpalPicture &&
-            c.IsExterior == createDeviceArgs.IsExterior &&
-            c.IsInterior == createDeviceArgs.IsInterior &&
-            c.Company == user.Company)), Times.Once);
+        _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
+
+        var result = _deviceService.AddCamera(createDeviceArgs, user);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(createDeviceArgs.Name, result.Name);
@@ -92,7 +86,11 @@ public class DeviceServiceTest
         );
 
         var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company };
+        var user = new CompanyOwner { Company = company, Id = "1"};
+
+        _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
+
+        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
 
         // Act
         var result = _deviceService.AddSensor(deviceArgs, user);

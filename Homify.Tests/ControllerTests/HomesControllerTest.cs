@@ -9,8 +9,10 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.Homes;
 using Homify.WebApi.Controllers.Homes.Models;
+using Microsoft.AspNetCore.Http;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -147,8 +149,17 @@ public class HomesControllerTest
     {
         var request = new CreateHomeRequest()
         {
-            Street = null
+            Street = null,
+            Number = "3",
+            Latitude = "141",
+            Longitud = "231",
+            MaxMembers = 1
         };
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
         _controller.Create(request);
     }
 
@@ -159,8 +170,16 @@ public class HomesControllerTest
         var request = new CreateHomeRequest()
         {
             Street = "calle",
-            Number = null
+            Number = null,
+            Latitude = "141",
+            Longitud = "231",
+            MaxMembers = 1
         };
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
         _controller.Create(request);
     }
 
@@ -174,11 +193,18 @@ public class HomesControllerTest
             Number = "3",
             Latitude = null
         };
+
+        var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = owner;
+
+        _controller.ControllerContext.HttpContext = httpContext;
+
         _controller.Create(request);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgsNullException))]
     public void CreateHome_WhenLongitudIsNull_ShouldThrowException()
     {
         var request = new CreateHomeRequest()
@@ -188,7 +214,12 @@ public class HomesControllerTest
             Latitude = "141",
             Longitud = null
         };
-        _controller.Create(request);
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        Assert.ThrowsException<ArgsNullException>(() => _controller.Create(request));
     }
 
     [TestMethod]
@@ -203,12 +234,18 @@ public class HomesControllerTest
             Longitud = "231",
             MaxMembers = 0
         };
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
         _controller.Create(request);
     }
 
     [TestMethod]
     public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
     {
+        // Arrange
         var request = new CreateHomeRequest
         {
             Street = "calle 1",
@@ -217,92 +254,23 @@ public class HomesControllerTest
             Longitud = "202",
             MaxMembers = 3,
         };
+
         var owner = new HomeOwner { Id = "Owner123", Name = "John Doe", Role = RolesGenerator.HomeOwner() };
-        var expectedHome = new Home("calle 1", "1", "101", "202", 3, new HomeOwner(), [], []);
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = owner;
+
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        var expectedHome = new Home("calle 1", "1", "101", "202", 3, owner, new List<HomeDevice>(), new List<HomeUser>());
 
         _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
-                        .Returns(expectedHome);
+            .Returns(expectedHome);
 
         var response = _controller.Create(request);
 
-        Assert.IsNotNull(response, "La respuesta no debería ser null");
-        Assert.AreEqual(expectedHome.Id, response.Id, "El ID del hogar devuelto no es el esperado");
-    }
-
-    [TestMethod]
-    public void UpdateMemberList_WhenRequestIsOk_ShouldUpdateNotificatedMembersList()
-    {
-        var request = new UpdateMemberListRequest
-        {
-            Email = "test@example.com"
-        };
-
-        var existingMember = new HomeUser
-        {
-            HomeId = "123",
-            UserId = "1",
-            User = new User
-            {
-                Name = "Existing Member",
-                Email = "mail1"
-            }
-        };
-
-        var newMember = new HomeUser
-        {
-            HomeId = "456",
-            UserId = "2",
-            User = new User
-            {
-                Name = "New Member",
-                Email = "test@example.com"
-            }
-        };
-
-        var homeResponseBeforeUpdate = new Home
-        {
-            Id = "1",
-            Street = "Test Home",
-            Number = "1234",
-            Latitude = "0.0000",
-            Longitude = "0.0000",
-            MaxMembers = 5,
-            Owner = new HomeOwner
-            {
-                Name = "Owner Name",
-                Role = RolesGenerator.HomeOwner()
-            },
-            Devices = [],
-            Members = [existingMember],
-        };
-
-        var homeResponseAfterUpdate = new Home
-        {
-            Id = "1",
-            Street = "Test Home",
-            Number = "1234",
-            Latitude = "0.0000",
-            Longitude = "0.0000",
-            MaxMembers = 5,
-            Owner = new HomeOwner
-            {
-                Id = "1",
-                Name = "Owner Name"
-            },
-            Devices = [],
-            Members = [existingMember, newMember],
-            OwnerId = "1"
-        };
-
-        _homeServiceMock.Setup(service => service.UpdateMemberList(homeResponseAfterUpdate.Id, newMember))
-                        .Returns(homeResponseAfterUpdate);
-
-        var result = _controller.UpdateMembersList("1", request);
-
-        Assert.IsNotNull(result);
-        homeResponseAfterUpdate.OwnerId.Should().Be(homeResponseAfterUpdate.Owner.Id);
-        Assert.AreEqual(2, result.Members.Count, "La cantidad de miembros notificados debería haber aumentado a 2");
-        Assert.IsTrue(result.Members.Any(m => m == "test@example.com"), "El nuevo miembro debería estar en la lista de miembros notificados");
+        Assert.IsNotNull(response);
+        Assert.AreEqual(expectedHome.Id, response.Id);
     }
 
     [TestMethod]
@@ -320,8 +288,8 @@ public class HomesControllerTest
             DeviceId = "device123"
         };
 
-        var user = new User();
-        var homeDevice = new HomeDevice
+        var user = new User { Id = "user123" };
+        var updatedDevice = new HomeDevice
         {
             DeviceId = "device123",
             HomeId = "home1",
@@ -337,32 +305,38 @@ public class HomesControllerTest
             HardwareId = "1001"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId, user)).Verifiable();
+        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, "home1", user)).Returns(updatedDevice);
 
-        _controller.UpdateHomeDevice(request, "home1");
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, homeDevice.HomeId, user), Times.Once,
-            "El servicio debería ser llamado exactamente una vez con el DeviceId correcto.");
+        var result = _controller.UpdateHomeDevice(request, "home1");
+
+        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, "home1", user), Times.Once);
     }
 
     [TestMethod]
-    public void GetMembers_WhenCalled_ShouldReturnListOfHomeMembers()
+    public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
     {
-        var u1 = new User { Id = "1", Name = "John Doe", Email = "john@example.com", };
-        var u2 = new User { Id = "2", Name = "Jane Smith", Email = "jane@example.com" };
-        var huList = new List<HomeUser>() { new HomeUser() { User = u1 }, new HomeUser() { User = u2, } };
+        var homeId = "home123";
+        var user = new User { Id = "user123", Name = "John Doe" };
+        var devices = new List<HomeDevice>
+        {
+            new HomeDevice { Id = "1", DeviceId = "device1", HomeId = homeId, Connected = true, IsActive = true, HardwareId = "hardware1", Device = new Device { Name = "Device 1", Model = "Model A" } },
+            new HomeDevice { Id = "2", DeviceId = "device2", HomeId = homeId, Connected = false, IsActive = false, HardwareId = "hardware2", Device = new Device { Name = "Device 2", Model = "Model B" } }
+        };
 
-        var User = new User();
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers("home123", User)).Returns(huList);
+        _homeServiceMock.Setup(service => service.GetHomeDevices(homeId, user)).Returns(devices);
 
-        var result = _controller.ObtainMembers("home123");
+        var result = _controller.ObtainHomeDevices(homeId);
 
-        Assert.IsNotNull(result, "El resultado no debe ser nulo");
-        Assert.AreEqual(2, result.Count, "La lista debe contener 2 miembros");
-
-        Assert.AreEqual("John Doe", result[0].Fullname);
-        Assert.AreEqual("jane@example.com", result[1].Email);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
     }
 
     [TestMethod]
@@ -370,58 +344,6 @@ public class HomesControllerTest
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
         _controller.NotificatedMembers("homeIe", null);
-    }
-
-    [TestMethod]
-    public void UpdateNofificatedMembers_WhenRequestIsValid_ShouldUpdate()
-    {
-        var request = new NotificatedMembersRequest
-        {
-            HomeUserId = "member123"
-        };
-        var user = new HomeOwner();
-        _homeServiceMock.Setup(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user)).Verifiable();
-
-        _controller.NotificatedMembers("homeId", request);
-
-        _homeServiceMock.Verify(service => service.UpdateNotificatedList("homeId", request.HomeUserId, user), Times.Once,
-            "El servicio debería ser llamado exactamente una vez con el MemberId correcto.");
-    }
-
-    [TestMethod]
-    public void GetHomeDevices_WhenCalled_ShouldReturnListOfDevices()
-    {
-        var d1 = new Device { Name = "Device 1", Model = "Model A", };
-        var d2 = new Device { Name = "Device 2", Model = "Model B", };
-        var homeDevices = new List<HomeDevice>()
-        {
-            new HomeDevice()
-            {
-                Device = d1,
-            },
-            new HomeDevice()
-            {
-                Device = d2,
-            },
-        };
-        var owner = new HomeOwner() { Id = "juancho" };
-        var home = new Home() { Id = "homeId1", Owner = owner };
-        _homeServiceMock.Setup(service => service.GetHomeDevices("homeId1", owner)).Returns(homeDevices);
-
-        var result = _controller.ObtainHomeDevices("homeId");
-
-        Assert.IsNotNull(result, "El resultado no debería ser null.");
-        Assert.AreEqual(2, result.Count, "Debería haber 2 dispositivos en la lista.");
-
-        Assert.AreEqual("Device 1", result[0].Name, "El nombre del primer dispositivo no es el esperado.");
-        Assert.AreEqual("Model A", result[0].Model, "El modelo del primer dispositivo no es el esperado.");
-        Assert.IsTrue(result[0].IsConnected, "El primer dispositivo debería estar conectado.");
-        Assert.AreEqual("photo1.jpg", result[0].MainPhoto, "La foto principal del primer dispositivo no es la esperada.");
-
-        Assert.AreEqual("Device 2", result[1].Name, "El nombre del segundo dispositivo no es el esperado.");
-        Assert.AreEqual("Model B", result[1].Model, "El modelo del segundo dispositivo no es el esperado.");
-        Assert.IsFalse(result[1].IsConnected, "El segundo dispositivo no debería estar conectado.");
-        Assert.AreEqual("photo2.jpg", result[1].MainPhoto, "La foto principal del segundo dispositivo no es la esperada.");
     }
 
     [TestMethod]

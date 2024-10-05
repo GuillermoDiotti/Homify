@@ -36,4 +36,10 @@
       <ProjectReference Include="..\Homify.WebApi\Homify.WebApi.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="JetBrains.ReSharper.TestRunner.Merged">
+        <HintPath>..\..\..\..\..\..\Applications\Rider.app\Contents\lib\ReSharperHost\TestRunner\netcoreapp3.0\JetBrains.ReSharper.TestRunner.Merged.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
