@@ -48,41 +48,36 @@ public class NotificationControllerTest
         _controller.PersonDetectedNotification(req);
     }
 
-    /*[TestMethod]
-    public void CreateNotification_WhenDataIsOk_ShouldCreateNotification()
+    [TestMethod]
+    public void PersonDetectedNotification_ShouldReturnNotification_WhenRequestIsValid()
     {
-        var req = new CreateNotificationRequest()
+        var request = new CreateNotificationRequest { HardwareId = "validHardwareId", PersonDetectedId = "personId" };
+        var homeDevice = new HomeDevice { Id = "Device123", Device = new Device { Type = "CAMERA" }, IsActive = true };
+        var notification = new Notification
         {
-            HardwareId = "123",
-            DeviceId = "1",
-            PersonDetectedId = Guid.NewGuid().ToString(),
-        };
-
-        var homeDevice = new HomeDevice
-        {
-            Device = new Device
-            {
-                Type = Constants.CAMERA
-            }
-        };
-
-        var expected = new Notification()
-        {
-            Event = req.PersonDetectedId,
-            Device = homeDevice,
+            Id = "Notification123",
+            Event = "Person detected",
             IsRead = false,
-            Id = Guid.NewGuid().ToString(),
-            Detail = req.PersonDetectedId,
+            HomeDeviceId = homeDevice.Id,
+            HomeUserId = "User123",
+            Date = DateTimeOffset.Now,
+            Device = homeDevice,
+            Detail = null,
         };
 
-        _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(req.HardwareId)).Returns(homeDevice);
-        _notificationService.Setup(n => n.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>())).Returns(expected);
+        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+            .Returns(homeDevice);
 
-        var result = _controller.PersonDetectedNotification(req);
+        _notificationService.Setup(s => s.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>()))
+            .Returns(new List<Notification> { notification });
 
-        result.Should().NotBeNull();
-        result.Id.Should().Be(expected.Id);
-    }*/
+        var result = _controller.PersonDetectedNotification(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("Notification123", result[0].Id);
+        Assert.AreEqual("Person detected", result[0].Event);
+    }
 
     [TestMethod]
     public void GetNotifications_ShouldReturnUserNotifications()
