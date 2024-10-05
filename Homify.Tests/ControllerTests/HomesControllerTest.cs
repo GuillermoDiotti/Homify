@@ -352,4 +352,20 @@ public class HomesControllerTest
     {
         _controller.ChangeHomeMemberPermissions("home123", "member123", null);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void ObtainMembers_WhenHomeDoesNotExist_ShouldThrowNotFoundException()
+    {
+        var homeId = "homeNotFound";
+        var user = new User { Id = "user123" };
+
+        _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Throws(new NotFoundException("Home not found"));
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _controller.ObtainMembers(homeId);
+    }
 }

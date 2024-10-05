@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -8,6 +9,7 @@ namespace Homify.DataAccess.Repositories;
 
 public class RoleRepository : Repository<Role>
 {
+    [ExcludeFromCodeCoverage]
     public RoleRepository(DbContext context)
         : base(context)
     {

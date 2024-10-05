@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Homify.DataAccess.Migrations
 {
     [ExcludeFromCodeCoverage]
+
     /// <inheritdoc />
     public partial class DeviceType : Migration
     {

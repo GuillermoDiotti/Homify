@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.Exceptions;
@@ -7,6 +8,7 @@ namespace Homify.DataAccess.Repositories;
 
 public class CompanyOwnerRepository : Repository<CompanyOwner>
 {
+    [ExcludeFromCodeCoverage]
     public CompanyOwnerRepository(DbContext context)
         : base(context)
     {

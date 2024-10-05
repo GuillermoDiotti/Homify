@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace Homify.DataAccess.Repositories;
 
 public class HomeUserRepository : Repository<HomeUser>
 {
+    [ExcludeFromCodeCoverage]
     public HomeUserRepository(DbContext context)
         : base(context)
     {

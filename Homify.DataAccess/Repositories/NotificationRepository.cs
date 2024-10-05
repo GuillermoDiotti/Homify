@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Notifications.Entities;
@@ -8,6 +9,7 @@ namespace Homify.DataAccess.Repositories;
 
 public class NotificationRepository : Repository<Notification>
 {
+    [ExcludeFromCodeCoverage]
     public NotificationRepository(DbContext context)
         : base(context)
     {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications.Entities;
@@ -8,6 +9,7 @@ namespace Homify.DataAccess.Repositories;
 
 public class HomeDeviceRepository : Repository<HomeDevice>
 {
+    [ExcludeFromCodeCoverage]
     public HomeDeviceRepository(DbContext context)
         : base(context)
     {
