@@ -217,6 +217,11 @@ public class HomesControllerTest
             Longitud = "231",
             MaxMembers = 0
         };
+
+        var user = new User { Id = "User123" };
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
         _controller.Create(request);
     }
 
