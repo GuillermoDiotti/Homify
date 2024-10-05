@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications;
 
@@ -29,11 +30,11 @@ public class NotificationService : INotificationService
         return notifications.Where(n => n.HomeUser.UserId == userId).ToList();
     }
 
-    public Notification AddPersonDetectedNotification(CreateNotificationArgs notification)
+    public List<Notification> AddPersonDetectedNotification(CreateNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
         var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
-        var returnNotification = new Notification();
+        var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
             if (users.IsNotificable)
@@ -47,11 +48,11 @@ public class NotificationService : INotificationService
                     IsRead = false,
                     Date = notification.Date,
                     HomeDeviceId = notification.Device.Id,
-                    Detail = detectedUser?.Id,
+                    Detail = (detectedUser != null) ? Helpers.GetUserFullName(detectedUser.Name, detectedUser.LastName) : null,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
-                returnNotification = noti;
+                returnNotification.Add(noti);
                 _notificationRepository.Add(noti);
             }
         }
@@ -59,11 +60,11 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification AddWindowNotification(CreateGenericNotificationArgs notification)
+    public List<Notification> AddWindowNotification(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
         var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
-        var returnNotification = new Notification();
+        var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
             if (users.IsNotificable)
@@ -80,7 +81,7 @@ public class NotificationService : INotificationService
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
-                returnNotification = noti;
+                returnNotification.Add(noti);
                 _notificationRepository.Add(noti);
             }
         }
@@ -88,11 +89,11 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification AddMovementNotification(CreateGenericNotificationArgs notification)
+    public List<Notification> AddMovementNotification(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
         var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
-        var returnNotification = new Notification();
+        var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
             if (users.IsNotificable)
@@ -109,7 +110,7 @@ public class NotificationService : INotificationService
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };
-                returnNotification = noti;
+                returnNotification.Add(noti);
                 _notificationRepository.Add(noti);
             }
         }
