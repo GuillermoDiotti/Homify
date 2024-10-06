@@ -237,6 +237,17 @@ public class UserControllerTests
         _controller.Delete(adminId);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Delete_WhenTargetUserIsNotAdmin_ShouldThrowInvalidOperationException()
+    {
+        var adminId = "userId";
+        var user = new User { Id = adminId, Role = new Role { Name = "User" } };
+        _userServiceMock.Setup(service => service.GetById(adminId)).Returns(user);
+
+        _controller.Delete(adminId);
+    }
+
     #endregion
 
     #region Success
