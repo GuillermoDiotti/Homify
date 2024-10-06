@@ -217,6 +217,7 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
         _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
+        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company>());
 
         _controller.Create(request);
     }
