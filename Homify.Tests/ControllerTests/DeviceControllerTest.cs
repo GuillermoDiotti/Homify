@@ -9,6 +9,7 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Devices;
 using Homify.WebApi.Controllers.Devices.Models;
@@ -206,7 +207,6 @@ public class DeviceControllerTest
     [TestMethod]
     public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
     {
-        // Arrange
         var hardwareId = "Device123";
         var user = new User { Id = "testUserId" };
         var homeDevice = new HomeDevice
@@ -240,13 +240,20 @@ public class DeviceControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        // Act
         var result = _controller.TurnOnDevice(hardwareId);
 
-        // Assert
         result.Should().NotBeNull();
         result.IsActive.Should().BeTrue();
         _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once);
         _homeDeviceServiceMock.Verify(service => service.Activate(homeDevice), Times.Once);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void RegisterSensor_WhenRequestIsNull_ShouldThrowNullRequestException()
+    {
+        CreateSensorRequest request = null;
+
+        _controller.RegisterSensor(request);
     }
 }

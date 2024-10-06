@@ -58,7 +58,7 @@ public class DeviceController : HomifyControllerBase
     [HttpPost("sensors")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
-    public CreateDeviceResponse RegisterSensor(CreateSensorRequest req)
+    public CreateDeviceResponse RegisterSensor(CreateSensorRequest? req)
     {
         if (req == null)
         {
