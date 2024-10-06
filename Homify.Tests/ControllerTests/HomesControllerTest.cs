@@ -779,4 +779,18 @@ public class HomesControllerTest
         _homePermissionServiceMock.Verify(service => service.GetByValue(PermissionsGenerator.MemberCanListDevices), Times.Once);
         _homeUserServiceMock.Verify(service => service.Update(It.IsAny<HomeUser>()), Times.Once);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void ChangeHomeMemberPermissions_WhenHomeUserNotFound_ShouldThrowNotFoundException()
+    {
+        // Arrange
+        var homeId = "home123";
+        var memberId = "member123";
+        var request = new EditMemberPermissionsRequest { CanAddDevices = true, CanListDevices = true };
+
+        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns((HomeUser)null);
+
+        _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
+    }
 }
