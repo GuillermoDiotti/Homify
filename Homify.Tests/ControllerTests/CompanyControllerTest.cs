@@ -2,8 +2,10 @@
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -220,6 +222,36 @@ public class CompanyControllerTest
         _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company>());
 
         _controller.Create(request);
+    }
+
+    [TestMethod]
+    public void AllCompanies_WhenOwnerFullNameAndCompanyAreProvided_ShouldFilterAndReturnPaginatedList()
+    {
+        var limit = "5";
+        var offset = "0";
+        var ownerFullName = "John Doe";
+        var company = "TechCorp";
+        var companies = new List<Company>
+        {
+            new Company
+            {
+                Name = "TechCorp",
+                Owner = new CompanyOwner { Name = "John", LastName = "Doe" }
+            },
+            new Company
+            {
+                Name = "OtherCorp",
+                Owner = new CompanyOwner { Name = "Jane", LastName = "Smith" }
+            }
+        };
+
+        _companyServiceMock.Setup(service => service.GetAll()).Returns(companies);
+
+        var result = _controller.AllCompanies(limit, offset, ownerFullName, company);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("TechCorp", result[0].CompanyName);
     }
 }
 
