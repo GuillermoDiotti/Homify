@@ -793,4 +793,26 @@ public class HomesControllerTest
 
         _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ChangeHomeMemberPermissions_WhenUserIsNotOwner_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var homeId = "home123";
+        var memberId = "member123";
+        var request = new EditMemberPermissionsRequest { CanAddDevices = true, CanListDevices = true };
+        var home = new Home { Id = homeId, OwnerId = "owner123" };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = new List<HomePermission>() };
+        var user = new User { Id = "notOwner123" };
+
+        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
+    }
 }
