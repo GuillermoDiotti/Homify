@@ -513,4 +513,37 @@ public class UserControllerTests
         Assert.AreEqual("John", result[0].Name, "El nombre del usuario debe ser 'John'");
         Assert.AreEqual("Doe", result[0].LastName, "El apellido del usuario debe ser 'Doe'");
     }
+
+    [TestMethod]
+    public void AllAccounts_WhenRoleAndFullNameAreProvided_ShouldFilterAndReturnPaginatedList()
+    {
+        var limit = "5";
+        var offset = "0";
+        var role = "Admin";
+        var fullName = "John Doe";
+        var users = new List<User>
+        {
+            new User
+            {
+                Name = "John",
+                LastName = "Doe",
+                Role = new Role { Name = "Admin" }
+            },
+            new User
+            {
+                Name = "Jane",
+                LastName = "Smith",
+                Role = new Role { Name = "User" }
+            }
+        };
+
+        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+
+        var result = _controller.AllAccounts(limit, offset, role, fullName);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("John Doe", Helpers.GetUserFullName(result[0].Name, result[0].LastName));
+        _userServiceMock.Verify(service => service.GetAll(), Times.Once);
+    }
 }
