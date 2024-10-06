@@ -367,7 +367,6 @@ public class HomeServiceTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateHomeDevices_WhenUserNotBelongingToHouse_ShouldThrowInvalidOperationException()
     {
-        // Arrange
         var deviceid = "device123";
         var homeid = "home123";
         var user = new User { Id = "user123" };
@@ -375,7 +374,6 @@ public class HomeServiceTest
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
-        // Act
         _homeService.UpdateHomeDevices(deviceid, homeid, user);
     }
 
@@ -383,7 +381,6 @@ public class HomeServiceTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateHomeDevices_WhenUserHasNoPermission_ShouldThrowInvalidOperationException()
     {
-        // Arrange
         var deviceid = "device123";
         var homeid = "home123";
         var user = new User { Id = "user123" };
@@ -392,7 +389,22 @@ public class HomeServiceTest
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
-        // Act
+        _homeService.UpdateHomeDevices(deviceid, homeid, user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateHomeDevices_WhenDeviceNotFound_ShouldThrowNotFoundException()
+    {
+        var deviceid = "device123";
+        var homeid = "home123";
+        var user = new User { Id = "user123" };
+        var homeUser = new HomeUser { UserId = user.Id, Permissions = new List<HomePermission> { new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice } } };
+        var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser> { homeUser } };
+
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
+        _deviceService.Setup(service => service.GetById(deviceid)).Returns((Device)null);
+
         _homeService.UpdateHomeDevices(deviceid, homeid, user);
     }
 }
