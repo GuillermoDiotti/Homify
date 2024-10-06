@@ -361,4 +361,20 @@ public class HomeServiceTest
 
         Assert.IsNull(result);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateHomeDevices_WhenUserNotBelongingToHouse_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var deviceid = "device123";
+        var homeid = "home123";
+        var user = new User { Id = "user123" };
+        var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser>() };
+
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
+
+        // Act
+        _homeService.UpdateHomeDevices(deviceid, homeid, user);
+    }
 }
