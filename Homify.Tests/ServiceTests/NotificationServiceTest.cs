@@ -162,6 +162,12 @@ public class NotificationServiceTest
             new HomeUser { UserId = "User2", IsNotificable = false },
             new HomeUser { UserId = "User3", IsNotificable = true }
         };
+        var not = new Notification(
+            "Movement detected in home",
+            homeDevice,
+            false,
+            DateTimeOffset.Now,
+            homeUsers[0]);
         var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Movement detected");
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);

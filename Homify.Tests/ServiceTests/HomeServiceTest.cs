@@ -8,6 +8,7 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -347,5 +348,17 @@ public class HomeServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
         _homeService.GetHomeDevices(homeId, user);
+    }
+
+    [TestMethod]
+    public void GetHomeById_WhenHomeNotFound_ShouldReturnNull()
+    {
+        var homeId = "nonexistentHomeId";
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Throws(new NotFoundException("error"));
+
+        var result = _homeService.GetHomeById(homeId);
+
+        Assert.IsNull(result);
     }
 }
