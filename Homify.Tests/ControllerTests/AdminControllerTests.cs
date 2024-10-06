@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.Admins.Models;
 using Moq;
@@ -248,6 +249,22 @@ public class UserControllerTests
         _controller.Delete(adminId);
     }
 
+    [TestMethod]
+    public void Delete_WhenAdminExistsAndIsAdmin_ShouldDeleteAdmin()
+    {
+        // Arrange
+        var adminId = "adminId";
+        var admin = new User { Id = adminId, Role = new Role { Name = Constants.ADMINISTRATOR } };
+        _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
+        _userServiceMock.Setup(service => service.Delete(adminId));
+
+        // Act
+        _controller.Delete(adminId);
+
+        // Assert
+        _userServiceMock.Verify(service => service.GetById(adminId), Times.Once);
+        _userServiceMock.Verify(service => service.Delete(adminId), Times.Once);
+    }
     #endregion
 
     #region Success
