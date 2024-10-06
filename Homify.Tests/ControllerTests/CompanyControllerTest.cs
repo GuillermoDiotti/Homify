@@ -162,12 +162,61 @@ public class CompanyControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(DuplicatedDataException))]
     public void Create_WhenCompanyNameExists_ShouldThrowDuplicatedDataException()
     {
         var request = new CreateCompanyRequest { Name = "ExistingCompany" };
         _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company> { new Company { Name = "ExistingCompany" } });
 
-        Assert.ThrowsException<DuplicatedDataException>(() => _controller.Create(request));
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenUserIsNotCompanyOwner_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCompanyRequest { Name = "NewCompany" };
+        var userLogged = new User { Id = "user123" };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
+
+        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company>());
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenCompanyOwnerAccountIsNotIncomplete_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCompanyRequest { Name = "NewCompany" };
+        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = false };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenUserAlreadyOwnsACompany_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCompanyRequest { Name = "NewCompany" };
+        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = true };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
+        _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
+
+        _controller.Create(request);
     }
 }
 
