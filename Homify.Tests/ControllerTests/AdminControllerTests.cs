@@ -227,6 +227,16 @@ public class UserControllerTests
         _controller.Delete("1234");
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Delete_WhenAdminNotFound_ShouldThrowNotFoundException()
+    {
+        var adminId = "nonexistentAdminId";
+        _userServiceMock.Setup(service => service.GetById(adminId)).Returns((User)null);
+
+        _controller.Delete(adminId);
+    }
+
     #endregion
 
     #region Success
