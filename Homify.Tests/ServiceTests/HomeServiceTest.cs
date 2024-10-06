@@ -6,6 +6,7 @@ using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -371,6 +372,23 @@ public class HomeServiceTest
         var homeid = "home123";
         var user = new User { Id = "user123" };
         var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser>() };
+
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
+
+        // Act
+        _homeService.UpdateHomeDevices(deviceid, homeid, user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateHomeDevices_WhenUserHasNoPermission_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var deviceid = "device123";
+        var homeid = "home123";
+        var user = new User { Id = "user123" };
+        var homeUser = new HomeUser { UserId = user.Id, Permissions = new List<HomePermission>() };
+        var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser> { homeUser } };
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
