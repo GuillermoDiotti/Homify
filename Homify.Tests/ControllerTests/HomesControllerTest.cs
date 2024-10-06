@@ -650,4 +650,16 @@ public class HomesControllerTest
 
         _controller.UpdateMembersList(homeId, request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateMembersList_WhenHomeNotFound_ShouldThrowNotFoundException()
+    {
+        var homeId = "home123";
+        var request = new UpdateMemberListRequest { Email = "test@example.com" };
+
+        _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns((Home)null);
+
+        _controller.UpdateMembersList(homeId, request);
+    }
 }
