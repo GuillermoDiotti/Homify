@@ -724,4 +724,59 @@ public class HomesControllerTest
 
         _controller.UpdateMembersList(homeId, request);
     }
+
+    [TestMethod]
+    public void ChangeHomeMemberPermissions_WhenRequestIsValid_ShouldReturnHomeMemberBasicInfo()
+    {
+        var homeId = "home123";
+        var memberId = "member123";
+        var request = new EditMemberPermissionsRequest
+        {
+            CanAddDevices = true,
+            CanListDevices = true
+        };
+        var home = new Home
+        {
+            Id = homeId,
+            OwnerId = "owner123"
+        };
+        var found = new HomeUser
+        {
+            Home = home,
+            UserId = memberId,
+            Permissions = new List<HomePermission>()
+        };
+        var user = new User
+        {
+            Id = "owner123"
+        };
+        var permissionAddDevice = new HomePermission
+        {
+            Value = PermissionsGenerator.MemberCanAddDevice
+        };
+        var permissionListDevices = new HomePermission
+        {
+            Value = PermissionsGenerator.MemberCanListDevices
+        };
+
+        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
+        _homePermissionServiceMock.Setup(service => service.GetByValue(PermissionsGenerator.MemberCanAddDevice)).Returns(permissionAddDevice);
+        _homePermissionServiceMock.Setup(service => service.GetByValue(PermissionsGenerator.MemberCanListDevices)).Returns(permissionListDevices);
+        _homeUserServiceMock.Setup(service => service.Update(It.IsAny<HomeUser>())).Returns(found);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+        var result = _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
+
+        result.Should().NotBeNull();
+        result.UserId.Should().Be(memberId);
+        result.Permissions.Should().Contain(permissionAddDevice.Value.ToString());
+        result.Permissions.Should().Contain(permissionListDevices.Value.ToString());
+        _homeUserServiceMock.Verify(service => service.GetByIds(homeId, memberId), Times.Once);
+        _homePermissionServiceMock.Verify(service => service.GetByValue(PermissionsGenerator.MemberCanAddDevice), Times.Once);
+        _homePermissionServiceMock.Verify(service => service.GetByValue(PermissionsGenerator.MemberCanListDevices), Times.Once);
+        _homeUserServiceMock.Verify(service => service.Update(It.IsAny<HomeUser>()), Times.Once);
+    }
 }
