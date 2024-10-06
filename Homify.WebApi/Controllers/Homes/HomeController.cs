@@ -50,7 +50,7 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/members")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
-    public UpdateMembersListResponse UpdateMembersList([FromRoute] string homeId, UpdateMemberListRequest request)
+    public UpdateMembersListResponse UpdateMembersList([FromRoute] string homeId, UpdateMemberListRequest? request)
     {
         if (request == null)
         {

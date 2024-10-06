@@ -599,7 +599,6 @@ public class HomesControllerTest
     [TestMethod]
     public void UpdateMembersList_WhenRequestIsValid_ShouldReturnUpdateMembersListResponse()
     {
-        // Arrange
         var homeId = "home123";
         var request = new UpdateMemberListRequest
         {
@@ -637,10 +636,18 @@ public class HomesControllerTest
         _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
         _homeServiceMock.Setup(service => service.UpdateMemberList(homeId, It.Is<HomeUser>(hu => hu.UserId == homeUser.UserId))).Returns(updatedHome);
 
-        // Act
         var result = _controller.UpdateMembersList(homeId, request);
 
-        // Assert
         result.Should().NotBeNull();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void UpdateMembersList_WhenRequestIsNul_ShouldThrowNullRequestException()
+    {
+        var homeId = "home123";
+        UpdateMemberListRequest? request = null;
+
+        _controller.UpdateMembersList(homeId, request);
     }
 }
