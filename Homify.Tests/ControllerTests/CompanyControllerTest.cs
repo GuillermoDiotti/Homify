@@ -160,6 +160,15 @@ public class CompanyControllerTest
         Assert.AreEqual(2, result.Count);
         CollectionAssert.AreEqual(expectedResult, result);
     }
+
+    [TestMethod]
+    public void Create_WhenCompanyNameExists_ShouldThrowDuplicatedDataException()
+    {
+        var request = new CreateCompanyRequest { Name = "ExistingCompany" };
+        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company> { new Company { Name = "ExistingCompany" } });
+
+        Assert.ThrowsException<DuplicatedDataException>(() => _controller.Create(request));
+    }
 }
 
 public class TestableCompanyController : CompanyController
