@@ -595,4 +595,52 @@ public class HomesControllerTest
         result[1].Should().BeEquivalentTo(new GetMemberResponse(homeMembers[1]));
         _homeServiceMock.Verify(service => service.GetHomeMembers(homeId, user), Times.Once);
     }
+
+    [TestMethod]
+    public void UpdateMembersList_WhenRequestIsValid_ShouldReturnUpdateMembersListResponse()
+    {
+        // Arrange
+        var homeId = "home123";
+        var request = new UpdateMemberListRequest
+        {
+            Email = "test@example.com"
+        };
+        var homeFound = new Home
+        {
+            Id = homeId,
+            Members = new List<HomeUser>(),
+            MaxMembers = 5
+        };
+        var userFound = new User
+        {
+            Id = "user123",
+            Email = "test@example.com",
+            Role = new Role { Name = Constants.HOMEOWNER }
+        };
+        var homeUser = new HomeUser
+        {
+            Home = homeFound,
+            IsNotificable = false,
+            User = userFound,
+            HomeId = homeId,
+            UserId = userFound.Id,
+            Permissions = new List<HomePermission>()
+        };
+        var updatedHome = new Home
+        {
+            Id = homeId,
+            Members = new List<HomeUser> { homeUser },
+            MaxMembers = 5
+        };
+
+        _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
+        _homeServiceMock.Setup(service => service.UpdateMemberList(homeId, It.Is<HomeUser>(hu => hu.UserId == homeUser.UserId))).Returns(updatedHome);
+
+        // Act
+        var result = _controller.UpdateMembersList(homeId, request);
+
+        // Assert
+        result.Should().NotBeNull();
+    }
 }
