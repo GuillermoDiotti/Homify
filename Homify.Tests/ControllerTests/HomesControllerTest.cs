@@ -699,4 +699,29 @@ public class HomesControllerTest
 
         _controller.UpdateMembersList(homeId, request);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateMembersList_WhenUserAlreadyInHouse_ShouldThrowInvalidOperationException()
+    {
+        var homeId = "home123";
+        var request = new UpdateMemberListRequest { Email = "test@example.com" };
+        var homeFound = new Home
+        {
+            Id = homeId,
+            Members = new List<HomeUser> { new HomeUser { UserId = "user123" } },
+            MaxMembers = 5
+        };
+        var userFound = new User
+        {
+            Id = "user123",
+            Email = "test@example.com",
+            Role = new Role { Name = Constants.HOMEOWNER }
+        };
+
+        _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
+        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
+
+        _controller.UpdateMembersList(homeId, request);
+    }
 }
