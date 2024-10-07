@@ -50,8 +50,7 @@ public class HomeServiceTest
             h.Street == createHomeArgs.Street &&
             h.MaxMembers == createHomeArgs.MaxMembers &&
             h.Owner == owner &&
-            h.OwnerId == owner.Id
-        )), Times.Once);
+            h.OwnerId == owner.Id)), Times.Once);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(owner.Id, result.OwnerId);

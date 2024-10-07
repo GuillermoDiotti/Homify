@@ -28,8 +28,7 @@ public class CompanyServiceTest
         var createCompanyArgs = new CreateCompanyArgs(
             "Test Company",
             "https://example.com/logo.png",
-            "123456789"
-        );
+            "123456789");
 
         var user = new CompanyOwner
         {

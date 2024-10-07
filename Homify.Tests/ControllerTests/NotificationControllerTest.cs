@@ -340,14 +340,14 @@ public class NotificationControllerTest
             Type = Constants.SENSOR
         };
 
-        var HomeDevice = new HomeDevice()
+        var homeDevice = new HomeDevice()
         {
             DeviceId = "id",
             Device = expectedDevice
         };
 
         _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
-            .Returns(HomeDevice);
+            .Returns(homeDevice);
 
         _controller.MovementNotification(request);
     }

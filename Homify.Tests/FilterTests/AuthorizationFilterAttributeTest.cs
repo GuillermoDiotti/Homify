@@ -39,10 +39,8 @@ public class AuthorizationFilterAttributeTest
             new ActionContext(
                 _httpContextMock.Object,
                 new RouteData(),
-                new ActionDescriptor()
-            ),
-            new List<IFilterMetadata>()
-        );
+                new ActionDescriptor()),
+            new List<IFilterMetadata>());
 
         _permission = new SystemPermission { Value = "admins-Create" };
 
@@ -72,7 +70,7 @@ public class AuthorizationFilterAttributeTest
     [TestMethod]
     public void Authenticate_WhenTokenIsCorrect_ShouldAuthenticate()
     {
-        var AUTHORIZATION_HEADER = "Authorization";
+        var authorizationHeader = "Authorization";
         var validToken = Guid.NewGuid().ToString();
         var user = new User
         {
@@ -84,7 +82,7 @@ public class AuthorizationFilterAttributeTest
 
         _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns(user);
 
-        _httpContextMock.Setup(h => h.Request.Headers.TryGetValue(AUTHORIZATION_HEADER, out It.Ref<StringValues>.IsAny))
+        _httpContextMock.Setup(h => h.Request.Headers.TryGetValue(authorizationHeader, out It.Ref<StringValues>.IsAny))
             .Returns((string key, out StringValues value) =>
             {
                 value = new StringValues(validToken);

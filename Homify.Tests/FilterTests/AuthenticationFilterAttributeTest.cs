@@ -30,7 +30,7 @@ public class AuthenticationFilterAttributeTest
     [TestMethod]
     public void Authenticate_WhenTokenIsCorrect_ShouldNotFail()
     {
-        var AUTHORIZATION_HEADER = "Authorization";
+        var authorizationHeader = "Authorization";
         var validToken = Guid.NewGuid().ToString();
         var user = new User
         {
@@ -41,7 +41,7 @@ public class AuthenticationFilterAttributeTest
         };
         _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns(user);
 
-        _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(validToken);
+        _httpContextMock.Setup(h => h.Request.Headers[authorizationHeader]).Returns(validToken);
         _httpContextMock.Setup(h => h.RequestServices.GetService(It.IsAny<Type>()))
             .Returns(_sessionServiceMock.Object);
         _httpContextMock.SetupSet(h => h.Items[Items.UserLogged] = user);
@@ -57,8 +57,8 @@ public class AuthenticationFilterAttributeTest
     [TestMethod]
     public void Authenticate_WhenTokenIsMissing_ShouldThrow401()
     {
-        var AUTHORIZATION_HEADER = "Authorization";
-        _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(String.Empty);
+        var authorizationHeader = "Authorization";
+        _httpContextMock.Setup(h => h.Request.Headers[authorizationHeader]).Returns(string.Empty);
 
         _attribute.OnAuthorization(_context);
         var response = _context.Result;

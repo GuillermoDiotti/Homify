@@ -249,11 +249,8 @@ public class CompanyControllerTest
     }
 }
 
-public class TestableCompanyController : CompanyController
+public class TestableCompanyController(ICompanyService companyService) : CompanyController(companyService)
 {
-    public TestableCompanyController(ICompanyService companyService)
-        : base(companyService) { }
-
     public virtual User GetUserLogged()
     {
         return base.GetUserLogged();
