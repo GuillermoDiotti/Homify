@@ -256,4 +256,3 @@ public class TestableCompanyController(ICompanyService companyService) : Company
         return base.GetUserLogged();
     }
 }
-

@@ -396,8 +396,8 @@ public class HomeServiceTest
         var user = new User { Id = "user123" };
         var homeUser = new HomeUser
         {
-            UserId = user.Id, Permissions =
-            [new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice }]
+            UserId = user.Id,
+            Permissions = [new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice }]
         };
         var home = new Home { Id = homeid, OwnerId = "owner123", Members = [homeUser] };
 
