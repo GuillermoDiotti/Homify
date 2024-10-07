@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeOwners;
@@ -14,11 +15,13 @@ public class HomeOwnerControllerTest
 {
     private readonly Mock<IUserService> _userService;
     private readonly HomeOwnerController _controller;
+    private readonly Mock<IRoleService> _roleService;
 
     public HomeOwnerControllerTest()
     {
         _userService = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new HomeOwnerController(_userService.Object);
+        _roleService = new Mock<IRoleService>(MockBehavior.Strict);
+        _controller = new HomeOwnerController(_userService.Object, _roleService.Object);
     }
 
     [TestMethod]
@@ -42,6 +45,9 @@ public class HomeOwnerControllerTest
             CreatedAt = DateTime.Now,
         };
 
+        var role = new Role { Name = "HOMEOWNER" };
+
+        _roleService.Setup(r => r.GetRole("HOMEOWNER")).Returns(role);
         _userService.Setup(u => u.AddHomeOwner(It.IsAny<CreateHomeOwnerArgs>())).Returns(ho);
 
         var response = _controller.Create(req);
@@ -69,20 +75,20 @@ public class HomeOwnerControllerTest
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeOwner_WhenEmailIsNull_ThrowsArgumentNullException()
     {
-        new CreateHomeOwnerArgs(null, "example@domain.com", ".Qwhnd123", "test123@", "pic");
+        new CreateHomeOwnerArgs(null, "example@domain.com", ".Qwhnd123", "test123@", "pic", RolesGenerator.HomeOwner());
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeOwner_WhenPasswordIsNull_ThrowsArgumentNullException()
     {
-        new CreateHomeOwnerArgs("test", "example@domain.com", null, "test123@", "pic");
+        new CreateHomeOwnerArgs("test", "example@domain.com", null, "test123@", "pic", RolesGenerator.HomeOwner());
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeOwner_WhenLastNameIsNull_ThrowsArgumentNullException()
     {
-        new CreateHomeOwnerArgs("test", "example@domain.com", ".Qwhnd123", null, "pic");
+        new CreateHomeOwnerArgs("test", "example@domain.com", ".Qwhnd123", null, "pic", RolesGenerator.HomeOwner());
     }
 }

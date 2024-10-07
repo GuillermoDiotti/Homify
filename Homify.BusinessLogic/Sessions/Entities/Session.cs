@@ -4,15 +4,16 @@ namespace Homify.BusinessLogic.Sessions.Entities;
 public class Session
 {
     public string Id { get; init; }
-    public Guid AuthToken { get; set; }
-    public User User { get; set; } = new User();
+    public string AuthToken { get; set; } = null!;
+    public User User { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     public Session()
     {
         Id = Guid.NewGuid().ToString();
     }
 
-    public Session(Guid token, User user)
+    public Session(string token, User user)
     {
         Id = Guid.NewGuid().ToString();
         AuthToken = token;

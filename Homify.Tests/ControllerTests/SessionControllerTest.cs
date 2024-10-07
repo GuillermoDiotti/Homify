@@ -100,19 +100,18 @@ public class SessionControllerTest
         var authToken = Guid.NewGuid();
         var authToken2 = Guid.NewGuid();
 
-        var session = new Session(authToken, user);
+        var session = new Session(authToken.ToString(), user);
 
         var sesion2 = new Session
         {
-            AuthToken = authToken2,
+            AuthToken = authToken2.ToString(),
             User = user
         };
 
         _userServiceMock.Setup(us => us.GetAll())
             .Returns([user]);
 
-        _sessionServiceMock.Setup(ss => ss.AddToken(It.IsAny<string>()))
-            .Returns(session);
+        _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>())).Returns(session);
 
         var result = _controller.Create(request);
 
@@ -122,6 +121,6 @@ public class SessionControllerTest
         session.Id.Should().NotBe(null);
         session.User.Should().Be(user);
         sesion2.User.Should().Be(user);
-        sesion2.AuthToken.Should().Be(authToken2);
+        sesion2.AuthToken.Should().Be(authToken2.ToString());
     }
 }

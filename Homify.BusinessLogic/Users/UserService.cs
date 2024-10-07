@@ -1,4 +1,5 @@
-﻿using Homify.BusinessLogic.CompanyOwners;
+﻿using Homify.BusinessLogic.Admins.Entities;
+using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -16,10 +17,10 @@ public class UserService : IUserService
         _repository = repository;
     }
 
-    public User AddUser(CreateUserArgs args)
+    public Admin AddAdmin(CreateUserArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var user = new User
+        var user = new Admin()
         {
             Id = Guid.NewGuid().ToString(),
             Name = args.Name,
@@ -37,7 +38,7 @@ public class UserService : IUserService
     public CompanyOwner AddCompanyOwner(CreateUserArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var companyOwner = new CompanyOwner
+        var companyOwner = new CompanyOwner()
         {
             Id = Guid.NewGuid().ToString(),
             Email = args.Email,
@@ -46,6 +47,7 @@ public class UserService : IUserService
             LastName = args.LastName,
             CreatedAt = DateTime.Now,
             IsIncomplete = true,
+            Role = args.Role,
         };
 
         _repository.Add(companyOwner);
@@ -55,7 +57,7 @@ public class UserService : IUserService
     public HomeOwner AddHomeOwner(CreateHomeOwnerArgs args)
     {
         ValidateEmailIsNotRepeated(args.Email);
-        var homeOwner = new HomeOwner
+        var homeOwner = new HomeOwner()
         {
             Id = Guid.NewGuid().ToString(),
             Email = args.Email,
@@ -64,15 +66,23 @@ public class UserService : IUserService
             LastName = args.LastName,
             CreatedAt = DateTime.Now,
             ProfilePicture = args.ProfilePicUrl,
+            Role = args.Role,
         };
 
         _repository.Add(homeOwner);
         return homeOwner;
     }
 
-    public User GetById(string id)
+    public User? GetById(string id)
     {
-        return _repository.Get(x => x.Id == id);
+        try
+        {
+            return _repository.Get(x => x.Id == id);
+        }
+        catch (NotFoundException)
+        {
+            return null;
+        }
     }
 
     public List<User> GetAll()
@@ -82,7 +92,16 @@ public class UserService : IUserService
 
     public void Delete(string userId)
     {
-        var user = _repository.Get(x => x.Id == userId);
+        User user;
+        try
+        {
+            user = _repository.Get(x => x.Id == userId);
+        }
+        catch (NotFoundException)
+        {
+            user = null;
+        }
+
         if (user != null)
         {
             _repository.Remove(user);
@@ -91,7 +110,16 @@ public class UserService : IUserService
 
     private void ValidateEmailIsNotRepeated(string email)
     {
-        User? userWithRepeatedEmail = _repository.Get(user => user.Email == email);
+        User? userWithRepeatedEmail;
+        try
+        {
+            userWithRepeatedEmail = _repository.Get(user => user.Email == email);
+        }
+        catch (NotFoundException)
+        {
+            userWithRepeatedEmail = null;
+        }
+
         if (userWithRepeatedEmail is not null)
         {
             throw new DuplicatedDataException("A user with this email already exists");

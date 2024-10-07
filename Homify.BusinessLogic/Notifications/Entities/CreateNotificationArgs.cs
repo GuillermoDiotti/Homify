@@ -1,22 +1,25 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.HomeDevices;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 
 public class CreateNotificationArgs
 {
-    public string Event { get; init; }
-    public Device Device { get; init; }
+    public string PersonDetectedId { get; init; }
+    public HomeDevice Device { get; init; }
     public bool IsRead { get; init; }
+    public string? HardwareId { get; init; }
     public DateTimeOffset? Date { get; init; }
 
-    public CreateNotificationArgs(string eventShot, Device device, bool isRead, DateTimeOffset date)
+    public CreateNotificationArgs(string personDetectedId, HomeDevice device, bool isRead, DateTimeOffset date, string hardwareId)
     {
-        if (string.IsNullOrEmpty(eventShot))
+        PersonDetectedId = personDetectedId;
+
+        if (hardwareId == null)
         {
-            throw new ArgumentNullException("Event cannot be null");
+            throw new ArgumentException("HardwareId cannot be null");
         }
 
-        Event = eventShot;
+        HardwareId = hardwareId;
 
         ArgumentNullException.ThrowIfNull(device);
 

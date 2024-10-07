@@ -13,6 +13,8 @@ public class Company
 
     public List<Device> Devices { get; set; } = [];
 
+    public string OwnerId { get; set; } = null!;
+
     public Company()
     {
         Id = Guid.NewGuid().ToString();

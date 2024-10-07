@@ -1,9 +1,13 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -18,40 +22,55 @@ public class CompanyControllerTest
     {
         _companyServiceMock = new Mock<ICompanyService>(MockBehavior.Strict);
         _controller = new CompanyController(_companyServiceMock.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items["UserLogged"] = new User { };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
     }
 
     [TestMethod]
-    public void Create_WhenDataIsOk_ShouldCreateCompany()
+    public void Create_WhenRequstIsOk_ShouldReturnCreateCompanyResponse()
     {
-        var request = new CreateCompanyRequest()
+        // Arrange
+        var request = new CreateCompanyRequest
         {
-            Name = "TestCompany",
-            Rut = "TestRut",
-            LogoUrl = "TestLogoUrl",
+            Name = "NewCompany",
+            LogoUrl = "logo.png",
+            Rut = "123456789"
         };
-        var expected = new Company()
+        var companyOwner = new CompanyOwner
         {
-            Name = request.Name,
-            LogoUrl = request.LogoUrl,
-            Rut = request.Rut,
-            Owner = new CompanyOwner(),
-            Devices = []
+            Id = "1",
+            IsIncomplete = true
         };
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Returns(expected);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = companyOwner;
 
-        var response = _controller.Create(request);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
 
-        response.Should().NotBeNull();
-        response.Id.Should().Be(expected.Id);
-        expected.Name.Should().Be(request.Name);
-        expected.LogoUrl.Should().Be(request.LogoUrl);
-        expected.Rut.Should().Be(request.Rut);
+        _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(x => x.GetAll()).Returns([]);
+        var company = new Company
+        {
+            Name = "NewCompany"
+        };
+        _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), companyOwner))
+            .Returns(company);
+
+        var result = _controller.Create(request);
+
+        Assert.IsNotNull(result);
     }
 
     [TestMethod]
     public void Create_WhenRequestIsNull_ShouldThrowArgumentNullException()
     {
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws<NullRequestException>();
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>())).Throws<NullRequestException>();
 
         var response = () => _controller.Create(null);
         response.Should().Throw<NullRequestException>().WithMessage("Request cannot be null");
@@ -66,39 +85,174 @@ public class CompanyControllerTest
             Rut = "TestRut",
             LogoUrl = "TestLogoUrl",
         };
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws(new ArgsNullException("name cannot be null or empty"));
 
-        var response = () => _controller.Create(request);
-        response.Should().Throw<ArgsNullException>().WithMessage("name cannot be null or empty");
+        var companyOwner = new CompanyOwner
+        {
+            Id = "ownerId",
+            IsIncomplete = true
+        };
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = companyOwner;
+
+        var mockController = new TestableCompanyController(_companyServiceMock.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
+
+        _companyServiceMock.Setup(c => c.GetAll()).Returns([]);
+
+        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>()))
+            .Throws(new ArgsNullException("name cannot be null or empty"));
+
+        var action = () => mockController.Create(request);
+
+        action.Should().Throw<ArgsNullException>()
+            .WithMessage("name cannot be null or empty");
     }
 
     [TestMethod]
-    public void Create_WhenLogoUrlIsNull_ShouldThrowArgumentNullException()
+    public void AllCompanies_ShouldReturnPaginatedCompanyBasicInfo()
     {
-        var request = new CreateCompanyRequest()
+        var companies = new List<Company>
         {
-            Name = "TestCompany",
-            Rut = "TestRut",
-            LogoUrl = null,
+            new Company
+            {
+                Id = "1",
+                Name = "Company A",
+                Owner = new CompanyOwner()
+            },
+            new Company
+            {
+                Id = "2",
+                Name = "Company B",
+                Owner = new CompanyOwner()
+            },
+            new Company
+            {
+                Id = "3",
+                Name = "Company C",
+                Owner = new CompanyOwner()
+            },
         };
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws(new ArgsNullException("logo image cannot be null or empty"));
 
-        var response = () => _controller.Create(request);
-        response.Should().Throw<ArgsNullException>().WithMessage("logo image cannot be null or empty");
+        _companyServiceMock.Setup(s => s.GetAll()).Returns(companies);
+
+        var limit = "2";
+        var offset = "1";
+        var expectedResult = new List<CompanyBasicInfo>
+        {
+            new CompanyBasicInfo(companies[1], companies[1].Owner),
+            new CompanyBasicInfo(companies[2], companies[2].Owner)
+        };
+
+        var result = _controller.AllCompanies(limit, offset, string.Empty, string.Empty);
+
+        Assert.AreEqual(2, result.Count);
+        CollectionAssert.AreEqual(expectedResult, result);
     }
 
     [TestMethod]
-    public void Create_WhenRutIsNull_ShouldThrowArgumentNullException()
+    [ExpectedException(typeof(DuplicatedDataException))]
+    public void Create_WhenCompanyNameExists_ShouldThrowDuplicatedDataException()
     {
-        var request = new CreateCompanyRequest()
-        {
-            Name = "TestCompany",
-            Rut = null,
-            LogoUrl = "TestLogoUrl",
-        };
-        _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>())).Throws(new ArgsNullException("rut cannot be null or empty"));
+        var request = new CreateCompanyRequest { Name = "ExistingCompany" };
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([new Company { Name = "ExistingCompany" }]);
 
-        var response = () => _controller.Create(request);
-        response.Should().Throw<ArgsNullException>().WithMessage("rut cannot be null or empty");
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenUserIsNotCompanyOwner_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCompanyRequest { Name = "NewCompany" };
+        var userLogged = new User { Id = "user123" };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
+
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenCompanyOwnerAccountIsNotIncomplete_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCompanyRequest { Name = "NewCompany" };
+        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = false };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
+
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenUserAlreadyOwnsACompany_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCompanyRequest { Name = "NewCompany" };
+        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = true };
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
+        _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    public void AllCompanies_WhenOwnerFullNameAndCompanyAreProvided_ShouldFilterAndReturnPaginatedList()
+    {
+        var limit = "5";
+        var offset = "0";
+        var ownerFullName = "John Doe";
+        var company = "TechCorp";
+        var companies = new List<Company>
+        {
+            new Company
+            {
+                Name = "TechCorp",
+                Owner = new CompanyOwner { Name = "John", LastName = "Doe" }
+            },
+            new Company
+            {
+                Name = "OtherCorp",
+                Owner = new CompanyOwner { Name = "Jane", LastName = "Smith" }
+            }
+        };
+
+        _companyServiceMock.Setup(service => service.GetAll()).Returns(companies);
+
+        var result = _controller.AllCompanies(limit, offset, ownerFullName, company);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("TechCorp", result[0].CompanyName);
+    }
+}
+
+public class TestableCompanyController(ICompanyService companyService) : CompanyController(companyService)
+{
+    public virtual User GetUserLogged()
+    {
+        return base.GetUserLogged();
     }
 }

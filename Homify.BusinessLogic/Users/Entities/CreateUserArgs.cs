@@ -12,7 +12,7 @@ public class CreateUserArgs
     public readonly string LastName;
     public readonly Role Role;
 
-    public CreateUserArgs(string name, string email, string password, string lastName, Role role)
+    public CreateUserArgs(string name, string email, string password, string lastName, Role? role)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
