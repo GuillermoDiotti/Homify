@@ -78,10 +78,10 @@ public class AuthenticationFilterAttributeTest
     [TestMethod]
     public void Authenticate_WhenTokenIsNotAssignedToAUser_ShouldThrow401()
     {
-        var AUTHORIZATION_HEADER = "Authorization";
+        var authorizationHeader = "Authorization";
         var validToken = Guid.NewGuid().ToString();
 
-        _httpContextMock.Setup(h => h.Request.Headers[AUTHORIZATION_HEADER]).Returns(validToken);
+        _httpContextMock.Setup(h => h.Request.Headers[authorizationHeader]).Returns(validToken);
         _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns((User?)null);
         _httpContextMock.Setup(h => h.RequestServices.GetService(It.IsAny<Type>()))
             .Returns(_sessionServiceMock.Object);

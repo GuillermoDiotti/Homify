@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace Homify.DataAccess.Migrations;
+
+[ExcludeFromCodeCoverage]
 
 /// <inheritdoc />
 public partial class NotificationDetail : Migration

@@ -60,8 +60,7 @@ public class CompanyController : HomifyControllerBase
         var args = new CreateCompanyArgs(
             request.Name ?? string.Empty,
             request.LogoUrl ?? string.Empty,
-            request.Rut ?? string.Empty
-        );
+            request.Rut ?? string.Empty);
 
         var company = _companyService.Add(args, companyOwner);
 
