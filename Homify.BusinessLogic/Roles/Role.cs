@@ -12,14 +12,10 @@ public class Role
     {
         Name = name;
         Permissions = permissions;
-
-        // Id = Guid.NewGuid().ToString();
     }
 
     public Role()
     {
         Permissions = [];
-
-        // Id = Guid.NewGuid().ToString();
     }
 }
