@@ -117,6 +117,3 @@ Backup*/
 UpgradeLog*.XML
 .vs
 .idea/
-
-[**/Migrations/*.cs]
-generated_code = true
