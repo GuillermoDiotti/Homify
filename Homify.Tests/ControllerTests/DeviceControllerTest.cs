@@ -49,7 +49,7 @@ public class DeviceControllerTest
             Name = "Test",
             Description = "Test",
             Model = "Test",
-            Photos = new List<string> { "1", "2", "3" },
+            Photos = ["1", "2", "3"],
             IsExterior = false,
             IsInterior = true,
             PpalPicture = "Test"
@@ -90,7 +90,7 @@ public class DeviceControllerTest
             Name = "TestSensor",
             Description = "TestDescription",
             Model = "TestModel",
-            Photos = new List<string> { "1", "2", "3" },
+            Photos = ["1", "2", "3"],
             PpalPicture = "TestPicture"
         };
         var user = new User { Id = "testUserId" };
@@ -217,10 +217,7 @@ public class DeviceControllerTest
             Home = new Home
             {
                 OwnerId = user.Id,
-                Members = new List<HomeUser>
-                {
-                    new HomeUser { UserId = user.Id }
-                }
+                Members = [new HomeUser { UserId = user.Id }]
             }
         };
 

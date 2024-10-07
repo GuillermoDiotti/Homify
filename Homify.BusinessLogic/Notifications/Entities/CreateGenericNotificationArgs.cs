@@ -1,5 +1,4 @@
-﻿using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeDevices;
+﻿using Homify.BusinessLogic.HomeDevices;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 

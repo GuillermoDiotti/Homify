@@ -100,7 +100,7 @@ public sealed class AdminController : HomifyControllerBase
 
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
 
-        List<UserBasicInfo> result = new List<UserBasicInfo>();
+        List<UserBasicInfo> result = [];
         foreach (User u in paginatedList)
         {
             result.Add(new UserBasicInfo(u));

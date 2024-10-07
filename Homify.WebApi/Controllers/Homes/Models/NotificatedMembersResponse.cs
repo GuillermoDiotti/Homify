@@ -4,7 +4,7 @@ namespace Homify.WebApi.Controllers.Homes.Models;
 
 public class NotificatedMembersResponse
 {
-    public List<string> MembersToNotify { get; set; } = new List<string>();
+    public List<string> MembersToNotify { get; set; } = [];
 
     public NotificatedMembersResponse(List<HomeUser> users)
     {

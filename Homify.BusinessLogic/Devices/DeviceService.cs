@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 
@@ -47,7 +46,7 @@ public class DeviceService : IDeviceService
 
     public Sensor AddSensor(CreateDeviceArgs device, CompanyOwner user)
     {
-        CompanyOwner owner = (CompanyOwner)user;
+        var owner = (CompanyOwner)user;
         HasCompany(owner);
         var sensor = new Sensor
         {

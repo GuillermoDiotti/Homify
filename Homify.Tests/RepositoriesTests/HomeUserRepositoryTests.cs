@@ -24,7 +24,7 @@ public class HomeUserRepositoryTests
                 User = new User { Id = "1", Name = "User1", Role = new Role { Name = "Admin" } },
                 Home = new Home { Id = "1", Street = "Street1", Number = "123" },
                 IsNotificable = true,
-                Permissions = new List<HomePermission>()
+                Permissions = []
             }
         }.AsQueryable();
 
@@ -78,7 +78,7 @@ public class HomeUserRepositoryTests
                 User = new User { Id = "1", Name = "User1", Role = new Role { Name = "Admin" } },
                 Home = new Home { Id = "1", Street = "Street1", Number = "123" },
                 IsNotificable = true,
-                Permissions = new List<HomePermission>()
+                Permissions = []
             },
             new HomeUser
             {
@@ -86,7 +86,7 @@ public class HomeUserRepositoryTests
                 User = new User { Id = "2", Name = "User2", Role = new Role { Name = "User" } },
                 Home = new Home { Id = "2", Street = "Street2", Number = "456" },
                 IsNotificable = false,
-                Permissions = new List<HomePermission>()
+                Permissions = []
             }
         }.AsQueryable();
 

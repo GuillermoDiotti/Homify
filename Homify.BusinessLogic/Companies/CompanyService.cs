@@ -2,7 +2,6 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
-using Homify.Utility;
 
 namespace Homify.BusinessLogic.Companies;
 
@@ -17,7 +16,7 @@ public class CompanyService : ICompanyService
 
     public Company Add(CreateCompanyArgs args, User user)
     {
-        CompanyOwner owner = (CompanyOwner)user;
+        var owner = (CompanyOwner)user;
         owner.IsIncomplete = false;
         var company = new Company
         {

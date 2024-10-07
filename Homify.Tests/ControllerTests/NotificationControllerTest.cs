@@ -72,7 +72,7 @@ public class NotificationControllerTest
             .Returns(homeDevice);
 
         _notificationService.Setup(s => s.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>()))
-            .Returns(new List<Notification> { notification });
+            .Returns([notification]);
 
         var result = _controller.PersonDetectedNotification(request);
 
@@ -262,7 +262,7 @@ public class NotificationControllerTest
             .Returns(homeDevice);
 
         _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()))
-            .Returns(new List<Notification> { notification });
+            .Returns([notification]);
 
         var result = _controller.WindowMovementNotification(request);
 
@@ -373,7 +373,7 @@ public class NotificationControllerTest
             .Returns(homeDevice);
 
         _notificationService.Setup(s => s.AddMovementNotification(It.IsAny<CreateGenericNotificationArgs>()))
-            .Returns(new List<Notification> { notification });
+            .Returns([notification]);
 
         var result = _controller.MovementNotification(request);
 

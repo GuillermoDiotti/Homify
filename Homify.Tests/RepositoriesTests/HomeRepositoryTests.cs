@@ -28,17 +28,18 @@ public class HomeRepositoryTests
                 Longitude = "90.0",
                 MaxMembers = 5,
                 Owner = new HomeOwner { Id = "1", Name = "Owner1" },
-                Devices = new List<HomeDevice>(),
-                Members = new List<HomeUser>
-                {
+                Devices = [],
+                Members =
+                [
                     new HomeUser
                     {
                         Id = "1",
                         User = new User { Id = "1", Name = "User1" },
                         IsNotificable = true,
-                        Permissions = new List<HomePermission>()
+                        Permissions = []
                     }
-                }
+
+                ]
             }
         }.AsQueryable();
 
@@ -99,17 +100,18 @@ public class HomeRepositoryTests
                 Longitude = "90.0",
                 MaxMembers = 5,
                 Owner = new HomeOwner { Id = "1", Name = "Owner1" },
-                Devices = new List<HomeDevice>(),
-                Members = new List<HomeUser>
-                {
+                Devices = [],
+                Members =
+                [
                     new HomeUser
                     {
                         Id = "1",
                         User = new User { Id = "1", Name = "User1" },
                         IsNotificable = true,
-                        Permissions = new List<HomePermission>()
+                        Permissions = []
                     }
-                }
+
+                ]
             },
             new Home
             {
@@ -120,17 +122,18 @@ public class HomeRepositoryTests
                 Longitude = "91.0",
                 MaxMembers = 6,
                 Owner = new HomeOwner { Id = "2", Name = "Owner2" },
-                Devices = new List<HomeDevice>(),
-                Members = new List<HomeUser>
-                {
+                Devices = [],
+                Members =
+                [
                     new HomeUser
                     {
                         Id = "2",
                         User = new User { Id = "2", Name = "User2" },
                         IsNotificable = true,
-                        Permissions = new List<HomePermission>()
+                        Permissions = []
                     }
-                }
+
+                ]
             }
         }.AsQueryable();
 

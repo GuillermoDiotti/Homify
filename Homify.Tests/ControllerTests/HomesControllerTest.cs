@@ -607,7 +607,7 @@ public class HomesControllerTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>(),
+            Members = [],
             MaxMembers = 5
         };
         var userFound = new User
@@ -623,17 +623,17 @@ public class HomesControllerTest
             User = userFound,
             HomeId = homeId,
             UserId = userFound.Id,
-            Permissions = new List<HomePermission>()
+            Permissions = []
         };
         var updatedHome = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { homeUser },
+            Members = [homeUser],
             MaxMembers = 5
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
+        _userServiceMock.Setup(service => service.GetAll()).Returns([userFound]);
         _homeServiceMock.Setup(service => service.UpdateMemberList(homeId, It.Is<HomeUser>(hu => hu.UserId == homeUser.UserId))).Returns(updatedHome);
 
         var result = _controller.UpdateMembersList(homeId, request);
@@ -672,7 +672,7 @@ public class HomesControllerTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { new HomeUser(), new HomeUser(), new HomeUser() },
+            Members = [new HomeUser(), new HomeUser(), new HomeUser()],
             MaxMembers = 3
         };
 
@@ -690,12 +690,12 @@ public class HomesControllerTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>(),
+            Members = [],
             MaxMembers = 5
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User>());
+        _userServiceMock.Setup(service => service.GetAll()).Returns([]);
 
         _controller.UpdateMembersList(homeId, request);
     }
@@ -709,7 +709,7 @@ public class HomesControllerTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { new HomeUser { UserId = "user123" } },
+            Members = [new HomeUser { UserId = "user123" }],
             MaxMembers = 5
         };
         var userFound = new User
@@ -720,7 +720,7 @@ public class HomesControllerTest
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
+        _userServiceMock.Setup(service => service.GetAll()).Returns([userFound]);
 
         _controller.UpdateMembersList(homeId, request);
     }
@@ -744,7 +744,7 @@ public class HomesControllerTest
         {
             Home = home,
             UserId = memberId,
-            Permissions = new List<HomePermission>()
+            Permissions = []
         };
         var user = new User
         {
@@ -803,7 +803,7 @@ public class HomesControllerTest
         var memberId = "member123";
         var request = new EditMemberPermissionsRequest { CanAddDevices = true, CanListDevices = true };
         var home = new Home { Id = homeId, OwnerId = "owner123" };
-        var found = new HomeUser { Home = home, UserId = memberId, Permissions = new List<HomePermission>() };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = [] };
         var user = new User { Id = "notOwner123" };
 
         _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);

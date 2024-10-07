@@ -14,8 +14,8 @@ namespace Homify.Tests.FilterTests;
 [TestClass]
 public class ExceptionFilterTest
 {
-    private ExceptionContext _context;
-    private ExceptionFilter _attribute;
+    private readonly ExceptionContext _context;
+    private readonly ExceptionFilter _attribute;
 
     public ExceptionFilterTest()
     {
@@ -38,7 +38,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
         if (concreteResponse.Value != null)
@@ -58,7 +58,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         if (concreteResponse.Value != null)
@@ -78,7 +78,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         if (concreteResponse.Value != null)
@@ -98,7 +98,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
         if (concreteResponse.Value != null)
@@ -118,7 +118,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         if (concreteResponse.Value != null)
@@ -138,7 +138,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.Conflict);
         if (concreteResponse.Value != null)
@@ -158,7 +158,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         if (concreteResponse.Value != null)
@@ -178,7 +178,7 @@ public class ExceptionFilterTest
         IActionResult? response = _context.Result;
 
         response.Should().NotBeNull();
-        ObjectResult? concreteResponse = response as ObjectResult;
+        var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
         concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         if (concreteResponse.Value != null)

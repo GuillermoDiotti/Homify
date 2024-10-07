@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.Devices;
 

@@ -197,8 +197,7 @@ public sealed class HomifyDbContext : DbContext
             {
                 Id = "19",
                 Value = PermissionsGenerator.CreateNotification
-            }
-        );
+            });
 
         modelBuilder.Entity<HomePermission>().HasData(
             new HomePermission
@@ -210,8 +209,7 @@ public sealed class HomifyDbContext : DbContext
             {
                 Id = "3",
                 Value = "ListDevices"
-            }
-        );
+            });
 
         modelBuilder.Entity<Role>().HasData(
             new Role
@@ -228,8 +226,8 @@ public sealed class HomifyDbContext : DbContext
             {
                 Id = Constants.HOMEOWNERID,
                 Name = Constants.HOMEOWNER
-            }
-        );
+            });
+
         modelBuilder.Entity<RoleSystemPermission>()
             .HasKey(rp => new { rp.RoleSystemPermissionId });
 
@@ -356,8 +354,7 @@ public sealed class HomifyDbContext : DbContext
                 {
                     RoleId = Constants.HOMEOWNERID,
                     PermissionId = "19"
-                }
-            );
+                });
 
         User admin = new Admin()
         {
@@ -413,8 +410,7 @@ public sealed class HomifyDbContext : DbContext
                 Id = "SeedCompanyOwnerSessionId",
                 AuthToken = "SomeCompanyOwnerToken123",
                 UserId = "SeedCompanyOwnerId"
-            }
-        );
+            });
 
         base.OnModelCreating(modelBuilder);
     }

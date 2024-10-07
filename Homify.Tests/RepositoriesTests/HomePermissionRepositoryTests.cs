@@ -20,16 +20,17 @@ public class HomePermissionRepositoryTests
             new HomePermission
             {
                 Id = "1",
-                HomeUsers = new List<HomeUser>
-                {
+                HomeUsers =
+                [
                     new HomeUser
                     {
                         Id = "1",
                         User = new User { Id = "1", Name = "User1" },
                         IsNotificable = true,
-                        Permissions = new List<HomePermission>()
+                        Permissions = []
                     }
-                }
+
+                ]
             }
         }.AsQueryable();
 
@@ -77,30 +78,32 @@ public class HomePermissionRepositoryTests
             new HomePermission
             {
                 Id = "1",
-                HomeUsers = new List<HomeUser>
-                {
+                HomeUsers =
+                [
                     new HomeUser
                     {
                         Id = "1",
                         User = new User { Id = "1", Name = "User1" },
                         IsNotificable = true,
-                        Permissions = new List<HomePermission>()
+                        Permissions = []
                     }
-                }
+
+                ]
             },
             new HomePermission
             {
                 Id = "2",
-                HomeUsers = new List<HomeUser>
-                {
+                HomeUsers =
+                [
                     new HomeUser
                     {
                         Id = "2",
                         User = new User { Id = "2", Name = "User2" },
                         IsNotificable = true,
-                        Permissions = new List<HomePermission>()
+                        Permissions = []
                     }
-                }
+
+                ]
             }
         }.AsQueryable();
 

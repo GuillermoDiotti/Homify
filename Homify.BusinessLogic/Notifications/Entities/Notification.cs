@@ -1,5 +1,4 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeUsers;
 
 namespace Homify.BusinessLogic.Notifications.Entities;

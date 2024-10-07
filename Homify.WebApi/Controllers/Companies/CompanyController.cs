@@ -1,8 +1,5 @@
-﻿using System.Net;
-using Homify.BusinessLogic.Companies;
+﻿using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
-using Homify.BusinessLogic.Users;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -90,7 +87,7 @@ public class CompanyController : HomifyControllerBase
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
-        List<Company> list = _companyService.GetAll();
+        var list = _companyService.GetAll();
 
         if (!string.IsNullOrEmpty(ownerFullName))
         {
@@ -105,7 +102,7 @@ public class CompanyController : HomifyControllerBase
 
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
 
-        List<CompanyBasicInfo> result = new List<CompanyBasicInfo>();
+        List<CompanyBasicInfo> result = [];
         foreach (Company c in paginatedList)
         {
             result.Add(new CompanyBasicInfo(c, c.Owner));

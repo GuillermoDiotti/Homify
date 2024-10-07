@@ -1,6 +1,4 @@
-﻿using Homify.BusinessLogic.Devices;
-
-namespace Homify.WebApi.Controllers.Devices.Models;
+﻿namespace Homify.WebApi.Controllers.Devices.Models;
 
 public class SearchSupportedDevicesResponse
 {

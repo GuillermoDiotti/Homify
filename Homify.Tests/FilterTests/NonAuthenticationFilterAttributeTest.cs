@@ -14,9 +14,9 @@ public class NonAuthenticationFilterAttributeTest
     [TestClass]
     public class NonAuthenticationFilterTests
     {
-        private Mock<ISessionService> _sessionServiceMock;
-        private NonAuthenticationFilter _filter;
-        private ActionExecutingContext _actionExecutingContext;
+        private readonly Mock<ISessionService> _sessionServiceMock;
+        private readonly NonAuthenticationFilter _filter;
+        private readonly ActionExecutingContext _actionExecutingContext;
 
         public NonAuthenticationFilterTests()
         {
@@ -39,8 +39,7 @@ public class NonAuthenticationFilterAttributeTest
                 actionContext,
                 new List<IFilterMetadata>(),
                 new Dictionary<string, object>(),
-                controller: null
-            );
+                controller: null);
         }
 
         [TestMethod]

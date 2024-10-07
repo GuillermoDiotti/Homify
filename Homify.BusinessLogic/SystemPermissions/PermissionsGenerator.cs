@@ -37,32 +37,32 @@ public static class PermissionsGenerator
 
     public static List<SystemPermission> GetAdminPermissions()
     {
-        List<SystemPermission> permissions = new()
-        {
+        List<SystemPermission> permissions =
+        [
             new(CreateAdmin),
             new(DeleteAdmin),
             new(GetAllAccounts),
             new(CreateCompanyOwner),
-            new(GetCompanies),
-        };
+            new(GetCompanies)
+        ];
         return permissions;
     }
 
     public static List<SystemPermission> GetCompanyOwnerPermissions()
     {
-        List<SystemPermission> permissions = new()
-        {
+        List<SystemPermission> permissions =
+        [
             new(CreateCompany),
             new(RegisterCamera),
-            new(RegisterSensor),
-        };
+            new(RegisterSensor)
+        ];
         return permissions;
     }
 
     public static List<SystemPermission> GetHomeOwnerPermissions()
     {
-        List<SystemPermission> permissions = new()
-        {
+        List<SystemPermission> permissions =
+        [
             new(CreateHome),
             new(UpdateHomeMembersList),
             new(UpdateHomeDevices),
@@ -70,8 +70,8 @@ public static class PermissionsGenerator
             new(GetHomeDevices),
             new(UpdateHomeNotificatedMembers),
             new(GetUserNotifications),
-            new(UpdateUserNotification),
-        };
+            new(UpdateUserNotification)
+        ];
         return permissions;
     }
 }

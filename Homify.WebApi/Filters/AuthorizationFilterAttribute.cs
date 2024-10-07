@@ -19,7 +19,7 @@ public sealed class AuthorizationFilter : AuthenticationFilterAttribute
     {
         base.OnAuthorization(context);
 
-        User userLogged = (User)context.HttpContext.Items[Items.UserLogged];
+        var userLogged = (User)context.HttpContext.Items[Items.UserLogged];
 
         if (userLogged != null && !HasPermission(userLogged, Code))
         {

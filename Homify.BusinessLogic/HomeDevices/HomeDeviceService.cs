@@ -1,5 +1,4 @@
 using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;

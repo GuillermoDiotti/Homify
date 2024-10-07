@@ -1,11 +1,8 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
-using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -57,7 +54,7 @@ public class CompanyControllerTest
         };
 
         _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
-        _companyServiceMock.Setup(x => x.GetAll()).Returns(new List<Company>() { });
+        _companyServiceMock.Setup(x => x.GetAll()).Returns([]);
         var company = new Company
         {
             Name = "NewCompany"
@@ -65,10 +62,8 @@ public class CompanyControllerTest
         _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), companyOwner))
             .Returns(company);
 
-        // Act
-        var result = _controller.Create(request); // Llama al método del controlador en lugar de la clase de servicio
+        var result = _controller.Create(request);
 
-        // Assert
         Assert.IsNotNull(result);
     }
 
@@ -110,8 +105,7 @@ public class CompanyControllerTest
 
         _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
 
-        // Setup the GetAll method to return an empty list
-        _companyServiceMock.Setup(c => c.GetAll()).Returns(new List<Company>());
+        _companyServiceMock.Setup(c => c.GetAll()).Returns([]);
 
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>()))
             .Throws(new ArgsNullException("name cannot be null or empty"));
@@ -168,7 +162,7 @@ public class CompanyControllerTest
     public void Create_WhenCompanyNameExists_ShouldThrowDuplicatedDataException()
     {
         var request = new CreateCompanyRequest { Name = "ExistingCompany" };
-        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company> { new Company { Name = "ExistingCompany" } });
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([new Company { Name = "ExistingCompany" }]);
 
         _controller.Create(request);
     }
@@ -185,7 +179,7 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company>());
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
 
         _controller.Create(request);
     }
@@ -202,7 +196,7 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company>());
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
 
         _controller.Create(request);
     }
@@ -219,7 +213,7 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
         _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
-        _companyServiceMock.Setup(service => service.GetAll()).Returns(new List<Company>());
+        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
 
         _controller.Create(request);
     }

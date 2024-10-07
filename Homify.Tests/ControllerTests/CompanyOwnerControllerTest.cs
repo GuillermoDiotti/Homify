@@ -44,10 +44,7 @@ public class CompanyOwnerControllerTest
         var expectedRole = new Role
         {
             Name = "COMPANYOWNER",
-            Permissions = new List<SystemPermission>
-            {
-                new SystemPermission() { Value = "companies-Create" }
-            }
+            Permissions = [new SystemPermission() { Value = "companies-Create" }]
         };
 
         var expectedOwner = new CompanyOwner()

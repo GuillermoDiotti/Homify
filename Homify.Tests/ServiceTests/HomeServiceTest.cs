@@ -6,7 +6,6 @@ using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -235,16 +234,13 @@ public class HomeServiceTest
         var homeUser = new HomeUser
         {
             User = user,
-            Permissions = new List<HomePermission>
-            {
-                new HomePermission { Value = PermissionsGenerator.MemberCanListDevices }
-            }
+            Permissions = [new HomePermission { Value = PermissionsGenerator.MemberCanListDevices }]
         };
 
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { homeUser }
+            Members = [homeUser]
         };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
@@ -318,7 +314,7 @@ public class HomeServiceTest
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>() // No members
+            Members = []
         };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
@@ -337,13 +333,13 @@ public class HomeServiceTest
         var homeUser = new HomeUser
         {
             User = user,
-            Permissions = new List<HomePermission>() // No permissions
+            Permissions = []
         };
 
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { homeUser }
+            Members = [homeUser]
         };
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
@@ -370,7 +366,7 @@ public class HomeServiceTest
         var deviceid = "device123";
         var homeid = "home123";
         var user = new User { Id = "user123" };
-        var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser>() };
+        var home = new Home { Id = homeid, OwnerId = "owner123", Members = [] };
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
@@ -384,8 +380,8 @@ public class HomeServiceTest
         var deviceid = "device123";
         var homeid = "home123";
         var user = new User { Id = "user123" };
-        var homeUser = new HomeUser { UserId = user.Id, Permissions = new List<HomePermission>() };
-        var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser> { homeUser } };
+        var homeUser = new HomeUser { UserId = user.Id, Permissions = [] };
+        var home = new Home { Id = homeid, OwnerId = "owner123", Members = [homeUser] };
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
@@ -399,8 +395,12 @@ public class HomeServiceTest
         var deviceid = "device123";
         var homeid = "home123";
         var user = new User { Id = "user123" };
-        var homeUser = new HomeUser { UserId = user.Id, Permissions = new List<HomePermission> { new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice } } };
-        var home = new Home { Id = homeid, OwnerId = "owner123", Members = new List<HomeUser> { homeUser } };
+        var homeUser = new HomeUser
+        {
+            UserId = user.Id, Permissions =
+            [new HomePermission() { Value = PermissionsGenerator.MemberCanAddDevice }]
+        };
+        var home = new Home { Id = homeid, OwnerId = "owner123", Members = [homeUser] };
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
         _deviceService.Setup(service => service.GetById(deviceid)).Returns((Device)null);

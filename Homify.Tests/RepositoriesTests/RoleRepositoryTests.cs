@@ -20,11 +20,11 @@ public class RoleRepositoryTests
             {
                 Id = "1",
                 Name = "Admin",
-                Permissions = new List<SystemPermission>
-                {
+                Permissions =
+                [
                     new SystemPermission { Id = "1" },
                     new SystemPermission { Id = "2" }
-                }
+                ]
             }
         }.AsQueryable();
 
@@ -73,20 +73,17 @@ public class RoleRepositoryTests
             {
                 Id = "1",
                 Name = "Admin",
-                Permissions = new List<SystemPermission>
-                {
+                Permissions =
+                [
                     new SystemPermission { Id = "1" },
                     new SystemPermission { Id = "2" }
-                }
+                ]
             },
             new Role
             {
                 Id = "2",
                 Name = "User",
-                Permissions = new List<SystemPermission>
-                {
-                    new SystemPermission { Id = "3" }
-                }
+                Permissions = [new SystemPermission { Id = "3" }]
             }
         }.AsQueryable();
 

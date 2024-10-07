@@ -25,10 +25,7 @@ public class CompanyOwnerRepositoryTests
                 {
                     Id = "1",
                     Name = "Company1",
-                    Devices = new List<Device>
-                    {
-                        new Device { Id = "1", Name = "Device1" }
-                    }
+                    Devices = [new Device { Id = "1", Name = "Device1" }]
                 }
             }
         }.AsQueryable();
