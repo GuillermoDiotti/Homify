@@ -1,0 +1,3287 @@
+{
+	"info": {
+		"_postman_id": "64354d0f-9018-430b-b306-a150b69021f3",
+		"name": "Homify",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38770854"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Ok Post Admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email Repetido",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Juan\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Lopez\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Not Email Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Name Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Password Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No LastName Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Password!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email incorrecto Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mailgmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contraseña sin caracter especial",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Password\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contraseña muy corta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Pas\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Null Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ok Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins/{adminId}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins",
+										"{adminId}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete not found",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins/id_invalida",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins",
+										"id_invalida"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar cuenta NO ADMIN",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5003/admins/SeedCompanyOwnerId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins",
+										"SeedCompanyOwnerId"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Cuentas",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5003/admins/accounts?role=administrator&fullName=CompanyOwner%20Lastname&limit=10&offset=0",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins",
+										"accounts"
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "administrator"
+										},
+										{
+											"key": "fullName",
+											"value": "CompanyOwner%20Lastname"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeHomeOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Nico\",\r\n    \"Email\" : \"mail@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Toscano\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/admins",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"admins"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CompanyOwner",
+					"item": [
+						{
+							"name": "Ok Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email Repetido Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Name Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Email Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Password Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No LastName Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Password!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Null Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email Incorrecto Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionelgmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contraseña sin caracter especial Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Password\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contraseña muy corta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Pass\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Authorization Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "invalid_token",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel2@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeHomeOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Lionel\",\r\n    \"Email\" : \"lionel@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Messi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/company-owners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"company-owners"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "HomeOwner",
+					"item": [
+						{
+							"name": "Ok Post",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email Repetido Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Name Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Email Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Password Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No LastName Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Null Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email Incorrecto Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luisgmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contraseña sin caracter especial Request Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contraseña muy corta Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Pass\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Profile Picture Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeAdminToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Luis\",\r\n    \"Email\" : \"luis@gmail.com\",\r\n    \"Password\" : \"Password!\",\r\n    \"LastName\" : \"Suarez\",\r\n    \"ProfilePicUrl\" : \"./hola.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/homeowners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"homeowners"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Ok Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"Empresa1\",\r\n    \"LogoUrl\" : \"./logo.jpg\",\r\n    \"Rut\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empresa Repetida Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"Empresa1\",\r\n    \"LogoUrl\" : \"./logo.jpg\",\r\n    \"Rut\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Null Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No Name Requst",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"LogoUrl\" : \"./logo.jpg\",\r\n    \"Rut\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No Logo Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"Empresa1\",\r\n    \"Rut\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No Rut Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"Empresa1\",\r\n    \"LogoUrl\" : \"./logo.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No Company Owner Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"Empresa2\",\r\n    \"LogoUrl\" : \"./logo.jpg\",\r\n    \"Rut\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User With Company Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeCompanyOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\" : \"Empresa4\",\r\n    \"LogoUrl\" : \"./logo.jpg\",\r\n    \"Rut\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Empresas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeAdminToken123",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/companies?company=Empresa1&owner=CompanyOwner%20Lastname&limit=10&offset=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"companies"
+							],
+							"query": [
+								{
+									"key": "company",
+									"value": "Empresa1"
+								},
+								{
+									"key": "owner",
+									"value": "CompanyOwner%20Lastname"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "Cameras",
+					"item": [
+						{
+							"name": "Ok Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"IsExterior\" : true,\r\n    \"IsInterior\" : false,\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/cameras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"cameras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Name Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Model\" : \"1234\",\r\n    \"IsExterior\" : true,\r\n    \"IsInterior\" : false,\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/cameras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"cameras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Model Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"IsExterior\" : true,\r\n    \"IsInterior\" : false,\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/cameras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"cameras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Description Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"IsExterior\" : true,\r\n    \"IsInterior\" : false,\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/cameras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"cameras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User With No Company Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"IsExterior\" : true,\r\n    \"IsInterior\" : false,\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/cameras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"cameras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Authorization Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeHomeOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"IsExterior\" : true,\r\n    \"IsInterior\" : false,\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/cameras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"cameras"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sensor",
+					"item": [
+						{
+							"name": "Ok Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Sensor\",\r\n    \"Model\" : \"1234\",\r\n    \"Description\" : \"sensor de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/sensors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Name Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Model\" : \"1234\",\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/sensors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Model Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/sensors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Description Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SomeCompanyOwnerToken123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/sensors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User With No Company Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "user_without_company_id",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/sensors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No Authorization Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Camara\",\r\n    \"Model\" : \"1234\",\r\n    \"Description\" : \"camara de afuera\",\r\n    \"Photos\": [\"foto1\", \"foto2\"],\r\n    \"PpalPicture\" : \"foto1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5003/devices/sensors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"devices",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dispositivos soportados",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeAdminToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/devices/supported",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"devices",
+								"supported"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Todos los dispositivos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeAdminToken123",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/devices?deviceName=sensor&model=1234&company=company&type=type&limit=10&offset=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"devices"
+							],
+							"query": [
+								{
+									"key": "deviceName",
+									"value": "sensor"
+								},
+								{
+									"key": "model",
+									"value": "1234"
+								},
+								{
+									"key": "company",
+									"value": "company"
+								},
+								{
+									"key": "type",
+									"value": "type"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Session",
+			"item": [
+				{
+					"name": "OkRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"lionel@gmail.com\",\r\n    \"Password\": \"Password!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No Email Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Password\": \"Password!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No Password Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"lionel@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Email Incorrecto Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"lionelgmail.com\",\r\n    \"Password\": \"Password!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contraseña sin caracter especial Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"lionel@gmail.com\",\r\n    \"Password\": \"Password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contraseña muy corta Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"lionel@gmail.com\",\r\n    \"Password\": \"Pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuario no encontrado Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"ney@gmail.com\",\r\n    \"Password\": \"Password!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contraseña Incorrecta Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"lionel@gmail.com\",\r\n    \"Password\": \"Passwoooord!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Homes",
+			"item": [
+				{
+					"name": "Ok Post -",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Street\": \"Calle 2\",\r\n    \"Number\" : \"20\",\r\n    \"Latitude\" : \"23523\",\r\n    \"Longitud\" : \"15124\",\r\n    \"MaxMembers\": 1 \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar Miembros",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"luis@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User ya en la casa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"luis@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeId}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeId}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar sin ser dueño de la casa -",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token_de_suarez",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"papelito@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeId}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeId}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar miembro superado max permitidos",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"papelito@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignar miembro que no es home owner",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"lionel@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Casa no encontrada",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\" : \"papelito@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{home incorrecta id}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{home incorrecta id}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignar permisos a miembro",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CanAddDevices\" : true,\r\n    \"CanListDevices\" : true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeId}/{homeMemberId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeId}",
+								"{homeMemberId}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asigna permiso sin ser dueño -",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{tokenLuis}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CanAddDevices\" : true,\r\n    \"CanListDevices\" : true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/{id otro home owner}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"{id otro home owner}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Miembro notificable Ok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"HomeUserId\" : \"8bf965cd-0b77-4e33-aab8-df9776a30c05\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeId}/notifications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeId}",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Miembro notificable no perteneciente a la casa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"HomeUserId\" : \"home user id no perteneciente a la casa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/notifications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Miembro trata de hacer notificable a otro",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "otro_token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"HomeUserId\" : \"home user id no perteneciente a la casa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/notifications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar devices a casa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DeviceId\" : \"DeviceId\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Miembro autorizado agrega devices a casa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "78d3dc75-0ac8-4285-aad4-259f96f32ce4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DeviceId\" : \"DeviceId\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar device Miembro sin permiso",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token miembro sin permiso",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DeviceId\" : \"DeviceId\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeId}/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeId}",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "usuario no perteneciente intenta agregar device",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "user home user no perteneciente",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DeviceId\" : \"DeviceId\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeId}/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeId}",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Home devices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "home member token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver miembros de hogar sin ser owner",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "home member",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Home members Ok",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "SomeHomeOwnerToken123",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/homes/{homeid}/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"homes",
+								"{homeid}",
+								"members"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Encender dispositivo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "9892552e-97ec-4d48-a704-d08b4486df07",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/devices/{hardwareId}/activate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"devices",
+								"{hardwareId}",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movimiento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"Movimiento en pasillo\",\r\n    \"deviceId\": \"device_id\",\r\n    \"hardwareId\": \"hardware_Id\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/notifications/movement-detected",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications",
+								"movement-detected"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ventanas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"La ventana se ha cerrado\",\r\n    \"deviceId\": \"aad801c6-e715-4965-9f12-dbba4a6648a7\",\r\n    \"hardwareId\": \"f6bd9a34-ae2a-4c7c-8a9a-cde6afb4ffe2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/notifications/window-movement",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications",
+								"window-movement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Personas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"personDetectedId\": \"user_id\",\r\n    \"deviceId\": \"devid\",\r\n    \"hardwareId\": \"hardid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/notifications/person-detected",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications",
+								"person-detected"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Personas no existente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"personDetectedId\": null,\r\n    \"deviceId\": \"311c22b9-4e51-4c1e-bfc1-8fd0183ee2a3\",\r\n    \"hardwareId\": \"e54092e4-226a-4383-9b72-633d4d721dbb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5003/notifications/person-detected",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications",
+								"person-detected"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver notificaciones de un usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token_usuario_con_notis",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/notifications?eventTriggered=event&date=10/10/2024&read=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "eventTriggered",
+									"value": "event"
+								},
+								{
+									"key": "date",
+									"value": "10/10/2024"
+								},
+								{
+									"key": "read",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consumir notificacion",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token_usuario",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/notifications/{notiId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications",
+								"{notiId}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Miembro intenta consumir noti ajena",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token_usuario",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5003/notifications/{notiAjenaId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"notifications",
+								"{notiAjenaId}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

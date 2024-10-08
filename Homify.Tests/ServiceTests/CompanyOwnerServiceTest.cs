@@ -31,4 +31,11 @@ public class CompanyOwnerServiceTests
         Assert.IsNotNull(result);
         Assert.AreEqual(companyOwnerId, result.Id);
     }
+
+    [TestMethod]
+    public void GetCompOwnerPermissions()
+    {
+        var perms = PermissionsGenerator.GetCompanyOwnerPermissions();
+        Assert.AreEqual(3, perms.Count);
+    }
 }
