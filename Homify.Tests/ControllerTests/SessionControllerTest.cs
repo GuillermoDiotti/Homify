@@ -55,7 +55,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns(new List<User>());
+            .Returns([]);
 
         _controller.Create(request);
     }
@@ -101,7 +101,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns(new List<User> { user });
+            .Returns([user]);
 
         _controller.Create(request);
     }
@@ -128,7 +128,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns(new List<User> { user });
+            .Returns([user]);
 
         _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>()))
             .Returns(session);

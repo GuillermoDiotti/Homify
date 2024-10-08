@@ -254,85 +254,85 @@ public class DeviceControllerTest
         _controller.RegisterSensor(request);
     }
 
-[TestMethod]
-[ExpectedException(typeof(NotFoundException))]
-public void RegisterCamera_WhenCompanyOwnerNotFound_ShouldThrowNotFoundException()
-{
-    var request = new CreateCameraRequest
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void RegisterCamera_WhenCompanyOwnerNotFound_ShouldThrowNotFoundException()
     {
-        Name = "Test",
-        Description = "Test",
-        Model = "Test",
-        Photos = ["1", "2", "3"],
-        IsExterior = false,
-        IsInterior = true,
-        PpalPicture = "Test"
-    };
-
-    var user = new User { Id = "testUserId" };
-
-    _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns<CompanyOwner>(null);
-    _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
-
-    _controller.RegisterCamera(request);
-}
-
-[TestMethod]
-[ExpectedException(typeof(InvalidOperationException))]
-public void RegisterCamera_WhenCompanyOwnerIsIncomplete_ShouldThrowInvalidOperationException()
-{
-    var request = new CreateCameraRequest
-    {
-        Name = "Test",
-        Description = "Test",
-        Model = "Test",
-        Photos = ["1", "2", "3"],
-        IsExterior = false,
-        IsInterior = true,
-        PpalPicture = "Test"
-    };
-
-    var user = new User { Id = "testUserId" };
-    var companyOwner = new CompanyOwner { Id = "companyOwnerId", IsIncomplete = true };
-
-    _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns(companyOwner);
-    _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
-
-    _controller.RegisterCamera(request);
-}
-
-[TestMethod]
-[ExpectedException(typeof(NotFoundException))]
-public void TurnOnDevice_WhenHomeDeviceNotFound_ShouldThrowNotFoundException()
-{
-    var hardwareId = "Device123";
-
-    _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns<HomeDevice>(null);
-
-    _controller.TurnOnDevice(hardwareId);
-}
-
-[TestMethod]
-[ExpectedException(typeof(InvalidOperationException))]
-public void TurnOnDevice_WhenUserIsNotMemberOrOwner_ShouldThrowInvalidOperationException()
-{
-    var hardwareId = "Device123";
-    var user = new User { Id = "testUserId" };
-    var homeDevice = new HomeDevice
-    {
-        Id = "Device123",
-        IsActive = false,
-        HardwareId = hardwareId,
-        Home = new Home
+        var request = new CreateCameraRequest
         {
-            OwnerId = "otherUserId",
-            Members = new List<HomeUser>()
-        }
-    };
+            Name = "Test",
+            Description = "Test",
+            Model = "Test",
+            Photos = ["1", "2", "3"],
+            IsExterior = false,
+            IsInterior = true,
+            PpalPicture = "Test"
+        };
 
-    _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
-    _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+        var user = new User { Id = "testUserId" };
 
-    _controller.TurnOnDevice(hardwareId);
-}
+        _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns<CompanyOwner>(null);
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        _controller.RegisterCamera(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void RegisterCamera_WhenCompanyOwnerIsIncomplete_ShouldThrowInvalidOperationException()
+    {
+        var request = new CreateCameraRequest
+        {
+            Name = "Test",
+            Description = "Test",
+            Model = "Test",
+            Photos = ["1", "2", "3"],
+            IsExterior = false,
+            IsInterior = true,
+            PpalPicture = "Test"
+        };
+
+        var user = new User { Id = "testUserId" };
+        var companyOwner = new CompanyOwner { Id = "companyOwnerId", IsIncomplete = true };
+
+        _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns(companyOwner);
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        _controller.RegisterCamera(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void TurnOnDevice_WhenHomeDeviceNotFound_ShouldThrowNotFoundException()
+    {
+        var hardwareId = "Device123";
+
+        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns<HomeDevice>(null);
+
+        _controller.TurnOnDevice(hardwareId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TurnOnDevice_WhenUserIsNotMemberOrOwner_ShouldThrowInvalidOperationException()
+    {
+        var hardwareId = "Device123";
+        var user = new User { Id = "testUserId" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = false,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = "otherUserId",
+                Members = []
+            }
+        };
+
+        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        _controller.TurnOnDevice(hardwareId);
+    }
 }
