@@ -51,13 +51,37 @@ public class SessionControllerTest
         var request = new CreateSessionRequest
         {
             Email = "nonexistent@example.com",
-            Password = ".Coo120dshjha"
+            Password = "testPassword"
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns([]);
+            .Returns(new List<User>());
 
         _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void Create_WhenEmailFormatIsInvalid_ShouldThrowInvalidFormatException()
+    {
+        var request = new CreateSessionRequest
+        {
+            Email = "invalid-email",
+            Password = "testPassword"
+        };
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    public void TestingResponse()
+    {
+        var id = "ala";
+        var res = new CreateSessionResponse()
+        {
+            Token = "ala",
+        };
+        Assert.AreEqual(id, res.Token);
     }
 
     [TestMethod]
@@ -77,7 +101,7 @@ public class SessionControllerTest
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns([user]);
+            .Returns(new List<User> { user });
 
         _controller.Create(request);
     }
@@ -97,30 +121,25 @@ public class SessionControllerTest
             Password = ".Coo120dshjha"
         };
 
-        var authToken = Guid.NewGuid();
-        var authToken2 = Guid.NewGuid();
-
-        var session = new Session(authToken.ToString(), user);
-
-        var sesion2 = new Session
+        var session = new Session
         {
-            AuthToken = authToken2.ToString(),
+            AuthToken = Guid.NewGuid().ToString(),
             User = user
         };
 
         _userServiceMock.Setup(us => us.GetAll())
-            .Returns([user]);
+            .Returns(new List<User> { user });
 
-        _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>())).Returns(session);
+        _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>()))
+            .Returns(session);
 
         var result = _controller.Create(request);
 
-        Assert.IsNotNull(result);
+        result.Should().NotBeNull();
         result.Should().BeOfType<CreateSessionResponse>();
-        authToken.Should().Be(authToken.ToString());
-        session.Id.Should().NotBe(null);
-        session.User.Should().Be(user);
-        sesion2.User.Should().Be(user);
-        sesion2.AuthToken.Should().Be(authToken2.ToString());
+        result.Token.Should().Be(session.AuthToken);
+
+        _sessionServiceMock.Verify(ss => ss.CreateSession(It.IsAny<User>()), Times.Once);
+        _userServiceMock.Verify(us => us.GetAll(), Times.Once);
     }
 }

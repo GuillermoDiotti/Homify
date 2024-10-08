@@ -101,7 +101,6 @@ public class AuthorizationFilterAttributeTest
     [TestMethod]
     public void Authorization_WhenNoPermission_ShouldFail()
     {
-        // Ensure the user does not have the required permission
         _user.Role.Permissions.Clear();
 
         _attribute = new AuthorizationFilter("admins-Create");

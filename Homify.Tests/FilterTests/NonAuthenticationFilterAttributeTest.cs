@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,34 @@ public class NonAuthenticationFilterAttributeTest
         {
             _filter.OnActionExecuting(_actionExecutingContext);
             Assert.IsNull(_actionExecutingContext.Result);
+        }
+
+        [TestMethod]
+        public void OnActionExecuting_WithInvalidAuthorizationHeader_ShouldHandleNotFoundException_AndProceed()
+        {
+            var token = "valid-token";
+            _actionExecutingContext.HttpContext.Request.Headers["Authorization"] = token;
+
+            _sessionServiceMock
+                .Setup(x => x.GetUserByToken(token))
+                .Throws(new NotFoundException("User not found"));
+
+            _filter.OnActionExecuting(_actionExecutingContext);
+
+            Assert.IsNull(_actionExecutingContext.Result);
+        }
+
+        [TestMethod]
+        public void OnActionExecuted_ShouldDoNothing()
+        {
+            var actionExecutedContext = new ActionExecutedContext(
+                _actionExecutingContext,
+                new List<IFilterMetadata>(),
+                controller: null);
+
+            _filter.OnActionExecuted(actionExecutedContext);
+
+            Assert.IsNull(actionExecutedContext.Result);
         }
     }
 }

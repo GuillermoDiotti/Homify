@@ -69,6 +69,26 @@ public class ExceptionFilterTest
     }
 
     [TestMethod]
+    public void OnException_WhenExceptionIsArgumentNullException_ShouldResponseInvalidArgumentFormat()
+    {
+        _context.Exception = new ArgumentNullException();
+
+        _attribute.OnException(_context);
+
+        IActionResult? response = _context.Result;
+
+        response.Should().NotBeNull();
+        var concreteResponse = response as ObjectResult;
+        concreteResponse.Should().NotBeNull();
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        if (concreteResponse.Value != null)
+        {
+            GetInnerCode(concreteResponse.Value).Should().Be("InvalidNullArgument");
+            GetMessage(concreteResponse.Value).Should().Be("Value cannot be null.");
+        }
+    }
+
+    [TestMethod]
     public void OnException_WhenExceptionIsDateFormatException_ShouldResponseInvalidDateFormat()
     {
         _context.Exception = new InvalidFormatException("Invalid date format. Try dd-mm-yyyy");
