@@ -12,7 +12,7 @@ public static class HomifyDateTime
         {
             var isParsed = DateTimeOffset.TryParseExact(
                 date,
-                "yyyy-MM-dd",
+                "dd/MM/yyyy",
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out DateTimeOffset dateParsed);
@@ -33,7 +33,7 @@ public static class HomifyDateTime
     public static string GetActualDate()
     {
         DateTimeOffset actual = DateTimeOffset.Now;
-        var fecha = Parse(actual.ToString("yyyy-MM-dd"));
+        var fecha = Parse(actual.ToString("dd/MM/yyyy"));
         return fecha;
     }
 }

@@ -88,7 +88,7 @@ public class NotificationControllerTest
         var user = new User { Id = userId };
         var notifications = new List<Notification>
         {
-            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1" } },
+            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1" }, Date = "10/10/2024" },
             new Notification { Event = "Event2", IsRead = true, Device = new HomeDevice { Id = "Device2" } }
         };
 
