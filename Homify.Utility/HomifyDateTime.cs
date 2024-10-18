@@ -6,20 +6,27 @@ namespace Homify.BusinessLogic.Utility;
 [ExcludeFromCodeCoverage]
 public class HomifyDateTime
 {
-    public static DateTimeOffset Parse(string date)
+    public static string Parse(string date)
     {
-        var isParsed = DateTimeOffset.TryParseExact(
-            date,
-            "yyyy-MM-dd",
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out DateTimeOffset dateParsed);
-
-        if (!isParsed)
+        try
         {
-            throw new ArgumentException("Invalid published on");
-        }
+            var isParsed = DateTimeOffset.TryParseExact(
+                date,
+                "yyyy-MM-dd",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out DateTimeOffset dateParsed);
 
-        return dateParsed;
+            if (!isParsed)
+            {
+                throw new ArgumentException("Invalid date format");
+            }
+
+            return dateParsed.ToString("dd/MM/yyyy");
+        }
+        catch (ArgumentException ex)
+        {
+            return ex.Message;
+        }
     }
 }
