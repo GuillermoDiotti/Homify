@@ -3,6 +3,7 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 
@@ -25,7 +26,7 @@ public class UserService : IUserService
             Id = Guid.NewGuid().ToString(),
             Name = args.Name,
             Email = args.Email,
-            CreatedAt = DateTime.Now,
+            CreatedAt = HomifyDateTime.GetActualDate(),
             Password = args.Password,
             LastName = args.LastName,
             Role = args.Role,
@@ -45,7 +46,7 @@ public class UserService : IUserService
             Name = args.Name,
             Password = args.Password,
             LastName = args.LastName,
-            CreatedAt = DateTime.Now,
+            CreatedAt = HomifyDateTime.GetActualDate(),
             IsIncomplete = true,
             Role = args.Role,
         };
@@ -64,7 +65,7 @@ public class UserService : IUserService
             Name = args.Name,
             Password = args.Password,
             LastName = args.LastName,
-            CreatedAt = DateTime.Now,
+            CreatedAt = HomifyDateTime.GetActualDate(),
             ProfilePicture = args.ProfilePicUrl,
             Role = args.Role,
         };

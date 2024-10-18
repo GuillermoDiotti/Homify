@@ -4,7 +4,7 @@ using System.Globalization;
 namespace Homify.BusinessLogic.Utility;
 
 [ExcludeFromCodeCoverage]
-public class HomifyDateTime
+public static class HomifyDateTime
 {
     public static string Parse(string date)
     {
@@ -28,5 +28,12 @@ public class HomifyDateTime
         {
             return ex.Message;
         }
+    }
+
+    public static string GetActualDate()
+    {
+        DateTimeOffset actual = DateTimeOffset.Now;
+        var fecha = Parse(actual.ToString("yyyy-MM-dd"));
+        return fecha;
     }
 }

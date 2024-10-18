@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
@@ -47,7 +48,11 @@ public class NotificationController : HomifyControllerBase
             throw new InvalidOperationException("Device is not active");
         }
 
-        var arguments = new CreateNotificationArgs(request.PersonDetectedId ?? string.Empty, fromDevice, false, DateTimeOffset.Now, request.HardwareId);
+        var arguments = new CreateNotificationArgs(
+            request.PersonDetectedId ?? string.Empty,
+            fromDevice,
+            false,
+            request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
         var ret = new List<CreateNotificationResponse>();
@@ -147,9 +152,15 @@ public class NotificationController : HomifyControllerBase
             list = list.Where(n => n.Event == eventTriggered).ToList();
         }
 
-        if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
+        /*if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
         {
             list = list.Where(n => n.Date == parsedDate.Date).ToList();
+        }*/
+
+        if (!string.IsNullOrEmpty(date))
+        {
+            var veryfyDateFormat = HomifyDateTime.Parse(date);
+            list = list.Where(n => n.Date == veryfyDateFormat).ToList();
         }
 
         if (!string.IsNullOrEmpty(read) && bool.TryParse(read, out var isRead))

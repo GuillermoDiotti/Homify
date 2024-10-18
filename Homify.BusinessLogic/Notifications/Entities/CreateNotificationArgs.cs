@@ -8,9 +8,8 @@ public class CreateNotificationArgs
     public HomeDevice Device { get; init; }
     public bool IsRead { get; init; }
     public string? HardwareId { get; init; }
-    public DateTimeOffset? Date { get; init; }
 
-    public CreateNotificationArgs(string personDetectedId, HomeDevice device, bool isRead, DateTimeOffset date, string hardwareId)
+    public CreateNotificationArgs(string personDetectedId, HomeDevice device, bool isRead, string hardwareId)
     {
         PersonDetectedId = personDetectedId;
 
@@ -25,12 +24,6 @@ public class CreateNotificationArgs
 
         Device = device;
 
-        if (date == null)
-        {
-            throw new ArgumentNullException("Date cannot be null");
-        }
-
-        Date = date;
         IsRead = isRead;
     }
 }

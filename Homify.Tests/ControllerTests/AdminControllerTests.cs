@@ -496,7 +496,6 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                CreatedAt = DateTime.Now,
                 Role = new Role
                 {
                     Name = "Admin"
