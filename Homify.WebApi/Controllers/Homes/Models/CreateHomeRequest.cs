@@ -6,5 +6,6 @@ public class CreateHomeRequest
     public string Number { get; set; } = null!;
     public string Latitude { get; set; } = null!;
     public string Longitud { get; set; } = null!;
+    public string Alias { get; set; } = null!;
     public int MaxMembers { get; set; }
 }
