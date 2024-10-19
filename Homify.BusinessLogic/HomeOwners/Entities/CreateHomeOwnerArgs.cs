@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.Utility;
 
 namespace Homify.BusinessLogic.HomeOwners.Entities;
 
