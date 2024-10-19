@@ -202,6 +202,7 @@ public class HomesControllerTest
         var request = new CreateHomeRequest()
         {
             Street = "calle",
+            Alias = "Home 1",
             Number = "3",
             Latitude = null
         };
