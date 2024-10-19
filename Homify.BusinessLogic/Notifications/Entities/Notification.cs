@@ -1,5 +1,6 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Utility;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 
@@ -10,18 +11,18 @@ public class Notification
     public HomeDevice? Device { get; init; }
     public string HomeDeviceId { get; init; } = null!;
     public bool IsRead { get; set; }
-    public DateTimeOffset? Date { get; init; }
+    public string? Date { get; init; }
     public string? HomeUserId { get; init; } = null!;
     public string? Detail { get; init; } = null!;
     public HomeUser HomeUser { get; init; } = null!;
 
-    public Notification(string? eventName, HomeDevice device, bool isRead, DateTimeOffset? date, HomeUser hu)
+    public Notification(string? eventName, HomeDevice device, bool isRead, HomeUser hu)
     {
         Id = Guid.NewGuid().ToString();
         Event = eventName;
         Device = device;
         IsRead = isRead;
-        Date = date;
+        Date = HomifyDateTime.GetActualDate();
         HomeDeviceId = device.Id;
         HomeUser = hu;
         HomeUserId = hu.Id;

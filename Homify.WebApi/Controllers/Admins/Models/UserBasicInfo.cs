@@ -11,7 +11,7 @@ public class UserBasicInfo
 
     public string Role { get; set; }
 
-    public DateTimeOffset CreatedAt { get; set; }
+    public string CreatedAt { get; set; }
 
     public UserBasicInfo(User u)
     {

@@ -63,7 +63,6 @@ public class NotificationControllerTest
             IsRead = false,
             HomeDeviceId = homeDevice.Id,
             HomeUserId = "User123",
-            Date = DateTimeOffset.Now,
             Device = homeDevice,
             Detail = null,
         };
@@ -89,8 +88,8 @@ public class NotificationControllerTest
         var user = new User { Id = userId };
         var notifications = new List<Notification>
         {
-            new Notification { Event = "Event1", Date = new DateTime(2024, 10, 10), IsRead = false, Device = new HomeDevice { Id = "Device1" } },
-            new Notification { Event = "Event2", Date = new DateTime(2024, 10, 11), IsRead = true, Device = new HomeDevice { Id = "Device2" } }
+            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1" }, Date = "10/10/2024" },
+            new Notification { Event = "Event2", IsRead = true, Device = new HomeDevice { Id = "Device2" } }
         };
 
         _notificationService.Setup(n => n.GetAllByUserId(userId)).Returns(notifications);
@@ -183,7 +182,6 @@ public class NotificationControllerTest
             Id = "notif123",
             Event = "Test Event",
             Device = homeDevice,
-            Date = DateTimeOffset.UtcNow,
             IsRead = false
         };
 
@@ -253,7 +251,6 @@ public class NotificationControllerTest
             IsRead = false,
             HomeDeviceId = homeDevice.Id,
             HomeUserId = "User123",
-            Date = DateTimeOffset.Now,
             Device = homeDevice,
             Detail = null,
         };
@@ -364,7 +361,6 @@ public class NotificationControllerTest
             IsRead = false,
             HomeDeviceId = homeDevice.Id,
             HomeUserId = "User123",
-            Date = DateTimeOffset.Now,
             Device = homeDevice,
             Detail = null,
         };

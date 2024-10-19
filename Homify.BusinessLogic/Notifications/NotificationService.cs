@@ -3,6 +3,7 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.DataAccess.Repositories;
 using Homify.Utility;
 
@@ -46,7 +47,7 @@ public class NotificationService : INotificationService
                     Event = "Person Detected",
                     Device = notification.Device,
                     IsRead = false,
-                    Date = notification.Date,
+                    Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = (detectedUser != null) ? Helpers.GetUserFullName(detectedUser.Name, detectedUser.LastName) : null,
                     HomeUserId = users.UserId,
@@ -75,7 +76,7 @@ public class NotificationService : INotificationService
                     Event = "Window state switch detected",
                     Device = notification.Device,
                     IsRead = false,
-                    Date = notification.Date,
+                    Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = notification.Action,
                     HomeUserId = users.UserId,
@@ -104,7 +105,7 @@ public class NotificationService : INotificationService
                     Event = "Movement detected in home",
                     Device = notification.Device,
                     IsRead = false,
-                    Date = notification.Date,
+                    Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = notification.Action,
                     HomeUserId = users.UserId,

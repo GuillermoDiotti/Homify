@@ -43,7 +43,7 @@ public class NotificationServiceTest
             new HomeUser { UserId = "User3", IsNotificable = true }
         };
         var detectedUser = new User { Id = "Person123", Name = "John", LastName = "Doe" };
-        var notificationArgs = new CreateNotificationArgs("Person123", homeDevice, false, DateTimeOffset.Now, "Hardware123");
+        var notificationArgs = new CreateNotificationArgs("Person123", homeDevice, false, "Hardware123");
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
         _mockUserService.Setup(s => s.GetById("Person123")).Returns(detectedUser);
@@ -166,7 +166,6 @@ public class NotificationServiceTest
             "Movement detected in home",
             homeDevice,
             false,
-            DateTimeOffset.Now,
             homeUsers[0]);
         var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Movement detected");
 

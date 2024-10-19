@@ -9,7 +9,7 @@ public sealed record class CreateGenericNotificationResponse
     public string Event { get; init; } = null!;
     public string DeviceId { get; init; } = null!;
     public string HardwareId { get; init; } = null!;
-    public DateTimeOffset Date { get; init; }
+    public string Date { get; init; }
     public string? Action { get; set; } = string.Empty;
 
     public CreateGenericNotificationResponse(Notification n)
@@ -19,7 +19,7 @@ public sealed record class CreateGenericNotificationResponse
         Event = n.Event;
         DeviceId = n.HomeDeviceId;
         HardwareId = n.Device!.HardwareId;
-        Date = n.Date!.Value;
+        Date = n.Date!;
         Action = n.Detail;
     }
 }

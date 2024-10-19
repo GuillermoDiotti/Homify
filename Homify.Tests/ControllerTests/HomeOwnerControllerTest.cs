@@ -42,7 +42,6 @@ public class HomeOwnerControllerTest
             Password = req.Password,
             LastName = req.LastName,
             Name = req.Name,
-            CreatedAt = DateTime.Now,
         };
 
         var role = new Role { Name = "HOMEOWNER" };
