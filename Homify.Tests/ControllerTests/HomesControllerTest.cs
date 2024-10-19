@@ -60,6 +60,7 @@ public class HomesControllerTest
         home.Latitude.Should().Be("101");
         home.Longitude.Should().Be("202");
         home.MaxMembers.Should().Be(3);
+        home.Alias.Should().Be("Home 1");
         home.Owner.Name.Should().Be("Owner Name");
         home.Devices.Should().BeEmpty();
     }
