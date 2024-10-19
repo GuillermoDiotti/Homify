@@ -229,6 +229,7 @@ public class HomesControllerTest
         {
             Street = "calle",
             Number = "3",
+            Alias = "Home 1",
             Latitude = "141",
             Longitud = null
         };
