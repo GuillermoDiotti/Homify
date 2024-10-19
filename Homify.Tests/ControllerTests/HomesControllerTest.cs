@@ -181,6 +181,7 @@ public class HomesControllerTest
             Number = null,
             Latitude = "141",
             Longitud = "231",
+            Alias = "Home 1",
             MaxMembers = 1
         };
 
