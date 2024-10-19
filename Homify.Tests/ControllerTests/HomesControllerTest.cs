@@ -41,6 +41,7 @@ public class HomesControllerTest
         var home = new Home()
         {
             Id = "home123",
+            Alias = "Home 1",
             Street = "calle 1",
             Number = "1",
             Latitude = "101",
