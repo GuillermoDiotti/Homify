@@ -100,4 +100,30 @@ public class RoomControllerTest
             Times.Once);
         Assert.AreEqual("roomId", response.Id);
     }
+
+    [TestMethod]
+    public void Create_ValidRequest_ReturnsCorrectRoomId()
+    {
+        var request = new CreateRoomRequest
+        {
+            Name = "Kitchen"
+        };
+        var homeId = "home123";
+        var room = new Room { Id = "room456" };
+
+        var mockOwner = new HomeOwner()
+        {
+            Id = "ownerId"
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = mockOwner;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>())).Returns(room);
+
+        var result = _controller.Create(request, homeId);
+
+        Assert.AreEqual("room456", result.Id);
+    }
 }
