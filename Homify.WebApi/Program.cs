@@ -16,6 +16,8 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
 using Homify.DataAccess.Repositories;
+using Homify.DataAccess.Repositories.Rooms;
+using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.WebApi.Filters;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +52,9 @@ services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServe
 
 services.AddScoped<IRepository<User>, UserRepository>();
 services.AddScoped<IUserService, UserService>();
+
+services.AddScoped<IRepository<Room>, RoomRepository>();
+services.AddScoped<IRoomService, RoomService>();
 
 services.AddScoped<IRepository<Company>, CompanyRepository>();
 services.AddScoped<ICompanyService, CompanyService>();
