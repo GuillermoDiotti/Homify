@@ -223,13 +223,16 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPatch("{homeId}")]
-    public IActionResult UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
+    public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
         if (req == null)
         {
             throw new NullRequestException("Request can not be null");
         }
 
-        return Ok();
+        var user = GetUserLogged();
+        var result = _homeService.UpdateHome(homeId, req.Alias, user);
+
+        return result;
     }
 }

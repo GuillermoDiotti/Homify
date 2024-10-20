@@ -145,4 +145,22 @@ public class HomeService : IHomeService
 
         return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
     }
+
+    public Home UpdateHome(string homeId, string? alias, User u)
+    {
+        if (string.IsNullOrEmpty(alias))
+        {
+            throw new ArgsNullException("Alias can not be null");
+        }
+
+        var home = _repository.Get(x => x.Id == homeId);
+        if (home.OwnerId != u.Id)
+        {
+            throw new InvalidOperationException("Only the owner can update the home");
+        }
+
+        home.Alias = alias;
+        _repository.Update(home);
+        return home;
+    }
 }

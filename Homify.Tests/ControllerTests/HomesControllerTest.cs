@@ -448,33 +448,35 @@ public class HomesControllerTest
     [TestMethod]
     public void UpdateHomeAlias_WhenRequestIsValid_ShouldReturnUpdatedAlias()
     {
-        var home = new Home
-        {
-            Id = "home123",
-            Alias = "Home 1"
-        };
-
-        var updatedHome = new Home
-        {
-            Id = "home123",
-            Alias = "updatedAlias"
-        };
-
-        var req = new UpdateHomeRequest() { Alias = "updatedAlias" };
-
-        var user = new User
+        var user = new HomeOwner()
         {
             Id = "user123",
             Name = "John Doe"
         };
 
+        var home = new Home
+        {
+            Id = "home123",
+            Alias = "Home 1",
+            Owner = user
+        };
+
+        var updatedHome = new Home
+        {
+            Id = "home123",
+            Alias = "updatedAlias",
+            Owner = user
+        };
+
+        var req = new UpdateHomeRequest() { Alias = "updatedAlias" };
+
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = user;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Setup(service => service.UpdateHome(homeId, req, user)).Returns(updatedHome);
+        _homeServiceMock.Setup(service => service.UpdateHome(home.Id, "updatedAlias", user)).Returns(updatedHome);
 
-        _controller.UpdateHome(null);
+        _controller.UpdateHome("home123", req);
     }
 
     [TestMethod]
