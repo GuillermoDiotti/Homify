@@ -27,5 +27,7 @@ public class RoomController
         {
             throw new NullRequestException("Request can not be null");
         }
+
+        ArgumentNullException.ThrowIfNull(homeId);
     }
 }
