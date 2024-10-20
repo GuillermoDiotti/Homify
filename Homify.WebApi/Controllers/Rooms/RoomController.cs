@@ -49,6 +49,7 @@ public class RoomController : HomifyControllerBase
 
         var args = new UpdateRoomArgs(
             roomId ?? string.Empty,
+            homeDeviceId ?? string.Empty,
             owner);
     }
 }

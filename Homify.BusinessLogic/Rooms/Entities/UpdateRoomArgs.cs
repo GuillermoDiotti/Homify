@@ -7,12 +7,18 @@ public class UpdateRoomArgs
 {
     public string RoomId { get; set; }
     public HomeOwner Owner { get; set; }
+    public string HomeDeviceId { get; set; }
 
-    public UpdateRoomArgs(string roomId, HomeOwner? owner)
+    public UpdateRoomArgs(string roomId, string homeDeviceId, HomeOwner? owner)
     {
         if (string.IsNullOrEmpty(roomId))
         {
             throw new NullReferenceException("RoomId can not be null");
+        }
+
+        if (string.IsNullOrEmpty(homeDeviceId))
+        {
+            throw new NullReferenceException("HomeDeviceId can not be null");
         }
 
         if (owner == null)
@@ -21,6 +27,7 @@ public class UpdateRoomArgs
         }
 
         RoomId = roomId;
+        HomeDeviceId = homeDeviceId;
         Owner = owner;
     }
 }
