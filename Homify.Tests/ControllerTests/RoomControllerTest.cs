@@ -1,6 +1,7 @@
 using Homify.DataAccess.Repositories.Rooms;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Rooms;
+using Homify.WebApi.Controllers.Rooms.Models;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -23,5 +24,17 @@ public class RoomControllerTest
     public void Create_NullRequest_ThrowsNullRequestException()
     {
         _controller.Create(null, "homeId");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void Create_NullHomeId_ThrowsArgumentNullException()
+    {
+        var request = new CreateRoomRequest
+        {
+            Name = "Living Room"
+        };
+
+        _controller.Create(request, null);
     }
 }
