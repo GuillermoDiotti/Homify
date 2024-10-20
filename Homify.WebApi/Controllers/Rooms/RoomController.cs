@@ -22,7 +22,7 @@ public class RoomController : HomifyControllerBase
     [HttpPost("{homeId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public void Create(CreateRoomRequest request, [FromRoute] string homeId)
+    public CreateRoomResponse Create(CreateRoomRequest request, [FromRoute] string homeId)
     {
         if (request == null)
         {
@@ -35,5 +35,8 @@ public class RoomController : HomifyControllerBase
             request.Name ?? string.Empty,
             homeId ?? string.Empty,
             owner);
+
+        var room = _roomService.AddHomeRoom(arguments);
+        return new CreateRoomResponse(room.Id);
     }
 }

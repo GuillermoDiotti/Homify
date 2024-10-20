@@ -89,15 +89,15 @@ public class RoomControllerTest
         _controller.ControllerContext.HttpContext = httpContext;
 
         _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>()))
-            .Returns(new Room { Id = homeId });
+            .Returns(new Room { Id = "roomId" });
 
         var response = _controller.Create(request, homeId);
 
-        _mockRoomService.Verify(s => s.AddHomeRoom(It.Is<CreateRoomArgs>(args => 
+        _mockRoomService.Verify(s => s.AddHomeRoom(It.Is<CreateRoomArgs>(args =>
                 args.Name == request.Name &&
                 args.HomeId == homeId &&
                 args.Owner == mockOwner)),
             Times.Once);
-        Assert.AreEqual("roomId", response.RoomId);
+        Assert.AreEqual("roomId", response.Id);
     }
 }
