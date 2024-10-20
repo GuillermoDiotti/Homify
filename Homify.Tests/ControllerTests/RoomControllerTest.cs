@@ -37,4 +37,16 @@ public class RoomControllerTest
 
         _controller.Create(request, null);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void Create_NullHomeName_ThrowsArgumentNullException()
+    {
+        var request = new CreateRoomRequest
+        {
+            Name = null
+        };
+
+        _controller.Create(request, "id");
+    }
 }
