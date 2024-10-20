@@ -40,8 +40,12 @@ public sealed class HomeController : HomifyControllerBase
 
         var owner = GetUserLogged() as HomeOwner;
         var arguments = new CreateHomeArgs(
-           request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
-           request.Longitud ?? string.Empty, request.MaxMembers, owner);
+           request.Street ?? string.Empty,
+           request.Number ?? string.Empty,
+           request.Latitude ?? string.Empty,
+           request.Longitud ?? string.Empty,
+           request.MaxMembers, owner,
+           request.Alias ?? string.Empty);
 
         var homeSaved = _homeService.AddHome(arguments);
         return new CreateHomeResponse(homeSaved);
