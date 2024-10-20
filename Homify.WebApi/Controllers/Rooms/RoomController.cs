@@ -43,7 +43,7 @@ public class RoomController : HomifyControllerBase
     [HttpPut("{roomId}/{homeDeviceId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public void AssignHomeDeviceToRoom([FromRoute] string roomId, [FromRoute] string homeDeviceId)
+    public Room AssignHomeDeviceToRoom([FromRoute] string roomId, [FromRoute] string homeDeviceId)
     {
         var owner = GetUserLogged() as HomeOwner;
 
@@ -51,5 +51,9 @@ public class RoomController : HomifyControllerBase
             roomId ?? string.Empty,
             homeDeviceId ?? string.Empty,
             owner);
+
+        var result = _roomService.AssignHomeDeviceToRoom(args);
+
+        return result;
     }
 }

@@ -147,4 +147,30 @@ public class RoomControllerTest
     {
         _controller.AssignHomeDeviceToRoom("123", null);
     }
+
+    [TestMethod]
+    public void AssignHomeDeviceToRoom_ValidRequest_CallsRoomServiceAssignHomeDeviceToRoom()
+    {
+        var roomId = "testRoomId";
+        var homeDeviceId = "testHomeDeviceId";
+        var mockOwner = new HomeOwner()
+        {
+            Id = "ownerId"
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = mockOwner;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _mockRoomService.Setup(s => s.AssignHomeDeviceToRoom(It.IsAny<UpdateRoomArgs>()))
+            .Returns(new Room { Id = roomId });
+
+        var result = _controller.AssignHomeDeviceToRoom(roomId, homeDeviceId);
+
+        _mockRoomService.Verify(s => s.AssignHomeDeviceToRoom(It.Is<UpdateRoomArgs>(args =>
+            args.RoomId == roomId &&
+            args.HomeDeviceId == homeDeviceId &&
+            args.Owner == mockOwner)), Times.Once);
+        Assert.AreEqual(roomId, result.Id);
+    }
 }
