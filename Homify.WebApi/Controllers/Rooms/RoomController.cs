@@ -48,6 +48,7 @@ public class RoomController : HomifyControllerBase
         var owner = GetUserLogged() as HomeOwner;
 
         var args = new UpdateRoomArgs(
-            roomId ?? string.Empty);
+            roomId ?? string.Empty,
+            owner);
     }
 }
