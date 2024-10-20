@@ -150,7 +150,7 @@ public class HomeService : IHomeService
     {
         if (string.IsNullOrEmpty(alias))
         {
-            throw new ArgsNullException("Alias can not be null");
+            throw new ArgumentNullException("Alias can not be null");
         }
 
         var home = _repository.Get(x => x.Id == homeId);

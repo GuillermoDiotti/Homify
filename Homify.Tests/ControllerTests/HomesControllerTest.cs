@@ -480,6 +480,34 @@ public class HomesControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateHomeAlias_WhenAliasIsNull_ShouldThrowException()
+    {
+        var user = new HomeOwner()
+        {
+            Id = "user123",
+            Name = "John Doe"
+        };
+
+        var home = new Home
+        {
+            Id = "home123",
+            Alias = "Home 1",
+            Owner = user
+        };
+
+        var req = new UpdateHomeRequest() { Alias = null };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _homeServiceMock.Setup(service => service.UpdateHome(home.Id, null, user)).Throws(new ArgumentNullException("Alias can not be null"));
+
+        _controller.UpdateHome("home123", req);
+    }
+
+    [TestMethod]
     public void NotificatedMembers_WhenRequestIsValid_ShouldReturnNotificatedMembersResponse()
     {
         var homeId = "home123";
