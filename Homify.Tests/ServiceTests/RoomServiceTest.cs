@@ -53,4 +53,16 @@ public class RoomServiceTest
 
         _roomService.AddHomeRoom(args);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void AddHomeRoom_UserIsNotOwner_ThrowsInvalidOperationException()
+    {
+        var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner456" } };
+        var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
+
+        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+
+        _roomService.AddHomeRoom(args);
+    }
 }
