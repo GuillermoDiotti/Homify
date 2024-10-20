@@ -47,9 +47,7 @@ public class RoomController : HomifyControllerBase
     {
         var owner = GetUserLogged() as HomeOwner;
 
-        if (roomId == null)
-        {
-            throw new NullReferenceException("RoomId can not be null");
-        }
+        var args = new UpdateRoomArgs(
+            roomId ?? string.Empty);
     }
 }
