@@ -306,6 +306,7 @@ public class HomesControllerTest
             Latitude = "101",
             Longitud = "202",
             MaxMembers = 3,
+            Alias = "Home 1"
         };
 
         var owner = new HomeOwner
