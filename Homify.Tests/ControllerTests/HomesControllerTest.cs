@@ -439,6 +439,12 @@ public class HomesControllerTest
     }
 
     [TestMethod]
+    public void UpdateHomeAlias_WhenRequestIsValid_ShouldReturnUpdatedAliases()
+    {
+        _controller.UpdateHome(null);
+    }
+
+    [TestMethod]
     public void NotificatedMembers_WhenRequestIsValid_ShouldReturnNotificatedMembersResponse()
     {
         var homeId = "home123";
