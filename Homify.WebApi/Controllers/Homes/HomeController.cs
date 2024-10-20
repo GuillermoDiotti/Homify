@@ -7,7 +7,6 @@ using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Filters;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Homes;

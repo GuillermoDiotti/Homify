@@ -412,7 +412,7 @@ public class HomeServiceTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateHome_WhenUserIsNotOwner_ShouldThrowException()
     {
-        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home{ Id = "homeId", OwnerId = "ownerId" });
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home { Id = "homeId", OwnerId = "ownerId" });
 
         _homeService.UpdateHome("homeId", "alias", new User { Id = "userId" });
     }
@@ -429,7 +429,7 @@ public class HomeServiceTest
     {
         var newAlias = "newAlias";
         var oldAlias = "oldAlias";
-        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home{ Id = "homeId", OwnerId = "ownerId", Alias = "oldAlias" });
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home { Id = "homeId", OwnerId = "ownerId", Alias = "oldAlias" });
 
         var reult = _homeService.UpdateHome("homeId", newAlias, new User { Id = "ownerId" });
 
