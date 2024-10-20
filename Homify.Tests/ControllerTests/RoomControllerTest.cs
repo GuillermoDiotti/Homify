@@ -126,4 +126,11 @@ public class RoomControllerTest
 
         Assert.AreEqual("room456", result.Id);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void AssignHomeDeviceToRoom_NullRoomId_ThrowsNullRequestException()
+    {
+        _controller.AssignHomeDeviceToRoom(null, "homeDeviceId");
+    }
 }
