@@ -33,6 +33,7 @@ public class HomeService : IHomeService
             Owner = home.Owner,
             Street = home.Street,
             MaxMembers = home.MaxMembers,
+            Alias = home.Alias,
             Members = [],
             OwnerId = home.Owner.Id,
         };
