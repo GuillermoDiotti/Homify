@@ -58,4 +58,9 @@ public class HomeDeviceService : IHomeDeviceService
     {
         return _repository.GetAll(x => x.HomeId == homeId);
     }
+
+    public HomeDevice GetHomeDeviceById(string id)
+    {
+        return _repository.Get(x => x.Id == id);
+    }
 }

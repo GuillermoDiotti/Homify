@@ -99,11 +99,16 @@ public class RoomServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void AssignHomeDeviceToRoom_HomeDeviceNotFound_ThrowsNotFoundException()
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void AssignHomeDeviceToRoom_HomeDeviceDoesNotBelongToRoomHome_ThrowsInvalidOperationException()
     {
+        var homeDevice = new HomeDevice { Id = "device123", Home = new Home { Id = "home456" } };
+        var room = new Room { Id = "room123", Home = new Home { Id = "home123" } };
+
         var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
-        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns((HomeDevice)null);
+
+        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room);
 
         _roomService.AssignHomeDeviceToRoom(args);
     }

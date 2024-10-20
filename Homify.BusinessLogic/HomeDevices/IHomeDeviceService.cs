@@ -8,4 +8,5 @@ public interface IHomeDeviceService
     HomeDevice? GetHomeDeviceByHardwareId(string? id);
     HomeDevice Activate(HomeDevice hd);
     List<HomeDevice> GetHomeDeviceByHomeId(string homeId);
+    HomeDevice GetHomeDeviceById(string id);
 }
