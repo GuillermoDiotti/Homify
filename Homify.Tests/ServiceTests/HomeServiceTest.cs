@@ -416,4 +416,11 @@ public class HomeServiceTest
 
         _homeService.UpdateHome("homeId", "alias", new User { Id = "userId" });
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateHome_WhenAliasIsNull_ShouldThrowException()
+    {
+        _homeService.UpdateHome("homeId", null, new User { Id = "userId" });
+    }
 }
