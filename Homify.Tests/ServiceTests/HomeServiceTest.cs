@@ -39,7 +39,7 @@ public class HomeServiceTest
             Role = RolesGenerator.HomeOwner()
         };
 
-        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner);
+        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");
 
         var result = _homeService.AddHome(createHomeArgs);
 
@@ -50,6 +50,7 @@ public class HomeServiceTest
             h.Street == createHomeArgs.Street &&
             h.MaxMembers == createHomeArgs.MaxMembers &&
             h.Owner == owner &&
+            h.Alias == createHomeArgs.Alias &&
             h.OwnerId == owner.Id)), Times.Once);
 
         Assert.IsNotNull(result);
