@@ -97,4 +97,14 @@ public class RoomServiceTest
         Assert.AreEqual(home.Id, result.HomeId);
         Assert.IsNotNull(result.Id);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void AssignHomeDeviceToRoom_HomeDeviceNotFound_ThrowsNotFoundException()
+    {
+        var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
+        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns((HomeDevice)null);
+
+        _roomService.AssignHomeDeviceToRoom(args);
+    }
 }
