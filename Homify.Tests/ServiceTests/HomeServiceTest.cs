@@ -407,4 +407,13 @@ public class HomeServiceTest
 
         _homeService.UpdateHomeDevices(deviceid, homeid, user);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateHome_WhenUserIsNotOwner_ShouldThrowException()
+    {
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home{ Id = "homeId", OwnerId = "ownerId" });
+
+        _homeService.UpdateHome("homeId", "alias", new User { Id = "userId" });
+    }
 }

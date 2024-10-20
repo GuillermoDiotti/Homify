@@ -153,7 +153,7 @@ public class HomeService : IHomeService
             throw new ArgumentNullException("Alias can not be null");
         }
 
-        var home = _repository.Get(x => x.Id == homeId);
+        var home = GetHomeById(homeId);
         if (home.OwnerId != u.Id)
         {
             throw new InvalidOperationException("Only the owner can update the home");
