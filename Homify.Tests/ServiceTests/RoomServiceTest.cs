@@ -81,4 +81,20 @@ public class RoomServiceTest
         Assert.AreEqual("Living Room", result.Name);
         Assert.AreEqual(home.Id, result.HomeId);
     }
+
+    [TestMethod]
+    public void AddHomeRoom_ValidRequest_ReturnsRoomWithCorrectValues()
+    {
+        var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
+        var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
+
+        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+        _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns((Room)null);
+
+        var result = _roomService.AddHomeRoom(args);
+
+        Assert.AreEqual("Living Room", result.Name);
+        Assert.AreEqual(home.Id, result.HomeId);
+        Assert.IsNotNull(result.Id);
+    }
 }
