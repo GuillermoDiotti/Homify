@@ -58,7 +58,25 @@ public class RoomService : IRoomService
             throw new InvalidOperationException("The homeDevice doesn't belong to the room's home");
         }
 
-        return null;
+        if (home == null)
+        {
+            throw new NotFoundException("Home not found");
+        }
+
+        if (home.Owner.Id != args.Owner.Id)
+        {
+            throw new InvalidOperationException("You are not the owner of this home");
+        }
+
+        if (ExistsDeviceInOtherRoom(room, homeDevice))
+        {
+            throw new InvalidOperationException("The device is already in another room of the house");
+        }
+
+        room.Devices.Add(homeDevice);
+        _roomRepository.Update(room);
+
+        return room;
     }
 
     public bool ExistsRoomHome(Room room, Home home)
@@ -69,5 +87,23 @@ public class RoomService : IRoomService
     public Room GetRoomById(string id)
     {
         return _roomRepository.Get(r => r.Id == id);
+    }
+
+    public bool ExistsDeviceInOtherRoom(Room room, HomeDevice homeDevice)
+    {
+        foreach (var r in GetAll())
+        {
+            if (r.Devices.Contains(homeDevice))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public List<Room> GetAll()
+    {
+        return _roomRepository.GetAll();
     }
 }
