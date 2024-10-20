@@ -269,6 +269,33 @@ public class HomesControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHome_WhenAliasIsNull_ShouldThrowException()
+    {
+        var request = new CreateHomeRequest()
+        {
+            Street = "calle",
+            Number = "3",
+            Latitude = "141",
+            Longitud = "231",
+            Alias = null,
+            MaxMembers = 1
+        };
+
+        var owner = new HomeOwner
+        {
+            Id = "Owner123",
+            Name = "John Doe",
+            Role = RolesGenerator.HomeOwner()
+        };
+
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
     public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
     {
         // Arrange
