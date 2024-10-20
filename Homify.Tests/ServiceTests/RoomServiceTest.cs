@@ -128,4 +128,23 @@ public class RoomServiceTest
 
         _roomService.AssignHomeDeviceToRoom(args);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void AssignHomeDeviceToRoom_DeviceAlreadyAssignedToAnotherRoom_ThrowsInvalidOperationException()
+    {
+        var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
+        var homeDevice = new HomeDevice { Id = "device123", Home = home };
+
+        var room1 = new Room { Id = "room123", Home = home, Devices = new List<HomeDevice> { homeDevice } };
+        var room2 = new Room { Id = "room456", Home = home, Devices = new List<HomeDevice>() };
+
+        var args = new UpdateRoomArgs("room456", "device123", new HomeOwner { Id = "owner123" });
+
+        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room2);
+        _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(new List<Room> { room1, room2 });
+
+        _roomService.AssignHomeDeviceToRoom(args);
+    }
 }
