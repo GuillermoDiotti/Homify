@@ -33,6 +33,7 @@ public class HomeService : IHomeService
             Owner = home.Owner,
             Street = home.Street,
             MaxMembers = home.MaxMembers,
+            Alias = home.Alias,
             Members = [],
             OwnerId = home.Owner.Id,
         };
@@ -143,5 +144,23 @@ public class HomeService : IHomeService
         }
 
         return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
+    }
+
+    public Home UpdateHome(string homeId, string? alias, User u)
+    {
+        if (string.IsNullOrEmpty(alias))
+        {
+            throw new ArgumentNullException("Alias can not be null");
+        }
+
+        var home = GetHomeById(homeId);
+        if (home.OwnerId != u.Id)
+        {
+            throw new InvalidOperationException("Only the owner can update the home");
+        }
+
+        home.Alias = alias;
+        _repository.Update(home);
+        return home;
     }
 }

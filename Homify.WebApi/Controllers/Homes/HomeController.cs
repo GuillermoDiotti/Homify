@@ -40,8 +40,12 @@ public sealed class HomeController : HomifyControllerBase
 
         var owner = GetUserLogged() as HomeOwner;
         var arguments = new CreateHomeArgs(
-           request.Street ?? string.Empty, request.Number ?? string.Empty, request.Latitude ?? string.Empty,
-           request.Longitud ?? string.Empty, request.MaxMembers, owner);
+           request.Street ?? string.Empty,
+           request.Number ?? string.Empty,
+           request.Latitude ?? string.Empty,
+           request.Longitud ?? string.Empty,
+           request.MaxMembers, owner,
+           request.Alias ?? string.Empty);
 
         var homeSaved = _homeService.AddHome(arguments);
         return new CreateHomeResponse(homeSaved);
@@ -215,5 +219,21 @@ public sealed class HomeController : HomifyControllerBase
         var user = GetUserLogged();
         var newMembersToNotify = _homeService.UpdateNotificatedList(homeId, request.HomeUserId, user);
         return new NotificatedMembersResponse(newMembersToNotify);
+    }
+
+    [HttpPatch("{homeId}/update")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
+    {
+        if (req == null)
+        {
+            throw new NullRequestException("Request can not be null");
+        }
+
+        var user = GetUserLogged();
+        var result = _homeService.UpdateHome(homeId, req.Alias, user);
+
+        return result;
     }
 }

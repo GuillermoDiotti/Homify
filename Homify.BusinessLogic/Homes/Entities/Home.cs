@@ -7,6 +7,7 @@ public class Home
 {
     public string Id { get; init; } = null!;
     public string Street { get; set; } = null!;
+    public string Alias { get; set; } = null!;
     public string Number { get; set; } = null!;
     public string Latitude { get; set; } = null!;
     public string Longitude { get; set; } = null!;

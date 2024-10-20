@@ -41,6 +41,7 @@ public class HomesControllerTest
         var home = new Home()
         {
             Id = "home123",
+            Alias = "Home 1",
             Street = "calle 1",
             Number = "1",
             Latitude = "101",
@@ -59,6 +60,7 @@ public class HomesControllerTest
         home.Latitude.Should().Be("101");
         home.Longitude.Should().Be("202");
         home.MaxMembers.Should().Be(3);
+        home.Alias.Should().Be("Home 1");
         home.Owner.Name.Should().Be("Owner Name");
         home.Devices.Should().BeEmpty();
     }
@@ -155,6 +157,7 @@ public class HomesControllerTest
             Number = "3",
             Latitude = "141",
             Longitud = "231",
+            Alias = "Home 1",
             MaxMembers = 1
         };
 
@@ -178,6 +181,7 @@ public class HomesControllerTest
             Number = null,
             Latitude = "141",
             Longitud = "231",
+            Alias = "Home 1",
             MaxMembers = 1
         };
 
@@ -198,6 +202,7 @@ public class HomesControllerTest
         var request = new CreateHomeRequest()
         {
             Street = "calle",
+            Alias = "Home 1",
             Number = "3",
             Latitude = null
         };
@@ -224,6 +229,7 @@ public class HomesControllerTest
         {
             Street = "calle",
             Number = "3",
+            Alias = "Home 1",
             Latitude = "141",
             Longitud = null
         };
@@ -248,6 +254,7 @@ public class HomesControllerTest
             Number = "3",
             Latitude = "141",
             Longitud = "231",
+            Alias = "Home 1",
             MaxMembers = 0
         };
 
@@ -257,6 +264,33 @@ public class HomesControllerTest
         };
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        _controller.Create(request);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHome_WhenAliasIsNull_ShouldThrowException()
+    {
+        var request = new CreateHomeRequest()
+        {
+            Street = "calle",
+            Number = "3",
+            Latitude = "141",
+            Longitud = "231",
+            Alias = null,
+            MaxMembers = 1
+        };
+
+        var owner = new HomeOwner
+        {
+            Id = "Owner123",
+            Name = "John Doe",
+            Role = RolesGenerator.HomeOwner()
+        };
+
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
 
         _controller.Create(request);
     }
@@ -272,6 +306,7 @@ public class HomesControllerTest
             Latitude = "101",
             Longitud = "202",
             MaxMembers = 3,
+            Alias = "Home 1"
         };
 
         var owner = new HomeOwner
@@ -401,6 +436,75 @@ public class HomesControllerTest
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
         _controller.NotificatedMembers("homeIe", null);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void UpdateHomeAlias_WhenRequestIsNulll_ShouldThrowEsception()
+    {
+        _controller.UpdateHome(null, null);
+    }
+
+    [TestMethod]
+    public void UpdateHomeAlias_WhenRequestIsValid_ShouldReturnUpdatedAlias()
+    {
+        var user = new HomeOwner()
+        {
+            Id = "user123",
+            Name = "John Doe"
+        };
+
+        var home = new Home
+        {
+            Id = "home123",
+            Alias = "Home 1",
+            Owner = user
+        };
+
+        var updatedHome = new Home
+        {
+            Id = "home123",
+            Alias = "updatedAlias",
+            Owner = user
+        };
+
+        var req = new UpdateHomeRequest() { Alias = "updatedAlias" };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _homeServiceMock.Setup(service => service.UpdateHome(home.Id, "updatedAlias", user)).Returns(updatedHome);
+
+        _controller.UpdateHome("home123", req);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateHomeAlias_WhenAliasIsNull_ShouldThrowException()
+    {
+        var user = new HomeOwner()
+        {
+            Id = "user123",
+            Name = "John Doe"
+        };
+
+        var home = new Home
+        {
+            Id = "home123",
+            Alias = "Home 1",
+            Owner = user
+        };
+
+        var req = new UpdateHomeRequest() { Alias = null };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _homeServiceMock.Setup(service => service.UpdateHome(home.Id, null, user)).Throws(new ArgumentNullException("Alias can not be null"));
+
+        _controller.UpdateHome("home123", req);
     }
 
     [TestMethod]

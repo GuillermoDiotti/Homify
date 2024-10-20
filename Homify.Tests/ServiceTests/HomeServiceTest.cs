@@ -39,7 +39,7 @@ public class HomeServiceTest
             Role = RolesGenerator.HomeOwner()
         };
 
-        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner);
+        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");
 
         var result = _homeService.AddHome(createHomeArgs);
 
@@ -50,6 +50,7 @@ public class HomeServiceTest
             h.Street == createHomeArgs.Street &&
             h.MaxMembers == createHomeArgs.MaxMembers &&
             h.Owner == owner &&
+            h.Alias == createHomeArgs.Alias &&
             h.OwnerId == owner.Id)), Times.Once);
 
         Assert.IsNotNull(result);
@@ -405,5 +406,33 @@ public class HomeServiceTest
         _deviceService.Setup(service => service.GetById(deviceid)).Returns((Device)null);
 
         _homeService.UpdateHomeDevices(deviceid, homeid, user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateHome_WhenUserIsNotOwner_ShouldThrowException()
+    {
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home { Id = "homeId", OwnerId = "ownerId" });
+
+        _homeService.UpdateHome("homeId", "alias", new User { Id = "userId" });
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateHome_WhenAliasIsNull_ShouldThrowException()
+    {
+        _homeService.UpdateHome("homeId", null, new User { Id = "userId" });
+    }
+
+    [TestMethod]
+    public void UpdateHome_When_ShouldUpdateHome()
+    {
+        var newAlias = "newAlias";
+        var oldAlias = "oldAlias";
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home { Id = "homeId", OwnerId = "ownerId", Alias = "oldAlias" });
+
+        var reult = _homeService.UpdateHome("homeId", newAlias, new User { Id = "ownerId" });
+
+        Assert.AreEqual(newAlias, reult.Alias);
     }
 }
