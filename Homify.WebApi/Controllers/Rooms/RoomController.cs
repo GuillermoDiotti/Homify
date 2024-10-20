@@ -29,8 +29,11 @@ public class RoomController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
+        var owner = GetUserLogged() as HomeOwner;
+
         var arguments = new CreateRoomArgs(
+            request.Name ?? string.Empty,
             homeId ?? string.Empty,
-            request.Name ?? string.Empty);
+            owner);
     }
 }

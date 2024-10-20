@@ -5,10 +5,11 @@ namespace Homify.DataAccess.Repositories.Rooms.Entities;
 
 public class CreateRoomArgs
 {
-    public readonly string HomeId;
     public readonly string Name;
+    public readonly string HomeId;
+    public readonly HomeOwner Owner;
 
-    public CreateRoomArgs(string homeId, string name)
+    public CreateRoomArgs(string name, string homeId, HomeOwner? owner)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -20,7 +21,13 @@ public class CreateRoomArgs
             throw new NullReferenceException("HomeId can not be null");
         }
 
-        HomeId = homeId;
+        if (owner == null)
+        {
+            throw new NullReferenceException("Owner can not be null");
+        }
+
         Name = name;
+        HomeId = homeId;
+        Owner = owner;
     }
 }
