@@ -1,5 +1,6 @@
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Homes;
+using Homify.BusinessLogic.Homes.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 
@@ -46,6 +47,27 @@ public class RoomService : IRoomService
 
     public Room AssignHomeDeviceToRoom(UpdateRoomArgs args)
     {
-        throw new NotImplementedException();
+        var homeDevice = _homeDeviceService.GetHomeDeviceById(args.HomeDeviceId);
+
+        var home = homeDevice.Home;
+
+        var room = GetRoomById(args.RoomId);
+
+        if (!ExistsRoomHome(room, home))
+        {
+            throw new InvalidOperationException("The homeDevice doesn't belong to the room's home");
+        }
+
+        return null;
+    }
+
+    public bool ExistsRoomHome(Room room, Home home)
+    {
+        return room.Home.Equals(home);
+    }
+
+    public Room GetRoomById(string id)
+    {
+        return _roomRepository.Get(r => r.Id == id);
     }
 }
