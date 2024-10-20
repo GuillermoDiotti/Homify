@@ -439,6 +439,7 @@ public class HomesControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeAlias_WhenRequestIsValid_ShouldReturnUpdatedAliases()
     {
         _controller.UpdateHome(null);

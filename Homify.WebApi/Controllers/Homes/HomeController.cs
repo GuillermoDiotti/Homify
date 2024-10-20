@@ -220,4 +220,13 @@ public sealed class HomeController : HomifyControllerBase
         var newMembersToNotify = _homeService.UpdateNotificatedList(homeId, request.HomeUserId, user);
         return new NotificatedMembersResponse(newMembersToNotify);
     }
+
+    [HttpPatch()]
+    public void UpdateHome(UpdateHomeRequest req)
+    {
+        if (req == null)
+        {
+            throw new NullRequestException("Request can not be null");
+        }
+    }
 }
