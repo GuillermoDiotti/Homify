@@ -30,6 +30,7 @@ public class RoomController
         }
 
         var arguments = new CreateRoomArgs(
-            homeId ?? string.Empty);
+            homeId ?? string.Empty,
+            request.Name ?? string.Empty);
     }
 }
