@@ -39,4 +39,17 @@ public class RoomController : HomifyControllerBase
         var room = _roomService.AddHomeRoom(arguments);
         return new CreateRoomResponse(room.Id);
     }
+
+    [HttpPut("{roomId}/{homeDeviceId}")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public void AssignHomeDeviceToRoom([FromRoute] string roomId, [FromRoute] string homeDeviceId)
+    {
+        var owner = GetUserLogged() as HomeOwner;
+
+        if (roomId == null)
+        {
+            throw new NullReferenceException("RoomId can not be null");
+        }
+    }
 }

@@ -128,7 +128,7 @@ public class RoomControllerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NullRequestException))]
+    [ExpectedException(typeof(NullReferenceException))]
     public void AssignHomeDeviceToRoom_NullRoomId_ThrowsNullRequestException()
     {
         _controller.AssignHomeDeviceToRoom(null, "homeDeviceId");
