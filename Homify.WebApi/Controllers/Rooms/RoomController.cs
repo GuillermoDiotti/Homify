@@ -10,7 +10,7 @@ namespace Homify.WebApi.Controllers.Rooms;
 
 [ApiController]
 [Route("rooms")]
-public class RoomController
+public class RoomController : HomifyControllerBase
 {
     private readonly IRoomService _roomService;
 

@@ -1,7 +1,9 @@
 using Homify.DataAccess.Repositories.Rooms;
 using Homify.Exceptions;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.Rooms;
 using Homify.WebApi.Controllers.Rooms.Models;
+using Microsoft.AspNetCore.Http;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -45,6 +47,22 @@ public class RoomControllerTest
         var request = new CreateRoomRequest
         {
             Name = null
+        };
+
+        _controller.Create(request, "id");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void Create_NullOwner_ThrowsArgumentNullException()
+    {
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = null;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        var request = new CreateRoomRequest
+        {
+            Name = "name"
         };
 
         _controller.Create(request, "id");
