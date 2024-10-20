@@ -1,5 +1,6 @@
 using Homify.BusinessLogic.HomeOwners;
 using Homify.DataAccess.Repositories.Rooms;
+using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Filters;
@@ -28,6 +29,7 @@ public class RoomController
             throw new NullRequestException("Request can not be null");
         }
 
-        ArgumentNullException.ThrowIfNull(homeId);
+        var arguments = new CreateRoomArgs(
+            homeId ?? string.Empty);
     }
 }

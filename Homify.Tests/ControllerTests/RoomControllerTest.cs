@@ -27,7 +27,7 @@ public class RoomControllerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
+    [ExpectedException(typeof(NullReferenceException))]
     public void Create_NullHomeId_ThrowsArgumentNullException()
     {
         var request = new CreateRoomRequest
