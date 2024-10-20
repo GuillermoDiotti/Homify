@@ -1,7 +1,9 @@
+using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.DataAccess.Repositories.Rooms;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Moq;
@@ -11,16 +13,18 @@ namespace Homify.Tests.ServiceTests;
 [TestClass]
 public class RoomServiceTest
 {
-    private Mock<IHomeService> _mockHomeService;
-    private Mock<IRepository<Room>> _mockRoomRepository;
-    private RoomService _roomService;
+    private Mock<IHomeService>? _mockHomeService;
+    private Mock<IHomeDeviceService>? _mockHomeDeviceService;
+    private Mock<IRepository<Room>>? _mockRoomRepository;
+    private RoomService? _roomService;
 
     [TestInitialize]
     public void Setup()
     {
         _mockHomeService = new Mock<IHomeService>();
+        _mockHomeDeviceService = new Mock<IHomeDeviceService>();
         _mockRoomRepository = new Mock<IRepository<Room>>();
-        _roomService = new RoomService(_mockHomeService.Object, _mockRoomRepository.Object);
+        _roomService = new RoomService(_mockRoomRepository.Object, _mockHomeService.Object, _mockHomeDeviceService.Object);
     }
 
     [TestMethod]
