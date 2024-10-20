@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Rooms\Entities\" />
+    </ItemGroup>
+
 </Project>
