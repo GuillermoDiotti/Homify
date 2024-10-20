@@ -27,6 +27,12 @@ public class RoomService : IRoomService
             throw new NotFoundException("Home not found");
         }
 
+        var duplicate = _roomRepository.Get(x => x.Name == args.Name && x.HomeId == args.HomeId);
+        if (duplicate != null)
+        {
+            throw new InvalidOperationException("Room name already exists in that house");
+        }
+
         return null;
     }
 

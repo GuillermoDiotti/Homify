@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
@@ -34,6 +36,20 @@ public class RoomServiceTest
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
         _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns((Home)null);
+
+        _roomService.AddHomeRoom(args);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void AddHomeRoom_RoomNameAlreadyExists_ThrowsInvalidOperationException()
+    {
+        var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
+        var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
+
+        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+        _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>()))
+            .Returns(new Room { Name = "Living Room", HomeId = "home123" });
 
         _roomService.AddHomeRoom(args);
     }
