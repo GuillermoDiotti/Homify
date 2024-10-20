@@ -33,6 +33,11 @@ public class RoomService : IRoomService
             throw new InvalidOperationException("Room name already exists in that house");
         }
 
+        if (home.Owner.Id != args.Owner.Id)
+        {
+            throw new InvalidOperationException("You are not the owner of this home");
+        }
+
         return null;
     }
 
