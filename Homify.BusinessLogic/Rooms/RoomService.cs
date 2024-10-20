@@ -38,7 +38,10 @@ public class RoomService : IRoomService
             throw new InvalidOperationException("You are not the owner of this home");
         }
 
-        return null;
+        var room = new Room(args.Name, home);
+
+        _roomRepository.Add(room);
+        return room;
     }
 
     public Room AssignHomeDeviceToRoom(UpdateRoomArgs args)
