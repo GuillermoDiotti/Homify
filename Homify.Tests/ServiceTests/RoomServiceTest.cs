@@ -147,4 +147,24 @@ public class RoomServiceTest
 
         _roomService.AssignHomeDeviceToRoom(args);
     }
+
+    [TestMethod]
+    public void AssignHomeDeviceToRoom_ValidRequest_AssignsDeviceToRoomSuccessfully()
+    {
+        var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
+        var homeDevice = new HomeDevice { Id = "device123", Home = home };
+
+        var room = new Room { Id = "room123", Home = home, Devices = new List<HomeDevice>() };
+
+        var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
+
+        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room);
+        _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(new List<Room> { room });
+
+        var result = _roomService.AssignHomeDeviceToRoom(args);
+
+        Assert.IsTrue(result.Devices.Contains(homeDevice));
+        _mockRoomRepository.Verify(r => r.Update(room), Times.Once);
+    }
 }
