@@ -222,7 +222,9 @@ public sealed class HomeController : HomifyControllerBase
         return new NotificatedMembersResponse(newMembersToNotify);
     }
 
-    [HttpPatch("{homeId}")]
+    [HttpPatch("{homeId}/update")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
         if (req == null)
