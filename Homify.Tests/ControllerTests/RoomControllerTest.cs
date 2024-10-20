@@ -1,4 +1,6 @@
+using Homify.BusinessLogic.HomeOwners;
 using Homify.DataAccess.Repositories.Rooms;
+using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Rooms;
@@ -66,5 +68,36 @@ public class RoomControllerTest
         };
 
         _controller.Create(request, "id");
+    }
+
+    [TestMethod]
+    public void Create_ValidRequest_CallsRoomServiceAddHomeRoom()
+    {
+        var request = new CreateRoomRequest
+        {
+            Name = "Living Room"
+        };
+        var homeId = "testHomeId";
+
+        var mockOwner = new HomeOwner()
+        {
+            Id = "ownerId"
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = mockOwner;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>()))
+            .Returns(new Room { Id = homeId });
+
+        var response = _controller.Create(request, homeId);
+
+        _mockRoomService.Verify(s => s.AddHomeRoom(It.Is<CreateRoomArgs>(args => 
+                args.Name == request.Name &&
+                args.HomeId == homeId &&
+                args.Owner == mockOwner)),
+            Times.Once);
+        Assert.AreEqual("roomId", response.RoomId);
     }
 }
