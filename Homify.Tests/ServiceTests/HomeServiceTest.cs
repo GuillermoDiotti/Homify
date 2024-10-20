@@ -423,4 +423,16 @@ public class HomeServiceTest
     {
         _homeService.UpdateHome("homeId", null, new User { Id = "userId" });
     }
+
+    [TestMethod]
+    public void UpdateHome_When_ShouldUpdateHome()
+    {
+        var newAlias = "newAlias";
+        var oldAlias = "oldAlias";
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home{ Id = "homeId", OwnerId = "ownerId", Alias = "oldAlias" });
+
+        var reult = _homeService.UpdateHome("homeId", newAlias, new User { Id = "ownerId" });
+
+        Assert.AreEqual(newAlias, reult.Alias);
+    }
 }
