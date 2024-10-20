@@ -440,8 +440,40 @@ public class HomesControllerTest
 
     [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
-    public void UpdateHomeAlias_WhenRequestIsValid_ShouldReturnUpdatedAliases()
+    public void UpdateHomeAlias_WhenRequestIsNulll_ShouldThrowEsception()
     {
+        _controller.UpdateHome(null, null);
+    }
+
+    [TestMethod]
+    public void UpdateHomeAlias_WhenRequestIsValid_ShouldReturnUpdatedAlias()
+    {
+        var home = new Home
+        {
+            Id = "home123",
+            Alias = "Home 1"
+        };
+
+        var updatedHome = new Home
+        {
+            Id = "home123",
+            Alias = "updatedAlias"
+        };
+
+        var req = new UpdateHomeRequest() { Alias = "updatedAlias" };
+
+        var user = new User
+        {
+            Id = "user123",
+            Name = "John Doe"
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _homeServiceMock.Setup(service => service.UpdateHome(homeId, req, user)).Returns(updatedHome);
+
         _controller.UpdateHome(null);
     }
 

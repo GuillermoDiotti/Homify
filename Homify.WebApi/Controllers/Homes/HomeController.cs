@@ -7,6 +7,7 @@ using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Filters;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homify.WebApi.Controllers.Homes;
@@ -221,12 +222,14 @@ public sealed class HomeController : HomifyControllerBase
         return new NotificatedMembersResponse(newMembersToNotify);
     }
 
-    [HttpPatch()]
-    public void UpdateHome(UpdateHomeRequest req)
+    [HttpPatch("{homeId}")]
+    public IActionResult UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
         if (req == null)
         {
             throw new NullRequestException("Request can not be null");
         }
+
+        return Ok();
     }
 }
