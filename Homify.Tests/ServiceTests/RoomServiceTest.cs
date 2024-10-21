@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
@@ -136,14 +135,14 @@ public class RoomServiceTest
         var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
         var homeDevice = new HomeDevice { Id = "device123", Home = home };
 
-        var room1 = new Room { Id = "room123", Home = home, Devices = new List<HomeDevice> { homeDevice } };
-        var room2 = new Room { Id = "room456", Home = home, Devices = new List<HomeDevice>() };
+        var room1 = new Room { Id = "room123", Home = home, Devices = [homeDevice] };
+        var room2 = new Room { Id = "room456", Home = home, Devices = [] };
 
         var args = new UpdateRoomArgs("room456", "device123", new HomeOwner { Id = "owner123" });
 
         _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room2);
-        _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(new List<Room> { room1, room2 });
+        _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns([room1, room2]);
 
         _roomService.AssignHomeDeviceToRoom(args);
     }
@@ -160,7 +159,7 @@ public class RoomServiceTest
 
         _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room);
-        _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(new List<Room> { room });
+        _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns([room]);
 
         var result = _roomService.AssignHomeDeviceToRoom(args);
 

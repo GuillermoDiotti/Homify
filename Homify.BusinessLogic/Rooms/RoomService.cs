@@ -68,7 +68,7 @@ public class RoomService : IRoomService
             throw new InvalidOperationException("You are not the owner of this home");
         }
 
-        if (ExistsDeviceInOtherRoom(room, homeDevice))
+        if (ExistsDeviceInOtherRoom(homeDevice))
         {
             throw new InvalidOperationException("The device is already in another room of the house");
         }
@@ -89,7 +89,7 @@ public class RoomService : IRoomService
         return _roomRepository.Get(r => r.Id == id);
     }
 
-    public bool ExistsDeviceInOtherRoom(Room room, HomeDevice homeDevice)
+    public bool ExistsDeviceInOtherRoom(HomeDevice homeDevice)
     {
         foreach (var r in GetAll())
         {
