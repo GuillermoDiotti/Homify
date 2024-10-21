@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.DataAccess.Repositories.Rooms.Entities;
 
 namespace Homify.BusinessLogic.Homes.Entities;
 public class Home
@@ -15,6 +16,7 @@ public class Home
     public HomeOwner Owner { get; set; } = null!;
     public List<HomeDevice> Devices { get; set; } = null!;
     public List<HomeUser> Members { get; set; } = null!;
+    public List<Room>? Rooms { get; set; } = null!;
 
     public string OwnerId { get; set; } = null!;
 

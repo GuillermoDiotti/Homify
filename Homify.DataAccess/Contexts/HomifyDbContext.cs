@@ -15,6 +15,7 @@ using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
+using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Utility;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<SystemPermission> SystemPermissions { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RoleSystemPermission> RoleSystemPermissions { get; set; }
+    public DbSet<Room> Rooms { get; set; }
 
     public HomifyDbContext(DbContextOptions options)
         : base(options)

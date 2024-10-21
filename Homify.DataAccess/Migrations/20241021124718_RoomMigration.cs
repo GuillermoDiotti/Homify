@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,10 +6,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Homify.DataAccess.Migrations;
 
-[ExcludeFromCodeCoverage]
-
 /// <inheritdoc />
-public partial class MigrationFixx : Migration
+public partial class RoomMigration : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,8 +57,9 @@ public partial class MigrationFixx : Migration
                 Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                CreatedAt = table.Column<string>(type: "nvarchar(max)", nullable: false)
             },
             constraints: table =>
             {
@@ -136,8 +134,7 @@ public partial class MigrationFixx : Migration
             name: "HomeOwners",
             columns: table => new
             {
-                Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
             },
             constraints: table =>
             {
@@ -156,7 +153,7 @@ public partial class MigrationFixx : Migration
             {
                 Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 AuthToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
             },
             constraints: table =>
             {
@@ -165,7 +162,8 @@ public partial class MigrationFixx : Migration
                     name: "FK_Sessions_Users_UserId",
                     column: x => x.UserId,
                     principalTable: "Users",
-                    principalColumn: "Id");
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
@@ -195,6 +193,7 @@ public partial class MigrationFixx : Migration
             {
                 Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Alias = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -217,13 +216,16 @@ public partial class MigrationFixx : Migration
             columns: table => new
             {
                 Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Photos = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 PpalPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                IsActive = table.Column<bool>(type: "bit", nullable: false),
-                CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                MovementDetection = table.Column<bool>(type: "bit", nullable: false),
+                PeopleDetection = table.Column<bool>(type: "bit", nullable: false),
+                WindowDetection = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -263,6 +265,24 @@ public partial class MigrationFixx : Migration
             });
 
         migrationBuilder.CreateTable(
+            name: "Rooms",
+            columns: table => new
+            {
+                Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                HomeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Rooms", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_Rooms_Homes_HomeId",
+                    column: x => x.HomeId,
+                    principalTable: "Homes",
+                    principalColumn: "Id");
+            });
+
+        migrationBuilder.CreateTable(
             name: "Cameras",
             columns: table => new
             {
@@ -279,54 +299,6 @@ public partial class MigrationFixx : Migration
                     principalTable: "Devices",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
-            });
-
-        migrationBuilder.CreateTable(
-            name: "HomeDevices",
-            columns: table => new
-            {
-                HomeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                Connected = table.Column<bool>(type: "bit", nullable: false),
-                HardwareId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                MovementDetection = table.Column<bool>(type: "bit", nullable: false),
-                PeopleDetection = table.Column<bool>(type: "bit", nullable: false)
-            },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_HomeDevices", x => new { x.HomeId, x.DeviceId });
-                table.ForeignKey(
-                    name: "FK_HomeDevices_Devices_DeviceId",
-                    column: x => x.DeviceId,
-                    principalTable: "Devices",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
-                table.ForeignKey(
-                    name: "FK_HomeDevices_Homes_HomeId",
-                    column: x => x.HomeId,
-                    principalTable: "Homes",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Restrict);
-            });
-
-        migrationBuilder.CreateTable(
-            name: "Notifications",
-            columns: table => new
-            {
-                Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                Event = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                IsRead = table.Column<bool>(type: "bit", nullable: false),
-                Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-            },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_Notifications", x => x.Id);
-                table.ForeignKey(
-                    name: "FK_Notifications_Devices_DeviceId",
-                    column: x => x.DeviceId,
-                    principalTable: "Devices",
-                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
@@ -369,6 +341,68 @@ public partial class MigrationFixx : Migration
                     principalTable: "HomeUsers",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "HomeDevices",
+            columns: table => new
+            {
+                Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                HomeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                Connected = table.Column<bool>(type: "bit", nullable: false),
+                HardwareId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                IsActive = table.Column<bool>(type: "bit", nullable: false),
+                RoomId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_HomeDevices", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_HomeDevices_Devices_DeviceId",
+                    column: x => x.DeviceId,
+                    principalTable: "Devices",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+                table.ForeignKey(
+                    name: "FK_HomeDevices_Homes_HomeId",
+                    column: x => x.HomeId,
+                    principalTable: "Homes",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Restrict);
+                table.ForeignKey(
+                    name: "FK_HomeDevices_Rooms_RoomId",
+                    column: x => x.RoomId,
+                    principalTable: "Rooms",
+                    principalColumn: "Id");
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Notifications",
+            columns: table => new
+            {
+                Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                Event = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                HomeDeviceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                IsRead = table.Column<bool>(type: "bit", nullable: false),
+                Date = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                HomeUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                Detail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Notifications", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_Notifications_HomeDevices_HomeDeviceId",
+                    column: x => x.HomeDeviceId,
+                    principalTable: "HomeDevices",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+                table.ForeignKey(
+                    name: "FK_Notifications_HomeUsers_HomeUserId",
+                    column: x => x.HomeUserId,
+                    principalTable: "HomeUsers",
+                    principalColumn: "Id");
             });
 
         migrationBuilder.InsertData(
@@ -421,51 +455,61 @@ public partial class MigrationFixx : Migration
             columns: new[] { "RoleSystemPermissionId", "PermissionId", "RoleId" },
             values: new object[,]
             {
-                { "0f9e7c8d-9b63-40c5-b192-20aef9ec2e40", "1", "AdminId" },
-                { "14a15f97-c8d2-485d-bff9-9da35686c943", "13", "HomeOwnerId" },
-                { "182c2988-c26b-49d7-ade1-6a8b683afb9b", "16", "HomeOwnerId" },
-                { "1d724d49-75f2-4cd3-8a43-392ef102dc3d", "17", "HomeOwnerId" },
-                { "31ef4463-eeda-4f40-9022-e56684e5796b", "15", "HomeOwnerId" },
-                { "3835da06-2337-486e-97e5-86a2e1574a13", "4", "AdminId" },
-                { "3e7c2678-2baf-4f52-824d-29a7861a8d1e", "19", "HomeOwnerId" },
-                { "40ddbab5-508b-4c5f-b91a-9e26013185b5", "12", "HomeOwnerId" },
-                { "43dc8474-4b54-4256-aea8-c806e48029ef", "10", "HomeOwnerId" },
-                { "4aa7f886-f069-4748-af73-a333ece2da6a", "3", "AdminId" },
-                { "523712b1-3869-4449-a507-4a25f119a773", "9", "HomeOwnerId" },
-                { "59a8bbc5-fa4c-4bba-aef2-539c6bff19f5", "5", "AdminId" },
-                { "6c3da7ca-135b-4048-9c4c-53beacadd3e2", "7", "CompanyOwnerId" },
-                { "8c0ee6c7-67d5-4622-82d0-2b25fe625b11", "18", "HomeOwnerId" },
-                { "91d16098-f508-4c92-aa30-c5787c58f62e", "14", "HomeOwnerId" },
-                { "cdb331b3-c3d2-4e15-8713-aa50308ebb28", "2", "AdminId" },
-                { "d0694415-9327-42e7-b754-8c1b8e1037e0", "11", "HomeOwnerId" },
-                { "d3ff52f6-1410-4fda-887f-341b49248482", "6", "CompanyOwnerId" },
-                { "fcdab3d8-eb0a-4c5e-aad7-63d6b9887207", "8", "CompanyOwnerId" }
+                { "08764d78-27f6-42d0-967b-e238046f49f0", "16", "HomeOwnerId" },
+                { "176fcc86-bb03-4d6b-adee-6e3d67249ff7", "5", "AdminId" },
+                { "201bf294-9484-4f44-bcb9-ccc03eecb195", "8", "CompanyOwnerId" },
+                { "25f914f1-ad51-43d9-9874-440d63e0a51d", "19", "HomeOwnerId" },
+                { "27193b47-a305-440c-abfc-029f81109652", "11", "HomeOwnerId" },
+                { "36d111f7-4d62-4b51-97b7-4601568411e4", "18", "HomeOwnerId" },
+                { "4232f56f-217d-4e3c-b133-fbeb4ba8991c", "7", "CompanyOwnerId" },
+                { "7ed015ed-84d0-471e-968b-b6bb6029fd99", "14", "HomeOwnerId" },
+                { "844cdc2c-de12-4758-99ca-02633dcb9efe", "13", "HomeOwnerId" },
+                { "917d161f-e54e-4f1f-b02c-d48444a733c4", "6", "CompanyOwnerId" },
+                { "ab14c14e-7fa6-4fb9-9ed5-0e80d0b66d94", "15", "HomeOwnerId" },
+                { "ba97f7e7-414d-48fd-a341-0a7a48805833", "3", "AdminId" },
+                { "bd264121-97d4-4a05-94f0-df398fb0aee6", "17", "HomeOwnerId" },
+                { "da2b9eea-0041-43e3-af78-fc4fa588dec7", "1", "AdminId" },
+                { "dd3a4283-ea06-4ad0-b519-63d1ad2234a4", "10", "HomeOwnerId" },
+                { "f1cbb313-22f7-4c00-86f9-9c2ed71ba51e", "9", "HomeOwnerId" },
+                { "f3c61d5b-3e8c-4f39-bd36-5feecf54b860", "2", "AdminId" },
+                { "f550f58b-54c6-4872-adfd-9035fdf4c2e0", "4", "AdminId" },
+                { "fea3cee1-6a0b-4dcc-9da1-65316c7cc400", "12", "HomeOwnerId" }
             });
 
         migrationBuilder.InsertData(
             table: "Users",
-            columns: new[] { "Id", "CreatedAt", "Email", "LastName", "Name", "Password", "RoleId" },
+            columns: new[] { "Id", "CreatedAt", "Email", "LastName", "Name", "Password", "ProfilePicture", "RoleId" },
             values: new object[,]
             {
-                { "9dabf09e-60cb-43ba-b5c6-742604b52f88", new DateTimeOffset(new DateTime(2024, 10, 3, 17, 47, 37, 713, DateTimeKind.Unspecified).AddTicks(4395), new TimeSpan(0, 0, 0, 0, 0)), "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "HomeOwnerId" },
-                { "a36d69f4-96a9-4a0d-ad4f-ab108bf34e7e", new DateTimeOffset(new DateTime(2024, 10, 3, 17, 47, 37, 713, DateTimeKind.Unspecified).AddTicks(4381), new TimeSpan(0, 0, 0, 0, 0)), "admin@domain.com", "LastName", "Admin", ".Popso212", "AdminId" },
-                { "b0bd3b90-db41-4f35-bae3-5b0e97c653f4", new DateTimeOffset(new DateTime(2024, 10, 3, 17, 47, 37, 713, DateTimeKind.Unspecified).AddTicks(4401), new TimeSpan(0, 0, 0, 0, 0)), "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", "CompanyOwnerId" }
+                { "SeedAdminId", "21/10/2024", "admin@domain.com", "LastName", "Admin", ".Popso212", null, "AdminId" },
+                { "SeedCompanyOwnerId", "21/10/2024", "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", null, "CompanyOwnerId" },
+                { "SeedHomeOwnerId", "21/10/2024", "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "picture", "HomeOwnerId" }
             });
 
         migrationBuilder.InsertData(
             table: "Admins",
             column: "Id",
-            value: "a36d69f4-96a9-4a0d-ad4f-ab108bf34e7e");
+            value: "SeedAdminId");
 
         migrationBuilder.InsertData(
             table: "CompanyOwners",
             columns: new[] { "Id", "IsIncomplete" },
-            values: new object[] { "b0bd3b90-db41-4f35-bae3-5b0e97c653f4", true });
+            values: new object[] { "SeedCompanyOwnerId", true });
 
         migrationBuilder.InsertData(
             table: "HomeOwners",
-            columns: new[] { "Id", "ProfilePicture" },
-            values: new object[] { "9dabf09e-60cb-43ba-b5c6-742604b52f88", "picture" });
+            column: "Id",
+            value: "SeedHomeOwnerId");
+
+        migrationBuilder.InsertData(
+            table: "Sessions",
+            columns: new[] { "Id", "AuthToken", "UserId" },
+            values: new object[,]
+            {
+                { "SeedAdminSessionId", "SomeAdminToken123", "SeedAdminId" },
+                { "SeedCompanyOwnerSessionId", "SomeCompanyOwnerToken123", "SeedCompanyOwnerId" },
+                { "SeedHomeOwnerSessionId", "SomeHomeOwnerToken123", "SeedHomeOwnerId" }
+            });
 
         migrationBuilder.CreateIndex(
             name: "IX_Companies_OwnerId",
@@ -482,6 +526,16 @@ public partial class MigrationFixx : Migration
             name: "IX_HomeDevices_DeviceId",
             table: "HomeDevices",
             column: "DeviceId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_HomeDevices_HomeId",
+            table: "HomeDevices",
+            column: "HomeId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_HomeDevices_RoomId",
+            table: "HomeDevices",
+            column: "RoomId");
 
         migrationBuilder.CreateIndex(
             name: "IX_Homes_OwnerId",
@@ -509,9 +563,14 @@ public partial class MigrationFixx : Migration
             column: "UserId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Notifications_DeviceId",
+            name: "IX_Notifications_HomeDeviceId",
             table: "Notifications",
-            column: "DeviceId");
+            column: "HomeDeviceId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Notifications_HomeUserId",
+            table: "Notifications",
+            column: "HomeUserId");
 
         migrationBuilder.CreateIndex(
             name: "IX_RoleSystemPermissions_PermissionId",
@@ -522,6 +581,11 @@ public partial class MigrationFixx : Migration
             name: "IX_RoleSystemPermissions_RoleId",
             table: "RoleSystemPermissions",
             column: "RoleId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Rooms_HomeId",
+            table: "Rooms",
+            column: "HomeId");
 
         migrationBuilder.CreateIndex(
             name: "IX_Sessions_UserId",
@@ -544,9 +608,6 @@ public partial class MigrationFixx : Migration
             name: "Cameras");
 
         migrationBuilder.DropTable(
-            name: "HomeDevices");
-
-        migrationBuilder.DropTable(
             name: "HomeUserHomePermission");
 
         migrationBuilder.DropTable(
@@ -565,6 +626,9 @@ public partial class MigrationFixx : Migration
             name: "HomePermission");
 
         migrationBuilder.DropTable(
+            name: "HomeDevices");
+
+        migrationBuilder.DropTable(
             name: "HomeUsers");
 
         migrationBuilder.DropTable(
@@ -574,16 +638,19 @@ public partial class MigrationFixx : Migration
             name: "Devices");
 
         migrationBuilder.DropTable(
-            name: "Homes");
+            name: "Rooms");
 
         migrationBuilder.DropTable(
             name: "Companies");
 
         migrationBuilder.DropTable(
-            name: "HomeOwners");
+            name: "Homes");
 
         migrationBuilder.DropTable(
             name: "CompanyOwners");
+
+        migrationBuilder.DropTable(
+            name: "HomeOwners");
 
         migrationBuilder.DropTable(
             name: "Users");
