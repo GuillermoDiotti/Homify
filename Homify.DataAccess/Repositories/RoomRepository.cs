@@ -24,7 +24,7 @@ public class RoomRepository : Repository<Room>
     {
         if (predicate == null)
         {
-            return  _entities.Include(r => r.Devices)
+            return _entities.Include(r => r.Devices)
                 .Include(r => r.Home).ToList();
         }
 

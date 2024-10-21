@@ -153,7 +153,7 @@ public class RoomServiceTest
         var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
         var homeDevice = new HomeDevice { Id = "device123", Home = home };
 
-        var room = new Room { Id = "room123", Home = home, Devices = new List<HomeDevice>() };
+        var room = new Room { Id = "room123", Home = home, Devices = [] };
 
         var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
 

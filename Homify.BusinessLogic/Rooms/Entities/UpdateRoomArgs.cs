@@ -1,5 +1,4 @@
 using Homify.BusinessLogic.HomeOwners;
-using Homify.Exceptions;
 
 namespace Homify.DataAccess.Repositories.Rooms.Entities;
 
