@@ -6,10 +6,6 @@
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item nzMatchRouter nzIcon="idcard">
-        <a routerLink="/accept-invitations">Accept Invitation</a>
-      </li>
-
       <li nz-menu-item nzMatchRouter nzIcon="login">
         <a routerLink="/login">Login</a>
       </li>
@@ -17,19 +13,7 @@
       <li nz-submenu nzOpen nzTitle="Admin" nzIcon="crown">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/invitations">Invitations</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/administrators">Administrators</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/delete-manager">Delete Managers</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/categories">Categories</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/admin/reports">Reports</a>
+            <a routerLink="/admin">Admins</a>
           </li>
         </ul>
       </li>
