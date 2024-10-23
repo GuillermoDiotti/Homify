@@ -1,1 +1,115 @@
-<router-outlet/>
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null">
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item nzMatchRouter nzIcon="idcard">
+        <a routerLink="/accept-invitations">Accept Invitation</a>
+      </li>
+
+      <li nz-menu-item nzMatchRouter nzIcon="login">
+        <a routerLink="/login">Login</a>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Admin" nzIcon="crown">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/invitations">Invitations</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/administrators">Administrators</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/delete-manager">Delete Managers</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/categories">Categories</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/admin/reports">Reports</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Building Company Admin" nzIcon="tool">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/building-companies">New Building Company</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/modify-building-companies">Modify Building Company</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/buildings">Create Buildings</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/put-building">Modify Buildings</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/list-buildings">List Buildings</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/import-buildings">Import Buildings</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/modify-manager">Modify Manager</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Manager" nzIcon="team">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/maintenance">Maintenance</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="manager/view-services">View Services</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="manager/services">Create Services</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="manager/reports">Reports</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Maintainer" nzIcon="robot">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="maintainer/services">Services</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <span class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></span>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

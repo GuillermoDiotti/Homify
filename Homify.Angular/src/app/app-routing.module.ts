@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: 'admin',
-    loadChildren: () => import('./pages/admin-page/admin.module').then((m) => m.AdministratorModule),
-  },
-]
+  { path: 'admin', pathMatch: 'full', loadChildren: () => import('./pages/admin-page/admin.module').then(m => m.AdministratorModule)},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
