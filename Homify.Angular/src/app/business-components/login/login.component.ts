@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService, User } from '../../../services/session/Session.service';
+import { SessionService, User } from '../../../backend/services/session/Session.service';
 import { APIError } from '../../../interfaces/interfaces';
 
 @Component({
