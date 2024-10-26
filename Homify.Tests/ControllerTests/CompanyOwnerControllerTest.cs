@@ -1,13 +1,16 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.SystemPermissions;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.CompanyOwners;
 using Homify.WebApi.Controllers.CompanyOwners.Models;
+using Homify.WebApi.Controllers.CompanyOwners.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;

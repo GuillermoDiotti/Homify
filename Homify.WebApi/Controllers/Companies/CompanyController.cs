@@ -1,8 +1,12 @@
 ﻿using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Permissions;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Companies.Models;
+using Homify.WebApi.Controllers.Companies.Models.Requests;
+using Homify.WebApi.Controllers.Companies.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 

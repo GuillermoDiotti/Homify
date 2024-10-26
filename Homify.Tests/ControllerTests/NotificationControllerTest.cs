@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -9,6 +10,7 @@ using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Notifications;
 using Homify.WebApi.Controllers.Notifications.Models;
+using Homify.WebApi.Controllers.Notifications.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

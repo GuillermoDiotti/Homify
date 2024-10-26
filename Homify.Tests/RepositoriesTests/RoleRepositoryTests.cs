@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.SystemPermissions;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;

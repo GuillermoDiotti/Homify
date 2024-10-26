@@ -1,4 +1,6 @@
-﻿namespace Homify.BusinessLogic.Roles;
+﻿using Homify.BusinessLogic.Roles.Entities;
+
+namespace Homify.BusinessLogic.Roles;
 
 public interface IRoleService
 {

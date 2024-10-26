@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 

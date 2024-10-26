@@ -1,3 +1,4 @@
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.CompanyOwners;

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users.Entities;

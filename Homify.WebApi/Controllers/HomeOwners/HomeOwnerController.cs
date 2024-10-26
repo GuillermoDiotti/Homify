@@ -4,6 +4,8 @@ using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.HomeOwners.Models;
+using Homify.WebApi.Controllers.HomeOwners.Models.Requests;
+using Homify.WebApi.Controllers.HomeOwners.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 

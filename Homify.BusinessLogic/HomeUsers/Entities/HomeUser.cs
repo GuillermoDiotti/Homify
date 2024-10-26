@@ -1,4 +1,6 @@
 ﻿using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Permissions.HomePermissions;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.HomeUsers;
