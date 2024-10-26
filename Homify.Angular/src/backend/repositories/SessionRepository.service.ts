@@ -10,7 +10,7 @@ import CreateSessionResponse from "../services/session/models/CreateSessionRespo
 })
 export class SessionTypeApiRepositoryService {
   private readonly _endpoint = "sessions";
-  
+
   constructor(private readonly _http: HttpClient) {}
 
   public login(username: string, password: string): Observable<CreateSessionResponse> {
@@ -24,9 +24,10 @@ export class SessionTypeApiRepositoryService {
     if (error.error instanceof ErrorEvent) {
       console.error("An error occurred:", error.error.message);
       return throwError(error.error);
-    } else {
-      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
-      return throwError(error);
     }
+    else {
+      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+    }
+    return throwError(error);
   }
 }

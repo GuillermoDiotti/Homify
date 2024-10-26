@@ -1,0 +1,32 @@
+@if (currentUserToken){
+  <div class="div">
+    <span class="span">Welcome, <strong>{{ currentUserToken }}</strong>!</span>
+    <app-button
+    (click)="onLogout()"
+    >Logout</app-button>
+  </div>
+}
+@else {
+  <app-form [form]="loginForm" (onSubmit)="onSubmit($event)">
+    <app-form-input
+      type="text"
+      placeholder="email@example.com"
+      [name]="formField.email.name"
+      [form]="loginForm"
+      [formField]="formField" />
+
+    <app-form-input
+      type="password"
+      placeholder="*****"
+      [name]="formField.password.name"
+      [form]="loginForm"
+      [formField]="formField" />
+
+    <div *ngIf="loginStatus?.loading; else notLoading">Cargando...</div>
+
+    <ng-template #notLoading>
+      <div *ngIf="loginStatus?.error">{{ loginStatus!.error }}</div>
+      <app-form-button title="Login" />
+    </ng-template>
+  </app-form>
+}
