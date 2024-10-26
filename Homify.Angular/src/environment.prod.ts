@@ -1,0 +1,1 @@
+export default { homifyApi: "http://localhost:9000" };

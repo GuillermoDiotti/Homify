@@ -1,0 +1,34 @@
+@if (currentUserToken){
+  <div class="div">
+    <span class="span">Welcome, <strong>{{ currentUserToken }}</strong>!</span>
+    <app-button 
+    (click)="onLogout()"
+    >Logout</app-button>
+  </div>
+}
+@else {
+  <div class="login-container">
+    <h2>Login</h2>
+    <form class="form" (submit)="onSubmit($event)">
+      <div>
+        <app-input
+        [label]="'Email'"
+        [placeholder]="'user@example.com'"
+        [type]="'mail'"
+        [value]="username"
+        (valueChange)="onUsernameChange($event)">></app-input>
+      </div>
+      <div>
+        <app-input
+        [label]="'Password'"
+        [placeholder]="'123456789'"
+        [type]="'password'"
+        [value]="password"
+        (valueChange)="onPasswordChange($event)">></app-input>
+      </div>
+      <app-button 
+      [type]="'submit'" 
+      >Login</app-button>
+    </form>
+  </div>
+}

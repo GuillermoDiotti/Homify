@@ -36,6 +36,17 @@ builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var homifyConnectionString = configuration.GetConnectionString("Homify");
 if (string.IsNullOrEmpty(homifyConnectionString))
 {
@@ -96,6 +107,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularDev");
 
 app.UseAuthorization();
 
