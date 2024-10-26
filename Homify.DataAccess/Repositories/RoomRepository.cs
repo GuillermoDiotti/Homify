@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
@@ -17,7 +18,13 @@ public class RoomRepository : Repository<Room>
             .Include(r => r.Home)
             .Where(predicate);
 
-        return query.FirstOrDefault();
+        var room = query.FirstOrDefault();
+        if (room == null)
+        {
+            throw new NotFoundException("Room not found");
+        }
+
+        return room;
     }
 
     public override List<Room> GetAll(Expression<Func<Room, bool>>? predicate = null)
