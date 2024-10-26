@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
-import { SessionService, User } from '../../../../backend/services/session/Session.service';
-import { APIError } from '../../../../interfaces/interfaces';
+import { SessionService, User } from '../../../backend/services/session/Session.service';
+import { APIError } from '../../../interfaces/interfaces';
 
 @Component({
   selector: 'app-login',
