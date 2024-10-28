@@ -24,13 +24,12 @@ public class HomeDeviceService : IHomeDeviceService
 
         var homeDevice = new HomeDevice()
         {
-            Id = Guid.NewGuid().ToString(),
             HomeId = home.Id,
             DeviceId = device.Id,
             Device = device,
             Home = home,
             Connected = true,
-            HardwareId = Guid.NewGuid().ToString(),
+            CustomName = device.Name
         };
         _repository.Add(homeDevice);
         return homeDevice;

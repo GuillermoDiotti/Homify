@@ -18,5 +18,6 @@ public class HomeDevice
     public HomeDevice()
     {
         Id = Guid.NewGuid().ToString();
+        HardwareId = Guid.NewGuid().ToString();
     }
 }

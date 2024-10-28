@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
@@ -97,5 +98,15 @@ public class HomeDeviceServiceTest
     public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
         _homeDeviceService.UpdateHomeDevice("NewName", null);
+    }
+
+    [TestMethod]
+    public void UpdateName_WhenInfoValid_UpdatesName()
+    {
+        _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(new HomeDevice());
+        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idDevice");
+
+        response.Id.Should().Be("idDevice");
     }
 }
