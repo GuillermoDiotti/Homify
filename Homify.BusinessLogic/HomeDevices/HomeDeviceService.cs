@@ -67,11 +67,15 @@ public class HomeDeviceService : IHomeDeviceService
     public HomeDevice UpdateHomeDevice(string name, string id)
     {
         var device = GetHomeDeviceById(id);
+
         if(device == null)
         {
             throw new NotFoundException("HomeDevice not found");
         }
 
-        return null;
+        device.CustomName = name;
+        _repository.Update(device);
+
+        return device;
     }
 }
