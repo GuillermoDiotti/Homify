@@ -17,6 +17,9 @@ public class HomeDeviceController
     [AuthenticationFilter]
     public string UpdateHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
-        throw new NullRequestException();
+        if (req == null)
+        {
+            throw new NullRequestException("Request cannot null");
+        }
     }
 }
