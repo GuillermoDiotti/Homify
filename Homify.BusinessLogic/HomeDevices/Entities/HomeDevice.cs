@@ -1,10 +1,12 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using System.Runtime.CompilerServices;
+using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Homes.Entities;
 
 namespace Homify.BusinessLogic.HomeDevices.Entities;
 public class HomeDevice
 {
     public string Id { get; set; } = null!;
+    public string? CustomName { get; set; }
     public string HomeId { get; set; } = null!;
     public string DeviceId { get; set; } = null!;
     public Home Home { get; set; } = null!;
@@ -12,4 +14,10 @@ public class HomeDevice
     public bool Connected { get; set; }
     public string HardwareId { get; set; } = null!;
     public bool IsActive { get; set; }
+
+    public HomeDevice()
+    {
+        Id = Guid.NewGuid().ToString();
+        CustomName = Device.Name;
+    }
 }
