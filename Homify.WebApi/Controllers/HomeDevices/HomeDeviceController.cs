@@ -26,6 +26,11 @@ public class HomeDeviceController : HomifyControllerBase
             throw new NullRequestException("Request cannot null");
         }
 
+        if(req.CustomName == null)
+        {
+            throw new ArgumentNullException("CustomName cannot be null");
+        }
+
         var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id);
 
         return device.Id;
