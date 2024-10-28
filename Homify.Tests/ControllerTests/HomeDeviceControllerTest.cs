@@ -35,6 +35,15 @@ public class HomeDeviceControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateHomeDevice_WhenRequestNameIsNull_ThrowsException()
+    {
+        var req = new UpdateHomeDeviceRequest() { CustomName = null };
+
+        _controller.UpdateHomeDevice(req, null);
+    }
+
+    [TestMethod]
     public void UpdateHomeDevice_WhenRequestIsValid_UpdatesDevice()
     {
         var owner = new HomeOwner
