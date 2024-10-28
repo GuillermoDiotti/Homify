@@ -67,6 +67,12 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice UpdateHomeDevice(string name, string id)
     {
-        throw new NotImplementedException();
+        var device = GetHomeDeviceById(id);
+        if(device == null)
+        {
+            throw new NotFoundException("HomeDevice not found");
+        }
+
+        return null;
     }
 }

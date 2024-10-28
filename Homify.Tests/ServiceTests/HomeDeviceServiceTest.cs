@@ -93,8 +93,8 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgsNullException))]
-    public void UpdateName_WhenIdHomeDeviceIsNull_ThrowsException()
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
         _homeDeviceService.UpdateHomeDevice("NewName", null);
     }
