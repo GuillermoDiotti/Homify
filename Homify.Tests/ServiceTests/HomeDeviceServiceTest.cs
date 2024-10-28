@@ -91,4 +91,11 @@ public class HomeDeviceServiceTest
 
         _homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once, "The repository update method should be called once.");
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void UpdateName_WhenIdHomeDeviceIsNull_ThrowsException()
+    {
+        _homeDeviceService.UpdateHomeDevice("NewName", null);
+    }
 }
