@@ -6,7 +6,7 @@ namespace Homify.BusinessLogic.HomeDevices.Entities;
 public class HomeDevice
 {
     public string Id { get; set; } = null!;
-    public string? CustomName { get; set; }
+    public string? CustomName { get; set; } = null!;
     public string HomeId { get; set; } = null!;
     public string DeviceId { get; set; } = null!;
     public Home Home { get; set; } = null!;
@@ -18,6 +18,5 @@ public class HomeDevice
     public HomeDevice()
     {
         Id = Guid.NewGuid().ToString();
-        CustomName = Device.Name;
     }
 }

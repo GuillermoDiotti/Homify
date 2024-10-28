@@ -1,3 +1,4 @@
+using Homify.BusinessLogic.HomeDevices;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Filters;
@@ -7,10 +8,13 @@ namespace Homify.WebApi.Controllers.HomeDevices;
 
 [ApiController]
 [Route("home-devices")]
-public class HomeDeviceController
+public class HomeDeviceController : HomifyControllerBase
 {
-    public HomeDeviceController()
+    private readonly IHomeDeviceService _homeDeviceService;
+
+    public HomeDeviceController(IHomeDeviceService homeDeviceService)
     {
+        _homeDeviceService = homeDeviceService;
     }
 
     [HttpPut("{id}/update")]
@@ -22,6 +26,8 @@ public class HomeDeviceController
             throw new NullRequestException("Request cannot null");
         }
 
-        return string.Empty;
+        var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id);
+
+        return device.Id;
     }
 }

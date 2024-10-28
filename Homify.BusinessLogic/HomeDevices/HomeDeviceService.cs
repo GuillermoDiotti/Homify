@@ -64,4 +64,9 @@ public class HomeDeviceService : IHomeDeviceService
     {
         return _repository.Get(x => x.Id == id);
     }
+
+    public HomeDevice UpdateHomeDevice(string name, string id)
+    {
+        throw new NotImplementedException();
+    }
 }
