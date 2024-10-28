@@ -1,5 +1,7 @@
+using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeDevices;
+using Homify.WebApi.Controllers.HomeDevices.Models;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -17,7 +19,14 @@ public class HomeDeviceControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevice_WhenRequestIsNull_ThrowsException()
     {
-        HomeDeviceController _controller = new HomeDeviceController();
         _controller.UpdateHomeDevice(null, null);
+    }
+
+    [TestMethod]
+    public void UpdateHomeDevice_WhenRequestIsValid_UpdatesDevice()
+    {
+        var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
+        _HomeDeviceMock.Setup(x => x.UpdateHomeDevice(req, "idDevice")).Returns(new HomeDevice() { CustomName = "NewName" } );
+        _controller.UpdateHomeDevice(req, "idDevice");
     }
 }

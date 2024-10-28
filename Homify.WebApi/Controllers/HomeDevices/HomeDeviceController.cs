@@ -21,5 +21,7 @@ public class HomeDeviceController
         {
             throw new NullRequestException("Request cannot null");
         }
+
+        return string.Empty;
     }
 }
