@@ -1,0 +1,29 @@
+<div>
+	<h2>Listado de cuentas</h2>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (accounts.length > 0) {
+  <ul>
+    @for (account of accounts; track $index) {
+    <li>
+      <strong>ID:</strong> {{ account.id }} <br />
+      <strong>Nombre:</strong> {{ account.name }} <br />
+      <strong>Apellido:</strong> {{ account.lastName }} <br />
+      <strong>Nombre Completo:</strong> {{ account.fullName }} <br />
+      <div>
+        <strong>Rol:</strong> {{ account.role }} <br />
+        @if (account.role === 'ADMINISTRATOR') {
+        <app-delete-admin-button
+          [adminId]="account.id"
+        ></app-delete-admin-button>
+        }
+      </div>
+      <strong>Creado:</strong> {{ account.createdAt }} <br />
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>No hay cuentas disponibles.</p>
+  }
+</div>

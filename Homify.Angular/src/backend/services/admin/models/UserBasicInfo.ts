@@ -1,8 +1,8 @@
 export default interface UserBasicInfo {
-    Id: string;
-    Name: string;
-    LastName: string;
-    FullName: string;
-    Role: string;
-    CreatedAt: string;
+    id: string;
+    name: string;
+    lastName: string;
+    fullName: string;
+    role: string;
+    createdAt: string;
 }
