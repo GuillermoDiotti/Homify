@@ -1,0 +1,47 @@
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="name"
+    type="text"
+    label="Name"
+    placeholder="Enter your name"
+    [formField]="{
+      name: { required: 'Name is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="email"
+    type="text"
+    label="Email"
+    placeholder="Enter your email"
+    [formField]="{
+      email: { required: 'Email is required', email: 'Invalid email format' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="password"
+    type="password"
+    label="Password"
+    placeholder="Enter your password"
+    [formField]="{
+      password: { required: 'Password is required', minlength: 'Minimum length is 6 characters' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="lastName"
+    type="text"
+    label="Last Name"
+    placeholder="Enter your last name"
+    [formField]="{
+      lastName: { required: 'Last name is required' }
+    }"
+  ></app-form-input>
+
+  <button type="submit">Submit</button>
+</form>

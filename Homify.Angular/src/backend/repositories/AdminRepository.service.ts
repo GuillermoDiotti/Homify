@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, catchError } from "rxjs";
 import ApiRepository from "./api-repository";
 import { environment } from "../../environment";
-import CreateAdminRequest from "../services/admin/models/CreateAdminRequest";
+import { CreateAdminRequest } from "../services/admin/models/CreateAdminRequest";
 import CreateAdminResponse from "../services/admin/models/CreateAdminResponse";
 import UserBasicInfo from "../services/admin/models/UserBasicInfo";
 

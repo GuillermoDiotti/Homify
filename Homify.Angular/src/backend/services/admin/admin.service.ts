@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AdminTypeApiRepositoryService } from '../../repositories/AdminRepository.service';
-import CreateAdminRequest from './models/CreateAdminRequest';
+import { CreateAdminRequest } from './models/CreateAdminRequest';
 import CreateAdminResponse from './models/CreateAdminResponse';
 import { Observable } from 'rxjs';
 import UserBasicInfo from './models/UserBasicInfo';

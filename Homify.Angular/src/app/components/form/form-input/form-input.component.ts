@@ -13,7 +13,7 @@ import { NgIf } from "@angular/common";
 export class FormInputComponent {
   @Input() type: "text" | "number" | "password" = "text";
   @Input() label: string | null = null;
-  @Input() placeholder: string | null = null;
+  @Input() placeholder: string = "";
   @Input({ required: true }) name!: string;
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) formField!: any;
