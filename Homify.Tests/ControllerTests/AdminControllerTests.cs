@@ -284,31 +284,6 @@ public class UserControllerTests
 
     #endregion
 
-    #region Get
-
-    [TestMethod]
-    public void GetUser_WhenUserIdIsOk_ShouldReturnUser()
-    {
-        var testUser = new User();
-        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Returns(testUser);
-
-        var response = _controller.GetById(testUser.Id);
-
-        response.Should().NotBeNull();
-        response.Id.Should().NotBeNull();
-        response.Id.Should().NotBeEmpty();
-        response.Id.Should().Be(testUser.Id);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void GetUser_WhenUserIdIsNull_ShouldThrowException()
-    {
-        _controller.GetById(null!);
-    }
-
-    #endregion
-
     [TestMethod]
     public void AllAccounts_WhenLimitAndOffsetAreValid_ShouldReturnCorrectUsers()
     {

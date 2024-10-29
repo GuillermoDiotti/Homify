@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners;
@@ -61,7 +62,9 @@ if (string.IsNullOrEmpty(homifyConnectionString))
 services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
 services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServer(homifyConnectionString));

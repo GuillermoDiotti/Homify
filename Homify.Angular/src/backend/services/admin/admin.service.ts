@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AdminTypeApiRepositoryService } from '../../repositories/AdminRepository.service';
-import CreateAdminRequest from './models/CreateAdminRequest';
+import { CreateAdminRequest } from './models/CreateAdminRequest';
 import CreateAdminResponse from './models/CreateAdminResponse';
 import { Observable } from 'rxjs';
 import UserBasicInfo from './models/UserBasicInfo';
@@ -25,7 +25,7 @@ export class AdminService {
     offset?: string,
     role?: string,
     fullName?: string)
-    : Observable<Array<UserBasicInfo>> {
+    : Observable<UserBasicInfo[]> {
     const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(role ?? '')}&fullName=${encodeURIComponent(fullName ?? '')}`;
     return this._repository.getAllAccounts(query);
   }

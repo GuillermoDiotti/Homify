@@ -111,14 +111,4 @@ public sealed class AdminController : HomifyControllerBase
 
         return result;
     }
-
-    public User GetById(string id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            throw new NotFoundException("Admin not found");
-        }
-
-        return _userService.GetById(id);
-    }
 }
