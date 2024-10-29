@@ -1,9 +1,12 @@
+using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
+using Homify.WebApi.Controllers.Admins.Models.Requests;
+using Homify.WebApi.Controllers.Admins.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Constants = Homify.Utility.Constants;
@@ -107,15 +110,5 @@ public sealed class AdminController : HomifyControllerBase
         }
 
         return result;
-    }
-
-    public User GetById(string id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            throw new NotFoundException("Admin not found");
-        }
-
-        return _userService.GetById(id);
     }
 }

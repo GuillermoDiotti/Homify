@@ -4,7 +4,7 @@ using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Rooms;
-using Homify.WebApi.Controllers.Rooms.Models;
+using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Moq;
 

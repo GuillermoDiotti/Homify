@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using FluentAssertions;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sessions;
-using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Utility;
 using Homify.WebApi;

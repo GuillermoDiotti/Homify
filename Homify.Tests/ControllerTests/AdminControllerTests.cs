@@ -1,12 +1,13 @@
 using FluentAssertions;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins;
-using Homify.WebApi.Controllers.Admins.Models;
+using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -279,31 +280,6 @@ public class UserControllerTests
     }
 
     #endregion
-
-    #endregion
-
-    #region Get
-
-    [TestMethod]
-    public void GetUser_WhenUserIdIsOk_ShouldReturnUser()
-    {
-        var testUser = new User();
-        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Returns(testUser);
-
-        var response = _controller.GetById(testUser.Id);
-
-        response.Should().NotBeNull();
-        response.Id.Should().NotBeNull();
-        response.Id.Should().NotBeEmpty();
-        response.Id.Should().Be(testUser.Id);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void GetUser_WhenUserIdIsNull_ShouldThrowException()
-    {
-        _controller.GetById(null!);
-    }
 
     #endregion
 

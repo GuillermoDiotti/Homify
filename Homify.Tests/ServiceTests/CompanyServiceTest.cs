@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;

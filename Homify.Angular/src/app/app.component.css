@@ -76,5 +76,14 @@ nz-content {
 .inner-content {
   padding: 24px;
   background: #fff;
-  height: 100%;
+}
+
+.ul {
+	max-height: 100dvh;
+	overflow-y: auto;
+}
+
+.cont {
+	max-height: 100vh;
+	overflow-y: auto;
 }

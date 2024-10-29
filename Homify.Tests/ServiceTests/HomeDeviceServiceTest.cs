@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
+using FluentAssertions;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -89,5 +91,23 @@ public class HomeDeviceServiceTest
         Assert.AreEqual(homeDevice.Id, result.Id);
 
         _homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once, "The repository update method should be called once.");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
+    {
+        _homeDeviceService.UpdateHomeDevice("NewName", null);
+    }
+
+    [TestMethod]
+    public void UpdateName_WhenInfoValid_UpdatesName()
+    {
+        _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(new HomeDevice() { Id = "idDevice" });
+        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idDevice");
+
+        response.Id.Should().Be("idDevice");
+        response.CustomName.Should().Be("NewName");
     }
 }

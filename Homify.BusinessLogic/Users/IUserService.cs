@@ -1,5 +1,5 @@
 using Homify.BusinessLogic.Admins.Entities;
-using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;

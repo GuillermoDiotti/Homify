@@ -1,4 +1,5 @@
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -23,13 +24,12 @@ public class HomeDeviceService : IHomeDeviceService
 
         var homeDevice = new HomeDevice()
         {
-            Id = Guid.NewGuid().ToString(),
             HomeId = home.Id,
             DeviceId = device.Id,
             Device = device,
             Home = home,
             Connected = true,
-            HardwareId = Guid.NewGuid().ToString(),
+            CustomName = device.Name
         };
         _repository.Add(homeDevice);
         return homeDevice;
@@ -62,5 +62,20 @@ public class HomeDeviceService : IHomeDeviceService
     public HomeDevice GetHomeDeviceById(string id)
     {
         return _repository.Get(x => x.Id == id);
+    }
+
+    public HomeDevice UpdateHomeDevice(string name, string id)
+    {
+        var device = GetHomeDeviceById(id);
+
+        if (device == null)
+        {
+            throw new NotFoundException("HomeDevice not found");
+        }
+
+        device.CustomName = name;
+        _repository.Update(device);
+
+        return device;
     }
 }

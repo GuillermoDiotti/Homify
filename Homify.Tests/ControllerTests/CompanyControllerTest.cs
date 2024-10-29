@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
+using Homify.WebApi.Controllers.Companies.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
       resp => {
 				console.log(resp)
         this.sessionService.setCurrentUserToken(resp.token);
-        this.currentUserToken = resp.token;
+        localStorage.setItem('token', resp.token);
         this.errorMessage = '';
       },
       (error: APIError) => {

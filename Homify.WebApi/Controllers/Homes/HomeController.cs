@@ -2,10 +2,15 @@
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Permissions.HomePermissions;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
+using Homify.WebApi.Controllers.Homes.Models.Requests;
+using Homify.WebApi.Controllers.Homes.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 

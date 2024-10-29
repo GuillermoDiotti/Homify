@@ -2,10 +2,11 @@
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeOwners;
-using Homify.WebApi.Controllers.HomeOwners.Models;
+using Homify.WebApi.Controllers.HomeOwners.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;

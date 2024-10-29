@@ -2,17 +2,19 @@ using System.Diagnostics.CodeAnalysis;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions.Entities;
-using Homify.BusinessLogic.SystemPermissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
 using Homify.DataAccess.Repositories.Rooms.Entities;
@@ -204,13 +206,18 @@ public sealed class HomifyDbContext : DbContext
         modelBuilder.Entity<HomePermission>().HasData(
             new HomePermission
             {
-                Id = "2",
+                Id = "1",
                 Value = "AddDevices"
             },
             new HomePermission
             {
-                Id = "3",
+                Id = "2",
                 Value = "ListDevices"
+            },
+            new HomePermission
+            {
+                Id = "3",
+                Value = "ChangeDeviceName"
             });
 
         modelBuilder.Entity<Role>().HasData(

@@ -1,9 +1,10 @@
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Admins.Entities;
-using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;

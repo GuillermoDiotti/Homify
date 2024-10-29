@@ -5,7 +5,7 @@
     nzBreakpoint="md"
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="ul">
       <li nz-menu-item nzMatchRouter nzIcon="login">
         <a routerLink="/login">Login</a>
       </li>
@@ -90,7 +90,7 @@
         </span>
       </div>
     </nz-header>
-    <nz-content>
+    <nz-content class="cont">
       <div class="inner-content">
         <router-outlet></router-outlet>
       </div>

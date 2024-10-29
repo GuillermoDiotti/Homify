@@ -1,10 +1,13 @@
 ﻿using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
+using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
+using Homify.WebApi.Controllers.Notifications.Models.Requests;
+using Homify.WebApi.Controllers.Notifications.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
