@@ -1,4 +1,4 @@
-div {
+article {
 	padding: 20px;
 	background-color: #f9f9f9;
 	border-radius: 8px;
@@ -26,8 +26,6 @@ button:hover {
 
 ul {
 	list-style-type: none;
-	padding: 0;
-	max-height: 400px;
 	overflow-y: auto;
 	margin-top: 15px;
 	border: 1px solid #ddd;
