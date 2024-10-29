@@ -104,7 +104,7 @@ public class HomeDeviceServiceTest
     public void UpdateName_WhenInfoValid_UpdatesName()
     {
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
-            .Returns(new HomeDevice() { Id = "idDevice" } );
+            .Returns(new HomeDevice() { Id = "idDevice" });
         var response = _homeDeviceService.UpdateHomeDevice("NewName", "idDevice");
 
         response.Id.Should().Be("idDevice");

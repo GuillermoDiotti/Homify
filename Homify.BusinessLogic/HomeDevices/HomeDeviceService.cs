@@ -68,7 +68,7 @@ public class HomeDeviceService : IHomeDeviceService
     {
         var device = GetHomeDeviceById(id);
 
-        if(device == null)
+        if (device == null)
         {
             throw new NotFoundException("HomeDevice not found");
         }
