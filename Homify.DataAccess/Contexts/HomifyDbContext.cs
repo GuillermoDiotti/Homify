@@ -210,13 +210,18 @@ public sealed class HomifyDbContext : DbContext
         modelBuilder.Entity<HomePermission>().HasData(
             new HomePermission
             {
-                Id = "2",
+                Id = "1",
                 Value = "AddDevices"
             },
             new HomePermission
             {
-                Id = "3",
+                Id = "2",
                 Value = "ListDevices"
+            },
+            new HomePermission
+            {
+                Id = "3",
+                Value = "ChangeDeviceName"
             });
 
         modelBuilder.Entity<Role>().HasData(

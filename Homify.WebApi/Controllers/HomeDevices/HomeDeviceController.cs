@@ -1,4 +1,5 @@
 using Homify.BusinessLogic.HomeDevices;
+using Homify.BusinessLogic.Permissions;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Filters;
@@ -19,6 +20,7 @@ public class HomeDeviceController : HomifyControllerBase
 
     [HttpPut("{id}/update")]
     [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.MemberCanChangeNameDevices)]
     public string UpdateHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
         if (req == null)
