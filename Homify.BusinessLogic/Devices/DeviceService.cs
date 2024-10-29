@@ -1,6 +1,5 @@
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;

@@ -14,7 +14,6 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Devices;
-using Homify.WebApi.Controllers.Devices.Models;
 using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

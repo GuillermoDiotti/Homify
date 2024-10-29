@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Permissions;
 using Homify.DataAccess.Repositories.Rooms;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
-using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Homify.WebApi.Controllers.Rooms.Models.Responses;
 using Homify.WebApi.Filters;

@@ -4,7 +4,6 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
-using Homify.WebApi.Controllers.CompanyOwners.Models;
 using Homify.WebApi.Controllers.CompanyOwners.Models.Requests;
 using Homify.WebApi.Controllers.CompanyOwners.Models.Responses;
 using Homify.WebApi.Filters;

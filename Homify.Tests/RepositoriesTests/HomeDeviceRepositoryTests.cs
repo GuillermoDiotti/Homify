@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;

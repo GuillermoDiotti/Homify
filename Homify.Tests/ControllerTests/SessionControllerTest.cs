@@ -5,7 +5,6 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Session;
-using Homify.WebApi.Controllers.Session.Models;
 using Homify.WebApi.Controllers.Session.Models.Requests;
 using Homify.WebApi.Controllers.Session.Models.Responses;
 using Moq;

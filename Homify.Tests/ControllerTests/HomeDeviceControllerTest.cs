@@ -5,7 +5,6 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.HomeDevices;
@@ -19,12 +18,12 @@ namespace Homify.Tests.ControllerTests;
 public class HomeDeviceControllerTest
 {
     private readonly HomeDeviceController _controller;
-    private readonly Mock<IHomeDeviceService> _HomeDeviceMock;
+    private readonly Mock<IHomeDeviceService> _homeDeviceMock;
 
     public HomeDeviceControllerTest()
     {
-        _HomeDeviceMock = new Mock<IHomeDeviceService>();
-        _controller = new HomeDeviceController(_HomeDeviceMock.Object);
+        _homeDeviceMock = new Mock<IHomeDeviceService>();
+        _controller = new HomeDeviceController(_homeDeviceMock.Object);
     }
 
     [TestMethod]
@@ -75,7 +74,7 @@ public class HomeDeviceControllerTest
         };
 
         var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
-        _HomeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id)).Returns(updatedDevice);
+        _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id)).Returns(updatedDevice);
         var response = _controller.UpdateHomeDevice(req, updatedDevice.Id);
 
         response.Should().NotBeNull();

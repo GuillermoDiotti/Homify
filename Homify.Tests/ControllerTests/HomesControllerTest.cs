@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
@@ -17,7 +16,6 @@ using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Homes;
-using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Controllers.Homes.Models.Requests;
 using Homify.WebApi.Controllers.Homes.Models.Responses;
 using Microsoft.AspNetCore.Http;

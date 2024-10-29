@@ -1,5 +1,4 @@
 ﻿using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 
 namespace Homify.WebApi.Controllers.Companies.Models;

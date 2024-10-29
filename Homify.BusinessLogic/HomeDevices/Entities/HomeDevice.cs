@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Homes.Entities;
 
 namespace Homify.BusinessLogic.HomeDevices.Entities;

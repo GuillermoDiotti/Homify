@@ -1,5 +1,4 @@
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.DataAccess.Repositories;
