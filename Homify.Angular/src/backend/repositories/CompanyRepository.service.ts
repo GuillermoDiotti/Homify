@@ -6,6 +6,7 @@ import { environment } from "../../environment";
 import UserBasicInfo from "../services/admin/models/UserBasicInfo";
 import CreateCompanyResponse from "../services/company/models/CreateCompanyResponse";
 import CreateCompanyRequest from "../services/company/models/CreateCompanyRequest";
+import CompanyBasicInfo from "../services/company/models/CompanyBasicInfo";
 
 @Injectable({
   providedIn: "root",
@@ -24,8 +25,8 @@ export class CompanyTypeApiRepositoryService extends ApiRepository{
     offset?: string,
     ownerfullname?: string,
     company?: string)
-    : Observable<Array<UserBasicInfo>> {
+    : Observable<Array<CompanyBasicInfo>> {
     const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(ownerfullname ?? '')}&fullName=${encodeURIComponent(company ?? '')}`;
-    return this.get<Array<UserBasicInfo>>("",query).pipe(catchError(this.handleError));
+    return this.get<Array<CompanyBasicInfo>>("",query).pipe(catchError(this.handleError));
   }
 }

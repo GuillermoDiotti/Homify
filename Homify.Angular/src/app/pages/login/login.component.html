@@ -1,7 +1,7 @@
 @if (currentUserToken){
   <div class="div">
     <span class="span">Welcome, <strong>{{ currentUserToken }}</strong>!</span>
-    <app-button 
+    <app-button
     (click)="onLogout()"
     >Logout</app-button>
   </div>
@@ -26,8 +26,28 @@
         [value]="password"
         (valueChange)="onPasswordChange($event)">></app-input>
       </div>
+      @if (currentUserToken){ <!-- si es admin-->
+        <app-button
+        [type]="'submit'"
+        >Login as Admin</app-button>
+      }
+      @else {
+        <app-button
+        [type]="'submit'"
+        >Login as Home Owner</app-button>
+      }
+      @if (currentUserToken){ <!-- si es company owner-->
+        <app-button
+        [type]="'submit'"
+        >Login as Company Owner</app-button>
+      }
+      @else {
+        <app-button
+        [type]="'submit'"
+        >Login as Home Owner</app-button>
+      }
       <app-button 
-      [type]="'submit'" 
+      [type]="'submit'"
       >Login</app-button>
     </form>
   </div>

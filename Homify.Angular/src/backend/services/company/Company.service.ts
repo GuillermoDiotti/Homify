@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import UserBasicInfo from './models/UserBasicInfo';
 import { CompanyTypeApiRepositoryService } from '../../repositories/CompanyRepository.service';
 import CreateCompanyRequest from './models/CreateCompanyRequest';
 import CreateCompanyResponse from './models/CreateCompanyResponse';
+import CompanyBasicInfo from './models/CompanyBasicInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class CompanyService {
     offset?: string,
     ownerfullname?: string,
     company?: string)
-    : Observable<Array<UserBasicInfo>> {
+    : Observable<Array<CompanyBasicInfo>> {
     const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(ownerfullname ?? '')}&fullName=${encodeURIComponent(company ?? '')}`;
     return this._repository.getAllCompanies(query);
   }

@@ -15,57 +15,41 @@
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/admin">Admins</a>
           </li>
-        </ul>
-      </li>
 
-      <li nz-submenu nzOpen nzTitle="Building Company Admin" nzIcon="tool">
-        <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/building-companies">New Building Company</a>
+            <a routerLink="/create-companyowner">Create Company Owner</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/modify-building-companies">Modify Building Company</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/buildings">Create Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/put-building">Modify Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/list-buildings">List Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/import-buildings">Import Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/modify-manager">Modify Manager</a>
+            <a routerLink="/companies/get">Get Companies</a>
           </li>
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="Manager" nzIcon="team">
+      <li nz-submenu nzOpen nzTitle="Company Owner" nzIcon="tool">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/maintenance">Maintenance</a>
+            <a routerLink="/companies/create">Create Company</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="manager/view-services">View Services</a>
+            <a routerLink="/create-devices">Create Devices</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Home Owner" nzIcon="team">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/maintenance">Create Home</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="manager/services">Create Services</a>
+            <a routerLink="manager/view-services">Members</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="manager/reports">Reports</a>
+            <a routerLink="manager/services">Home Devices</a>
           </li>
         </ul>
       </li>

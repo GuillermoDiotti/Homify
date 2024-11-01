@@ -1,0 +1,37 @@
+<h2>Create Company</h2>
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="Name"
+    type="text"
+    label="Name"
+    placeholder="Enter the company name"
+    [formField]="{
+      Name: { required: 'Name is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="LogoUrl"
+    type="text"
+    label="Logo"
+    placeholder="Enter the company logo's url"
+    [formField]="{
+      LogoUrl: { required: 'Logo is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="Rut"
+    type="text"
+    label="Rut"
+    placeholder="Enter the rut of the company"
+    [formField]="{
+      Rut: { required: 'Rut is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+</form>
