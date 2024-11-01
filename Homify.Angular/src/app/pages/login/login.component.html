@@ -25,27 +25,7 @@
         [type]="'password'"
         [value]="password"
         (valueChange)="onPasswordChange($event)">></app-input>
-      </div>
-      @if (currentUserToken){ <!-- si es admin-->
-        <app-button
-        [type]="'submit'"
-        >Login as Admin</app-button>
-      }
-      @else {
-        <app-button
-        [type]="'submit'"
-        >Login as Home Owner</app-button>
-      }
-      @if (currentUserToken){ <!-- si es company owner-->
-        <app-button
-        [type]="'submit'"
-        >Login as Company Owner</app-button>
-      }
-      @else {
-        <app-button
-        [type]="'submit'"
-        >Login as Home Owner</app-button>
-      }
+			</div>
       <app-button 
       [type]="'submit'"
       >Login</app-button>

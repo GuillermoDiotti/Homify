@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'admin', pathMatch: 'full', loadChildren: () => import('./pages/admin-page/admin.module').then(m => m.AdministratorModule)},
+  { path: 'admin', loadChildren: () => import('./pages/admin-page/admin.module').then(m => m.AdministratorModule)},
 	{ path: 'login', pathMatch: 'full', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
-  { path: 'companies/create', pathMatch: 'full', loadChildren: () => import('./pages/company-page/company.module').then(m => m.CompanyPageModule) },
+  { path: 'companies', loadChildren: () => import('./pages/company-page/company.module').then(m => m.CompanyPageModule) },
   { path: '**', pathMatch: 'full', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) }
 ];
 
