@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminService {
+export class HomeService {
 
   constructor(private readonly _repository: HomeApiRepositoryService) { }
 

@@ -1,0 +1,70 @@
+<h2>Create Home</h2>
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="street"
+    type="text"
+    label="Street"
+    placeholder="Street"
+    [formField]="{
+      name: { required: 'Street is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="number"
+    type="text"
+    label="Number"
+    placeholder="Number"
+    [formField]="{
+      number: { required: 'Number is required', number: 'Invalid number format' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="latitude"
+    type="text"
+    label="Latitude"
+    placeholder="Latitude"
+    [formField]="{
+      latitude: { required: 'Latitude is required'}
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="longitud"
+    type="text"
+    label="Longitud"
+    placeholder="Longitud"
+    [formField]="{
+      longitud: { required: 'Longitud is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="alias"
+    type="text"
+    label="Alias"
+    placeholder="Alias"
+    [formField]="{
+      alias: { required: 'Alias is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="maxMembers"
+    type="number"
+    label="Max members"
+    placeholder="Max members"
+    [formField]="{
+      maxMembers: { required: 'Max members is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+</form>
