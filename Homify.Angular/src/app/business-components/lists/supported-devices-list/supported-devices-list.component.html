@@ -1,0 +1,17 @@
+<article>
+	<h2>Supported devices list</h2>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (supportedDevices.length > 0) {
+  <ul>
+    @for (device of supportedDevices; track $index) {
+    <li>
+      <strong>Device Type:</strong> {{ device.type }} <br />
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There are'nt supported devices available.</p>
+  }
+</article>

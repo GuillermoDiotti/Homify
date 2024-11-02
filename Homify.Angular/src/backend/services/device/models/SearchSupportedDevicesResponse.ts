@@ -1,3 +1,3 @@
 export default interface SearchSupportedDevicesResponse {
-    Type: string;
+  type: string;
 }

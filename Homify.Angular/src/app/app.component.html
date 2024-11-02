@@ -10,6 +10,18 @@
         <a routerLink="/login">Login</a>
       </li>
 
+			<li nz-submenu nzOpen nzTitle="Auth Users" nzIcon="user">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices/supported">List supported devices</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices/all">List devices</a>
+          </li>
+        </ul>
+      </li>
+
       <li nz-submenu nzOpen nzTitle="Admin" nzIcon="crown">
         <ul>
           <li nz-menu-item nzMatchRouter>
