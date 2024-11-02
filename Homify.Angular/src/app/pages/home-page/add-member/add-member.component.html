@@ -1,1 +1,4 @@
-<app-owner-home-list></app-owner-home-list>
+<app-owner-home-list (homeSelected)="onHomeSelected($event)"></app-owner-home-list>
+@if(selectedHomeId){
+    <app-add-home-member-form [selectedHomeId]="selectedHomeId"></app-add-home-member-form>
+}

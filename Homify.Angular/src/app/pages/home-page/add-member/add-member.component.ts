@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-add-member',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './add-member.component.css'
 })
 export class AddMemberComponent {
-
+  @Input() selectedHomeId: string | null = null;
+  onHomeSelected(id: string) { this.selectedHomeId = id; }
 }

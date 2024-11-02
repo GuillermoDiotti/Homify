@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { GetAllHomesResponse } from '../../../../backend/services/homes/models/GetAllHomesResponse';
 import { HomeService } from '../../../../backend/services/homes/home.service';
 import { ButtonComponent } from '../../../components/button/button.component';
@@ -12,6 +12,7 @@ import { ButtonComponent } from '../../../components/button/button.component';
 })
 export class OwnerHomeListComponent {
   homes: GetAllHomesResponse[] = [];
+  @Output() homeSelected = new EventEmitter<string>();	
   selectedHomeId = "";
 	constructor(private HomeService: HomeService){}
 
@@ -39,6 +40,6 @@ export class OwnerHomeListComponent {
 
 	onClick(id:string){
 		this.selectedHomeId = id;
-		console.log(id);
+		this.homeSelected.emit(this.selectedHomeId);
 	}
 }

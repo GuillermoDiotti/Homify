@@ -1,1 +1,18 @@
-<p>add-home-member-form works!</p>
+<h2>Add member</h2>
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="email"
+    type="text"
+    label="Email"
+    placeholder="Email"
+    [formField]="{
+      Name: { required: 'Email is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+
+	<app-success-message [message]="successMessage"></app-success-message>
+	<app-error-message [message]="errorMessage"></app-error-message>
+</form>
