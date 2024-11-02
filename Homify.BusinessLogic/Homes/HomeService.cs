@@ -166,8 +166,8 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public List<Home> GetHomes(User user)
+    public List<Home> GetAllHomes(User user)
     {
-        return new List<Home>();
+        return _repository.GetAll(x => x.OwnerId == user.Id);
     }
 }

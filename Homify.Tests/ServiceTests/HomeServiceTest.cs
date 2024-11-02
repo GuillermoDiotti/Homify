@@ -438,4 +438,24 @@ public class HomeServiceTest
 
         Assert.AreEqual(newAlias, reult.Alias);
     }
+
+    [TestMethod]
+    public void GetAllHomes_ReturnsHomesForUser()
+    {
+        // Arrange
+        var user = new User { Id = "user1" };
+        var homes = new List<Home>
+        {
+            new Home { Id = "home1", OwnerId = "user1" },
+            new Home { Id = "home2", OwnerId = "user1" }
+        };
+        _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(homes);
+
+        var result = _homeService.GetAllHomes(user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.IsTrue(result.All(home => home.OwnerId == "user1"));
+    }
 }

@@ -249,7 +249,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         var user = GetUserLogged();
 
-        var homes = _homeService.GetHomes(user);
+        var homes = _homeService.GetAllHomes(user);
         var response = new List<GetHomesResponse>();
         foreach (var home in homes)
         {
