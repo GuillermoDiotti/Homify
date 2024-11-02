@@ -31,7 +31,7 @@ export class AddHomeMemberFormComponent {
         email
       };
 
-      this.HomeService.updateMembers(req).subscribe(
+      this.HomeService.UpdateMembers(req).subscribe(
         response => {
          	this.successMessage = "Member added successfully";
         },
