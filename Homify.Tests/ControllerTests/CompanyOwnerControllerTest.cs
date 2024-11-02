@@ -78,16 +78,16 @@ public class CompanyOwnerControllerTest
     #endregion
 
     #region Error
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void CreateOwner_WhenRequestIsNull_ShouldThrowNullRequestException()
     {
         _controller.Create(null);
-    }*/
+    }
 
     #endregion
 
-    /*[TestMethod]
+    [TestMethod]
     public void Dunc()
     {
         var company = new CompanyOwner()
@@ -107,7 +107,7 @@ public class CompanyOwnerControllerTest
         company.Company.Name.Should().Be("TestCompany");
         company.Company.Rut.Should().Be("TestRut");
         company.Company.LogoUrl.Should().Be("TestLogoUrl");
-    }*/
+    }
 
     #endregion
 }

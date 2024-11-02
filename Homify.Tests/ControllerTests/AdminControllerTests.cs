@@ -2,6 +2,7 @@ using FluentAssertions;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -12,7 +13,7 @@ using Moq;
 
 namespace Homify.Tests.ControllerTests;
 
-/*[TestClass]
+[TestClass]
 public class UserControllerTests
 {
     private readonly AdminController _controller;
@@ -26,9 +27,9 @@ public class UserControllerTests
         _controller = new AdminController(_userServiceMock.Object, _roleServicemock.Object);
     }
 
-    #region Create
+    // #region Create
 
-    #region Error
+    // #region Error
 
     [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
@@ -175,9 +176,9 @@ public class UserControllerTests
         _controller.Create(request);
     }
 
-    #endregion
+    // #endregion
 
-    #region Success
+    // #region Success
 
     [TestMethod]
     public void CreateUser_WhenDataIsOk_ShouldCreateUser()
@@ -213,13 +214,14 @@ public class UserControllerTests
         expectedUser.Password.Should().Be(request.Password);
         expectedUser.LastName.Should().Be(request.LastName);
     }
-    #endregion
 
-    #endregion
+    // #endregion
 
-    #region Delete
+    // #endregion
 
-    #region Error
+    // #region Delete
+
+    // #region Error
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
@@ -244,13 +246,13 @@ public class UserControllerTests
     public void Delete_WhenTargetUserIsNotAdmin_ShouldThrowInvalidOperationException()
     {
         var adminId = "userId";
-        var user = new User { Id = adminId, Roles = new Role { Name = "User" } };
+        var user = new User { Id = adminId };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(user);
 
         _controller.Delete(adminId);
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void Delete_WhenAdminExistsAndIsAdmin_ShouldDeleteAdmin()
     {
         // Arrange
@@ -520,5 +522,5 @@ public class UserControllerTests
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("John Doe", Helpers.GetUserFullName(result[0].Name, result[0].LastName));
         _userServiceMock.Verify(service => service.GetAll(), Times.Once);
-    }
-}*/
+    }*/
+}
