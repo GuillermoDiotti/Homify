@@ -12,7 +12,6 @@ public class User
     public string Id { get; init; }
     public string? ProfilePicture { get; set; } = null!;
     public List<Role> Roles { get; init; } = null!;
-    public string RoleId { get; set; } = null!; // hay que ver
     public string CreatedAt { get; init; }
 
     public User(string name, string email, string password, string lastName, Role role)
@@ -23,7 +22,6 @@ public class User
         Password = password;
         LastName = lastName;
         Roles = [role];
-        RoleId = role.Id;
         CreatedAt = HomifyDateTime.GetActualDate();
     }
 

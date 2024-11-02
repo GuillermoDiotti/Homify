@@ -2,20 +2,24 @@
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.BusinessLogic.Utility;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Users;
 
 public class UserService : IUserService
 {
     private readonly IRepository<User> _repository;
+    private readonly IRepository<UserRole> _UserRolerepository;
 
-    public UserService(IRepository<User> repository)
+    public UserService(IRepository<User> repository, IRepository<UserRole> userRolerepository)
     {
         _repository = repository;
+        _UserRolerepository = userRolerepository;
     }
 
     public Admin AddAdmin(CreateUserArgs args)
@@ -31,6 +35,9 @@ public class UserService : IUserService
         user.Roles.Add(args.Role);
 
         _repository.Add(user);
+
+        LoadIntermediateTable(user.Id, Constants.ADMINISTRATORID);
+
         return user;
     }
 
@@ -48,6 +55,9 @@ public class UserService : IUserService
         companyOwner.Roles.Add(args.Role);
 
         _repository.Add(companyOwner);
+
+        LoadIntermediateTable(companyOwner.Id, Constants.COMPANYOWNERID);
+
         return companyOwner;
     }
 
@@ -63,9 +73,21 @@ public class UserService : IUserService
             ProfilePicture = args.ProfilePicUrl,
         };
         homeOwner.Roles.Add(args.Role);
-
         _repository.Add(homeOwner);
+
+        LoadIntermediateTable(homeOwner.Id, Constants.HOMEOWNERID);
+
         return homeOwner;
+    }
+
+    public void LoadIntermediateTable(string userId, string roleId)
+    {
+        var userRole = new UserRole()
+        {
+            UserId = userId,
+            RoleId = roleId,
+        };
+        _UserRolerepository.Add(userRole);
     }
 
     public User? GetById(string id)

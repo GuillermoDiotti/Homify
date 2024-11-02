@@ -10,6 +10,5 @@ public class HomeOwner : User
     public HomeOwner()
     {
         Homes = [];
-        RoleId = Constants.HOMEOWNERID;
     }
 }
