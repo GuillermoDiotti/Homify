@@ -25,6 +25,18 @@ namespace Homify.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SystemPermissions",
                 columns: table => new
                 {
@@ -51,6 +63,29 @@ namespace Homify.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleSystemPermissions",
+                columns: table => new
+                {
+                    RoleSystemPermissionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PermissionId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleSystemPermissions", x => x.RoleSystemPermissionId);
+                    table.ForeignKey(
+                        name: "FK_RoleSystemPermissions_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RoleSystemPermissions_SystemPermissions_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "SystemPermissions",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -106,24 +141,6 @@ namespace Homify.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Roles_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sessions",
                 columns: table => new
                 {
@@ -140,6 +157,29 @@ namespace Homify.DataAccess.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -185,52 +225,6 @@ namespace Homify.DataAccess.Migrations
                         principalTable: "HomeOwners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RoleSystemPermissions",
-                columns: table => new
-                {
-                    RoleSystemPermissionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PermissionId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleSystemPermissions", x => x.RoleSystemPermissionId);
-                    table.ForeignKey(
-                        name: "FK_RoleSystemPermissions_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_RoleSystemPermissions_SystemPermissions_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "SystemPermissions",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRoles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -440,12 +434,12 @@ namespace Homify.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "Name", "UserId" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { "AdminId", "ADMINISTRATOR", null },
-                    { "CompanyOwnerId", "COMPANYOWNER", null },
-                    { "HomeOwnerId", "HOMEOWNER", null }
+                    { "AdminId", "ADMINISTRATOR" },
+                    { "CompanyOwnerId", "COMPANYOWNER" },
+                    { "HomeOwnerId", "HOMEOWNER" }
                 });
 
             migrationBuilder.InsertData(
@@ -504,25 +498,25 @@ namespace Homify.DataAccess.Migrations
                 columns: new[] { "RoleSystemPermissionId", "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { "03ad2fe6-1507-4695-a56a-72c069b130d4", "17", "HomeOwnerId" },
-                    { "15eb0103-71bf-4c61-b60d-0c1b27ac4a47", "11", "HomeOwnerId" },
-                    { "231e51cd-ce64-445d-9f1f-1a1b9e9ee452", "18", "HomeOwnerId" },
-                    { "38ed22ee-73ff-4902-9104-37aab0a3498f", "9", "HomeOwnerId" },
-                    { "3a482be9-5c43-417c-a376-8a6862af2a1d", "8", "CompanyOwnerId" },
-                    { "7e00431f-8113-48a9-a6ce-d8baea957aa2", "1", "AdminId" },
-                    { "80d08fc6-059f-4470-a57d-fdc5c7f46155", "2", "AdminId" },
-                    { "8d39ac80-9185-4b07-990e-ff46de2f6835", "5", "AdminId" },
-                    { "93010585-450c-4fb7-8863-b9aff7a208d9", "16", "HomeOwnerId" },
-                    { "a13f27f8-c609-438d-9f4c-ab2b1c0420d0", "14", "HomeOwnerId" },
-                    { "a24fe266-78ef-4d31-92fd-c77e56dbb44e", "15", "HomeOwnerId" },
-                    { "a51c131e-7a5c-4744-9aba-ea88f5748d6b", "13", "HomeOwnerId" },
-                    { "a94cf882-0010-412b-835b-ded792f7fa9c", "3", "AdminId" },
-                    { "b1885178-bc39-4361-a9bc-3b48454dea80", "12", "HomeOwnerId" },
-                    { "b3395568-dcea-4dfe-b7f9-2edbe193dc72", "7", "CompanyOwnerId" },
-                    { "b82f79c2-26f5-4ae9-90ed-55726be1c3a2", "6", "CompanyOwnerId" },
-                    { "ba9198eb-7df8-4ccf-8054-10080ce31ff8", "4", "AdminId" },
-                    { "c47909d3-fb55-4f2f-87a4-9234a0bc94f5", "19", "HomeOwnerId" },
-                    { "c8bfe1c9-c9b2-4f42-9dc9-804e39f23679", "10", "HomeOwnerId" }
+                    { "10a7547f-b03c-46b2-b787-f84a8efbdc6c", "17", "HomeOwnerId" },
+                    { "1cd49e3f-a0f8-4c56-93cd-cb7bac611e43", "2", "AdminId" },
+                    { "38fdbbdb-d1bb-478f-9a3a-2c1a44975f15", "6", "CompanyOwnerId" },
+                    { "39b07b3c-1cdb-4a22-8d86-e90d0e3200d6", "4", "AdminId" },
+                    { "3d77aa9d-5789-430e-ab6b-3ff270b05c19", "13", "HomeOwnerId" },
+                    { "4b501aff-0a1e-4d52-a163-cdb7833c5792", "1", "AdminId" },
+                    { "5d394608-2819-4a50-85d0-883c8be16ba0", "12", "HomeOwnerId" },
+                    { "6572966b-630e-432c-8212-86d8e2ab61cc", "16", "HomeOwnerId" },
+                    { "717d001e-56ac-446f-a02e-9058a1496b57", "3", "AdminId" },
+                    { "73788f33-47b7-4cf9-8b46-188b750890db", "11", "HomeOwnerId" },
+                    { "813aefdf-d608-4aee-a0a8-13c904e6058a", "14", "HomeOwnerId" },
+                    { "8cc003a6-18db-4b5a-bc18-b1a5e60b9fbc", "19", "HomeOwnerId" },
+                    { "905d668b-8a90-4308-a20a-5023a2a65f7f", "5", "AdminId" },
+                    { "a3af3e88-acc8-491c-8c5d-1c475faa6aca", "15", "HomeOwnerId" },
+                    { "a5395f3e-b5e4-456b-8417-532bba2962fc", "10", "HomeOwnerId" },
+                    { "bab54740-89b7-4fd7-9c5a-77d3158c1c29", "18", "HomeOwnerId" },
+                    { "eaf017eb-6d0c-41d4-90fc-b50b5a2401e5", "9", "HomeOwnerId" },
+                    { "f2f668b8-45e0-4916-aefa-16648a88c50f", "8", "CompanyOwnerId" },
+                    { "f4cc5867-d7b5-413b-8017-b8c65d003b23", "7", "CompanyOwnerId" }
                 });
 
             migrationBuilder.InsertData(
@@ -540,9 +534,9 @@ namespace Homify.DataAccess.Migrations
                 columns: new[] { "Id", "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "4431a628-9851-4c38-a216-e62c6ddcd475", "HomeOwnerId", "SeedHomeOwnerId" },
-                    { "a47c8454-9928-4197-b5f8-7c4423b597a1", "CompanyOwnerId", "SeedCompanyOwnerId" },
-                    { "c2c861d8-562a-4693-99c7-66d5e30ec390", "AdminId", "SeedAdminId" }
+                    { "3cd380a2-6d7a-4bd0-b06c-16cdcb2cdf84", "HomeOwnerId", "SeedHomeOwnerId" },
+                    { "a887b2ee-f561-4d7d-aff1-1af61e1c4e5d", "CompanyOwnerId", "SeedCompanyOwnerId" },
+                    { "ad44ab69-77c1-4e11-9ba9-955c43496b55", "AdminId", "SeedAdminId" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -605,11 +599,6 @@ namespace Homify.DataAccess.Migrations
                 name: "IX_Notifications_HomeUserId",
                 table: "Notifications",
                 column: "HomeUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Roles_UserId",
-                table: "Roles",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleSystemPermissions_PermissionId",

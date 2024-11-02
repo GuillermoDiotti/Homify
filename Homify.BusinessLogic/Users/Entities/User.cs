@@ -1,4 +1,5 @@
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Utility;
 
 namespace Homify.BusinessLogic.Users.Entities;
@@ -11,7 +12,7 @@ public class User
     public string LastName { get; set; } = null!;
     public string Id { get; init; }
     public string? ProfilePicture { get; set; } = null!;
-    public List<Role> Roles { get; init; } = null!;
+    public List<UserRole> Roles { get; init; } = null!;
     public string CreatedAt { get; init; }
 
     public User(string name, string email, string password, string lastName, Role role)
@@ -21,8 +22,8 @@ public class User
         Email = email;
         Password = password;
         LastName = lastName;
-        Roles = [role];
         CreatedAt = HomifyDateTime.GetActualDate();
+        Roles = [new UserRole(this, role)];
     }
 
     public User()

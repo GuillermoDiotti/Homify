@@ -226,22 +226,14 @@ public sealed class HomifyDbContext : DbContext
                 Value = "ChangeDeviceName"
             });
 
+        Role adminRole = new Role { Id = Constants.ADMINISTRATORID, Name = Constants.ADMINISTRATOR };
+        Role companyOwnerRole = new Role { Id = Constants.COMPANYOWNERID, Name = Constants.COMPANYOWNER };
+        Role homeOwnerRole = new Role { Id = Constants.HOMEOWNERID, Name = Constants.HOMEOWNER };
+
         modelBuilder.Entity<Role>().HasData(
-            new Role
-            {
-                Id = Constants.ADMINISTRATORID,
-                Name = Constants.ADMINISTRATOR
-            },
-            new Role
-            {
-                Id = Constants.COMPANYOWNERID,
-                Name = Constants.COMPANYOWNER
-            },
-            new Role
-            {
-                Id = Constants.HOMEOWNERID,
-                Name = Constants.HOMEOWNER
-            });
+            adminRole,
+            companyOwnerRole,
+            homeOwnerRole);
 
         modelBuilder.Entity<RoleSystemPermission>()
             .HasKey(rp => new { rp.RoleSystemPermissionId });
@@ -382,8 +374,8 @@ public sealed class HomifyDbContext : DbContext
 
         UserRole userRoleAdmin = new UserRole()
         {
-            RoleId = Constants.ADMINISTRATORID,
-            UserId = admin.Id
+            UserId = admin.Id,
+            RoleId = adminRole.Id
         };
 
         User homeowner = new HomeOwner()
@@ -398,8 +390,8 @@ public sealed class HomifyDbContext : DbContext
 
         UserRole userHomeOwnerRole = new UserRole()
         {
-            RoleId = Constants.HOMEOWNERID,
-            UserId = homeowner.Id
+            UserId = homeowner.Id,
+            RoleId = homeOwnerRole.Id
         };
 
         User companyowner = new CompanyOwner()
@@ -414,8 +406,8 @@ public sealed class HomifyDbContext : DbContext
 
         UserRole userCompanyOwnerRole = new UserRole()
         {
-            RoleId = Constants.COMPANYOWNERID,
-            UserId = companyowner.Id
+            UserId = companyowner.Id,
+            RoleId = companyOwnerRole.Id
         };
 
         modelBuilder.Entity<Admin>().HasData(admin);

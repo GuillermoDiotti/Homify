@@ -10,4 +10,16 @@ public class UserRole
     public Role? Role { get; set; }
     public string? UserId { get; set; }
     public User? User { get; set; }
+
+    public UserRole(User user, Role role)
+    {
+        UserId = user.Id;
+        RoleId = role.Id;
+        User = user;
+        Role = role;
+    }
+
+    public UserRole()
+    {
+    }
 }

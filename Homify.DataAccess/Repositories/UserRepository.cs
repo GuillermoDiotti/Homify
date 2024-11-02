@@ -16,6 +16,7 @@ public sealed class UserRepository : Repository<User>
     {
         var query =
             _entities.Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
                 .ThenInclude(u => u.Permissions)
                 .Where(predicate);
 
@@ -34,11 +35,13 @@ public sealed class UserRepository : Repository<User>
         if (predicate == null)
         {
             return _entities.Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
                 .ThenInclude(u => u.Permissions).ToList();
         }
 
         var query =
             _entities.Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
                 .ThenInclude(u => u.Permissions)
                 .Where(predicate)
                 .ToList();

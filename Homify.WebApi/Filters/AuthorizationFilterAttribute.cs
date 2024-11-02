@@ -38,7 +38,7 @@ public sealed class AuthorizationFilter : AuthenticationFilterAttribute
     {
         foreach (var role in userLogged.Roles)
         {
-            if (role.Permissions.Any(r => r.Value == code))
+            if (role.Role.Permissions.Any(r => r.Value == code))
             {
                 return true;
             }

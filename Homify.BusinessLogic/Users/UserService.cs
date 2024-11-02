@@ -32,8 +32,6 @@ public class UserService : IUserService
             Password = args.Password,
             LastName = args.LastName,
         };
-        user.Roles.Add(args.Role);
-
         _repository.Add(user);
 
         LoadIntermediateTable(user.Id, Constants.ADMINISTRATORID);
@@ -52,7 +50,6 @@ public class UserService : IUserService
             LastName = args.LastName,
             IsIncomplete = true,
         };
-        companyOwner.Roles.Add(args.Role);
 
         _repository.Add(companyOwner);
 
@@ -72,7 +69,6 @@ public class UserService : IUserService
             LastName = args.LastName,
             ProfilePicture = args.ProfilePicUrl,
         };
-        homeOwner.Roles.Add(args.Role);
         _repository.Add(homeOwner);
 
         LoadIntermediateTable(homeOwner.Id, Constants.HOMEOWNERID);
