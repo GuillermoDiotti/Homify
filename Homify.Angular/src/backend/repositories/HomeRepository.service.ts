@@ -6,6 +6,7 @@ import { environment } from "../../environment";
 import ApiRepository from "./api-repository";
 import { CreateHomeRequest } from "../services/homes/models/CreateHomeRequest";
 import { CreateHomeResponse } from "../services/homes/models/CreateHomeResponse";
+import { GetAllHomesResponse } from "../services/homes/models/GetAllHomesResponse";
 
 
 @Injectable({
@@ -18,6 +19,11 @@ import { CreateHomeResponse } from "../services/homes/models/CreateHomeResponse"
     
       public create(request: CreateHomeRequest): Observable<CreateHomeResponse> {
         return this.post<CreateHomeResponse>(request).pipe(catchError(this.handleError));
+      }
+
+      public getAllHomesByOwner()
+        : Observable<Array<GetAllHomesResponse>> {
+        return this.get<Array<GetAllHomesResponse>>("by-owner").pipe(catchError(this.handleError));
       }
     
     }
