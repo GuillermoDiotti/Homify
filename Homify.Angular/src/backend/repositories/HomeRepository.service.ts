@@ -41,8 +41,9 @@ import { GetMembersResponse } from "../services/homes/models/GetMembersResponse"
         return this.putById<HomeMemberBasicInfo>(homeId, request, memberId).pipe(catchError(this.handleError));
       }
 
-      publicGetHomeMembers(homeId:string):Observable<GetMembersResponse>{
-        return this.get<GetMembersResponse>(homeId, "members").pipe(catchError(this.handleError));
+      public GetHomeMembers(homeId:string)
+      : Observable<Array<GetMembersResponse>>{
+        return this.get<Array<GetMembersResponse>>(`${homeId}/members`).pipe(catchError(this.handleError));
       }
   
     }

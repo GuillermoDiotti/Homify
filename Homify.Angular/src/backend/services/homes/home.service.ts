@@ -32,10 +32,10 @@ export class HomeService {
 
   public UpdatePermissions(homeId: string, request: UpdateMembersPermissionRequest, memberId:string)
   :Observable<HomeMemberBasicInfo>{
-    return this.UpdatePermissions(homeId,request, memberId)
+    return this._repository.UpdateMembersPermissions(homeId, memberId, request)
   }
 
-  public GetMembers(homeId:string) : Observable<GetMembersResponse>{
-    return this._repository.publicGetHomeMembers(homeId);
+  public GetMembers(homeId:string) : Observable<Array<GetMembersResponse>>{
+    return this._repository.GetHomeMembers(homeId);
   }
 }

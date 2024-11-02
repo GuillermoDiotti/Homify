@@ -7,5 +7,12 @@ import { Component, Input } from '@angular/core';
 })
 export class UpdateMembersPermissionsComponent {
   @Input() selectedHomeId: string | null = null;
-  onHomeSelected(id: string) { this.selectedHomeId = id; }
+  onHomeSelected(id: string) { 
+    console.log(id)
+    this.selectedHomeId = id; }
+  @Input() selectedMemberId: string | null = null;
+  onMemberSelected(id: string) {
+    console.log(id)
+    this.selectedMemberId = id; 
+  }
 }

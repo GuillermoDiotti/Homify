@@ -1,4 +1,4 @@
 export interface UpdateMembersPermissionRequest{
-    canAddAdvices: boolean;
+    canAddDevices: boolean;
     canListDevices: boolean;
 }

@@ -5,6 +5,7 @@ namespace Homify.WebApi.Controllers.Homes.Models.Responses;
 
 public class GetMemberResponse
 {
+    public string Id { get; set; }
     public string Fullname { get; set; }
     public string Email { get; set; }
     public string? Photo { get; set; }
@@ -13,6 +14,7 @@ public class GetMemberResponse
 
     public GetMemberResponse(HomeUser u)
     {
+        Id = u.UserId;
         Fullname = Helpers.GetUserFullName(u.User.Name, u.User.LastName);
         Email = u.User.Email;
         Permissions = u.Permissions.Select(x => x.Value).ToList();

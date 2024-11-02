@@ -1,4 +1,9 @@
 <app-owner-home-list (homeSelected)="onHomeSelected($event)"></app-owner-home-list>
 @if(selectedHomeId){
-    <app-add-home-member-form [selectedHomeId]="selectedHomeId"></app-add-home-member-form>
+    <app-home-member-list (memberSelected)="onMemberSelected($event)" [selectedHomeId]="selectedHomeId"></app-home-member-list>
+    @if(selectedMemberId){
+        <app-update-members-permissions-form [selectedHomeId]="selectedHomeId" [selectedMemberId]="selectedMemberId">
+            
+        </app-update-members-permissions-form>
+    }
 }

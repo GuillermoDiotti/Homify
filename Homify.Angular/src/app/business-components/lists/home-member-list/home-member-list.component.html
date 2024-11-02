@@ -1,0 +1,20 @@
+<article>
+	<h2>Listing of Members</h2>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (members.length > 0) {
+  <ul>
+    @for (member of members; track $index) {
+    <li>
+      <strong>Member Name:</strong> {{ member.fullName }} <br />
+      <strong>Member Email:</strong> {{ member.email }} <br />
+      <strong>Member Permissions:</strong> {{ member.permissions }} <br />
+      <app-button (clicked)="onClick(member.id)">Select</app-button>
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There aren't members available.</p>
+  }
+</article>
