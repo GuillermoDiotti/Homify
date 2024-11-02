@@ -259,15 +259,16 @@ public class UserControllerTests
         var admin = new User
         {
             Id = adminId,
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole
                 {
                     UserId = adminId,
                     RoleId = Constants.ADMINISTRATORID,
                     Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
                 }
-            }
+
+            ]
         };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
         _userServiceMock.Setup(service => service.Delete(adminId));
