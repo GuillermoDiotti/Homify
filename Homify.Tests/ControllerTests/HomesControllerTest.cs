@@ -924,4 +924,22 @@ public class HomesControllerTest
 
         _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
     }
+
+    [TestMethod]
+    public void GetHomes_WhenUserIsOk_ShouldReturnHomes()
+    {
+        var user = new User { Id = "user1" };
+        var homes = new List<Home> { new Home { Id = "home1" }, new Home { Id = "home2" } };
+        _homeServiceMock.Setup(service => service.GetAllHomes(user)).Returns(homes);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        var result = _controller.GetHomes();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+    }
 }

@@ -14,4 +14,5 @@ public interface IHomeService
     List<HomeUser> UpdateNotificatedList(string homeId, string memberId, User owner);
     List<HomeDevice> GetHomeDevices(string homeId, User u);
     Home UpdateHome(string homeId, string? alias, User u);
+    List<Home> GetAllHomes(User user);
 }

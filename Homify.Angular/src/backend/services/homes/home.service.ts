@@ -3,6 +3,9 @@ import { HomeApiRepositoryService } from '../../repositories/HomeRepository.serv
 import { CreateHomeRequest } from './models/CreateHomeRequest';
 import { CreateHomeResponse } from './models/CreateHomeResponse';
 import { Observable } from 'rxjs';
+import { GetAllHomesResponse } from './models/GetAllHomesResponse';
+import { UpdateMemberListRequest } from './models/UpdateMemberListRequest';
+import { UpdateMemberListResponse } from './models/UpdateMemberListResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +16,14 @@ export class HomeService {
 
   public create(request: CreateHomeRequest): Observable<CreateHomeResponse> {
     return this._repository.create(request);
+  }
+
+  public getHomesByOwner()
+    : Observable<Array<GetAllHomesResponse>> {
+    return this._repository.getAllHomesByOwner();
+  }
+
+  public UpdateMembers(id:string, request: UpdateMemberListRequest): Observable<UpdateMemberListResponse>{
+    return this._repository.UpdateHomeMembers(id, request);
   }
 }
