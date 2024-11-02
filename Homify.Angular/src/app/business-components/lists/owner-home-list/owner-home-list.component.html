@@ -1,1 +1,18 @@
-<p>owner-home-list works!</p>
+<article>
+	<h2>Listing of Homes</h2>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (homes.length > 0) {
+  <ul>
+    @for (home of homes; track $index) {
+    <li>
+      <strong>Home street:</strong> {{ home.street }} <br />
+      <strong>Home number:</strong> {{ home.number }} <br />
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There are'nt homes available.</p>
+  }
+</article>
