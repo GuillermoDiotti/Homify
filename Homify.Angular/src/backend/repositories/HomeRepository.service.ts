@@ -7,6 +7,7 @@ import ApiRepository from "./api-repository";
 import { CreateHomeRequest } from "../services/homes/models/CreateHomeRequest";
 import { CreateHomeResponse } from "../services/homes/models/CreateHomeResponse";
 import { GetAllHomesResponse } from "../services/homes/models/GetAllHomesResponse";
+import { UpdateMemberListRequest } from "../services/homes/models/UpdateMemberListRequest";
 
 
 @Injectable({
@@ -24,6 +25,11 @@ import { GetAllHomesResponse } from "../services/homes/models/GetAllHomesRespons
       public getAllHomesByOwner()
         : Observable<Array<GetAllHomesResponse>> {
         return this.get<Array<GetAllHomesResponse>>("by-owner").pipe(catchError(this.handleError));
+      }
+
+      public UpdateHomeMembers(id:string, request: UpdateMemberListRequest)
+        :Observable<GetAllHomesResponse[]>{
+          return this.putById<Array<GetAllHomesResponse>>(id, request, "members").pipe(catchError(this.handleError));
       }
     
     }
