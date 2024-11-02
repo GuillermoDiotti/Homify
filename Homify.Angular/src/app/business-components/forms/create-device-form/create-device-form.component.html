@@ -1,5 +1,13 @@
 <h2>Create Device</h2>
 <form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <label for="deviceType">Device Type</label>
+  <select id="deviceType" name="device" (change)="onDeviceTypeChange($event)">
+    <option value="camera">Camera</option>
+    <option value="window-sensor">Window Sensor</option>
+    <option value="movement-sensor">Movement Sensor</option>
+    <option value="lamp">Lamp</option>
+  </select>
+
   <app-form-input
     [form]="form"
     name="name"
@@ -15,7 +23,7 @@
     [form]="form"
     name="model"
     type="text"
-    label="model"
+    label="Model"
     placeholder="Model"
     [formField]="{
       model: { required: 'Model is required' }
@@ -44,8 +52,24 @@
     }"
   ></app-form-input>
 
+	@if (device == "camera"){
+		<div>
+			<label>
+				<input type="checkbox" formControlName="isInterior" />
+				Is Interior
+			</label>
+		</div>
+	
+		<div>
+			<label>
+				<input type="checkbox" formControlName="isExterior" />
+				Is Exterior
+			</label>
+		</div>
+	}
+
   <app-form-button type="submit" title="Submit"></app-form-button>
 
-	<app-success-message [message]="successMessage"></app-success-message>
-	<app-error-message [message]="errorMessage"></app-error-message>
+  <app-success-message [message]="successMessage"></app-success-message>
+  <app-error-message [message]="errorMessage"></app-error-message>
 </form>

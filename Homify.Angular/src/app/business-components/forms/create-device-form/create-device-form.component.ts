@@ -27,11 +27,18 @@ export class CreateDeviceFormComponent {
   constructor(private fb: FormBuilder, private DeviceService: DeviceApiRepositoryService) {
     this.form = this.fb.group({
       name: ["", [Validators.required]],
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required]],
-      lastName: ["", [Validators.required]],
+      model: ["", [Validators.required]],
+      description: ["", [Validators.required]],
+      ppalPicture: ["", [Validators.required]],
+			isExterior: [false],
+			isInterior: [false],
     });
   }
+
+	onDeviceTypeChange(event: Event) {
+		const selectElement = event.target as HTMLSelectElement;
+		this.device = selectElement.value;
+	}	
 
   handleSubmit() {
 		this.successMessage = '';
@@ -88,7 +95,6 @@ export class CreateDeviceFormComponent {
 				break;
 
 			case 'movement-sensor':
-				const { name: msName, model: msModel, movementDetected } = this.form.value;
 				const movementSensorRequest: CreateSensorRequest = {
 					description,
 					model,
@@ -108,7 +114,6 @@ export class CreateDeviceFormComponent {
 				break;
 
 			case 'lamp':
-				const { name: lampName, model: lampModel, intensity } = this.form.value;
 				const lampRequest: CreateSensorRequest = {
 					description,
 					model,
