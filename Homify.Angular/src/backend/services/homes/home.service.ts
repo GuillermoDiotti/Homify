@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { GetAllHomesResponse } from './models/GetAllHomesResponse';
 import { UpdateMemberListRequest } from './models/UpdateMemberListRequest';
 import { UpdateMemberListResponse } from './models/UpdateMemberListResponse';
+import { UpdateMembersPermissionRequest } from './models/UpdateMembersPermissionRequest';
+import { HomeMemberBasicInfo } from './models/HomeMemberBasicInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +27,10 @@ export class HomeService {
 
   public UpdateMembers(id:string, request: UpdateMemberListRequest): Observable<UpdateMemberListResponse>{
     return this._repository.UpdateHomeMembers(id, request);
+  }
+
+  public UpdatePermissions(homeId: string, request: UpdateMembersPermissionRequest, memberId:string)
+  :Observable<HomeMemberBasicInfo>{
+    return this.UpdatePermissions(homeId,request, memberId)
   }
 }

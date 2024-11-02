@@ -9,6 +9,8 @@ import { CreateHomeResponse } from "../services/homes/models/CreateHomeResponse"
 import { GetAllHomesResponse } from "../services/homes/models/GetAllHomesResponse";
 import { UpdateMemberListRequest } from "../services/homes/models/UpdateMemberListRequest";
 import { UpdateMemberListResponse } from "../services/homes/models/UpdateMemberListResponse";
+import { UpdateMembersPermissionRequest } from "../services/homes/models/UpdateMembersPermissionRequest";
+import { HomeMemberBasicInfo } from "../services/homes/models/HomeMemberBasicInfo";
 
 
 @Injectable({
@@ -31,6 +33,11 @@ import { UpdateMemberListResponse } from "../services/homes/models/UpdateMemberL
       public UpdateHomeMembers(id:string, request: UpdateMemberListRequest)
         :Observable<UpdateMemberListResponse>{
           return this.putById<UpdateMemberListResponse>(id, request, "members").pipe(catchError(this.handleError));
+      }
+
+      public UpdateMembersPermissions(homeId:string, memberId:string, request:UpdateMembersPermissionRequest)
+      :Observable<HomeMemberBasicInfo>{
+        return this.putById<HomeMemberBasicInfo>(homeId, request, memberId).pipe(catchError(this.handleError));
       }
   
     }
