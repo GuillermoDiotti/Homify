@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.UserRoles;
 using Homify.BusinessLogic.Users.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -36,9 +37,10 @@ public sealed class AuthorizationFilter : AuthenticationFilterAttribute
 
     private bool HasPermission(User userLogged, string code)
     {
-        foreach (var role in userLogged.Roles)
+        var roles = userLogged.Roles.Select(x => x.Role).ToList();
+        foreach (var role in roles)
         {
-            if (role.Role.Permissions.Any(r => r.Value == code))
+            if (role.Permissions.Any(r => r.Value == code))
             {
                 return true;
             }
