@@ -61,7 +61,7 @@ public sealed class AdminController : HomifyControllerBase
             throw new NotFoundException("Admin not found");
         }
 
-        if (admin.Roles.Name != Constants.ADMINISTRATOR)
+        if (!admin.Roles.Any(r => r.Name == Constants.ADMINISTRATOR))
         {
             throw new InvalidOperationException("Target user is not an admin");
         }
@@ -92,7 +92,7 @@ public sealed class AdminController : HomifyControllerBase
 
         if (!string.IsNullOrEmpty(role))
         {
-            list = list.Where(u => u.Roles.Name.Contains(role, StringComparison.OrdinalIgnoreCase)).ToList();
+            list = list.Where(u => u.Roles.Any(r => r.Name.Contains(role, StringComparison.OrdinalIgnoreCase))).ToList();
         }
 
         if (!string.IsNullOrEmpty(fullName))
