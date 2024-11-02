@@ -242,7 +242,7 @@ public sealed class HomeController : HomifyControllerBase
         return result;
     }
 
-    [HttpGet]
+    [HttpGet("by-owner")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public List<GetHomesResponse> GetHomes()
