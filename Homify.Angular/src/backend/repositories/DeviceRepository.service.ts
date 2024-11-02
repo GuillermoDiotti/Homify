@@ -3,11 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable, catchError } from "rxjs";
 import ApiRepository from "./api-repository";
 import { environment } from "../../environment";
-import UserBasicInfo from "../services/admin/models/UserBasicInfo";
 import CreateCameraRequest from "../services/device/models/CreateCameraRequest";
 import CreateDeviceResponse from "../services/device/models/CreateDeviceResponse";
 import CreateSensorRequest from "../services/device/models/CreateSensorRequest";
-import SearchDeviceResponse from "../services/device/models/SearchDeviceResponse";
 
 @Injectable({
   providedIn: "root",

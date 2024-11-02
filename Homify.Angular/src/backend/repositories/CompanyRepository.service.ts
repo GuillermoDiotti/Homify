@@ -1,9 +1,8 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, catchError } from "rxjs";
 import ApiRepository from "./api-repository";
 import { environment } from "../../environment";
-import UserBasicInfo from "../services/admin/models/UserBasicInfo";
 import CreateCompanyResponse from "../services/company/models/CreateCompanyResponse";
 import CreateCompanyRequest from "../services/company/models/CreateCompanyRequest";
 import CompanyBasicInfo from "../services/company/models/CompanyBasicInfo";
