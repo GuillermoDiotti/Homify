@@ -32,5 +32,5 @@ import { UpdateMemberListResponse } from "../services/homes/models/UpdateMemberL
         :Observable<UpdateMemberListResponse>{
           return this.putById<UpdateMemberListResponse>(id, request, "members").pipe(catchError(this.handleError));
       }
-    
+  
     }
