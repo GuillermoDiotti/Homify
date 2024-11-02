@@ -18,8 +18,8 @@ public class HomeUserRepository : Repository<HomeUser>
     {
         var query =
             _entities.Include(s => s.User)
-                .Include(s => s.User.Role)
-                .Include(s => s.User.Role.Permissions)
+                .Include(s => s.User.Roles)
+                .Include(s => s.User.Roles.Permissions)
                 .Include(s => s.Home)
                 .Include(s => s.Home.Devices)
                 .Include(s => s.Permissions)

@@ -20,7 +20,7 @@ public class UserBasicInfo
         Name = u.Name;
         LastName = u.LastName;
         CreatedAt = u.CreatedAt;
-        Role = u.Role.Name;
+        Role = u.Roles.Name;
         FullName = Helpers.GetUserFullName(u.Name, u.LastName);
     }
 }

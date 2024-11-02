@@ -27,7 +27,7 @@ public class SessionRepositoryTests
                     Name = "User1",
                     LastName = "LastName1",
                     Password = "Password1",
-                    Role = RolesGenerator.Admin()
+                    Roles = RolesGenerator.Admin()
                 }
             }
         }.AsQueryable();
@@ -50,7 +50,7 @@ public class SessionRepositoryTests
         Assert.AreEqual("User1", result.User.Name);
         Assert.AreEqual("LastName1", result.User.LastName);
         Assert.AreEqual("user1@example.com", result.User.Email);
-        Assert.AreEqual("ADMINISTRATOR", result.User.Role.Name);
+        Assert.AreEqual("ADMINISTRATOR", result.User.Roles.Name);
     }
 
     [TestMethod]

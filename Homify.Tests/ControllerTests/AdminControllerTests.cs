@@ -244,7 +244,7 @@ public class UserControllerTests
     public void Delete_WhenTargetUserIsNotAdmin_ShouldThrowInvalidOperationException()
     {
         var adminId = "userId";
-        var user = new User { Id = adminId, Role = new Role { Name = "User" } };
+        var user = new User { Id = adminId, Roles = new Role { Name = "User" } };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(user);
 
         _controller.Delete(adminId);
@@ -255,7 +255,7 @@ public class UserControllerTests
     {
         // Arrange
         var adminId = "adminId";
-        var admin = new User { Id = adminId, Role = new Role { Name = Constants.ADMINISTRATOR } };
+        var admin = new User { Id = adminId, Roles = new Role { Name = Constants.ADMINISTRATOR } };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
         _userServiceMock.Setup(service => service.Delete(adminId));
 
@@ -292,7 +292,7 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Admin"
                 }
@@ -301,7 +301,7 @@ public class UserControllerTests
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "User"
                 }
@@ -310,7 +310,7 @@ public class UserControllerTests
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Guest"
                 }
@@ -336,7 +336,7 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Admin"
                 }
@@ -345,7 +345,7 @@ public class UserControllerTests
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "User"
                 }
@@ -354,7 +354,7 @@ public class UserControllerTests
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Guest"
                 }
@@ -363,7 +363,7 @@ public class UserControllerTests
             {
                 Name = "Lucy",
                 LastName = "Williams",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Admin"
                 }
@@ -387,7 +387,7 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "User"
                 }
@@ -396,7 +396,7 @@ public class UserControllerTests
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "User"
                 }
@@ -405,7 +405,7 @@ public class UserControllerTests
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Admin"
                 }
@@ -430,7 +430,7 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "User"
                 }
@@ -439,7 +439,7 @@ public class UserControllerTests
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "User"
                 }
@@ -448,7 +448,7 @@ public class UserControllerTests
             {
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Admin"
                 }
@@ -472,7 +472,7 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
+                Roles = new Role
                 {
                     Name = "Admin"
                 }
@@ -502,13 +502,13 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "Admin" }
+                Roles = new Role { Name = "Admin" }
             },
             new User
             {
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Roles = new Role { Name = "User" }
             }
         };
 

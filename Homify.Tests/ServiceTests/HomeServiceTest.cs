@@ -39,7 +39,7 @@ public class HomeServiceTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles = RolesGenerator.HomeOwner()
         };
 
         var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");

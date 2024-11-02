@@ -216,7 +216,7 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles = RolesGenerator.HomeOwner()
         };
 
         var httpContext = new DefaultHttpContext();
@@ -291,7 +291,7 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles = RolesGenerator.HomeOwner()
         };
 
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
@@ -318,7 +318,7 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles = RolesGenerator.HomeOwner()
         };
 
         var httpContext = new DefaultHttpContext();
@@ -613,7 +613,7 @@ public class HomesControllerTest
         var user = new User
         {
             Id = "ownerId",
-            Role = new Role
+            Roles = new Role
             {
                 Name = Constants.HOMEOWNER
             }
@@ -640,7 +640,7 @@ public class HomesControllerTest
         var user = new User
         {
             Id = "ownerId",
-            Role = new Role
+            Roles = new Role
             {
                 Name = Constants.HOMEOWNER
             }
@@ -723,7 +723,7 @@ public class HomesControllerTest
         {
             Id = "user123",
             Email = "test@example.com",
-            Role = new Role { Name = Constants.HOMEOWNER }
+            Roles = new Role { Name = Constants.HOMEOWNER }
         };
         var homeUser = new HomeUser
         {
@@ -825,7 +825,7 @@ public class HomesControllerTest
         {
             Id = "user123",
             Email = "test@example.com",
-            Role = new Role { Name = Constants.HOMEOWNER }
+            Roles = new Role { Name = Constants.HOMEOWNER }
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);

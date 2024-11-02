@@ -23,14 +23,12 @@ public class UserService : IUserService
         ValidateEmailIsNotRepeated(args.Email);
         var user = new Admin()
         {
-            Id = Guid.NewGuid().ToString(),
             Name = args.Name,
             Email = args.Email,
-            CreatedAt = HomifyDateTime.GetActualDate(),
             Password = args.Password,
             LastName = args.LastName,
-            Role = args.Role,
         };
+        user.Roles.Add(args.Role);
 
         _repository.Add(user);
         return user;
@@ -41,15 +39,13 @@ public class UserService : IUserService
         ValidateEmailIsNotRepeated(args.Email);
         var companyOwner = new CompanyOwner()
         {
-            Id = Guid.NewGuid().ToString(),
             Email = args.Email,
             Name = args.Name,
             Password = args.Password,
             LastName = args.LastName,
-            CreatedAt = HomifyDateTime.GetActualDate(),
             IsIncomplete = true,
-            Role = args.Role,
         };
+        companyOwner.Roles.Add(args.Role);
 
         _repository.Add(companyOwner);
         return companyOwner;
@@ -60,15 +56,13 @@ public class UserService : IUserService
         ValidateEmailIsNotRepeated(args.Email);
         var homeOwner = new HomeOwner()
         {
-            Id = Guid.NewGuid().ToString(),
             Email = args.Email,
             Name = args.Name,
             Password = args.Password,
             LastName = args.LastName,
-            CreatedAt = HomifyDateTime.GetActualDate(),
             ProfilePicture = args.ProfilePicUrl,
-            Role = args.Role,
         };
+        homeOwner.Roles.Add(args.Role);
 
         _repository.Add(homeOwner);
         return homeOwner;

@@ -88,7 +88,7 @@ public sealed class HomifyDbContext : DbContext
             .HasKey(hd => hd.Id);
 
         modelBuilder.Entity<User>()
-            .HasOne(u => u.Role)
+            .HasOne(u => u.Roles)
             .WithMany()
             .HasForeignKey(u => u.RoleId)
             .IsRequired();

@@ -54,7 +54,7 @@ public class CompanyOwnerControllerTest
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName,
-            Role = expectedRole
+            Roles = expectedRole
         };
 
         _roleServiceMock.Setup(r => r.GetRole("COMPANYOWNER")).Returns(expectedRole);
@@ -70,7 +70,7 @@ public class CompanyOwnerControllerTest
         expectedOwner.Email.Should().Be(request.Email);
         expectedOwner.Password.Should().Be(request.Password);
         expectedOwner.LastName.Should().Be(request.LastName);
-        expectedOwner.Role.Permissions[0].Value.Should().Be("companies-Create");
+        expectedOwner.Roles.Permissions[0].Value.Should().Be("companies-Create");
     }
 
     #endregion

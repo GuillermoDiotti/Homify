@@ -49,7 +49,7 @@ public class HomeDeviceControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles = RolesGenerator.HomeOwner()
         };
 
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();

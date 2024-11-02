@@ -79,7 +79,7 @@ public sealed class HomeController : HomifyControllerBase
         }
 
         var userFound = _userService.GetAll()
-            .FirstOrDefault(x => x.Email == request.Email && x.Role.Name == Constants.HOMEOWNER);
+            .FirstOrDefault(x => x.Email == request.Email && x.Roles.Name == Constants.HOMEOWNER);
 
         if (userFound == null)
         {

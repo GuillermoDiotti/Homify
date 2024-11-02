@@ -37,7 +37,7 @@ public class CompanyServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
+            Roles = new Role()
         };
 
         _companyRepositoryMock.Setup(r => r.Add(It.IsAny<Company>())).Verifiable();

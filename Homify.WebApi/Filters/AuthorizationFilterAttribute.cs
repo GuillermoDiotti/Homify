@@ -36,7 +36,7 @@ public sealed class AuthorizationFilter : AuthenticationFilterAttribute
 
     private bool HasPermission(User userLogged, string code)
     {
-        foreach (SystemPermission permission in userLogged.Role.Permissions)
+        foreach (SystemPermission permission in userLogged.Roles.Permissions)
         {
             if (permission.Value == code)
             {

@@ -35,7 +35,7 @@ public class SessionServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
+            Roles = new Role()
         };
         var session = new Session
         {

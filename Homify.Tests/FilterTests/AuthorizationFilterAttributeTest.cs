@@ -54,7 +54,7 @@ public class AuthorizationFilterAttributeTest
             LastName = "ADA",
             Email = "ada@email.com",
             Password = "adaPASS",
-            Role = _roleForTest
+            Roles = _roleForTest
         };
 
         _sessionServiceMock.Setup(sessionService =>
@@ -101,7 +101,7 @@ public class AuthorizationFilterAttributeTest
     [TestMethod]
     public void Authorization_WhenNoPermission_ShouldFail()
     {
-        _user.Role.Permissions.Clear();
+        _user.Roles.Permissions.Clear();
 
         _attribute = new AuthorizationFilter("admins-Create");
         _attribute.OnAuthorization(_context);

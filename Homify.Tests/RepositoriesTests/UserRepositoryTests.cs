@@ -23,7 +23,7 @@ public class UserRepositoryTests
                 Name = "User1",
                 LastName = "LastName1",
                 Password = "Password1",
-                Role = RolesGenerator.Admin()
+                Roles = RolesGenerator.Admin()
             }
         }.AsQueryable();
 
@@ -44,7 +44,7 @@ public class UserRepositoryTests
         Assert.AreEqual("User1", result1.Name);
         Assert.AreEqual("LastName1", result1.LastName);
         Assert.AreEqual("user1@example.com", result1.Email);
-        Assert.AreEqual("ADMINISTRATOR", result1.Role.Name);
+        Assert.AreEqual("ADMINISTRATOR", result1.Roles.Name);
     }
 
     [TestMethod]
@@ -74,13 +74,13 @@ public class UserRepositoryTests
             {
                 Id = "1",
                 Name = "User1",
-                Role = RolesGenerator.Admin()
+                Roles = RolesGenerator.Admin()
             },
             new User
             {
                 Id = "2",
                 Name = "User2",
-                Role = RolesGenerator.Admin()
+                Roles = RolesGenerator.Admin()
             }
         }.AsQueryable();
 

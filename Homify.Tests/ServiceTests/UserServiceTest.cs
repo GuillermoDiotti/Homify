@@ -46,14 +46,14 @@ public class UserServiceTest
             u.Email == createUserArgs.Email &&
             u.Password == createUserArgs.Password &&
             u.LastName == createUserArgs.LastName &&
-            u.Role == createUserArgs.Role)), Times.Once);
+            u.Roles == createUserArgs.Role)), Times.Once);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(createUserArgs.Name, result.Name);
         Assert.AreEqual(createUserArgs.Email, result.Email);
         Assert.AreEqual(createUserArgs.Password, result.Password);
         Assert.AreEqual(createUserArgs.LastName, result.LastName);
-        Assert.AreEqual(createUserArgs.Role, result.Role);
+        Assert.AreEqual(createUserArgs.Role, result.Roles);
     }
 
     [TestMethod]
@@ -67,7 +67,7 @@ public class UserServiceTest
             Email = "duplicate@example.com",
             Password = "password123",
             LastName = "User",
-            Role = RolesGenerator.Admin()
+            Roles = RolesGenerator.Admin()
         };
 
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(existingUser);
@@ -152,7 +152,7 @@ public class UserServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
+            Roles = new Role()
         };
 
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(expectedUser);
@@ -165,7 +165,7 @@ public class UserServiceTest
         Assert.AreEqual(expectedUser.Email, result.Email);
         Assert.AreEqual(expectedUser.Password, result.Password);
         Assert.AreEqual(expectedUser.LastName, result.LastName);
-        Assert.AreEqual(expectedUser.Role, result.Role);
+        Assert.AreEqual(expectedUser.Roles, result.Roles);
     }
 
     [TestMethod]
@@ -180,7 +180,7 @@ public class UserServiceTest
                 Email = "john@example.com",
                 Password = "password123",
                 LastName = "Doe",
-                Role = new Role()
+                Roles = new Role()
             },
             new User
             {
@@ -189,7 +189,7 @@ public class UserServiceTest
                 Email = "jane@example.com",
                 Password = "password456",
                 LastName = "Smith",
-                Role = new Role()
+                Roles = new Role()
             }
         };
 
@@ -216,7 +216,7 @@ public class UserServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
+            Roles = new Role()
         };
 
         var user2 = new User(
