@@ -11,8 +11,8 @@ public class User
     public string LastName { get; set; } = null!;
     public string Id { get; init; }
     public string? ProfilePicture { get; set; } = null!;
-    public Role Role { get; init; } = null!;
-    public string RoleId { get; set; } = null!;
+    public List<Role> Role { get; init; } = null!;
+    public string RoleId { get; set; } = null!; // hay que ver
     public string CreatedAt { get; init; }
 
     public User(string name, string email, string password, string lastName, Role role)
@@ -22,7 +22,7 @@ public class User
         Email = email;
         Password = password;
         LastName = lastName;
-        Role = role;
+        Role = [role];
         RoleId = role.Id;
         CreatedAt = HomifyDateTime.GetActualDate();
     }
@@ -31,5 +31,6 @@ public class User
     {
         Id = Guid.NewGuid().ToString();
         CreatedAt = HomifyDateTime.GetActualDate();
+        Role = [];
     }
 }
