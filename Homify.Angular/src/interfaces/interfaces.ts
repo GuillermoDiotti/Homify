@@ -1,12 +1,9 @@
-import { HttpHeaders } from "@angular/common/http";
-
 export interface APIError {
-  error: string;
-  headers: HttpHeaders;
-  message: string;
-  name: string;
+  error: {
+		innerCode: string;
+		message: string;
+	};
   ok: boolean;
-  status: number;
   statusText: string;
-  url: string;
+  status: string;
 }

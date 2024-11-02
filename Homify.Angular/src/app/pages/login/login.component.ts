@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
       },
       (error: APIError) => {
         console.error('Login failed:', error.error);
-        this.errorMessage = error.error;
+        this.errorMessage = error.error.message;
       }
     );
   }
