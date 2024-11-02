@@ -38,13 +38,14 @@ export class CreateDeviceFormComponent {
 	onDeviceTypeChange(event: Event) {
 		const selectElement = event.target as HTMLSelectElement;
 		this.device = selectElement.value;
+		console.log(this.device)
 	}	
 
   handleSubmit() {
 		this.successMessage = '';
 		this.errorMessage = '';
     if (this.form.valid) {
-      this.createDevice('camera')
+      this.createDevice(this.device)
       
     } else {
       console.log("Form is invalid");

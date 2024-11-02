@@ -57,7 +57,7 @@ public class DeviceController : HomifyControllerBase
         return new CreateDeviceResponse(cam);
     }
 
-    [HttpPost("sensors")]
+    [HttpPost("window-sensors")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterSensor(CreateSensorRequest? req)

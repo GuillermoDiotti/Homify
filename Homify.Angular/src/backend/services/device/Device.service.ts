@@ -20,11 +20,11 @@ export class DeviceApiRepositoryService extends ApiRepository{
   }
 
 	public createMovementSensor(request: CreateSensorRequest): Observable<CreateDeviceResponse> {
-    return this.post<CreateDeviceResponse>(request, "movement-sensor").pipe(catchError(this.handleError));
+    return this.post<CreateDeviceResponse>(request, "movement-sensors").pipe(catchError(this.handleError));
   }
 
 	public createWindowSensor(request: CreateSensorRequest): Observable<CreateDeviceResponse> {
-    return this.post<CreateDeviceResponse>(request, "window-sensor").pipe(catchError(this.handleError));
+    return this.post<CreateDeviceResponse>(request, "window-sensors").pipe(catchError(this.handleError));
   }
 
 	public createLamp(request: CreateSensorRequest): Observable<CreateDeviceResponse> {
