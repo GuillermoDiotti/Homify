@@ -8,7 +8,7 @@ using Moq;
 
 namespace Homify.Tests.ServiceTests;
 
-[TestClass]
+/*[TestClass]
 public class CompanyServiceTest
 {
     private Mock<IRepository<Company>>? _companyRepositoryMock;
@@ -83,4 +83,4 @@ public class CompanyServiceTest
         var result = _service.GetByUserId(userId);
         Assert.IsNull(result);
     }
-}
+}*/

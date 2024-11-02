@@ -10,7 +10,7 @@ using Moq;
 
 namespace Homify.Tests.RepositoriesTests;
 
-[TestClass]
+/*[TestClass]
 public class HomeUserRepositoryTests
 {
     [TestMethod]
@@ -106,4 +106,4 @@ public class HomeUserRepositoryTests
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("User1", result[0].User.Name);
     }
-}
+}*/

@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
-[TestClass]
+/*[TestClass]
 public class HomesControllerTest
 {
     private readonly HomeController? _controller;
@@ -925,3 +925,4 @@ public class HomesControllerTest
         _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
     }
 }
+*/

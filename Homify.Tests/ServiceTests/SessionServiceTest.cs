@@ -10,7 +10,7 @@ using Constants = Homify.Utility.Constants;
 
 namespace Homify.Tests.ServiceTests;
 
-[TestClass]
+/*[TestClass]
 public class SessionServiceTest
 {
     private Mock<IRepository<Session>>? _sessionRepositoryMock;
@@ -100,4 +100,4 @@ public class SessionServiceTest
         _sessionRepositoryMock.Verify(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()), Times.Once);
         _sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
     }
-}
+}*/

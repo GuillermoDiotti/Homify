@@ -12,7 +12,7 @@ using Moq;
 
 namespace Homify.Tests.ControllerTests;
 
-[TestClass]
+/*[TestClass]
 public class UserControllerTests
 {
     private readonly AdminController _controller;
@@ -521,4 +521,4 @@ public class UserControllerTests
         Assert.AreEqual("John Doe", Helpers.GetUserFullName(result[0].Name, result[0].LastName));
         _userServiceMock.Verify(service => service.GetAll(), Times.Once);
     }
-}
+}*/

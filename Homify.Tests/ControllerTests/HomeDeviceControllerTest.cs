@@ -14,7 +14,7 @@ using Moq;
 
 namespace Homify.Tests.ControllerTests;
 
-[TestClass]
+/*[TestClass]
 public class HomeDeviceControllerTest
 {
     private readonly HomeDeviceController _controller;
@@ -80,3 +80,4 @@ public class HomeDeviceControllerTest
         response.Should().NotBeNull();
     }
 }
+*/

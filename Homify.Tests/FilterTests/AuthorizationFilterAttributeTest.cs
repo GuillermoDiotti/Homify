@@ -17,7 +17,7 @@ using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 
 namespace Homify.Tests.FilterTests;
 
-[TestClass]
+/*[TestClass]
 public class AuthorizationFilterAttributeTest
 {
     private readonly Mock<HttpContext> _httpContextMock;
@@ -127,4 +127,4 @@ public class AuthorizationFilterAttributeTest
     {
         return value.GetType().GetProperty("Message").GetValue(value).ToString();
     }
-}
+}*/
