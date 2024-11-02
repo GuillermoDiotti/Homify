@@ -8,6 +8,7 @@ import { UpdateMemberListRequest } from './models/UpdateMemberListRequest';
 import { UpdateMemberListResponse } from './models/UpdateMemberListResponse';
 import { UpdateMembersPermissionRequest } from './models/UpdateMembersPermissionRequest';
 import { HomeMemberBasicInfo } from './models/HomeMemberBasicInfo';
+import { GetMembersResponse } from './models/GetMembersResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class HomeService {
   public UpdatePermissions(homeId: string, request: UpdateMembersPermissionRequest, memberId:string)
   :Observable<HomeMemberBasicInfo>{
     return this.UpdatePermissions(homeId,request, memberId)
+  }
+
+  public GetMembers(homeId:string) : Observable<GetMembersResponse>{
+    return this._repository.publicGetHomeMembers(homeId);
   }
 }

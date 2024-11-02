@@ -6,6 +6,7 @@ import { CreateHomeFormComponent } from '../../business-components/forms/create-
 import { OwnerHomeListComponent } from '../../business-components/lists/owner-home-list/owner-home-list.component';
 import { AddMemberComponent } from './add-member/add-member.component';
 import { AddHomeMemberFormComponent } from '../../business-components/forms/add-home-member-form/add-home-member-form.component';
+import { UpdateMembersPermissionsComponent } from './update-members-permissions/update-members-permissions.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateHomeComponent },
@@ -13,13 +14,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CreateHomeComponent, AddMemberComponent],
+  declarations: [CreateHomeComponent, AddMemberComponent, UpdateMembersPermissionsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     CreateHomeFormComponent,
     OwnerHomeListComponent,
-    AddHomeMemberFormComponent
+    AddHomeMemberFormComponent,
   ]
 })
 export class HomePageModule { }
