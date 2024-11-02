@@ -252,27 +252,37 @@ public class UserControllerTests
         _controller.Delete(adminId);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void Delete_WhenAdminExistsAndIsAdmin_ShouldDeleteAdmin()
     {
-        // Arrange
         var adminId = "adminId";
-        var admin = new User { Id = adminId, Roles = new Role { Name = Constants.ADMINISTRATOR } };
+        var admin = new User
+        {
+            Id = adminId,
+            Roles = new List<UserRole>
+            {
+                new UserRole
+                {
+                    UserId = adminId,
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                }
+            }
+        };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
         _userServiceMock.Setup(service => service.Delete(adminId));
 
-        // Act
         _controller.Delete(adminId);
 
-        // Assert
         _userServiceMock.Verify(service => service.GetById(adminId), Times.Once);
         _userServiceMock.Verify(service => service.Delete(adminId), Times.Once);
     }
-    #endregion
 
-    #region Success
+    // #endregion
 
-    [TestMethod]
+    // #region Success
+
+    /*[TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void DeleteUser_WhenUserIdIsOk_ShouldDeleteUser()
     {
