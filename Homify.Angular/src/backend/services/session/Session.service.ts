@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SessionTypeApiRepositoryService } from '../../repositories/SessionRepository.service';
 import CreateSessionResponse from './models/CreateSessionResponse';
 
@@ -16,21 +16,19 @@ export interface User {
   providedIn: 'root'
 })
 export class SessionService {
-  private currentUserTokenSubject: BehaviorSubject<string | null>;
-  public currentUserToken: Observable<string | null>;
-
-  constructor(private sessionRepository: SessionTypeApiRepositoryService) {
-    this.currentUserTokenSubject = new BehaviorSubject<string | null>(null);
-    this.currentUserToken = this.currentUserTokenSubject.asObservable();
-  }
+  constructor(private sessionRepository: SessionTypeApiRepositoryService) {}
 
   public setCurrentUserToken(token: string | null): void {
-    this.currentUserTokenSubject.next(token);
+		localStorage.setItem('token', token ?? '');
   }
 
-  public getCurrentUserToken(): Observable<string | null> {
-    return this.currentUserToken;
+  public getCurrentUserToken(): string | null {
+    return localStorage.getItem('token') ?? null;
   }
+
+	public removeCurrentUserToken(): void {
+		localStorage.removeItem('token');
+	}
 
   login(username: string, password: string): Observable<CreateSessionResponse> {
     return this.sessionRepository.login(username, password);
