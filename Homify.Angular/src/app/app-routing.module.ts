@@ -5,7 +5,8 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./pages/admin-page/admin.module').then(m => m.AdministratorModule)},
 	{ path: 'login', pathMatch: 'full', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
   { path: 'companies', loadChildren: () => import('./pages/company-page/company.module').then(m => m.CompanyPageModule) },
-  { path: 'homes', loadChildren: () => import('./pages/home-page/home.module').then(m => m.HomePageModule)},
+  { path: 'devices', loadChildren: () => import('./pages/device-page/device.module').then(m => m.DevicePageModule) },
+	{ path: 'homes', loadChildren: () => import('./pages/home-page/home.module').then(m => m.HomePageModule)},
   { path: '**', pathMatch: 'full', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) }
 ];
 

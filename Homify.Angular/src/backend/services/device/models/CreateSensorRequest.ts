@@ -1,7 +1,7 @@
 export default interface CreateSensorRequest {
-    Name: string;
-    Model: string;
-    Descriptions: string;
-    Photos: Array<string>;
-    PpalPicture: string;
+    name: string;
+    model: string;
+    description: string;
+    photos: Array<string>;
+    ppalPicture: string;
 }

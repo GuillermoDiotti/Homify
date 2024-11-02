@@ -1,0 +1,51 @@
+<h2>Create Device</h2>
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="name"
+    type="text"
+    label="Name"
+    placeholder="Name"
+    [formField]="{
+      name: { required: 'Name is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="model"
+    type="text"
+    label="model"
+    placeholder="Model"
+    [formField]="{
+      model: { required: 'Model is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="description"
+    type="text"
+    label="Description"
+    placeholder="Description"
+    [formField]="{
+      description: { required: 'Description is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="ppalPicture"
+    type="text"
+    label="Principal Picture"
+    placeholder="Principal Picture"
+    [formField]="{
+      ppalPicture: { required: 'Picture is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+
+	<app-success-message [message]="successMessage"></app-success-message>
+	<app-error-message [message]="errorMessage"></app-error-message>
+</form>
