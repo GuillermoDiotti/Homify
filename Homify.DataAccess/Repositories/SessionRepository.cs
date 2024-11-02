@@ -17,7 +17,7 @@ public sealed class SessionRepository : Repository<Session>
         var query =
             _entities.Include(s => s.User)
                 .Include(s => s.User.Roles)
-                .Include(s => s.User.Roles.Permissions)
+                .ThenInclude(s => s.Permissions)
                 .Where(expression);
 
         var session = query.FirstOrDefault();
