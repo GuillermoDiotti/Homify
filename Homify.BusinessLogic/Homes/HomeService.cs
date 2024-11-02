@@ -165,4 +165,9 @@ public class HomeService : IHomeService
         _repository.Update(home);
         return home;
     }
+
+    public List<Home> GetHomes(User user)
+    {
+        return new List<Home>();
+    }
 }

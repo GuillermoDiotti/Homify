@@ -241,4 +241,21 @@ public sealed class HomeController : HomifyControllerBase
 
         return result;
     }
+
+    [HttpGet]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public List<GetHomesResponse> GetHomes()
+    {
+        var user = GetUserLogged();
+
+        var homes = _homeService.GetHomes(user);
+        var response = new List<GetHomesResponse>();
+        foreach (var home in homes)
+        {
+            response.Add(new GetHomesResponse(home));
+        }
+
+        return response;
+    }
 }
