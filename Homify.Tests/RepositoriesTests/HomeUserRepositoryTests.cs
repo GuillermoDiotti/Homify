@@ -1,8 +1,6 @@
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
-using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;

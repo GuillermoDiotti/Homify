@@ -1,7 +1,4 @@
 ﻿using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
-using Homify.BusinessLogic.UserRoles.Entities;
-using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.Roles.Entities;
 

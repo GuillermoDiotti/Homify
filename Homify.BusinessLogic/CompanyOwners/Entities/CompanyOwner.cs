@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.Utility;
 
 namespace Homify.BusinessLogic.CompanyOwners.Entities;
 
