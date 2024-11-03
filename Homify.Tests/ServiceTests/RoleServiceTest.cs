@@ -70,7 +70,6 @@ public class RoleServiceTest
     [TestMethod]
     public void AddRoleToUser_WhenAllConditionsMet_DoesNotThrowException()
     {
-        // Arrange
         var mockRepository = new Mock<IRepository<Role>>();
         var mockUserService = new Mock<IUserService>();
 
