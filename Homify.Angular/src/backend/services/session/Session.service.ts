@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SessionTypeApiRepositoryService } from '../../repositories/SessionRepository.service';
 import CreateSessionResponse from './models/CreateSessionResponse';
+import { CreateHomeOwnerResponse } from './models/CreateHomeOwnerResponse';
 
 export interface User {
 	id: string;
@@ -30,7 +31,11 @@ export class SessionService {
 		localStorage.removeItem('token');
 	}
 
-  login(username: string, password: string): Observable<CreateSessionResponse> {
+  public login(username: string, password: string): Observable<CreateSessionResponse> {
     return this.sessionRepository.login(username, password);
+  }
+
+	public register(username: string, password: string, name: string, lastName: string, profilePicUrl: string): Observable<CreateHomeOwnerResponse> {
+    return this.sessionRepository.register(username, password, name, lastName, profilePicUrl);
   }
 }

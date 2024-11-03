@@ -1,0 +1,63 @@
+	<div class="login-container">
+		<h2>Create account</h2>
+		@if (currentUserToken){
+			<p>You are currently logged in, logout first in order to create a new account.</p>
+		}
+		@else {
+			<form form="form" class="'form'" (submit)="onSubmit($event)">
+				<app-form-input
+					[form]="form"
+					name="email"
+					type="mail"
+					label="Email"
+					placeholder="Email"
+					[formField]="{
+						email: { required: 'Email is required' }
+					}"
+				></app-form-input>
+				<app-form-input
+					[form]="form"
+					name="password"
+					type="password"
+					label="Password"
+					placeholder="Password"
+					[formField]="{
+						password: { required: 'Password' }
+					}"
+				></app-form-input>
+				<app-form-input
+					[form]="form"
+					name="name"
+					type="text"
+					label="Name"
+					placeholder="Name"
+					[formField]="{
+						name: { required: 'Name' }
+					}"
+				></app-form-input>
+				<app-form-input
+					[form]="form"
+					name="lastName"
+					type="text"
+					label="LastName"
+					placeholder="LastName"
+					[formField]="{
+						lastName: { required: 'LastName' }
+					}"
+				></app-form-input>
+				<app-form-input
+					[form]="form"
+					name="profilePicUrl"
+					type="text"
+					label="Profile Picture"
+					placeholder="hello.png"
+					[formField]="{
+						profilePicUrl: { required: 'Profile Picture' }
+					}"
+				></app-form-input>
+			<app-button [type]="'submit'">Register</app-button>
+		</form>
+		<app-success-message [message]="successMessage"></app-success-message>
+		<app-error-message [message]="errorMessage"></app-error-message>
+		}
+	</div>

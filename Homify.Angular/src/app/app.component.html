@@ -6,7 +6,11 @@
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="ul">
-      <li nz-menu-item nzMatchRouter nzIcon="login">
+      
+			<li nz-menu-item nzMatchRouter nzIcon="new">
+        <a routerLink="/register">Register</a>
+      </li>
+			<li nz-menu-item nzMatchRouter nzIcon="enter">
         <a routerLink="/login">Login</a>
       </li>
 
