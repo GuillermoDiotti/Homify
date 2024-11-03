@@ -2,20 +2,23 @@
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.BusinessLogic.Utility;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Users;
 
 public class UserService : IUserService
 {
     private readonly IRepository<User> _repository;
+    private readonly IRepository<UserRole> _userRolerepository;
 
-    public UserService(IRepository<User> repository)
+    public UserService(IRepository<User> repository, IRepository<UserRole> userRolerepository)
     {
         _repository = repository;
+        _userRolerepository = userRolerepository;
     }
 
     public Admin AddAdmin(CreateUserArgs args)
@@ -23,16 +26,15 @@ public class UserService : IUserService
         ValidateEmailIsNotRepeated(args.Email);
         var user = new Admin()
         {
-            Id = Guid.NewGuid().ToString(),
             Name = args.Name,
             Email = args.Email,
-            CreatedAt = HomifyDateTime.GetActualDate(),
             Password = args.Password,
             LastName = args.LastName,
-            Role = args.Role,
         };
-
         _repository.Add(user);
+
+        LoadIntermediateTable(user.Id, Constants.ADMINISTRATORID);
+
         return user;
     }
 
@@ -41,17 +43,17 @@ public class UserService : IUserService
         ValidateEmailIsNotRepeated(args.Email);
         var companyOwner = new CompanyOwner()
         {
-            Id = Guid.NewGuid().ToString(),
             Email = args.Email,
             Name = args.Name,
             Password = args.Password,
             LastName = args.LastName,
-            CreatedAt = HomifyDateTime.GetActualDate(),
             IsIncomplete = true,
-            Role = args.Role,
         };
 
         _repository.Add(companyOwner);
+
+        LoadIntermediateTable(companyOwner.Id, Constants.COMPANYOWNERID);
+
         return companyOwner;
     }
 
@@ -60,18 +62,27 @@ public class UserService : IUserService
         ValidateEmailIsNotRepeated(args.Email);
         var homeOwner = new HomeOwner()
         {
-            Id = Guid.NewGuid().ToString(),
             Email = args.Email,
             Name = args.Name,
             Password = args.Password,
             LastName = args.LastName,
-            CreatedAt = HomifyDateTime.GetActualDate(),
             ProfilePicture = args.ProfilePicUrl,
-            Role = args.Role,
         };
-
         _repository.Add(homeOwner);
+
+        LoadIntermediateTable(homeOwner.Id, Constants.HOMEOWNERID);
+
         return homeOwner;
+    }
+
+    public void LoadIntermediateTable(string userId, string roleId)
+    {
+        var userRole = new UserRole()
+        {
+            UserId = userId,
+            RoleId = roleId,
+        };
+        _userRolerepository.Add(userRole);
     }
 
     public User? GetById(string id)

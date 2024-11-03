@@ -1,0 +1,40 @@
+@if (currentUserToken){
+<div class="div">
+  <span class="span"
+    >Welcome, <strong>{{ currentUserToken }}</strong
+    >!</span
+  >
+  <app-button (click)="onLogout()">Logout</app-button>
+</div>
+} @else {
+<div class="login-container">
+  <h2>Login</h2>
+  <form form="form" class="'form'" (submit)="onSubmit($event)">
+    <div>
+      <app-form-input
+        [form]="form"
+        name="email"
+        type="mail"
+        label="Email"
+        placeholder="Email"
+        [formField]="{
+          email: { required: 'Email is required' }
+        }"
+      ></app-form-input>
+    </div>
+    <div>
+      <app-form-input
+        [form]="form"
+        name="password"
+        type="password"
+        label="Password"
+        placeholder="Password"
+        [formField]="{
+          password: { required: 'Password' }
+        }"
+      ></app-form-input>
+    </div>
+    <app-button [type]="'submit'">Login</app-button>
+  </form>
+</div>
+}

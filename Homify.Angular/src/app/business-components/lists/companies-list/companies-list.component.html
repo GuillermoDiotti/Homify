@@ -1,0 +1,20 @@
+<article>
+	<h2>Listing of Companies</h2>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (companies.length > 0) {
+  <ul>
+    @for (company of companies; track $index) {
+    <li>
+      <strong>Company Name:</strong> {{ company.CompanyName }} <br />
+      <strong>Owner Name:</strong> {{ company.OwnerName }} <br />
+      <strong>Owner Mail:</strong> {{ company.OwnerMail }} <br />
+      <strong>Rut:</strong> {{ company.Rut }} <br />
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There are'nt companies available.</p>
+  }
+</article>

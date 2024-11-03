@@ -5,7 +5,9 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.HomeDevices;
 using Homify.WebApi.Controllers.HomeDevices.Models;
@@ -49,7 +51,16 @@ public class HomeDeviceControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles =
+            [
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
+                }
+
+            ]
         };
 
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();

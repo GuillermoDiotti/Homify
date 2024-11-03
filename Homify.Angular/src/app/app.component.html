@@ -6,8 +6,24 @@
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="ul">
-      <li nz-menu-item nzMatchRouter nzIcon="login">
+      
+			<li nz-menu-item nzMatchRouter nzIcon="new">
+        <a routerLink="/register">Register</a>
+      </li>
+			<li nz-menu-item nzMatchRouter nzIcon="enter">
         <a routerLink="/login">Login</a>
+      </li>
+
+			<li nz-submenu nzOpen nzTitle="Auth Users" nzIcon="user">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices/supported">List supported devices</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices/all">List devices</a>
+          </li>
+        </ul>
       </li>
 
       <li nz-submenu nzOpen nzTitle="Admin" nzIcon="crown">
@@ -15,65 +31,44 @@
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/admin">Admins</a>
           </li>
-        </ul>
-      </li>
 
-      <li nz-submenu nzOpen nzTitle="Building Company Admin" nzIcon="tool">
-        <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/building-companies">New Building Company</a>
+            <a routerLink="/create-companyowner">Create Company Owner</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/modify-building-companies">Modify Building Company</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/buildings">Create Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/put-building">Modify Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/list-buildings">List Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/import-buildings">Import Buildings</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/modify-manager">Modify Manager</a>
+            <a routerLink="/companies/list">List Companies</a>
           </li>
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="Manager" nzIcon="team">
+      <li nz-submenu nzOpen nzTitle="Company Owner" nzIcon="tool">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/maintenance">Maintenance</a>
+            <a routerLink="/companies/create">Create Company</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="manager/view-services">View Services</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="manager/services">Create Services</a>
-          </li>
-
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="manager/reports">Reports</a>
+            <a routerLink="/devices">Create Devices</a>
           </li>
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="Maintainer" nzIcon="robot">
+      <li nz-submenu nzOpen nzTitle="Home Owner" nzIcon="team">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="maintainer/services">Services</a>
+            <a routerLink="/homes/create">Create Home</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="homes/add-member">Members</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="homes/devices">Home Devices</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="homes/update-permissions">Permissions</a>
           </li>
         </ul>
       </li>

@@ -1,6 +1,6 @@
 export default interface SearchDeviceResponse {
-    Name: string;
-    Model: string;
-    Photo: string;
-    CompanyName: string;
+    name: string;
+    model: string;
+    photo: string;
+    companyName: string;
 }

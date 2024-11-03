@@ -165,4 +165,9 @@ public class HomeService : IHomeService
         _repository.Update(home);
         return home;
     }
+
+    public List<Home> GetAllHomes(User user)
+    {
+        return _repository.GetAll(x => x.OwnerId == user.Id);
+    }
 }

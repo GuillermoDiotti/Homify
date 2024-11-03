@@ -7,7 +7,7 @@
 namespace Homify.DataAccess.Migrations;
 
 /// <inheritdoc />
-public partial class RoomMigration : Migration
+public partial class Initial : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,18 +58,11 @@ public partial class RoomMigration : Migration
                 Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 CreatedAt = table.Column<string>(type: "nvarchar(max)", nullable: false)
             },
             constraints: table =>
             {
                 table.PrimaryKey("PK_Users", x => x.Id);
-                table.ForeignKey(
-                    name: "FK_Users_Roles_RoleId",
-                    column: x => x.RoleId,
-                    principalTable: "Roles",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
@@ -164,6 +157,29 @@ public partial class RoomMigration : Migration
                     principalTable: "Users",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "UserRoles",
+            columns: table => new
+            {
+                Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_UserRoles", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_UserRoles_Roles_RoleId",
+                    column: x => x.RoleId,
+                    principalTable: "Roles",
+                    principalColumn: "Id");
+                table.ForeignKey(
+                    name: "FK_UserRoles_Users_UserId",
+                    column: x => x.UserId,
+                    principalTable: "Users",
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
@@ -348,6 +364,7 @@ public partial class RoomMigration : Migration
             columns: table => new
             {
                 Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                CustomName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 HomeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 Connected = table.Column<bool>(type: "bit", nullable: false),
@@ -410,8 +427,9 @@ public partial class RoomMigration : Migration
             columns: new[] { "Id", "Value" },
             values: new object[,]
             {
-                { "2", "AddDevices" },
-                { "3", "ListDevices" }
+                { "1", "AddDevices" },
+                { "2", "ListDevices" },
+                { "3", "ChangeDeviceName" }
             });
 
         migrationBuilder.InsertData(
@@ -451,39 +469,13 @@ public partial class RoomMigration : Migration
             });
 
         migrationBuilder.InsertData(
-            table: "RoleSystemPermissions",
-            columns: new[] { "RoleSystemPermissionId", "PermissionId", "RoleId" },
-            values: new object[,]
-            {
-                { "08764d78-27f6-42d0-967b-e238046f49f0", "16", "HomeOwnerId" },
-                { "176fcc86-bb03-4d6b-adee-6e3d67249ff7", "5", "AdminId" },
-                { "201bf294-9484-4f44-bcb9-ccc03eecb195", "8", "CompanyOwnerId" },
-                { "25f914f1-ad51-43d9-9874-440d63e0a51d", "19", "HomeOwnerId" },
-                { "27193b47-a305-440c-abfc-029f81109652", "11", "HomeOwnerId" },
-                { "36d111f7-4d62-4b51-97b7-4601568411e4", "18", "HomeOwnerId" },
-                { "4232f56f-217d-4e3c-b133-fbeb4ba8991c", "7", "CompanyOwnerId" },
-                { "7ed015ed-84d0-471e-968b-b6bb6029fd99", "14", "HomeOwnerId" },
-                { "844cdc2c-de12-4758-99ca-02633dcb9efe", "13", "HomeOwnerId" },
-                { "917d161f-e54e-4f1f-b02c-d48444a733c4", "6", "CompanyOwnerId" },
-                { "ab14c14e-7fa6-4fb9-9ed5-0e80d0b66d94", "15", "HomeOwnerId" },
-                { "ba97f7e7-414d-48fd-a341-0a7a48805833", "3", "AdminId" },
-                { "bd264121-97d4-4a05-94f0-df398fb0aee6", "17", "HomeOwnerId" },
-                { "da2b9eea-0041-43e3-af78-fc4fa588dec7", "1", "AdminId" },
-                { "dd3a4283-ea06-4ad0-b519-63d1ad2234a4", "10", "HomeOwnerId" },
-                { "f1cbb313-22f7-4c00-86f9-9c2ed71ba51e", "9", "HomeOwnerId" },
-                { "f3c61d5b-3e8c-4f39-bd36-5feecf54b860", "2", "AdminId" },
-                { "f550f58b-54c6-4872-adfd-9035fdf4c2e0", "4", "AdminId" },
-                { "fea3cee1-6a0b-4dcc-9da1-65316c7cc400", "12", "HomeOwnerId" }
-            });
-
-        migrationBuilder.InsertData(
             table: "Users",
-            columns: new[] { "Id", "CreatedAt", "Email", "LastName", "Name", "Password", "ProfilePicture", "RoleId" },
+            columns: new[] { "Id", "CreatedAt", "Email", "LastName", "Name", "Password", "ProfilePicture" },
             values: new object[,]
             {
-                { "SeedAdminId", "21/10/2024", "admin@domain.com", "LastName", "Admin", ".Popso212", null, "AdminId" },
-                { "SeedCompanyOwnerId", "21/10/2024", "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", null, "CompanyOwnerId" },
-                { "SeedHomeOwnerId", "21/10/2024", "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "picture", "HomeOwnerId" }
+                { "SeedAdminId", "02/11/2024", "admin@domain.com", "LastName", "Admin", ".Popso212", null },
+                { "SeedCompanyOwnerId", "02/11/2024", "companyowner@domain.com", "LastName", "CompanyOwner", ".Popso212", null },
+                { "SeedHomeOwnerId", "02/11/2024", "homeowner@domain.com", "LastName", "Homeowner", ".Popso212", "picture" }
             });
 
         migrationBuilder.InsertData(
@@ -502,6 +494,32 @@ public partial class RoomMigration : Migration
             value: "SeedHomeOwnerId");
 
         migrationBuilder.InsertData(
+            table: "RoleSystemPermissions",
+            columns: new[] { "RoleSystemPermissionId", "PermissionId", "RoleId" },
+            values: new object[,]
+            {
+                { "10a7547f-b03c-46b2-b787-f84a8efbdc6c", "17", "HomeOwnerId" },
+                { "1cd49e3f-a0f8-4c56-93cd-cb7bac611e43", "2", "AdminId" },
+                { "38fdbbdb-d1bb-478f-9a3a-2c1a44975f15", "6", "CompanyOwnerId" },
+                { "39b07b3c-1cdb-4a22-8d86-e90d0e3200d6", "4", "AdminId" },
+                { "3d77aa9d-5789-430e-ab6b-3ff270b05c19", "13", "HomeOwnerId" },
+                { "4b501aff-0a1e-4d52-a163-cdb7833c5792", "1", "AdminId" },
+                { "5d394608-2819-4a50-85d0-883c8be16ba0", "12", "HomeOwnerId" },
+                { "6572966b-630e-432c-8212-86d8e2ab61cc", "16", "HomeOwnerId" },
+                { "717d001e-56ac-446f-a02e-9058a1496b57", "3", "AdminId" },
+                { "73788f33-47b7-4cf9-8b46-188b750890db", "11", "HomeOwnerId" },
+                { "813aefdf-d608-4aee-a0a8-13c904e6058a", "14", "HomeOwnerId" },
+                { "8cc003a6-18db-4b5a-bc18-b1a5e60b9fbc", "19", "HomeOwnerId" },
+                { "905d668b-8a90-4308-a20a-5023a2a65f7f", "5", "AdminId" },
+                { "a3af3e88-acc8-491c-8c5d-1c475faa6aca", "15", "HomeOwnerId" },
+                { "a5395f3e-b5e4-456b-8417-532bba2962fc", "10", "HomeOwnerId" },
+                { "bab54740-89b7-4fd7-9c5a-77d3158c1c29", "18", "HomeOwnerId" },
+                { "eaf017eb-6d0c-41d4-90fc-b50b5a2401e5", "9", "HomeOwnerId" },
+                { "f2f668b8-45e0-4916-aefa-16648a88c50f", "8", "CompanyOwnerId" },
+                { "f4cc5867-d7b5-413b-8017-b8c65d003b23", "7", "CompanyOwnerId" }
+            });
+
+        migrationBuilder.InsertData(
             table: "Sessions",
             columns: new[] { "Id", "AuthToken", "UserId" },
             values: new object[,]
@@ -509,6 +527,16 @@ public partial class RoomMigration : Migration
                 { "SeedAdminSessionId", "SomeAdminToken123", "SeedAdminId" },
                 { "SeedCompanyOwnerSessionId", "SomeCompanyOwnerToken123", "SeedCompanyOwnerId" },
                 { "SeedHomeOwnerSessionId", "SomeHomeOwnerToken123", "SeedHomeOwnerId" }
+            });
+
+        migrationBuilder.InsertData(
+            table: "UserRoles",
+            columns: new[] { "Id", "RoleId", "UserId" },
+            values: new object[,]
+            {
+                { "3cd380a2-6d7a-4bd0-b06c-16cdcb2cdf84", "HomeOwnerId", "SeedHomeOwnerId" },
+                { "a887b2ee-f561-4d7d-aff1-1af61e1c4e5d", "CompanyOwnerId", "SeedCompanyOwnerId" },
+                { "ad44ab69-77c1-4e11-9ba9-955c43496b55", "AdminId", "SeedAdminId" }
             });
 
         migrationBuilder.CreateIndex(
@@ -593,9 +621,14 @@ public partial class RoomMigration : Migration
             column: "UserId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Users_RoleId",
-            table: "Users",
+            name: "IX_UserRoles_RoleId",
+            table: "UserRoles",
             column: "RoleId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_UserRoles_UserId",
+            table: "UserRoles",
+            column: "UserId");
     }
 
     /// <inheritdoc />
@@ -623,6 +656,9 @@ public partial class RoomMigration : Migration
             name: "Sessions");
 
         migrationBuilder.DropTable(
+            name: "UserRoles");
+
+        migrationBuilder.DropTable(
             name: "HomePermission");
 
         migrationBuilder.DropTable(
@@ -633,6 +669,9 @@ public partial class RoomMigration : Migration
 
         migrationBuilder.DropTable(
             name: "SystemPermissions");
+
+        migrationBuilder.DropTable(
+            name: "Roles");
 
         migrationBuilder.DropTable(
             name: "Devices");
@@ -654,8 +693,5 @@ public partial class RoomMigration : Migration
 
         migrationBuilder.DropTable(
             name: "Users");
-
-        migrationBuilder.DropTable(
-            name: "Roles");
     }
 }

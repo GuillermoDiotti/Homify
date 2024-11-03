@@ -1,7 +1,8 @@
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
-using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;
@@ -37,7 +38,11 @@ public class CompanyServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
+            Roles =
+            [
+                new UserRole() { UserId = "1", Role = RolesGenerator.CompanyOwner() }
+
+            ]
         };
 
         _companyRepositoryMock.Setup(r => r.Add(It.IsAny<Company>())).Verifiable();
@@ -61,12 +66,7 @@ public class CompanyServiceTest
     public void GetByUserId_ShouldReturnCompany_WhenCompanyExists()
     {
         var userId = "test-user-id";
-        var expectedCompany = new Company
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = "Test Company",
-            OwnerId = userId
-        };
+        var expectedCompany = new Company { Id = Guid.NewGuid().ToString(), Name = "Test Company", OwnerId = userId };
         _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
             .Returns(expectedCompany);
         var result = _service.GetByUserId(userId);

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sessions.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -27,7 +28,10 @@ public class SessionRepositoryTests
                     Name = "User1",
                     LastName = "LastName1",
                     Password = "Password1",
-                    Role = RolesGenerator.Admin()
+                    Roles =
+                    [
+                        new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }
+                    ]
                 }
             }
         }.AsQueryable();
@@ -50,7 +54,7 @@ public class SessionRepositoryTests
         Assert.AreEqual("User1", result.User.Name);
         Assert.AreEqual("LastName1", result.User.LastName);
         Assert.AreEqual("user1@example.com", result.User.Email);
-        Assert.AreEqual("ADMINISTRATOR", result.User.Role.Name);
+        Assert.AreEqual("ADMINISTRATOR", result.User.Roles.First().Role.Name);
     }
 
     [TestMethod]

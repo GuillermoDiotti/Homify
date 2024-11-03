@@ -9,6 +9,7 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -39,7 +40,7 @@ public class HomeServiceTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles = [new UserRole() { UserId = "Owner123", Role = RolesGenerator.HomeOwner() }]
         };
 
         var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");
@@ -437,5 +438,25 @@ public class HomeServiceTest
         var reult = _homeService.UpdateHome("homeId", newAlias, new User { Id = "ownerId" });
 
         Assert.AreEqual(newAlias, reult.Alias);
+    }
+
+    [TestMethod]
+    public void GetAllHomes_ReturnsHomesForUser()
+    {
+        // Arrange
+        var user = new User { Id = "user1" };
+        var homes = new List<Home>
+        {
+            new Home { Id = "home1", OwnerId = "user1" },
+            new Home { Id = "home2", OwnerId = "user1" }
+        };
+        _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(homes);
+
+        var result = _homeService.GetAllHomes(user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.IsTrue(result.All(home => home.OwnerId == "user1"));
     }
 }

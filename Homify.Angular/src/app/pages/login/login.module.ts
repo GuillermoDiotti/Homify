@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login.component';
 import { ButtonComponent } from '../../components/button/button.component';
 import { InputComponent } from '../../components/input/input.component';
+import { LoginFormComponent } from '../../business-components/forms/login-form/login-form.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   imports: [
 		ButtonComponent,
 		InputComponent,
+		LoginFormComponent,
     CommonModule,
     RouterModule.forChild(routes),
   ]

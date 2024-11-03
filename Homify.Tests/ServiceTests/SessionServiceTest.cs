@@ -1,12 +1,10 @@
 ﻿using System.Linq.Expressions;
-using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;
-using Constants = Homify.Utility.Constants;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -35,7 +33,6 @@ public class SessionServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
         };
         var session = new Session
         {
@@ -64,7 +61,6 @@ public class SessionServiceTest
             Email = userEmail,
             Password = "password123",
             LastName = "Doe",
-            RoleId = Constants.ADMINISTRATORID
         };
         var session = new Session()
         {
@@ -85,15 +81,12 @@ public class SessionServiceTest
     [TestMethod]
     public void CreateSession_WhenSessionNotFound_ShouldEnterCatchBlockAndCreateNewSession()
     {
-        // Arrange
         var user = new User { Email = "test@example.com" };
         _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
             .Throws(new NotFoundException("not found"));
 
-        // Act
         var result = _service.CreateSession(user);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(user.Email, result.User.Email);
         Assert.IsNotNull(result.AuthToken);

@@ -1,0 +1,16 @@
+<h2>Add Permissions</h2>
+<form [formGroup]="form" (submit)="handleSubmit($event)">
+  <label for="CanAddDevices">Add Devices</label>
+  <select id="CanAddDevices" formControlName="canAddDevices">
+  <option [value]="true">True</option>
+  <option [value]="false">False</option>
+  </select>
+  
+    <label for="CanListDevices">List Devices</label>
+  <select id="CanListDevices" formControlName="canListDevices">
+  <option [value]="true">True</option>
+  <option [value]="false">False</option>
+  </select>
+ 
+  <button type="submit">Submit</button>
+</form>

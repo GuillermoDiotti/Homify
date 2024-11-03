@@ -2,6 +2,7 @@ using FluentAssertions;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -213,6 +214,7 @@ public class UserControllerTests
         expectedUser.Password.Should().Be(request.Password);
         expectedUser.LastName.Should().Be(request.LastName);
     }
+
     #endregion
 
     #endregion
@@ -244,7 +246,7 @@ public class UserControllerTests
     public void Delete_WhenTargetUserIsNotAdmin_ShouldThrowInvalidOperationException()
     {
         var adminId = "userId";
-        var user = new User { Id = adminId, Role = new Role { Name = "User" } };
+        var user = new User { Id = adminId };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(user);
 
         _controller.Delete(adminId);
@@ -253,19 +255,30 @@ public class UserControllerTests
     [TestMethod]
     public void Delete_WhenAdminExistsAndIsAdmin_ShouldDeleteAdmin()
     {
-        // Arrange
         var adminId = "adminId";
-        var admin = new User { Id = adminId, Role = new Role { Name = Constants.ADMINISTRATOR } };
+        var admin = new User
+        {
+            Id = adminId,
+            Roles =
+            [
+                new UserRole
+                {
+                    UserId = adminId,
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                }
+
+            ]
+        };
         _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
         _userServiceMock.Setup(service => service.Delete(adminId));
 
-        // Act
         _controller.Delete(adminId);
 
-        // Assert
         _userServiceMock.Verify(service => service.GetById(adminId), Times.Once);
         _userServiceMock.Verify(service => service.Delete(adminId), Times.Once);
     }
+
     #endregion
 
     #region Success
@@ -292,28 +305,49 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Guest"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
@@ -336,37 +370,49 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Guest"
-                }
-            },
-            new User
-            {
-                Name = "Lucy",
-                LastName = "Williams",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
@@ -375,7 +421,7 @@ public class UserControllerTests
         var result = _controller.AllAccounts("invalid", "0", string.Empty, string.Empty);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(4, result.Count);
+        Assert.AreEqual(3, result.Count);
     }
 
     [TestMethod]
@@ -387,28 +433,49 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
@@ -430,28 +497,49 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
@@ -472,10 +560,17 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
@@ -502,13 +597,33 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "Admin" }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 

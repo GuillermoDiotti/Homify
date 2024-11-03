@@ -11,7 +11,7 @@ import { NgIf } from "@angular/common";
   styleUrl: "./form-input.component.css",
 })
 export class FormInputComponent {
-  @Input() type: "text" | "number" | "password" = "text";
+  @Input() type: "text" | "number" | "password" | "mail" = "text";
   @Input() label: string | null = null;
   @Input() placeholder: string = "";
   @Input({ required: true }) name!: string;

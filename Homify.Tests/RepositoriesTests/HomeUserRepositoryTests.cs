@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -21,8 +22,21 @@ public class HomeUserRepositoryTests
             new HomeUser
             {
                 Id = "1",
-                User = new User { Id = "1", Name = "User1", Role = new Role { Name = "Admin" } },
-                Home = new Home { Id = "1", Street = "Street1", Number = "123" },
+                User = new User
+                {
+                    Id = "1",
+                    Name = "User1",
+                    Roles =
+                    [
+                        new UserRole { Role = new Role { Name = "Admin" } }
+                    ]
+                },
+                Home = new Home
+                {
+                    Id = "1",
+                    Street = "Street1",
+                    Number = "123"
+                },
                 IsNotificable = true,
                 Permissions = []
             }
@@ -43,7 +57,7 @@ public class HomeUserRepositoryTests
 
         Assert.IsNotNull(result);
         Assert.AreEqual("User1", result.User.Name);
-        Assert.AreEqual("Admin", result.User.Role.Name);
+        Assert.AreEqual("Admin", result.User.Roles.First().Role.Name);
         Assert.AreEqual("Street1", result.Home.Street);
         Assert.AreEqual("123", result.Home.Number);
         Assert.IsTrue(result.IsNotificable);
@@ -75,16 +89,42 @@ public class HomeUserRepositoryTests
             new HomeUser
             {
                 Id = "1",
-                User = new User { Id = "1", Name = "User1", Role = new Role { Name = "Admin" } },
-                Home = new Home { Id = "1", Street = "Street1", Number = "123" },
+                User = new User
+                {
+                    Id = "1",
+                    Name = "User1",
+                    Roles =
+                    [
+                        new UserRole { Role = new Role { Name = "Admin" } }
+                    ]
+                },
+                Home = new Home
+                {
+                    Id = "1",
+                    Street = "Street1",
+                    Number = "123"
+                },
                 IsNotificable = true,
                 Permissions = []
             },
             new HomeUser
             {
                 Id = "2",
-                User = new User { Id = "2", Name = "User2", Role = new Role { Name = "User" } },
-                Home = new Home { Id = "2", Street = "Street2", Number = "456" },
+                User = new User
+                {
+                    Id = "2",
+                    Name = "User2",
+                    Roles =
+                    [
+                        new UserRole { Role = new Role { Name = "User" } }
+                    ]
+                },
+                Home = new Home
+                {
+                    Id = "2",
+                    Street = "Street2",
+                    Number = "456"
+                },
                 IsNotificable = false,
                 Permissions = []
             }

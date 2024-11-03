@@ -9,7 +9,7 @@ using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -216,7 +216,16 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles =
+            [
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
+                }
+
+            ]
         };
 
         var httpContext = new DefaultHttpContext();
@@ -228,6 +237,7 @@ public class HomesControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
     public void CreateHome_WhenLongitudIsNull_ShouldThrowException()
     {
         var request = new CreateHomeRequest()
@@ -239,14 +249,27 @@ public class HomesControllerTest
             Longitud = null
         };
 
-        var user = new User
+        var owner = new HomeOwner
         {
-            Id = "User123"
-        };
-        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+            Id = "Owner123",
+            Name = "John Doe",
+            Roles =
+            [
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
+                }
 
-        Assert.ThrowsException<ArgsNullException>(() => _controller.Create(request));
+            ]
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = owner;
+        _controller.ControllerContext.HttpContext = httpContext;
+
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -291,11 +314,22 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles =
+            [
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
+                }
+
+            ]
         };
 
-        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[Items.UserLogged] = owner;
+
+        _controller.ControllerContext.HttpContext = httpContext;
 
         _controller.Create(request);
     }
@@ -303,7 +337,6 @@ public class HomesControllerTest
     [TestMethod]
     public void Create_WithValidRequest_ShouldReturnCreateHomeResponse()
     {
-        // Arrange
         var request = new CreateHomeRequest
         {
             Street = "calle 1",
@@ -318,7 +351,16 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Role = RolesGenerator.HomeOwner()
+            Roles =
+            [
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
+                }
+
+            ]
         };
 
         var httpContext = new DefaultHttpContext();
@@ -610,13 +652,13 @@ public class HomesControllerTest
         {
             Email = "newmember@example.com"
         };
-        var user = new User
+        var user = new HomeOwner
         {
             Id = "ownerId",
-            Role = new Role
-            {
-                Name = Constants.HOMEOWNER
-            }
+            Roles =
+            [
+                new UserRole { UserId = "ownerId", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns((Home)null); // Home not found
@@ -637,13 +679,13 @@ public class HomesControllerTest
         {
             Email = "newmember@example.com"
         };
-        var user = new User
+        var user = new HomeOwner
         {
             Id = "ownerId",
-            Role = new Role
-            {
-                Name = Constants.HOMEOWNER
-            }
+            Roles =
+            [
+                new UserRole { UserId = "ownerId", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
         var home = new Home
         {
@@ -719,11 +761,14 @@ public class HomesControllerTest
             Members = [],
             MaxMembers = 5
         };
-        var userFound = new User
+        var userFound = new HomeOwner
         {
             Id = "user123",
             Email = "test@example.com",
-            Role = new Role { Name = Constants.HOMEOWNER }
+            Roles =
+            [
+                new UserRole { UserId = "user123", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
         var homeUser = new HomeUser
         {
@@ -821,11 +866,14 @@ public class HomesControllerTest
             Members = [new HomeUser { UserId = "user123" }],
             MaxMembers = 5
         };
-        var userFound = new User
+        var userFound = new HomeOwner
         {
             Id = "user123",
             Email = "test@example.com",
-            Role = new Role { Name = Constants.HOMEOWNER }
+            Roles =
+            [
+                new UserRole { UserId = "user123", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
@@ -923,5 +971,23 @@ public class HomesControllerTest
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
         _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
+    }
+
+    [TestMethod]
+    public void GetHomes_WhenUserIsOk_ShouldReturnHomes()
+    {
+        var user = new User { Id = "user1" };
+        var homes = new List<Home> { new Home { Id = "home1" }, new Home { Id = "home2" } };
+        _homeServiceMock.Setup(service => service.GetAllHomes(user)).Returns(homes);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        var result = _controller.GetHomes();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
     }
 }

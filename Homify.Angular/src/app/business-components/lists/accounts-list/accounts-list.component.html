@@ -1,5 +1,5 @@
 <article>
-	<h2>Listado de cuentas</h2>
+	<h2>Accounts list</h2>
 	<button (click)="handleRefresh()">
 		Refresh
 	</button>
@@ -8,22 +8,22 @@
     @for (account of accounts; track $index) {
     <li>
       <strong>ID:</strong> {{ account.id }} <br />
-      <strong>Nombre:</strong> {{ account.name }} <br />
-      <strong>Apellido:</strong> {{ account.lastName }} <br />
-      <strong>Nombre Completo:</strong> {{ account.fullName }} <br />
+      <strong>Name:</strong> {{ account.name }} <br />
+      <strong>Lastname:</strong> {{ account.lastName }} <br />
+      <strong>Fullname:</strong> {{ account.fullName }} <br />
       <div>
-        <strong>Rol:</strong> {{ account.role }} <br />
+        <strong>Role:</strong> {{ account.role }} <br />
         @if (account.role === 'ADMINISTRATOR') {
         <app-delete-admin-button
           [adminId]="account.id"
         ></app-delete-admin-button>
         }
       </div>
-      <strong>Creado:</strong> {{ account.createdAt }} <br />
+      <strong>Created at:</strong> {{ account.createdAt }} <br />
     </li>
     }
   </ul>
   } @else {
-  <p>No hay cuentas disponibles.</p>
+  <p>No accounts available to show.</p>
   }
 </article>

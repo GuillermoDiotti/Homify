@@ -1,0 +1,4 @@
+<app-owner-home-list (homeSelected)="onHomeSelected($event)"></app-owner-home-list>
+@if (selectedHomeId){
+	<app-homedevices-list [homeId]="selectedHomeId"></app-homedevices-list>
+}

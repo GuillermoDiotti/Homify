@@ -79,7 +79,7 @@ public sealed class HomeController : HomifyControllerBase
         }
 
         var userFound = _userService.GetAll()
-            .FirstOrDefault(x => x.Email == request.Email && x.Role.Name == Constants.HOMEOWNER);
+            .FirstOrDefault(x => x.Email == request.Email && x.Roles.Any(r => r.Role.Name == Constants.HOMEOWNER));
 
         if (userFound == null)
         {
@@ -240,5 +240,22 @@ public sealed class HomeController : HomifyControllerBase
         var result = _homeService.UpdateHome(homeId, req.Alias, user);
 
         return result;
+    }
+
+    [HttpGet("by-owner")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public List<GetHomesResponse> GetHomes()
+    {
+        var user = GetUserLogged();
+
+        var homes = _homeService.GetAllHomes(user);
+        var response = new List<GetHomesResponse>();
+        foreach (var home in homes)
+        {
+            response.Add(new GetHomesResponse(home));
+        }
+
+        return response;
     }
 }
