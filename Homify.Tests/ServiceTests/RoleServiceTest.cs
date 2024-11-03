@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
 
@@ -39,5 +41,25 @@ public class RoleServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(roleId, result.Id);
         Assert.AreEqual("Test role", result.Name);
+    }
+
+    [TestMethod]
+    public void AddRole_WhenUserNotAdminOrCompanyOwner_ShouldThrowException()
+    {
+        var user = new User
+        {
+            Roles =
+            [
+                new UserRole { Role = new Role { Name = "Test role" } }
+            ]
+        };
+
+        _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
+            .Returns(new Role
+            {
+                Name = "Test role"
+            });
+
+        Assert.ThrowsException<InvalidOperationException>(() => _service.AddRoleToUser(user));
     }
 }
