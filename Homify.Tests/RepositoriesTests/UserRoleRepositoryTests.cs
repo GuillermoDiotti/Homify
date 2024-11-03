@@ -1,7 +1,9 @@
+using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -48,5 +50,23 @@ public class UserRoleRepositoryTests
         Assert.AreEqual("1", result.Id);
         Assert.AreEqual("User1", result.User.Name);
         Assert.AreEqual("ADMINISTRATOR", result.Role.Name);
+    }
+
+    [TestMethod]
+    public void Get_WhenUserRoleDoesNotExist_ThrowsNotFoundException()
+    {
+        var mockSet = new Mock<DbSet<UserRole>>();
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.Provider).Returns(new List<UserRole>().AsQueryable().Provider);
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.Expression).Returns(new List<UserRole>().AsQueryable().Expression);
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.ElementType).Returns(new List<UserRole>().AsQueryable().ElementType);
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.GetEnumerator()).Returns(new List<UserRole>().AsQueryable().GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<UserRole>()).Returns(mockSet.Object);
+
+        var userRoleRepository = new UserRoleRepository(mockContext.Object);
+        Expression<Func<UserRole, bool>> predicate = ur => ur.Id == "non-existent-id";
+
+        Assert.ThrowsException<NotFoundException>(() => userRoleRepository.Get(predicate));
     }
 }
