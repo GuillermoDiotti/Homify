@@ -12,6 +12,5 @@ public class CompanyOwner : User
     public CompanyOwner()
     {
         IsIncomplete = true;
-        RoleId = Constants.COMPANYOWNERID;
     }
 }

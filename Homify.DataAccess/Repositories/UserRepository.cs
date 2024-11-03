@@ -15,8 +15,9 @@ public sealed class UserRepository : Repository<User>
     public override User? Get(Expression<Func<User, bool>> predicate)
     {
         var query =
-            _entities.Include(u => u.Role)
-                .Include(u => u.Role.Permissions)
+            _entities.Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
+                .ThenInclude(u => u.Permissions)
                 .Where(predicate);
 
         var user = query.FirstOrDefault();
@@ -33,13 +34,15 @@ public sealed class UserRepository : Repository<User>
     {
         if (predicate == null)
         {
-            return _entities.Include(u => u.Role)
-                .Include(u => u.Role.Permissions).ToList();
+            return _entities.Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
+                .ThenInclude(u => u.Permissions).ToList();
         }
 
         var query =
-            _entities.Include(u => u.Role)
-                .Include(u => u.Role.Permissions)
+            _entities.Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
+                .ThenInclude(u => u.Permissions)
                 .Where(predicate)
                 .ToList();
 

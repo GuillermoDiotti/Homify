@@ -3,6 +3,7 @@ using FluentAssertions;
 using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sessions;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Utility;
 using Homify.WebApi;
@@ -44,7 +45,7 @@ public class AuthorizationFilterAttributeTest
 
         _permission = new SystemPermission { Value = "admins-Create" };
 
-        _roleForTest = new Role { Name = Constants.ADMINISTRATOR, Permissions = [_permission] };
+        _roleForTest = new Role { Name = Constants.ADMINISTRATOR, Permissions = new List<SystemPermission> { _permission } };
 
         _authorizationHeader = "Authorization";
         _validToken = Guid.NewGuid().ToString();
@@ -54,7 +55,15 @@ public class AuthorizationFilterAttributeTest
             LastName = "ADA",
             Email = "ada@email.com",
             Password = "adaPASS",
-            Role = _roleForTest
+            Roles = new List<UserRole>
+            {
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                }
+            }
         };
 
         _sessionServiceMock.Setup(sessionService =>
@@ -72,12 +81,26 @@ public class AuthorizationFilterAttributeTest
     {
         var authorizationHeader = "Authorization";
         var validToken = Guid.NewGuid().ToString();
+        var permission = new SystemPermission { Value = "admins-Create" };
         var user = new User
         {
-            Name = "BBB",
-            LastName = "AAA",
-            Email = "BB@email.com",
-            Password = "bbPASS",
+            Name = "John",
+            LastName = "Doe",
+            Id = "adminId",
+            Roles = new List<UserRole>
+            {
+                new UserRole
+                {
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = new Role
+                    {
+                        Id = Constants.ADMINISTRATORID,
+                        Name = "ADMINISTRATOR",
+                        Permissions = new List<SystemPermission> { permission }
+                    }
+                }
+            }
         };
 
         _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns(user);
@@ -92,6 +115,8 @@ public class AuthorizationFilterAttributeTest
         _httpContextMock.Setup(h => h.RequestServices.GetService(typeof(ISessionService)))
             .Returns(_sessionServiceMock.Object);
 
+        _httpContextMock.Setup(h => h.Items[Items.UserLogged]).Returns(user);
+
         _attribute.OnAuthorization(_context);
 
         IActionResult? response = _context.Result;
@@ -101,7 +126,7 @@ public class AuthorizationFilterAttributeTest
     [TestMethod]
     public void Authorization_WhenNoPermission_ShouldFail()
     {
-        _user.Role.Permissions.Clear();
+        _user.Roles.First().Role.Permissions.Clear();
 
         _attribute = new AuthorizationFilter("admins-Create");
         _attribute.OnAuthorization(_context);

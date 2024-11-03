@@ -14,4 +14,5 @@ public interface IUserService
     User? GetById(string id);
     List<User> GetAll();
     void Delete(string userId);
+    void LoadIntermediateTable(string userId, string roleId);
 }

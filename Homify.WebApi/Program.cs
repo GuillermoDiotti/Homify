@@ -18,6 +18,7 @@ using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
@@ -68,6 +69,8 @@ services.AddControllers()
     });
 
 services.AddDbContext<DbContext, HomifyDbContext>(options => options.UseSqlServer(homifyConnectionString));
+
+services.AddScoped<IRepository<UserRole>, UserRoleRepository>();
 
 services.AddScoped<IRepository<User>, UserRepository>();
 services.AddScoped<IUserService, UserService>();
