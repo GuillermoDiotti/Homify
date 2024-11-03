@@ -17,6 +17,21 @@ public class CompanyService : ICompanyService
     public Company Add(CreateCompanyArgs args, User user)
     {
         var owner = (CompanyOwner)user;
+
+        var nameExists = GetAll().Any(x => x.Name == args.Name);
+
+        if (nameExists)
+        {
+            throw new DuplicatedDataException("The name is already taken.");
+        }
+
+        var alreadyHasACompany = GetByUserId(args.Owner.Id);
+
+        if (alreadyHasACompany != null)
+        {
+            throw new InvalidOperationException("User already owns a company");
+        }
+
         owner.IsIncomplete = false;
         var company = new Company
         {

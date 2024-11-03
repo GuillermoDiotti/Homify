@@ -32,23 +32,9 @@ public class CompanyController : HomifyControllerBase
             throw new NullRequestException();
         }
 
-        var nameExists = _companyService.GetAll().Any(x => x.Name == request.Name);
-
-        if (nameExists)
-        {
-            throw new DuplicatedDataException("The name is already taken.");
-        }
-
         var userLogged = GetUserLogged();
 
         var companyOwner = userLogged as CompanyOwner;
-
-        var alreadyHasACompany = _companyService.GetByUserId(userLogged.Id);
-
-        if (alreadyHasACompany != null)
-        {
-            throw new InvalidOperationException("User already owns a company");
-        }
 
         var args = new CreateCompanyArgs(
             request.Name ?? string.Empty,
