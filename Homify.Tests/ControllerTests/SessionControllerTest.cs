@@ -25,7 +25,7 @@ public class SessionControllerTest
         _controller = new SessionController(_sessionServiceMock.Object, _userServiceMock.Object);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void Create_WhenRequestIsNull_ShouldThrowException()
     {
@@ -55,7 +55,8 @@ public class SessionControllerTest
             Password = "testPassword"
         };
 
-        _userServiceMock.Setup(us => us.GetAll())
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
 
         _controller.Create(request);
@@ -101,7 +102,8 @@ public class SessionControllerTest
             Password = ".Coo120dshjha"
         };
 
-        _userServiceMock.Setup(us => us.GetAll())
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([user]);
 
         _controller.Create(request);
@@ -128,7 +130,8 @@ public class SessionControllerTest
             User = user
         };
 
-        _userServiceMock.Setup(us => us.GetAll())
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([user]);
 
         _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>()))
@@ -141,6 +144,5 @@ public class SessionControllerTest
         result.Token.Should().Be(session.AuthToken);
 
         _sessionServiceMock.Verify(ss => ss.CreateSession(It.IsAny<User>()), Times.Once);
-        _userServiceMock.Verify(us => us.GetAll(), Times.Once);
-    }*/
+    }
 }
