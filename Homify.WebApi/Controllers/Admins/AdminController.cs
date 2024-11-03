@@ -92,29 +92,11 @@ public sealed class AdminController : HomifyControllerBase
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
-        List<User> list = _userService.GetAll();
-
-        if (!string.IsNullOrEmpty(req.Role))
-        {
-            list = list.Where(u => u.Roles.Any(r => r.Role.Name.Contains(req.Role, StringComparison.OrdinalIgnoreCase))).ToList();
-        }
-
-        if (!string.IsNullOrEmpty(req.FullName))
-        {
-            list = list.Where(u => Helpers.GetUserFullName(u.Name, u.LastName)
-                .Contains(req.FullName, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        return list
-            .Skip(pageOffset)
-            .Take(pageSize)
-            .Select(m => new UserBasicInfo(m))
-            .ToList();
-        
-        return movieRepository
-            .GetAll(m =>
-                (string.IsNullOrEmpty(title) || m.Title.Contains(title)) &&
-                (!minStars.HasValue || m.Stars >= minStars) &&
-                (string.IsNullOrEmpty(publishedOn) || m.PublishedOn == DateTimeOffset.Parse(publishedOn)));
+        return _userService
+                .GetAll(req.Role, req.FullName)
+                .Skip(pageOffset)
+                .Take(pageSize)
+                .Select(m => new UserBasicInfo(m))
+                .ToList();
     }
 }
