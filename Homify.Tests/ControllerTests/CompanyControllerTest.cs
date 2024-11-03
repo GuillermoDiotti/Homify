@@ -152,7 +152,13 @@ public class CompanyControllerTest
             new CompanyBasicInfo(companies[2], companies[2].Owner)
         };
 
-        var result = _controller.AllCompanies(limit, offset, string.Empty, string.Empty);
+        var req = new CompanyFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset
+        };
+
+        var result = _controller.AllCompanies(req);
 
         Assert.AreEqual(2, result.Count);
         CollectionAssert.AreEqual(expectedResult, result);
@@ -220,6 +226,13 @@ public class CompanyControllerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void AllCompanies_WhenRequestIsNull_ThrowsException()
+    {
+        _controller.AllCompanies(null);
+    }
+
+    [TestMethod]
     public void AllCompanies_WhenOwnerFullNameAndCompanyAreProvided_ShouldFilterAndReturnPaginatedList()
     {
         var limit = "5";
@@ -242,7 +255,15 @@ public class CompanyControllerTest
 
         _companyServiceMock.Setup(service => service.GetAll()).Returns(companies);
 
-        var result = _controller.AllCompanies(limit, offset, ownerFullName, company);
+        var req = new CompanyFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset,
+            OwnerFullName = ownerFullName,
+            Company = company
+        };
+
+        var result = _controller.AllCompanies(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);

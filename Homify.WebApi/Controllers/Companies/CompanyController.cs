@@ -50,33 +50,37 @@ public class CompanyController : HomifyControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
-    public List<CompanyBasicInfo> AllCompanies([FromQuery] string? limit, [FromQuery] string? offset,
-        [FromQuery] string? ownerFullName, [FromQuery] string? company)
+    public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest req)
     {
+        if (req == null)
+        {
+            throw new NullRequestException("Request cannot be null");
+        }
+
         var pageSize = 10;
         var pageOffset = 0;
 
-        if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
         {
             pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
         }
 
-        if (!string.IsNullOrEmpty(offset) && int.TryParse(offset, out var parsedOffset))
+        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
         {
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
         var list = _companyService.GetAll();
 
-        if (!string.IsNullOrEmpty(ownerFullName))
+        if (!string.IsNullOrEmpty(req.OwnerFullName))
         {
             list = list.Where(c => Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName)
-                .Contains(ownerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
+                .Contains(req.OwnerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        if (!string.IsNullOrEmpty(company))
+        if (!string.IsNullOrEmpty(req.Company))
         {
-            list = list.Where(c => c.Name.Contains(company, StringComparison.OrdinalIgnoreCase)).ToList();
+            list = list.Where(c => c.Name.Contains(req.Company, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
