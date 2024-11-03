@@ -26,7 +26,7 @@ namespace Homify.Tests.ControllerTests;
 [TestClass]
 public class HomesControllerTest
 {
-    /*private readonly HomeController? _controller;
+    private readonly HomeController? _controller;
     private readonly Mock<IHomeService>? _homeServiceMock;
     private readonly Mock<IUserService>? _userServiceMock;
     private readonly Mock<IHomeUserService> _homeUserServiceMock;
@@ -787,7 +787,9 @@ public class HomesControllerTest
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns([userFound]);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([userFound]);
         _homeServiceMock.Setup(service => service.UpdateMemberList(homeId, It.Is<HomeUser>(hu => hu.UserId == homeUser.UserId))).Returns(updatedHome);
 
         var result = _controller.UpdateMembersList(homeId, request);
@@ -849,7 +851,9 @@ public class HomesControllerTest
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns([]);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
 
         _controller.UpdateMembersList(homeId, request);
     }
@@ -877,7 +881,9 @@ public class HomesControllerTest
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns([userFound]);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([userFound]);
 
         _controller.UpdateMembersList(homeId, request);
     }
@@ -989,5 +995,5 @@ public class HomesControllerTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
-    }*/
+    }
 }
