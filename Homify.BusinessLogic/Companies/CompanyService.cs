@@ -58,7 +58,7 @@ public class CompanyService : ICompanyService
         }
     }
 
-    public List<Company> GetAll()
+    public List<Company> GetAll(string? owner = null, string? company = null)
     {
         return _repository.GetAll().ToList();
     }
