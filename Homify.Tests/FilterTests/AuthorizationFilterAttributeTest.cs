@@ -96,7 +96,9 @@ public class AuthorizationFilterAttributeTest
                     RoleId = Constants.ADMINISTRATORID,
                     Role = new Role
                     {
-                        Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR", Permissions = [permission]
+                        Id = Constants.ADMINISTRATORID,
+                        Name = "ADMINISTRATOR",
+                        Permissions = [permission]
                     }
                 }
 

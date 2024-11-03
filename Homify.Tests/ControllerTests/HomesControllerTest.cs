@@ -220,7 +220,9 @@ public class HomesControllerTest
             [
                 new UserRole
                 {
-                    UserId = "adminId", RoleId = Constants.ADMINISTRATORID, Role = RolesGenerator.HomeOwner()
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
                 }
 
             ]
@@ -255,7 +257,9 @@ public class HomesControllerTest
             [
                 new UserRole
                 {
-                    UserId = "adminId", RoleId = Constants.ADMINISTRATORID, Role = RolesGenerator.HomeOwner()
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
                 }
 
             ]
@@ -314,7 +318,9 @@ public class HomesControllerTest
             [
                 new UserRole
                 {
-                    UserId = "adminId", RoleId = Constants.ADMINISTRATORID, Role = RolesGenerator.HomeOwner()
+                    UserId = "adminId",
+                    RoleId = Constants.ADMINISTRATORID,
+                    Role = RolesGenerator.HomeOwner()
                 }
 
             ]
