@@ -5,6 +5,7 @@ using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
@@ -13,25 +14,25 @@ using Moq;
 
 namespace Homify.Tests.ServiceTests;
 
-/*[TestClass]
+[TestClass]
 public class UserServiceTest
 {
     private Mock<IRepository<User>>? _userRepositoryMock;
+    private Mock<IRepository<UserRole>>? _userRoleRepositoryMock;
 
     private UserService? _service;
 
     [TestInitialize]
     public void Setup()
     {
+        _userRoleRepositoryMock = new Mock<IRepository<UserRole>>();
         _userRepositoryMock = new Mock<IRepository<User>>();
-        _service = new UserService(_userRepositoryMock.Object);
+        _service = new UserService(_userRepositoryMock.Object, _userRoleRepositoryMock.Object);
     }
 
     [TestMethod]
     public void AddUser_WhenInfoIsOk_ShouldAddUserToRepository()
     {
-        var mockRepository = new Mock<IRepository<User>>();
-        var userService = new UserService(mockRepository.Object);
         var createUserArgs = new CreateUserArgs(
               "John",
               "john@example.com",
@@ -45,15 +46,13 @@ public class UserServiceTest
             u.Name == createUserArgs.Name &&
             u.Email == createUserArgs.Email &&
             u.Password == createUserArgs.Password &&
-            u.LastName == createUserArgs.LastName &&
-            u.Roles == createUserArgs.Role)), Times.Once);
+            u.LastName == createUserArgs.LastName)));
 
         Assert.IsNotNull(result);
         Assert.AreEqual(createUserArgs.Name, result.Name);
         Assert.AreEqual(createUserArgs.Email, result.Email);
         Assert.AreEqual(createUserArgs.Password, result.Password);
         Assert.AreEqual(createUserArgs.LastName, result.LastName);
-        Assert.AreEqual(createUserArgs.Role, result.Roles);
     }
 
     [TestMethod]
@@ -67,7 +66,6 @@ public class UserServiceTest
             Email = "duplicate@example.com",
             Password = "password123",
             LastName = "User",
-            Roles = RolesGenerator.Admin()
         };
 
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(existingUser);
@@ -152,7 +150,6 @@ public class UserServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Roles = new Role()
         };
 
         _userRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(expectedUser);
@@ -180,7 +177,6 @@ public class UserServiceTest
                 Email = "john@example.com",
                 Password = "password123",
                 LastName = "Doe",
-                Roles = new Role()
             },
             new User
             {
@@ -189,7 +185,6 @@ public class UserServiceTest
                 Email = "jane@example.com",
                 Password = "password456",
                 LastName = "Smith",
-                Roles = new Role()
             }
         };
 
@@ -216,7 +211,6 @@ public class UserServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Roles = new Role()
         };
 
         var user2 = new User(
@@ -233,4 +227,4 @@ public class UserServiceTest
 
         _userRepositoryMock.Verify(r => r.Remove(It.Is<User>(u => u.Id == userId)), Times.Once);
     }
-}*/
+}
