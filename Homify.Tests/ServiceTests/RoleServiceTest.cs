@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.DataAccess.Repositories;
 using Moq;
 
@@ -10,14 +11,15 @@ namespace Homify.Tests.ServiceTests;
 public class RoleServiceTest
 {
     private Mock<IRepository<Role>>? _roleRepositoryMock;
-
+    private Mock<IUserService>? _userServiceMock;
     private RoleService? _service;
 
     [TestInitialize]
     public void Setup()
     {
+        _userServiceMock = new Mock<IUserService>();
         _roleRepositoryMock = new Mock<IRepository<Role>>();
-        _service = new RoleService(_roleRepositoryMock.Object);
+        _service = new RoleService(_roleRepositoryMock.Object, _userServiceMock.Object);
     }
 
     [TestMethod]
