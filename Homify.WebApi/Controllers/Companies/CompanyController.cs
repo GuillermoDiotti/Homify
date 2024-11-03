@@ -43,16 +43,6 @@ public class CompanyController : HomifyControllerBase
 
         var companyOwner = userLogged as CompanyOwner;
 
-        if (companyOwner == null)
-        {
-            throw new InvalidOperationException("Only a CompanyOwner can create a company.");
-        }
-
-        if (!companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be incomplete to execute this action.");
-        }
-
         var alreadyHasACompany = _companyService.GetByUserId(userLogged.Id);
 
         if (alreadyHasACompany != null)
@@ -63,9 +53,10 @@ public class CompanyController : HomifyControllerBase
         var args = new CreateCompanyArgs(
             request.Name ?? string.Empty,
             request.LogoUrl ?? string.Empty,
-            request.Rut ?? string.Empty);
+            request.Rut ?? string.Empty,
+            companyOwner);
 
-        var company = _companyService.Add(args, companyOwner);
+        var company = _companyService.Add(args, companyOwner!);
 
         return new CreateCompanyResponse(company);
     }

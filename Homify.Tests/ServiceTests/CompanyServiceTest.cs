@@ -26,11 +26,6 @@ public class CompanyServiceTest
     [TestMethod]
     public void Add_WhenInfoIsOk_ShouldAddCompanyToRepository()
     {
-        var createCompanyArgs = new CreateCompanyArgs(
-            "Test Company",
-            "https://example.com/logo.png",
-            "123456789");
-
         var user = new CompanyOwner
         {
             Id = "1",
@@ -44,6 +39,12 @@ public class CompanyServiceTest
 
             ]
         };
+
+        var createCompanyArgs = new CreateCompanyArgs(
+            "Test Company",
+            "https://example.com/logo.png",
+            "123456789",
+            user);
 
         _companyRepositoryMock.Setup(r => r.Add(It.IsAny<Company>())).Verifiable();
 

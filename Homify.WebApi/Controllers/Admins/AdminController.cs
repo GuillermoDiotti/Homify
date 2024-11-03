@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Homify.WebApi.Controllers.Admins.Models.Responses;
