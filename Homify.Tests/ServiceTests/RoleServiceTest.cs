@@ -81,11 +81,11 @@ public class RoleServiceTest
         var user = new User
         {
             Id = Guid.NewGuid().ToString(),
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole { Role = adminRole },
                 new UserRole { Role = companyOwnerRole }
-            }
+            ]
         };
 
         var roleService = new RoleService(mockRepository.Object, mockUserService.Object);

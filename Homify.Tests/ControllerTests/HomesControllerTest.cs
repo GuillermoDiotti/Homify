@@ -216,15 +216,14 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole
                 {
-                    UserId = "adminId",
-                    RoleId = Constants.ADMINISTRATORID,
-                    Role = RolesGenerator.HomeOwner()
+                    UserId = "adminId", RoleId = Constants.ADMINISTRATORID, Role = RolesGenerator.HomeOwner()
                 }
-            }
+
+            ]
         };
 
         var httpContext = new DefaultHttpContext();
@@ -252,15 +251,14 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole
                 {
-                    UserId = "adminId",
-                    RoleId = Constants.ADMINISTRATORID,
-                    Role = RolesGenerator.HomeOwner()
+                    UserId = "adminId", RoleId = Constants.ADMINISTRATORID, Role = RolesGenerator.HomeOwner()
                 }
-            }
+
+            ]
         };
 
         var httpContext = new DefaultHttpContext();
@@ -312,15 +310,14 @@ public class HomesControllerTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole
                 {
-                    UserId = "adminId",
-                    RoleId = Constants.ADMINISTRATORID,
-                    Role = RolesGenerator.HomeOwner()
+                    UserId = "adminId", RoleId = Constants.ADMINISTRATORID, Role = RolesGenerator.HomeOwner()
                 }
-            }
+
+            ]
         };
 
         var httpContext = new DefaultHttpContext();
@@ -652,15 +649,10 @@ public class HomesControllerTest
         var user = new HomeOwner
         {
             Id = "ownerId",
-            Roles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    UserId = "ownerId",
-                    RoleId = Constants.HOMEOWNERID,
-                    Role = RolesGenerator.HomeOwner()
-                }
-            }
+            Roles =
+            [
+                new UserRole { UserId = "ownerId", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns((Home)null); // Home not found
@@ -684,20 +676,15 @@ public class HomesControllerTest
         var user = new HomeOwner
         {
             Id = "ownerId",
-            Roles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    UserId = "ownerId",
-                    RoleId = Constants.HOMEOWNERID,
-                    Role = RolesGenerator.HomeOwner()
-                }
-            }
+            Roles =
+            [
+                new UserRole { UserId = "ownerId", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { new HomeUser() },
+            Members = [new HomeUser()],
             MaxMembers = 1
         };
 
@@ -765,22 +752,17 @@ public class HomesControllerTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>(),
+            Members = [],
             MaxMembers = 5
         };
         var userFound = new HomeOwner
         {
             Id = "user123",
             Email = "test@example.com",
-            Roles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    UserId = "user123",
-                    RoleId = Constants.HOMEOWNERID,
-                    Role = RolesGenerator.HomeOwner()
-                }
-            }
+            Roles =
+            [
+                new UserRole { UserId = "user123", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
         var homeUser = new HomeUser
         {
@@ -789,17 +771,17 @@ public class HomesControllerTest
             User = userFound,
             HomeId = homeId,
             UserId = userFound.Id,
-            Permissions = new List<HomePermission>()
+            Permissions = []
         };
         var updatedHome = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { homeUser },
+            Members = [homeUser],
             MaxMembers = 5
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
+        _userServiceMock.Setup(service => service.GetAll()).Returns([userFound]);
         _homeServiceMock.Setup(service => service.UpdateMemberList(homeId, It.Is<HomeUser>(hu => hu.UserId == homeUser.UserId))).Returns(updatedHome);
 
         var result = _controller.UpdateMembersList(homeId, request);
@@ -875,26 +857,21 @@ public class HomesControllerTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { new HomeUser { UserId = "user123" } },
+            Members = [new HomeUser { UserId = "user123" }],
             MaxMembers = 5
         };
         var userFound = new HomeOwner
         {
             Id = "user123",
             Email = "test@example.com",
-            Roles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    UserId = "user123",
-                    RoleId = Constants.HOMEOWNERID,
-                    Role = RolesGenerator.HomeOwner()
-                }
-            }
+            Roles =
+            [
+                new UserRole { UserId = "user123", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
+            ]
         };
 
         _homeServiceMock.Setup(service => service.GetHomeById(homeId)).Returns(homeFound);
-        _userServiceMock.Setup(service => service.GetAll()).Returns(new List<User> { userFound });
+        _userServiceMock.Setup(service => service.GetAll()).Returns([userFound]);
 
         _controller.UpdateMembersList(homeId, request);
     }
@@ -1008,4 +985,3 @@ public class HomesControllerTest
         Assert.AreEqual(2, result.Count);
     }
 }
-

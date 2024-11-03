@@ -40,7 +40,7 @@ public class HomeServiceTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Roles = [new UserRole(){ UserId = "Owner123", Role = RolesGenerator.HomeOwner() }]
+            Roles = [new UserRole() { UserId = "Owner123", Role = RolesGenerator.HomeOwner() }]
         };
 
         var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");
@@ -458,5 +458,5 @@ public class HomeServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
         Assert.IsTrue(result.All(home => home.OwnerId == "user1"));
-  }
+    }
 }

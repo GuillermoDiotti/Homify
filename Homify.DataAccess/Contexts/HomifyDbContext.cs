@@ -18,7 +18,6 @@ using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
-using Homify.DataAccess.Repositories;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Utility;
 using Microsoft.Data.Sqlite;
@@ -226,9 +225,9 @@ public sealed class HomifyDbContext : DbContext
                 Value = "ChangeDeviceName"
             });
 
-        Role adminRole = new Role { Id = Constants.ADMINISTRATORID, Name = Constants.ADMINISTRATOR };
-        Role companyOwnerRole = new Role { Id = Constants.COMPANYOWNERID, Name = Constants.COMPANYOWNER };
-        Role homeOwnerRole = new Role { Id = Constants.HOMEOWNERID, Name = Constants.HOMEOWNER };
+        var adminRole = new Role { Id = Constants.ADMINISTRATORID, Name = Constants.ADMINISTRATOR };
+        var companyOwnerRole = new Role { Id = Constants.COMPANYOWNERID, Name = Constants.COMPANYOWNER };
+        var homeOwnerRole = new Role { Id = Constants.HOMEOWNERID, Name = Constants.HOMEOWNER };
 
         modelBuilder.Entity<Role>().HasData(
             adminRole,
@@ -372,7 +371,7 @@ public sealed class HomifyDbContext : DbContext
             LastName = "LastName"
         };
 
-        UserRole userRoleAdmin = new UserRole()
+        var userRoleAdmin = new UserRole()
         {
             UserId = admin.Id,
             RoleId = adminRole.Id
@@ -388,7 +387,7 @@ public sealed class HomifyDbContext : DbContext
             ProfilePicture = "picture"
         };
 
-        UserRole userHomeOwnerRole = new UserRole()
+        var userHomeOwnerRole = new UserRole()
         {
             UserId = homeowner.Id,
             RoleId = homeOwnerRole.Id
@@ -404,7 +403,7 @@ public sealed class HomifyDbContext : DbContext
             IsIncomplete = true,
         };
 
-        UserRole userCompanyOwnerRole = new UserRole()
+        var userCompanyOwnerRole = new UserRole()
         {
             UserId = companyowner.Id,
             RoleId = companyOwnerRole.Id

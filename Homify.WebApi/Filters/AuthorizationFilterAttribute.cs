@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
-using Homify.BusinessLogic.UserRoles;
 using Homify.BusinessLogic.Users.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

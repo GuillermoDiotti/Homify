@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
@@ -29,7 +28,7 @@ public class UserRepositoryTests
                     Name = "User1",
                     LastName = "LastName1",
                     Password = "Password1",
-                    Roles = new List<UserRole> { new UserRole { Role = new Role { Name = "ADMINISTRATOR" } } }
+                    Roles = [new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }]
                 }
             }
         }.AsQueryable();
@@ -88,10 +87,7 @@ public class UserRepositoryTests
                 {
                     Id = "1",
                     Name = "User1",
-                    Roles = new List<UserRole>
-                    {
-                        new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }
-                    }
+                    Roles = [new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }]
                 }
             },
             new Session
@@ -101,7 +97,7 @@ public class UserRepositoryTests
                 {
                     Id = "2",
                     Name = "User2",
-                    Roles = new List<UserRole> { new UserRole { Role = new Role { Name = "USER" } } }
+                    Roles = [new UserRole { Role = new Role { Name = "USER" } }]
                 }
             }
         }.AsQueryable();

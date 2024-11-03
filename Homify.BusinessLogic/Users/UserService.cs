@@ -13,12 +13,12 @@ namespace Homify.BusinessLogic.Users;
 public class UserService : IUserService
 {
     private readonly IRepository<User> _repository;
-    private readonly IRepository<UserRole> _UserRolerepository;
+    private readonly IRepository<UserRole> _userRolerepository;
 
     public UserService(IRepository<User> repository, IRepository<UserRole> userRolerepository)
     {
         _repository = repository;
-        _UserRolerepository = userRolerepository;
+        _userRolerepository = userRolerepository;
     }
 
     public Admin AddAdmin(CreateUserArgs args)
@@ -82,7 +82,7 @@ public class UserService : IUserService
             UserId = userId,
             RoleId = roleId,
         };
-        _UserRolerepository.Add(userRole);
+        _userRolerepository.Add(userRole);
     }
 
     public User? GetById(string id)

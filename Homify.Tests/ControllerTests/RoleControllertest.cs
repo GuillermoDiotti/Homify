@@ -30,7 +30,7 @@ public class RoleControllertest
     public void AddRole_WhenUserLoggedIsNotNull_ReturnOk()
     {
         var roleService = new Mock<IRoleService>();
-        var _controller = new RoleController(roleService.Object);
+        var controller = new RoleController(roleService.Object);
         var companyOwner = new CompanyOwner
         {
             Id = "1",
@@ -39,12 +39,12 @@ public class RoleControllertest
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = companyOwner;
 
-        _controller.ControllerContext = new ControllerContext
+        controller.ControllerContext = new ControllerContext
         {
             HttpContext = httpContext
         };
 
-        var result = _controller.CreateRoleToExistingUser();
+        var result = controller.CreateRoleToExistingUser();
 
         Assert.IsInstanceOfType(result, typeof(OkObjectResult));
     }

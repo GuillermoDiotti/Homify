@@ -45,7 +45,7 @@ public class AuthorizationFilterAttributeTest
 
         _permission = new SystemPermission { Value = "admins-Create" };
 
-        _roleForTest = new Role { Name = Constants.ADMINISTRATOR, Permissions = new List<SystemPermission> { _permission } };
+        _roleForTest = new Role { Name = Constants.ADMINISTRATOR, Permissions = [_permission] };
 
         _authorizationHeader = "Authorization";
         _validToken = Guid.NewGuid().ToString();
@@ -55,15 +55,16 @@ public class AuthorizationFilterAttributeTest
             LastName = "ADA",
             Email = "ada@email.com",
             Password = "adaPASS",
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole
                 {
                     UserId = "adminId",
                     RoleId = Constants.ADMINISTRATORID,
                     Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
                 }
-            }
+
+            ]
         };
 
         _sessionServiceMock.Setup(sessionService =>
@@ -87,20 +88,19 @@ public class AuthorizationFilterAttributeTest
             Name = "John",
             LastName = "Doe",
             Id = "adminId",
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole
                 {
                     UserId = "adminId",
                     RoleId = Constants.ADMINISTRATORID,
                     Role = new Role
                     {
-                        Id = Constants.ADMINISTRATORID,
-                        Name = "ADMINISTRATOR",
-                        Permissions = new List<SystemPermission> { permission }
+                        Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR", Permissions = [permission]
                     }
                 }
-            }
+
+            ]
         };
 
         _sessionServiceMock.Setup(sessionService => sessionService.GetUserByToken(validToken)).Returns(user);
