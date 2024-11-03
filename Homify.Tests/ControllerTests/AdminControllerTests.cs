@@ -520,7 +520,7 @@ public class UserControllerTests
         Assert.AreEqual("John", result[0].Name);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void AllAccounts_WhenNoParameters_ShouldReturnDefaultValues()
     {
         var users = new List<User>
@@ -575,15 +575,23 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts(null, null, string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = string.Empty,
+            Offset = string.Empty
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void AllAccounts_ShouldMapUserToUserBasicInfoCorrectly()
     {
         var users = new List<User>
