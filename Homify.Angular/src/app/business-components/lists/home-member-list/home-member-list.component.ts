@@ -19,7 +19,6 @@ export class HomeMemberListComponent {
 	constructor(private HomeService: HomeService){}
 
 	ngOnInit() {
-		console.log(this.selectedHomeId)
 		this.HomeService.GetMembers(this.selectedHomeId).subscribe(
 			response => {
 				this.members = response;
@@ -31,7 +30,6 @@ export class HomeMemberListComponent {
 	}
 
 	handleRefresh() {
-		console.log(this.selectedHomeId)
 		this.HomeService.GetMembers(this.selectedHomeId).subscribe(
 			response => {
 				this.members = response;

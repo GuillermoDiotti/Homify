@@ -2,8 +2,6 @@
 @if(selectedHomeId){
     <app-home-member-list (memberSelected)="onMemberSelected($event)" [selectedHomeId]="selectedHomeId"></app-home-member-list>
     @if(selectedMemberId){
-        <app-update-members-permissions-form [selectedHomeId]="selectedHomeId" [selectedMemberId]="selectedMemberId">
-            
-        </app-update-members-permissions-form>
+        <app-update-members-permissions-form [selectedHomeId]="selectedHomeId" [selectedMemberId]="selectedMemberId"></app-update-members-permissions-form>
     }
 }

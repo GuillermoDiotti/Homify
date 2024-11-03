@@ -39,7 +39,6 @@ export class OwnerHomeListComponent {
 	}
 
 	onClick(id:string){
-		console.log(id);
 		this.selectedHomeId = id;
 		this.homeSelected.emit(this.selectedHomeId);
 	}

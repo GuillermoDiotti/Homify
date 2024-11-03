@@ -52,7 +52,7 @@ export class CreateAdminFormComponent {
         }
       );
     } else {
-      console.log("Form is invalid");
+      this.errorMessage = "Form is invalid";
     }
   }
 }

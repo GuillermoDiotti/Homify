@@ -4,7 +4,6 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { HomeService } from '../../../../backend/services/homes/home.service';
 import { UpdateMembersPermissionRequest } from '../../../../backend/services/homes/models/UpdateMembersPermissionRequest';
@@ -36,9 +35,7 @@ import { SuccessMessageComponent } from '../../../components/success-message/suc
 })
 export class UpdateMembersPermissionsFormComponent {
   form: FormGroup;
-
   successMessage = '';
-
   errorMessage = '';
 
   @Input() selectedMemberId: string | null = null;
@@ -46,7 +43,6 @@ export class UpdateMembersPermissionsFormComponent {
   constructor(private fb: FormBuilder, private homeService: HomeService) {
     this.form = this.fb.group({
       canAddDevices: [false],
-
       canListDevices: [false],
     });
   }
@@ -54,29 +50,21 @@ export class UpdateMembersPermissionsFormComponent {
   handleSubmit(event:Event) {
     event.preventDefault();
     this.successMessage = '';
-
     this.errorMessage = '';
 
     if (this.form.valid) {
       const { canAddDevices, canListDevices } = this.form.value;
-
       const req: UpdateMembersPermissionRequest = {
         canAddDevices:Boolean(canAddDevices),
-
         canListDevices:Boolean(canListDevices),
       };
-      console.log(req);
       this.homeService
         .UpdatePermissions(this.selectedHomeId ?? '', req, this.selectedMemberId ?? '')
         .subscribe(
           (response) => {
-            console.log(this.selectedHomeId + " " + this.selectedMemberId)
-            console.log(response);
             this.successMessage = 'Permissions updated successfully';
           },
-
           (error: APIError) => {
-            console.log(error);
             this.errorMessage = error.error.message;
           }
         );

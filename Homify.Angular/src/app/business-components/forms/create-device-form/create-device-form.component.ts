@@ -38,7 +38,6 @@ export class CreateDeviceFormComponent {
 	onDeviceTypeChange(event: Event) {
 		const selectElement = event.target as HTMLSelectElement;
 		this.device = selectElement.value;
-		console.log(this.device)
 	}	
 
   handleSubmit() {
@@ -48,7 +47,7 @@ export class CreateDeviceFormComponent {
       this.createDevice(this.device)
       
     } else {
-      console.log("Form is invalid");
+      this.errorMessage = "Form is invalid";
     }
   }
 
