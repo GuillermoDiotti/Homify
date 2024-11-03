@@ -591,7 +591,7 @@ public class UserControllerTests
         Assert.AreEqual(3, result.Count);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void AllAccounts_ShouldMapUserToUserBasicInfoCorrectly()
     {
         var users = new List<User>
@@ -614,9 +614,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "10",
+            Offset = "0"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(1, result.Count, "Debe haber exactamente un usuario en la lista");
@@ -624,7 +632,7 @@ public class UserControllerTests
         Assert.AreEqual("Doe", result[0].LastName, "El apellido del usuario debe ser 'Doe'");
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void AllAccounts_WhenRoleAndFullNameAreProvided_ShouldFilterAndReturnPaginatedList()
     {
         var limit = "5";
