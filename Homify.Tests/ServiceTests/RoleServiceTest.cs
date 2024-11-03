@@ -62,4 +62,24 @@ public class RoleServiceTest
 
         Assert.ThrowsException<InvalidOperationException>(() => _service.AddRoleToUser(user));
     }
+
+    [TestMethod]
+    public void AddRole_WhenUserAlreadyHasRole_ShouldThrowException()
+    {
+        var user = new User
+        {
+            Roles =
+            [
+                new UserRole { Role = new Role { Name = "Test role" } }
+            ]
+        };
+
+        _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
+            .Returns(new Role
+            {
+                Name = "Test role"
+            });
+
+        Assert.ThrowsException<InvalidOperationException>(() => _service.AddRoleToUser(user));
+    }
 }
