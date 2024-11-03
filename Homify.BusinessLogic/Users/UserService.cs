@@ -97,9 +97,14 @@ public class UserService : IUserService
         }
     }
 
-    public List<User> GetAll()
+    public List<User> GetAll(string? role = null, string? name = null)
     {
-        return _repository.GetAll().ToList();
+        return _repository.GetAll(u =>
+            (string.IsNullOrEmpty(role) ||
+             u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))) &&
+            (string.IsNullOrEmpty(name) ||
+             Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))
+        );
     }
 
     public void Delete(string userId)

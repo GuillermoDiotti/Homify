@@ -82,37 +82,39 @@ public sealed class AdminController : HomifyControllerBase
         var pageSize = 10;
         var pageOffset = 0;
 
-        /*if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
         {
             pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
         }
 
-        if (!string.IsNullOrEmpty(offset) && int.TryParse(offset, out var parsedOffset))
+        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
         {
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
         List<User> list = _userService.GetAll();
 
-        if (!string.IsNullOrEmpty(role))
+        if (!string.IsNullOrEmpty(req.Role))
         {
-            list = list.Where(u => u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))).ToList();
+            list = list.Where(u => u.Roles.Any(r => r.Role.Name.Contains(req.Role, StringComparison.OrdinalIgnoreCase))).ToList();
         }
 
-        if (!string.IsNullOrEmpty(fullName))
+        if (!string.IsNullOrEmpty(req.FullName))
         {
             list = list.Where(u => Helpers.GetUserFullName(u.Name, u.LastName)
-                .Contains(fullName, StringComparison.OrdinalIgnoreCase)).ToList();
+                .Contains(req.FullName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
-*/
-        List<UserBasicInfo> result = [];
-        /*foreach (User u in paginatedList)
-        {
-            result.Add(new UserBasicInfo(u));
-        }*/
-
-        return result;
+        return list
+            .Skip(pageOffset)
+            .Take(pageSize)
+            .Select(m => new UserBasicInfo(m))
+            .ToList();
+        
+        return movieRepository
+            .GetAll(m =>
+                (string.IsNullOrEmpty(title) || m.Title.Contains(title)) &&
+                (!minStars.HasValue || m.Stars >= minStars) &&
+                (string.IsNullOrEmpty(publishedOn) || m.PublishedOn == DateTimeOffset.Parse(publishedOn)));
     }
 }
