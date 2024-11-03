@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -41,11 +40,7 @@ public class CompanyServiceTest
             LastName = "Doe",
             Roles =
             [
-                new UserRole()
-            {
-                UserId = "1",
-                Role = RolesGenerator.CompanyOwner()
-            }
+                new UserRole() { UserId = "1", Role = RolesGenerator.CompanyOwner() }
 
             ]
         };
@@ -66,32 +61,26 @@ public class CompanyServiceTest
         Assert.AreEqual(createCompanyArgs.Rut, result.Rut);
         Assert.AreEqual(user, result.Owner);
     }
-}
 
-/*[TestMethod]
-public void GetByUserId_ShouldReturnCompany_WhenCompanyExists()
-{
-    var userId = "test-user-id";
-    var expectedCompany = new Company
+    [TestMethod]
+    public void GetByUserId_ShouldReturnCompany_WhenCompanyExists()
     {
-        Id = Guid.NewGuid().ToString(),
-        Name = "Test Company",
-        OwnerId = userId
-    };
-    _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
-        .Returns(expectedCompany);
-    var result = _service.GetByUserId(userId);
-    Assert.IsNotNull(result);
-    Assert.AreEqual(expectedCompany, result);
-}
+        var userId = "test-user-id";
+        var expectedCompany = new Company { Id = Guid.NewGuid().ToString(), Name = "Test Company", OwnerId = userId };
+        _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns(expectedCompany);
+        var result = _service.GetByUserId(userId);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedCompany, result);
+    }
 
-[TestMethod]
-public void GetByUserId_ShouldReturnNull_WhenNotFoundExceptionThrown()
-{
-    var userId = "test-user-id";
-    _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
-        .Throws(new NotFoundException("Test Company"));
-    var result = _service.GetByUserId(userId);
-    Assert.IsNull(result);
+    [TestMethod]
+    public void GetByUserId_ShouldReturnNull_WhenNotFoundExceptionThrown()
+    {
+        var userId = "test-user-id";
+        _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Throws(new NotFoundException("Test Company"));
+        var result = _service.GetByUserId(userId);
+        Assert.IsNull(result);
+    }
 }
-}*/

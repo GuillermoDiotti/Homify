@@ -9,6 +9,7 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -16,7 +17,7 @@ using Moq;
 
 namespace Homify.Tests.ServiceTests;
 
-/*[TestClass]
+[TestClass]
 public class HomeServiceTest
 {
     private readonly Mock<IRepository<Home>> _mockRepository;
@@ -39,7 +40,7 @@ public class HomeServiceTest
         {
             Id = "Owner123",
             Name = "John Doe",
-            Roles = RolesGenerator.HomeOwner()
+            Roles = [new UserRole(){ UserId = "Owner123", Role = RolesGenerator.HomeOwner() }]
         };
 
         var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");
@@ -458,4 +459,4 @@ public class HomeServiceTest
         Assert.AreEqual(2, result.Count);
         Assert.IsTrue(result.All(home => home.OwnerId == "user1"));
   }
-}*/
+}
