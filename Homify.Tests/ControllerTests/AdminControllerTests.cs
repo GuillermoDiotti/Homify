@@ -632,7 +632,7 @@ public class UserControllerTests
         Assert.AreEqual("Doe", result[0].LastName, "El apellido del usuario debe ser 'Doe'");
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void AllAccounts_WhenRoleAndFullNameAreProvided_ShouldFilterAndReturnPaginatedList()
     {
         var limit = "5";
@@ -675,13 +675,27 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns((string? role, string? name) =>
+                users.Where(u =>
+                    (string.IsNullOrEmpty(role) || u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))) &&
+                    (string.IsNullOrEmpty(name) || Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))
+                ).ToList()
+            );
 
-        var result = _controller.AllAccounts(limit, offset, role, fullName);
+        var req = new UserFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset,
+            Role = role,
+            FullName = fullName
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("John Doe", Helpers.GetUserFullName(result[0].Name, result[0].LastName));
-        _userServiceMock.Verify(service => service.GetAll(), Times.Once);
-    }*/
+    }
 }
