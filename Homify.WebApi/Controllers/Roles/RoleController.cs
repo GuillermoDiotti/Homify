@@ -1,5 +1,4 @@
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.Users;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
