@@ -448,7 +448,7 @@ public class UserControllerTests
         Assert.AreEqual(3, result.Count);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void AllAccounts_WhenOffsetIsInvalid_ShouldReturnFirstUsers()
     {
         var users = new List<User>
@@ -503,16 +503,24 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("2", "invalid", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "2",
+            Offset = "invalid"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual("John", result[0].Name);
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void AllAccounts_WhenNoParameters_ShouldReturnDefaultValues()
     {
         var users = new List<User>
