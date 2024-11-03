@@ -69,4 +69,56 @@ public class UserRoleRepositoryTests
 
         Assert.ThrowsException<NotFoundException>(() => userRoleRepository.Get(predicate));
     }
+
+    [TestMethod]
+    public void GetAll_WithPredicate_ReturnsFilteredUserRoles()
+    {
+        var testData = new List<UserRole>
+        {
+            new UserRole
+            {
+                Id = "1",
+                User = new User
+                {
+                    Id = "1",
+                    Name = "User1"
+                },
+                Role = new Role
+                {
+                    Id = "1",
+                    Name = "ADMINISTRATOR"
+                }
+            },
+            new UserRole
+            {
+                Id = "2",
+                User = new User
+                {
+                    Id = "2",
+                    Name = "User2"
+                },
+                Role = new Role
+                {
+                    Id = "2",
+                    Name = "USER"
+                }
+            }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<UserRole>>();
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<UserRole>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<UserRole>()).Returns(mockSet.Object);
+
+        var userRoleRepository = new UserRoleRepository(mockContext.Object);
+
+        var result = userRoleRepository.GetAll(ur => ur.User.Name == "User1");
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("User1", result[0].User.Name);
+    }
 }
