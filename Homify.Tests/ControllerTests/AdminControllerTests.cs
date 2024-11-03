@@ -377,7 +377,7 @@ public class UserControllerTests
         Assert.AreEqual("Smith", result[0].LastName);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void AllAccounts_WhenLimitIsInvalid_ShouldReturnDefaultPageSize()
     {
         var users = new List<User>
@@ -432,15 +432,23 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("invalid", "0", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "invalid",
+            Offset = "0"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void AllAccounts_WhenOffsetIsInvalid_ShouldReturnFirstUsers()
     {
         var users = new List<User>
