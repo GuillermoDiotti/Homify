@@ -12,6 +12,7 @@ import { UpdateMemberListResponse } from "../services/homes/models/UpdateMemberL
 import { UpdateMembersPermissionRequest } from "../services/homes/models/UpdateMembersPermissionRequest";
 import { HomeMemberBasicInfo } from "../services/homes/models/HomeMemberBasicInfo";
 import { GetMembersResponse } from "../services/homes/models/GetMembersResponse";
+import { GetDevicesResponse } from "../services/device/models/GetDevicesResponse";
 
 
 @Injectable({
@@ -45,5 +46,9 @@ import { GetMembersResponse } from "../services/homes/models/GetMembersResponse"
       : Observable<Array<GetMembersResponse>>{
         return this.get<Array<GetMembersResponse>>(`${homeId}/members`).pipe(catchError(this.handleError));
       }
+
+			public GetHomeDevices(homeId:string): Observable<GetDevicesResponse[]>{
+				return this.get<GetDevicesResponse[]>(`${homeId}/devices`).pipe(catchError(this.handleError));
+			}
   
     }

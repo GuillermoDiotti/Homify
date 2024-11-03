@@ -9,15 +9,19 @@ import { AddHomeMemberFormComponent } from '../../business-components/forms/add-
 import { UpdateMembersPermissionsComponent } from './update-members-permissions/update-members-permissions.component';
 import { UpdateMembersPermissionsFormComponent } from '../../business-components/forms/update-members-permissions-form/update-members-permissions-form.component';
 import { HomeMemberListComponent } from '../../business-components/lists/home-member-list/home-member-list.component';
+import { HomedevicesListComponent } from '../../business-components/lists/homedevices-list/homedevices-list.component';
+import { HomedevicesComponent } from './homedevices/homedevices.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateHomeComponent },
   { path: 'add-member', component: AddMemberComponent },
   { path: 'update-permissions', component: UpdateMembersPermissionsComponent },
+	{ path: 'devices', component: HomedevicesComponent },
 ];
 
 @NgModule({
-  declarations: [CreateHomeComponent, AddMemberComponent, UpdateMembersPermissionsComponent],
+  declarations: [CreateHomeComponent, AddMemberComponent, 
+		UpdateMembersPermissionsComponent, HomedevicesComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -25,7 +29,8 @@ const routes: Routes = [
     OwnerHomeListComponent,
     AddHomeMemberFormComponent,
     UpdateMembersPermissionsFormComponent,
-    HomeMemberListComponent  
+    HomeMemberListComponent,
+		HomedevicesListComponent,
   ]
 })
 export class HomePageModule { }

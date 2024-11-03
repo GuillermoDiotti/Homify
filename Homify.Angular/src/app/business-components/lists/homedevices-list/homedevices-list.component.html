@@ -1,0 +1,23 @@
+<article>
+  <h2>Listing of Home Devices</h2>
+  <button (click)="handleRefresh()">Refresh</button>
+  @if (homeDevices.length > 0) {
+  <ul>
+    @for (device of homeDevices; track $index) {
+    <li>
+      <strong>Name:</strong> {{ device.name }} <br />
+      <strong>Model:</strong> {{ device.model }} <br />
+      <div style="display: flex; align-items: center; max-height: 200px;">
+        <strong>Main Photo:</strong>
+        <img src="{{ device.mainPhoto }} " alt="{{ device.name }}" />
+        <br />
+      </div>
+      <strong>is Connected:</strong> {{ device.isConnected }} <br />
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There are'nt devices registered in this home.</p>
+  }
+	<app-error-message [message]="errorMessage"></app-error-message>
+</article>

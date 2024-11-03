@@ -9,6 +9,7 @@ import { UpdateMemberListResponse } from './models/UpdateMemberListResponse';
 import { UpdateMembersPermissionRequest } from './models/UpdateMembersPermissionRequest';
 import { HomeMemberBasicInfo } from './models/HomeMemberBasicInfo';
 import { GetMembersResponse } from './models/GetMembersResponse';
+import { GetDevicesResponse } from '../device/models/GetDevicesResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -38,4 +39,8 @@ export class HomeService {
   public GetMembers(homeId:string) : Observable<Array<GetMembersResponse>>{
     return this._repository.GetHomeMembers(homeId);
   }
+
+	public getHomeDevices(homeId: string): Observable<GetDevicesResponse[]> {
+		return this._repository.GetHomeDevices(homeId);
+	}
 }
