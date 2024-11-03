@@ -72,13 +72,17 @@ public sealed class AdminController : HomifyControllerBase
     [HttpGet("accounts")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
-    public List<UserBasicInfo> AllAccounts([FromQuery] string? limit, [FromQuery] string? offset,
-        [FromQuery] string? role, [FromQuery] string? fullName)
+    public List<UserBasicInfo> AllAccounts([FromQuery] UserFiltersRequest req)
     {
+        if (req == null)
+        {
+            throw new NullRequestException("Request cannot be null");
+        }
+
         var pageSize = 10;
         var pageOffset = 0;
 
-        if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        /*if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
         {
             pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
         }
@@ -102,12 +106,12 @@ public sealed class AdminController : HomifyControllerBase
         }
 
         var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
-
+*/
         List<UserBasicInfo> result = [];
-        foreach (User u in paginatedList)
+        /*foreach (User u in paginatedList)
         {
             result.Add(new UserBasicInfo(u));
-        }
+        }*/
 
         return result;
     }
