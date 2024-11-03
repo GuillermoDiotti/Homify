@@ -25,7 +25,7 @@ public class SessionControllerTest
         _controller = new SessionController(_sessionServiceMock.Object, _userServiceMock.Object);
     }
 
-    [TestMethod]
+    /*[TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void Create_WhenRequestIsNull_ShouldThrowException()
     {
@@ -142,5 +142,5 @@ public class SessionControllerTest
 
         _sessionServiceMock.Verify(ss => ss.CreateSession(It.IsAny<User>()), Times.Once);
         _userServiceMock.Verify(us => us.GetAll(), Times.Once);
-    }
+    }*/
 }

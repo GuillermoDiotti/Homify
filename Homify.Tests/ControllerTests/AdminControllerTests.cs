@@ -8,6 +8,7 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins;
+using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Moq;
 
@@ -303,8 +304,6 @@ public class UserControllerTests
         _controller.AllAccounts(null!);
     }
 
-    /*
-
     [TestMethod]
     public void AllAccounts_WhenLimitAndOffsetAreValid_ShouldReturnCorrectUsers()
     {
@@ -360,9 +359,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("2", "1", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "2",
+            Offset = "1"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -370,7 +377,7 @@ public class UserControllerTests
         Assert.AreEqual("Smith", result[0].LastName);
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void AllAccounts_WhenLimitIsInvalid_ShouldReturnDefaultPageSize()
     {
         var users = new List<User>

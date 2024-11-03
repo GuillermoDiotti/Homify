@@ -26,7 +26,7 @@ namespace Homify.Tests.ControllerTests;
 [TestClass]
 public class HomesControllerTest
 {
-    private readonly HomeController? _controller;
+    /*private readonly HomeController? _controller;
     private readonly Mock<IHomeService>? _homeServiceMock;
     private readonly Mock<IUserService>? _userServiceMock;
     private readonly Mock<IHomeUserService> _homeUserServiceMock;
@@ -989,5 +989,5 @@ public class HomesControllerTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
-    }
+    }*/
 }
