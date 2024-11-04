@@ -11,6 +11,7 @@ import { UpdateMembersPermissionsFormComponent } from '../../business-components
 import { HomeMemberListComponent } from '../../business-components/lists/home-member-list/home-member-list.component';
 import { HomedevicesListComponent } from '../../business-components/lists/homedevices-list/homedevices-list.component';
 import { HomedevicesComponent } from './homedevices/homedevices.component';
+import { MemberHomeListComponent } from '../../business-components/lists/member-home-list/member-home-list.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateHomeComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [
     UpdateMembersPermissionsFormComponent,
     HomeMemberListComponent,
 		HomedevicesListComponent,
+		MemberHomeListComponent,
   ]
 })
 export class HomePageModule { }

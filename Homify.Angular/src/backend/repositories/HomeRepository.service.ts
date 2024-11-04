@@ -13,6 +13,8 @@ import { UpdateMembersPermissionRequest } from "../services/homes/models/UpdateM
 import { HomeMemberBasicInfo } from "../services/homes/models/HomeMemberBasicInfo";
 import { GetMembersResponse } from "../services/homes/models/GetMembersResponse";
 import { GetDevicesResponse } from "../services/device/models/GetDevicesResponse";
+import { UpdateHomeDevicesRequest } from "../services/homes/models/UpdateHomeDevicesRequest";
+import { UpdateHomeDeviceResponse } from "../services/homes/models/UpdateHomeDeviceResponse";
 
 
 @Injectable({
@@ -32,6 +34,11 @@ import { GetDevicesResponse } from "../services/device/models/GetDevicesResponse
         return this.get<Array<GetAllHomesResponse>>("by-owner").pipe(catchError(this.handleError));
       }
 
+			public getAllHomesByMember()
+        : Observable<Array<GetAllHomesResponse>> {
+        return this.get<Array<GetAllHomesResponse>>("by-member").pipe(catchError(this.handleError));
+      }
+
       public UpdateHomeMembers(id:string, request: UpdateMemberListRequest)
         :Observable<UpdateMemberListResponse>{
           return this.putById<UpdateMemberListResponse>(id, request, "members").pipe(catchError(this.handleError));
@@ -49,6 +56,10 @@ import { GetDevicesResponse } from "../services/device/models/GetDevicesResponse
 
 			public GetHomeDevices(homeId:string): Observable<GetDevicesResponse[]>{
 				return this.get<GetDevicesResponse[]>(`${homeId}/devices`).pipe(catchError(this.handleError));
+			}
+
+			public addNewDevice(homeId: string, req: UpdateHomeDevicesRequest): Observable<UpdateHomeDeviceResponse> {
+				return this.putById<UpdateHomeDeviceResponse>(homeId, req, "devices").pipe(catchError(this.handleError));
 			}
   
     }

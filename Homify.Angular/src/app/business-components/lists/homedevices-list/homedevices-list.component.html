@@ -19,5 +19,12 @@
   } @else {
   <p>There are'nt devices registered in this home.</p>
   }
+
+	<hr>
+	<h2>Register a new device to this home</h2>
+	<p>Please select the device you want to add to this home.</p>
+	<app-registered-devices-list (deviceEmitter)="handleAddNewDevice($event)" [displayButtons]="true"></app-registered-devices-list>
+
+	<app-success-message [message]="successMessage"></app-success-message>
 	<app-error-message [message]="errorMessage"></app-error-message>
 </article>
