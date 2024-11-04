@@ -985,9 +985,31 @@ public class HomesControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        var result = _controller.ObtainHomesWhereUserIsMember();
+        var result = _controller.ObtainHomesWhereUserIsOwner();
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
+    }
+
+    [TestMethod]
+    public void GetHomes_WhenUserIsOk_ShouldReturnHomes2()
+    {
+        var user = new User { Id = "user1" };
+        var hu1 = new HomeUser()
+        {
+            UserId = "user1"
+        };
+        var homes = new List<Home> { new Home { Id = "home1", Members = [hu1] } };
+        _homeServiceMock.Setup(service => service.GetAllHomesWhereUserIsMember(user)).Returns(homes);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        var result = _controller.ObtainHomesWhereUserIsMember();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
     }
 }
