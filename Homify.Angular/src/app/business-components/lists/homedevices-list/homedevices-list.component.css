@@ -1,0 +1,34 @@
+ul {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3rem;
+}
+
+li {
+	display: flex;
+	align-items: center;
+	border: 2px solid #224fca;
+	border-radius: 20px;
+	padding: 10px;
+	gap: 3rem;
+}
+
+.photo-container {
+	width: 40%;
+}
+
+.info-container {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}

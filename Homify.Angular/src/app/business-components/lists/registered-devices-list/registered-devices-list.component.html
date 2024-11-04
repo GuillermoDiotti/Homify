@@ -1,31 +1,35 @@
 <article>
-	<h2>Registered devices list</h2>
-	<button (click)="handleRefresh()">
-		Refresh
-	</button>
+  <h2>Registered devices list</h2>
+  <button (click)="handleRefresh()">Refresh</button>
   @if (registeredDevices.length > 0) {
   <ul>
     @for (device of registeredDevices; track $index) {
-    <li>
-      <strong>Name:</strong> {{ device.name }} <br />
-      <strong>Model:</strong> {{ device.model }} <br />
-			<div style="display: flex; align-items: center; max-height: 200px;">
-				<strong>Photo:</strong> 
-				<img src="{{ device.photo }}" alt="{{ device.name }}">
-				<br />
-			</div>
-      <strong>Company:</strong> {{ device.companyName }} <br />
-
-			@if (displayButtons){
-				<app-button 
-				[type]="'button'"
-				(click)="onDeviceClick(device.id)"
+			<li>
+				<div
+					style="display: flex; align-items: center; max-height: 200px; max-width: 200px;"
+					class="photo-container"
 				>
-					Add
-				</app-button>
+					<img src="{{ device.photo }}" alt="{{ device.name }}" />
+				</div>
+				<div class="info-container">
+					<div class="col">
+						<strong>Name:</strong> {{ device.name }}
+					</div>
+					<div class="col">
+						<strong>Company:</strong> {{ device.companyName }}
+					</div>
+					<div class="col">
+						<strong>Model:</strong> {{ device.model }}
+					</div>
+	
+					@if (displayButtons){
+					<app-button [type]="'button'" (click)="onDeviceClick(device.id)">
+						Add
+					</app-button>
+					}
+				</div>
+			</li>
 			}
-    </li>
-    }
   </ul>
   } @else {
   <p>There are'nt registered devices available.</p>

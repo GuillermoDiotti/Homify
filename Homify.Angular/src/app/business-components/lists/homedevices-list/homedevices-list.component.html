@@ -1,30 +1,44 @@
 <article>
   <h2>Listing of Home Devices</h2>
   <button (click)="handleRefresh()">Refresh</button>
+  <app-success-message [message]="successMessage"></app-success-message>
+  <app-error-message [message]="errorMessage"></app-error-message>
   @if (homeDevices.length > 0) {
   <ul>
     @for (device of homeDevices; track $index) {
     <li>
-      <strong>Name:</strong> {{ device.name }} <br />
-      <strong>Model:</strong> {{ device.model }} <br />
-      <div style="display: flex; align-items: center; max-height: 200px;">
-        <strong>Main Photo:</strong>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          max-height: 200px;
+          max-width: 200px;
+        "
+        class="photo-container"
+      >
         <img src="{{ device.mainPhoto }} " alt="{{ device.name }}" />
-        <br />
       </div>
-      <strong>is Connected:</strong> {{ device.isConnected }} <br />
+      <div class="info-container">
+        <div class="col"><strong>Name:</strong> {{ device.name }}</div>
+        <div class="col"><strong>Model:</strong> {{ device.model }}</div>
+        <div>
+          <div class="col">
+            <strong>is Connected:</strong> {{ device.isConnected }}
+          </div>
+        </div>
+      </div>
     </li>
     }
   </ul>
-  } @else {
+  } @else { @if (!errorMessage){
   <p>There are'nt devices registered in this home.</p>
-  }
+  } }
 
-	<hr>
-	<h2>Register a new device to this home</h2>
-	<p>Please select the device you want to add to this home.</p>
-	<app-registered-devices-list (deviceEmitter)="handleAddNewDevice($event)" [displayButtons]="true"></app-registered-devices-list>
-
-	<app-success-message [message]="successMessage"></app-success-message>
-	<app-error-message [message]="errorMessage"></app-error-message>
+  <hr />
+  <h2>Register a new device to this home</h2>
+  <p>Please select the device you want to add to this home.</p>
+  <app-registered-devices-list
+    (deviceEmitter)="handleAddNewDevice($event)"
+    [displayButtons]="true"
+  ></app-registered-devices-list>
 </article>
