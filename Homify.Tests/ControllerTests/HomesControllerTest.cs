@@ -978,14 +978,14 @@ public class HomesControllerTest
     {
         var user = new User { Id = "user1" };
         var homes = new List<Home> { new Home { Id = "home1" }, new Home { Id = "home2" } };
-        _homeServiceMock.Setup(service => service.GetAllHomes(user)).Returns(homes);
+        _homeServiceMock.Setup(service => service.GetAllHomesWhereUserIsOwner(user)).Returns(homes);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        var result = _controller.GetHomes();
+        var result = _controller.ObtainHomesWhereUserIsMember();
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);

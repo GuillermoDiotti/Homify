@@ -245,11 +245,11 @@ public sealed class HomeController : HomifyControllerBase
     [HttpGet("by-owner")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public List<GetHomesResponse> GetHomes()
+    public List<GetHomesResponse> ObtainHomesWhereUserIsOwner()
     {
         var user = GetUserLogged();
 
-        var homes = _homeService.GetAllHomes(user);
+        var homes = _homeService.GetAllHomesWhereUserIsOwner(user);
         var response = new List<GetHomesResponse>();
         foreach (var home in homes)
         {
