@@ -298,13 +298,6 @@ public class UserControllerTests
     #endregion
 
     [TestMethod]
-    [ExpectedException(typeof(NullRequestException))]
-    public void AllAccounts_WhenRequestIsNull_ShouldThrowException()
-    {
-        _controller.AllAccounts(null!);
-    }
-
-    [TestMethod]
     public void AllAccounts_WhenLimitAndOffsetAreValid_ShouldReturnCorrectUsers()
     {
         var users = new List<User>

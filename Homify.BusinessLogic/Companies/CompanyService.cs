@@ -61,9 +61,19 @@ public class CompanyService : ICompanyService
 
     public List<Company> GetAll(string? owner = null, string? company = null)
     {
-        return _repository.GetAll(c =>
-            (string.IsNullOrEmpty(owner) || Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName).Contains(owner, StringComparison.OrdinalIgnoreCase)) &&
-            (string.IsNullOrEmpty(company) || c.Name.Contains(company, StringComparison.OrdinalIgnoreCase))
-        ).ToList();
+        var list = _repository.GetAll();
+
+        if (!string.IsNullOrEmpty(owner))
+        {
+            list = list.Where(c => Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName)
+                .Contains(owner, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(company))
+        {
+            list = list.Where(c => c.Name.Contains(company, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        return list;
     }
 }

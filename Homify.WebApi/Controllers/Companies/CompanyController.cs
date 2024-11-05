@@ -50,13 +50,8 @@ public class CompanyController : HomifyControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
-    public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest req)
+    public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest? req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
-
         var pageSize = 10;
         var pageOffset = 0;
 

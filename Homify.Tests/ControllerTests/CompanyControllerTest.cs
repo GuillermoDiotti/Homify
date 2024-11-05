@@ -192,11 +192,9 @@ public class CompanyControllerTest
         _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
 
-        _companyServiceMock
-            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
-            .Returns(new List<Company> { new Company { Name = "ExistingCompany" } });
+        _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), owner)).Throws(new DuplicatedDataException("The name is already taken."));
 
-        _controller.Create(request);
+       _controller.Create(request);
     }
 
     [TestMethod]
@@ -210,10 +208,7 @@ public class CompanyControllerTest
             HttpContext = new DefaultHttpContext()
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
-
-        _companyServiceMock
-            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
-            .Returns([]);
+        _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), userLogged)).Throws(new InvalidOperationException("The name is already taken."));
 
         _controller.Create(request);
     }
