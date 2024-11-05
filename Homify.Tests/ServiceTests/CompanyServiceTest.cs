@@ -5,10 +5,6 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
-using Homify.WebApi;
-using Homify.WebApi.Controllers.Companies.Models.Requests;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -50,6 +46,10 @@ public class CompanyServiceTest
             "123456789",
             user);
 
+        _companyRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns([new Company()]);
+        _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns((Company)null);
         _companyRepositoryMock.Setup(r => r.Add(It.IsAny<Company>())).Verifiable();
 
         var result = _service.Add(createCompanyArgs, user);
