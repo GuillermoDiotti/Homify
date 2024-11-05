@@ -1,4 +1,8 @@
-﻿namespace Homify.BusinessLogic.Devices.Entities;
+﻿using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.HomeOwners;
+using Homify.Exceptions;
+
+namespace Homify.BusinessLogic.Devices.Entities;
 
 public class CreateDeviceArgs
 {
@@ -9,8 +13,9 @@ public class CreateDeviceArgs
     public string? PpalPicture { get; init; }
     public bool IsExterior { get; init; }
     public bool IsInterior { get; init; }
+    public CompanyOwner Owner { get; init; }
 
-    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string? ppalPicture, bool isExterior, bool isInterior)
+    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string? ppalPicture, bool isExterior, bool isInterior, CompanyOwner? owner)
     {
         PpalPicture = ppalPicture;
 
@@ -44,5 +49,17 @@ public class CreateDeviceArgs
         Photos = list;
         IsExterior = isExterior;
         IsInterior = isInterior;
+
+        if (owner == null)
+        {
+            throw new NotFoundException("Owner not found");
+        }
+
+        if (owner.IsIncomplete)
+        {
+            throw new InvalidOperationException("Account must be complete");
+        }
+
+        Owner = owner;
     }
 }

@@ -38,19 +38,18 @@ public class DeviceController : HomifyControllerBase
             throw new NullRequestException();
         }
 
-        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, req.IsExterior, req.IsInterior);
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
-        if (companyOwner == null)
-        {
-            throw new NotFoundException("Owner not found");
-        }
 
-        if (companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be complete");
-        }
+        var args = new CreateDeviceArgs(
+            req.Name ?? string.Empty,
+            req.Model ?? string.Empty,
+            req.Description ?? string.Empty,
+            req.Photos ?? [],
+            req.PpalPicture ?? string.Empty,
+            req.IsExterior,
+            req.IsInterior,
+            companyOwner);
 
         Camera cam = _deviceService.AddCamera(args, companyOwner);
 
@@ -69,6 +68,7 @@ public class DeviceController : HomifyControllerBase
 
         var isExterior = false;
         var user = GetUserLogged();
+        var companyOwner = _companyOwnerService.GetById(user.Id);
 
         var args = new CreateDeviceArgs(
             req.Name ?? string.Empty,
@@ -77,17 +77,8 @@ public class DeviceController : HomifyControllerBase
             req.Photos ?? [],
             req.PpalPicture ?? string.Empty,
             isExterior,
-            isExterior);
-        var companyOwner = _companyOwnerService.GetById(user.Id);
-        if (companyOwner == null)
-        {
-            throw new NotFoundException("Owner not found");
-        }
-
-        if (companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be complete");
-        }
+            isExterior,
+            companyOwner);
 
         Sensor sen = _deviceService.AddSensor(args, companyOwner);
 
