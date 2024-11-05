@@ -99,12 +99,20 @@ public class UserService : IUserService
 
     public List<User> GetAll(string? role = null, string? name = null)
     {
-        return _repository.GetAll(u =>
-            (string.IsNullOrEmpty(role) ||
-             u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))) &&
-            (string.IsNullOrEmpty(name) ||
-             Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))
-        );
+        List<User> list = _repository.GetAll();
+
+        if (!string.IsNullOrEmpty(role))
+        {
+            list = list.Where(u => u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            list = list.Where(u => Helpers.GetUserFullName(u.Name, u.LastName)
+                .Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        return list;
     }
 
     public void Delete(string userId)

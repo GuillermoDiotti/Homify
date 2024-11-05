@@ -70,27 +70,11 @@ public class CompanyController : HomifyControllerBase
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
-        var list = _companyService.GetAll();
-
-        if (!string.IsNullOrEmpty(req.OwnerFullName))
-        {
-            list = list.Where(c => Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName)
-                .Contains(req.OwnerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        if (!string.IsNullOrEmpty(req.Company))
-        {
-            list = list.Where(c => c.Name.Contains(req.Company, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
-
-        List<CompanyBasicInfo> result = [];
-        foreach (Company c in paginatedList)
-        {
-            result.Add(new CompanyBasicInfo(c, c.Owner));
-        }
-
-        return result;
+        return _companyService
+            .GetAll(req.OwnerFullName, req.Company)
+            .Skip(pageOffset)
+            .Take(pageSize)
+            .Select(m => new CompanyBasicInfo(m, m.Owner))
+            .ToList();
     }
 }

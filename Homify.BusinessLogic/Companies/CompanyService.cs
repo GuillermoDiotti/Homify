@@ -2,6 +2,7 @@ using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Companies;
 
@@ -60,6 +61,9 @@ public class CompanyService : ICompanyService
 
     public List<Company> GetAll(string? owner = null, string? company = null)
     {
-        return _repository.GetAll().ToList();
+        return _repository.GetAll(c =>
+            (string.IsNullOrEmpty(owner) || Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName).Contains(owner, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(company) || c.Name.Contains(company, StringComparison.OrdinalIgnoreCase))
+        ).ToList();
     }
 }

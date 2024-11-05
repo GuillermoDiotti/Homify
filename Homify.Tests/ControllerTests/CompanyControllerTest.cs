@@ -55,7 +55,10 @@ public class CompanyControllerTest
         };
 
         _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
-        _companyServiceMock.Setup(x => x.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
+
         var company = new Company
         {
             Name = "NewCompany"
@@ -106,7 +109,9 @@ public class CompanyControllerTest
 
         _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
 
-        _companyServiceMock.Setup(c => c.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
 
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>()))
             .Throws(new ArgsNullException("name cannot be null or empty"));
@@ -142,7 +147,9 @@ public class CompanyControllerTest
             },
         };
 
-        _companyServiceMock.Setup(s => s.GetAll()).Returns(companies);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(companies);
 
         var limit = "2";
         var offset = "1";
@@ -168,8 +175,26 @@ public class CompanyControllerTest
     [ExpectedException(typeof(DuplicatedDataException))]
     public void Create_WhenCompanyNameExists_ShouldThrowDuplicatedDataException()
     {
-        var request = new CreateCompanyRequest { Name = "ExistingCompany" };
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([new Company { Name = "ExistingCompany" }]);
+        var request = new CreateCompanyRequest
+        {
+            Name = "ExistingCompany",
+            LogoUrl = "http://example.com/logo.png",
+            Rut = "12345678-9"
+        };
+
+        var owner = new CompanyOwner
+        {
+            Name = "Valid Owner",
+            LastName = "Owner Last Name",
+            Email = "owner@example.com"
+        };
+
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
+
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(new List<Company> { new Company { Name = "ExistingCompany" } });
 
         _controller.Create(request);
     }
@@ -186,7 +211,9 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
 
         _controller.Create(request);
     }
@@ -203,7 +230,9 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
 
         _controller.Create(request);
     }
@@ -220,7 +249,9 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
         _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
 
         _controller.Create(request);
     }
@@ -253,7 +284,9 @@ public class CompanyControllerTest
             }
         };
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns(companies);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(companies);
 
         var req = new CompanyFiltersRequest()
         {

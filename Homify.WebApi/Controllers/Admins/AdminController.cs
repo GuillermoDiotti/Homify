@@ -71,13 +71,8 @@ public sealed class AdminController : HomifyControllerBase
     [HttpGet("accounts")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
-    public List<UserBasicInfo> AllAccounts([FromQuery] UserFiltersRequest req)
+    public List<UserBasicInfo> AllAccounts([FromQuery] UserFiltersRequest? req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
-
         var pageSize = 10;
         var pageOffset = 0;
 
