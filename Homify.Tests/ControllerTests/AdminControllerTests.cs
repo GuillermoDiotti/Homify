@@ -673,9 +673,7 @@ public class UserControllerTests
             .Returns((string? role, string? name) =>
                 users.Where(u =>
                     (string.IsNullOrEmpty(role) || u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))) &&
-                    (string.IsNullOrEmpty(name) || Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))
-                ).ToList()
-            );
+                    (string.IsNullOrEmpty(name) || Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))).ToList());
 
         var req = new UserFiltersRequest()
         {

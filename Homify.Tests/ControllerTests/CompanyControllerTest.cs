@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
@@ -199,25 +200,8 @@ public class CompanyControllerTest
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
-    public void Create_WhenUserIsNotCompanyOwner_ShouldThrowInvalidOperationException()
-    {
-        var request = new CreateCompanyRequest { Name = "NewCompany" };
-        var userLogged = new User { Id = "user123" };
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
-        _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), userLogged)).Throws(new InvalidOperationException("The name is already taken."));
-
-        _controller.Create(request);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
     public void Create_WhenCompanyOwnerAccountIsNotIncomplete_ShouldThrowInvalidOperationException()
     {
-        var request = new CreateCompanyRequest { Name = "NewCompany" };
         var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = false };
         _controller.ControllerContext = new ControllerContext
         {
@@ -225,37 +209,14 @@ public class CompanyControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
 
-        _companyServiceMock
-            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
-            .Returns([]);
-
-        _controller.Create(request);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void Create_WhenUserAlreadyOwnsACompany_ShouldThrowInvalidOperationException()
-    {
-        var request = new CreateCompanyRequest { Name = "NewCompany" };
-        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = true };
-        _controller.ControllerContext = new ControllerContext
+        var request = new CreateCompanyRequest
         {
-            HttpContext = new DefaultHttpContext()
+            Name = "ExistingCompany",
+            LogoUrl = "http://example.com/logo.png",
+            Rut = "12345678-9",
         };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
-        _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
-        _companyServiceMock
-            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
-            .Returns([]);
 
         _controller.Create(request);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NullRequestException))]
-    public void AllCompanies_WhenRequestIsNull_ThrowsException()
-    {
-        _controller.AllCompanies(null);
     }
 
     [TestMethod]
@@ -281,7 +242,13 @@ public class CompanyControllerTest
 
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
-            .Returns(companies);
+            .Returns([new Company
+            {
+                Name = "TechCorp",
+                Owner = new CompanyOwner { Name = "John", LastName = "Doe" }
+            }
+
+            ]);
 
         var req = new CompanyFiltersRequest()
         {

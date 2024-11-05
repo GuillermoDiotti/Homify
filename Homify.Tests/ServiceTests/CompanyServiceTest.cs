@@ -5,6 +5,10 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.WebApi;
+using Homify.WebApi.Controllers.Companies.Models.Requests;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -61,6 +65,26 @@ public class CompanyServiceTest
         Assert.AreEqual(createCompanyArgs.LogoUrl, result.LogoUrl);
         Assert.AreEqual(createCompanyArgs.Rut, result.Rut);
         Assert.AreEqual(user, result.Owner);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Create_WhenUserAlreadyOwnsACompany_ShouldThrowInvalidOperationException()
+    {
+        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = true };
+
+        var createCompanyArgs = new CreateCompanyArgs(
+            "Test Company",
+            "https://example.com/logo.png",
+            "123456789",
+            companyOwner);
+
+        _companyRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns([new Company()]);
+        _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns(new Company());
+
+        _service.Add(createCompanyArgs, companyOwner);
     }
 
     [TestMethod]
