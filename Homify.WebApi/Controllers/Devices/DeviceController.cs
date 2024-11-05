@@ -6,6 +6,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Devices.Models;
 using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Filters;
@@ -87,22 +88,27 @@ public class DeviceController : HomifyControllerBase
 
     [HttpGet]
     [AuthenticationFilter]
-    public List<SearchDevicesResponse> ObtainDevices([FromQuery] string? deviceName, [FromQuery] string? model, [FromQuery] string? company,
-        [FromQuery] string? type, [FromQuery] string? limit, [FromQuery] string? offset)
+    public List<SearchDevicesResponse> ObtainDevices([FromQuery] DeviceFiltersRequest? req)
     {
-        var searchArgs = new SearchDevicesArgs
+        var pageSize = 10;
+        var pageOffset = 0;
+
+        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
         {
-            DeviceName = deviceName,
-            Model = model,
-            Company = company,
-            Type = type,
-            Limit = string.IsNullOrEmpty(limit) ? 10 : int.Parse(limit),
-            Offset = string.IsNullOrEmpty(offset) ? 0 : int.Parse(offset)
-        };
+            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
+        }
 
-        var devices = _deviceService.SearchDevices(searchArgs);
+        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
+        {
+            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
+        }
 
-        var response = devices.Select(d => new SearchDevicesResponse(d)).ToList();
+        var response = _deviceService
+                .GetAll(req)
+                .Skip(pageOffset)
+                .Take(pageSize)
+                .Select(d => new SearchDevicesResponse(d))
+                .ToList();
 
         return response;
     }
@@ -111,14 +117,10 @@ public class DeviceController : HomifyControllerBase
     [AuthenticationFilter]
     public List<SearchSupportedDevicesResponse> ObtainSupportedDevices()
     {
-        var devices = _deviceService.SearchSupportedDevices();
-        var result = new List<SearchSupportedDevicesResponse>();
-        foreach (var d in devices)
-        {
-            result.Add(new SearchSupportedDevicesResponse(d));
-        }
-
-        return result;
+        return _deviceService
+            .SearchSupportedDevices()
+            .Select(d => new SearchSupportedDevicesResponse(d))
+            .ToList();
     }
 
     [HttpPut("{hardwareId}/activate")]
@@ -126,22 +128,9 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
     public TurnOnDeviceResponse TurnOnDevice([FromRoute] string hardwareId)
     {
-        var homeDevice = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
-        if (homeDevice == null)
-        {
-            throw new NotFoundException("Device not found");
-        }
-
         var user = GetUserLogged();
-        var isMember = homeDevice.Home.Members.Any(x => x.UserId == user.Id);
-        var isOwner = homeDevice.Home.OwnerId == user.Id;
 
-        if (!isMember && !isOwner)
-        {
-            throw new InvalidOperationException("You are not member of this house");
-        }
-
-        var result = _homeDeviceService.Activate(homeDevice);
+        var result = _homeDeviceService.Activate(hardwareId, user);
         return new TurnOnDeviceResponse(result);
     }
 }

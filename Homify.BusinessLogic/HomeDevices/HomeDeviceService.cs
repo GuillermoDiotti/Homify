@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 
@@ -47,11 +48,25 @@ public class HomeDeviceService : IHomeDeviceService
         }
     }
 
-    public HomeDevice Activate(HomeDevice hd)
+    public HomeDevice Activate(string hardwareId, User logged)
     {
-        hd.IsActive = true;
-        _repository.Update(hd);
-        return hd;
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        var isMember = homeDevice.Home.Members.Any(x => x.UserId == logged.Id);
+        var isOwner = homeDevice.Home.OwnerId == logged.Id;
+
+        if (!isMember && !isOwner)
+        {
+            throw new InvalidOperationException("You are not member of this house");
+        }
+
+        homeDevice.IsActive = true;
+        _repository.Update(homeDevice);
+        return homeDevice;
     }
 
     public List<HomeDevice> GetHomeDeviceByHomeId(string homeId)
