@@ -149,7 +149,7 @@ public class HomeServiceTest
         Assert.AreEqual(userFound.Id, updatedHome.Members[0].UserId);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateMemberList_WhenMaxMembersReached_ShouldThrowInvalidOperationException()
     {
@@ -163,13 +163,13 @@ public class HomeServiceTest
         };
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
-        _userService.Setup(service => service.GetAll())
+        _userService.Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([
                 new User { Email = userMail, Roles = [new UserRole { Role = new Role { Name = Constants.HOMEOWNER } }] }
             ]);
 
         _homeService.UpdateMemberList(homeId, userMail);
-    }*/
+    }
 
     /*[TestMethod]
     [ExpectedException(typeof(NotFoundException))]
