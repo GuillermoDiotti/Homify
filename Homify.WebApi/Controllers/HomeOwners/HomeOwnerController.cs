@@ -33,9 +33,16 @@ public class HomeOwnerController : HomifyControllerBase
         }
 
         var role = _roleService.GetRole(Constants.HOMEOWNER);
-        var args = new CreateHomeOwnerArgs(req.Name ?? string.Empty, req.Email ?? string.Empty, req.Password ?? string.Empty,
-            req.LastName ?? string.Empty, req.ProfilePicUrl ?? string.Empty, role);
+        var args = new CreateHomeOwnerArgs(
+            req.Name ?? string.Empty,
+            req.Email ?? string.Empty,
+            req.Password ?? string.Empty,
+            req.LastName ?? string.Empty,
+            req.ProfilePicUrl ?? string.Empty,
+            role);
+
         var user = _userService.AddHomeOwner(args);
+
         return new CreateHomeOwnerResponse(user);
     }
 }

@@ -66,43 +66,7 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        var homeFound = _homeService.GetHomeById(homeId);
-
-        if (homeFound == null)
-        {
-            throw new NotFoundException("Home not found");
-        }
-
-        if (homeFound.Members.Count >= homeFound.MaxMembers)
-        {
-            throw new InvalidOperationException("Home members list is full");
-        }
-
-        var userFound = _userService.GetAll()
-            .FirstOrDefault(x => x.Email == request.Email && x.Roles.Any(r => r.Role.Name == Constants.HOMEOWNER));
-
-        if (userFound == null)
-        {
-            throw new NotFoundException("User is not a home owner");
-        }
-
-        var userIsAlreadyInHouse = homeFound.Members.Any(m => m.UserId == userFound.Id);
-
-        if (userIsAlreadyInHouse)
-        {
-            throw new InvalidOperationException("User is already in house");
-        }
-
-        var homeUser = new HomeUser()
-        {
-            Home = homeFound,
-            IsNotificable = false,
-            User = userFound,
-            HomeId = homeId,
-            UserId = userFound.Id,
-            Permissions = [],
-        };
-        var home = _homeService.UpdateMemberList(homeId, homeUser);
+        var home = _homeService.UpdateMemberList(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);
     }
