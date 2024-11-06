@@ -277,4 +277,18 @@ public class NotificationServiceTest
 
         new ValidateNotificationDeviceArgs(homeDevice, type);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Constructor_WithInactiveDevice_ShouldThrowInvalidOperationException()
+    {
+        var homeDevice = new HomeDevice
+        {
+            Device = new Device { Type = "SupportedType" },
+            IsActive = false
+        };
+        var type = "SupportedType";
+
+        new ValidateNotificationDeviceArgs(homeDevice, type);
+    }
 }
