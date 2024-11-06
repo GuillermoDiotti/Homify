@@ -201,7 +201,7 @@ public class HomeServiceTest
         _homeService.UpdateMemberList(homeId, userMail);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void UpdateMemberList_WhenUserNotFound_ShouldThrowNotFoundException()
     {
@@ -220,7 +220,7 @@ public class HomeServiceTest
             .Returns(new List<User>());
 
         _homeService.UpdateMemberList(homeId, userMail);
-    }*/
+    }
 
     /*[TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
