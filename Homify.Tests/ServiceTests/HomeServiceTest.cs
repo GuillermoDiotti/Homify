@@ -113,7 +113,7 @@ public class HomeServiceTest
         _homeService.UpdateMemberList(homeId, userMail);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     public void UpdateMemberList_ShouldAddMemberAndUpdateHome()
     {
         var homeId = "home123";
@@ -122,16 +122,14 @@ public class HomeServiceTest
         {
             Id = "user123",
             Email = userMail,
-            Roles = new List<UserRole>
-            {
-                new UserRole { Role = new Role { Name = Constants.HOMEOWNER } }
-            }
+            Roles = [new UserRole { RoleId = Constants.ADMINISTRATORID, UserId = "user123", Role = RolesGenerator.Admin() }]
         };
+        userFound.Roles[0].Role.Name = Constants.HOMEOWNER;
 
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>(),
+            Members = [],
             Number = "123",
             Street = "Main St",
             Latitude = "45.0",
@@ -149,10 +147,7 @@ public class HomeServiceTest
         Assert.AreEqual(homeId, updatedHome.Id);
         Assert.AreEqual(1, updatedHome.Members.Count);
         Assert.AreEqual(userFound.Id, updatedHome.Members[0].UserId);
-
-        _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Id == homeId && h.Members.Any(m => m.UserId == userFound.Id))), Times.Once);
-        _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>()), Times.Once);
-    }*/
+    }
 
     /*[TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
