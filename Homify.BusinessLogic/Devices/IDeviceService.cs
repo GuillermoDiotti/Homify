@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
+using Homify.DataAccess.Repositories.Lamps.Entities;
 
 namespace Homify.BusinessLogic.Devices;
 
@@ -12,4 +13,5 @@ public interface IDeviceService
     Device GetById(string id);
     List<Device> SearchDevices(SearchDevicesArgs args);
     List<string> SearchSupportedDevices();
+    Lamp AddLamp(CreateDeviceArgs device, CompanyOwner? user);
 }

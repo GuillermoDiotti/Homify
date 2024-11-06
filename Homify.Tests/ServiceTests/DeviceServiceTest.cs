@@ -43,6 +43,7 @@ public class DeviceServiceTest
             ],
             "photo1.jpg",
             true,
+            false,
             false);
 
         var user = new CompanyOwner
@@ -90,6 +91,7 @@ public class DeviceServiceTest
             ],
             "mainphoto.jpg",
             true,
+            false,
             false);
 
         var company = new Company { Id = "companyId", Name = "Test Company" };
@@ -160,6 +162,7 @@ public class DeviceServiceTest
             ],
             "photo1.jpg",
             true,
+            false,
             false);
 
         var user = new CompanyOwner

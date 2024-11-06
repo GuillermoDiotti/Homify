@@ -6,13 +6,15 @@ public class CreateDeviceArgs
     public string Model { get; init; }
     public string Description { get; init; }
     public List<string> Photos { get; init; }
-    public string? PpalPicture { get; init; }
+    public string PpalPicture { get; init; }
     public bool IsExterior { get; init; }
     public bool IsInterior { get; init; }
+    public bool IsActive { get; init; }
 
-    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string? ppalPicture, bool isExterior, bool isInterior)
+    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string ppalPicture, bool isExterior, bool isInterior, bool isActive)
     {
-        PpalPicture = ppalPicture;
+        // PpalPicture = ppalPicture;
+        PpalPicture = ppalPicture ?? string.Empty;
 
         if (string.IsNullOrEmpty(name))
         {
@@ -35,14 +37,18 @@ public class CreateDeviceArgs
 
         Description = description;
 
-        List<string> list = [];
-        foreach (var p in photos)
-        {
-            list.Add(p);
-        }
+        // List<string> list = [];
+        // foreach (var p in photos)
+        // {
+        //     list.Add(p);
+        // }
 
-        Photos = list;
+        // Photos = list;
+
+        Photos = photos ?? new List<string>();
+
         IsExterior = isExterior;
         IsInterior = isInterior;
+        IsActive = isActive;
     }
 }

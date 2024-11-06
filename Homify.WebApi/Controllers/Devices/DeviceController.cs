@@ -39,7 +39,7 @@ public class DeviceController : HomifyControllerBase
         }
 
         var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, req.IsExterior, req.IsInterior);
+            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, req.IsExterior, req.IsInterior, false);
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
         if (companyOwner == null)
@@ -77,7 +77,7 @@ public class DeviceController : HomifyControllerBase
             req.Photos ?? [],
             req.PpalPicture ?? string.Empty,
             isExterior,
-            isExterior);
+            isExterior, false);
         var companyOwner = _companyOwnerService.GetById(user.Id);
         if (companyOwner == null)
         {
@@ -92,6 +92,33 @@ public class DeviceController : HomifyControllerBase
         Sensor sen = _deviceService.AddSensor(args, companyOwner);
 
         return new CreateDeviceResponse(sen);
+    }
+
+    [HttpPost]
+    public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
+    {
+        if (req == null)
+        {
+            throw new NullRequestException();
+        }
+
+        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
+            req.Description ?? string.Empty, null, null, false,false, req.Active);
+        var user = GetUserLogged();
+        var companyOwner = _companyOwnerService.GetById(user.Id);
+        if (companyOwner == null)
+        {
+            throw new NotFoundException("Owner not found");
+        }
+
+        if (companyOwner.IsIncomplete)
+        {
+            throw new InvalidOperationException("Account must be complete");
+        }
+
+        var lamp = _deviceService.AddLamp(args, companyOwner);
+
+        return new CreateDeviceResponse(lamp);
     }
 
     [HttpGet]

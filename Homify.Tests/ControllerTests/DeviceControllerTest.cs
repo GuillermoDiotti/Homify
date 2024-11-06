@@ -11,6 +11,7 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.DataAccess.Repositories.Lamps.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Devices;
@@ -336,5 +337,35 @@ public class DeviceControllerTest
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
         _controller.TurnOnDevice(hardwareId);
+    }
+
+    [TestMethod]
+    public void RegisterLamp_ValidRequest_ShouldReturnsCreateDeviceResponse()
+    {
+        // Arrange
+        var request = new CreateLampRequest
+        {
+            Name = "Lamp",
+            Model = "Model X",
+            Description = "A smart lamp",
+            Active = true
+        };
+        var user = new User { Id = "user1" };
+        var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false };
+        var lamp = new Lamp { Id = "lamp1", Name = "Lamp", Model = "Model X" };
+        _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
+        _deviceServiceMock.Setup(service => service.AddLamp(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(lamp);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        // Act
+        var result = _controller.RegisterLamp(request);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual("lamp1", result.Id);
     }
 }

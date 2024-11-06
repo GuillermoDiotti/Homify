@@ -4,6 +4,7 @@ using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.DataAccess.Repositories.Lamps.Entities;
 using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Devices;
@@ -127,5 +128,10 @@ public class DeviceService : IDeviceService
             .ToList();
 
         return supportedDeviceTypes;
+    }
+
+    public Lamp AddLamp(CreateDeviceArgs device, CompanyOwner? user)
+    {
+        throw new NotImplementedException();
     }
 }
