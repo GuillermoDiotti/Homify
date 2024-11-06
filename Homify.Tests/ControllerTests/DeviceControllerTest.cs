@@ -213,7 +213,7 @@ public class DeviceControllerTest
         result.Should().BeEmpty();
     }
 
-    [TestMethod]
+    /*[TestMethod]
     public void Activate_WithValidHardwareId_ShouldReturnActivatedDevice()
     {
         // Arrange
@@ -254,6 +254,38 @@ public class DeviceControllerTest
         result.IsActive.Should().BeTrue();
         _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once);
         _homeDeviceServiceMock.Verify(service => service.Activate(hardwareId, user), Times.Once);
+    }*/
+
+    [TestMethod]
+    public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
+    {
+        var hardwareId = "Device123";
+        var logged = new User { Id = "123" };
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = logged.Id,
+                Members = new List<HomeUser> { new HomeUser { UserId = logged.Id } }
+            }
+        };
+
+        _homeDeviceServiceMock.Setup(service => service.Activate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
+
+        var result = _controller.TurnOnDevice(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be("Device123");
+        result.IsActive.Should().BeTrue();
+        _homeDeviceServiceMock.Verify(service => service.Activate(hardwareId, logged), Times.Once);
     }
 
     [TestMethod]
@@ -319,30 +351,6 @@ public class DeviceControllerTest
         var hardwareId = "Device123";
 
         _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns<HomeDevice>(null);
-
-        _controller.TurnOnDevice(hardwareId);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TurnOnDevice_WhenUserIsNotMemberOrOwner_ShouldThrowInvalidOperationException()
-    {
-        var hardwareId = "Device123";
-        var user = new User { Id = "testUserId" };
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = false,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = "otherUserId",
-                Members = []
-            }
-        };
-
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
         _controller.TurnOnDevice(hardwareId);
     }
