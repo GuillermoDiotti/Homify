@@ -222,7 +222,7 @@ public class HomeServiceTest
         _homeService.UpdateMemberList(homeId, userMail);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateMemberList_WhenUserAlreadyInHouse_ShouldThrowInvalidOperationException()
     {
@@ -248,7 +248,7 @@ public class HomeServiceTest
         _userService.Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns(new List<User> { userFound });
 
         _homeService.UpdateMemberList(homeId, userMail);
-    }*/
+    }
 
     [TestMethod]
     public void UpdateHomeDevices_ShouldAddDeviceToHome_WhenUserHasPermission()
