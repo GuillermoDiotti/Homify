@@ -107,6 +107,53 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    public void Activate_WithValidHardwareId_ShouldReturnActivatedDevice()
+    {
+        var hardwareId = "Device123";
+        var user = new User { Id = "testUserId" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = false,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = user.Id,
+                Members = new List<HomeUser> { new HomeUser { UserId = user.Id } }
+            }
+        };
+
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = homeDevice.Home
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>())).Returns(homeDevice);
+
+        var result = _homeDeviceService.Activate(hardwareId, user);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsActive);
+        _homeDeviceRepositoryMock.Verify(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()), Times.Once);
+        _homeDeviceRepositoryMock.Verify(repo => repo.Update(It.IsAny<HomeDevice>()), Times.Once);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Activate_WhenHomeDeviceNotFound_ShouldThrowNotFoundException()
+    {
+        var hardwareId = "Device123";
+        var user = new User { Id = "testUserId" };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>())).Returns<HomeDevice>(null);
+
+        _homeDeviceService.Activate(hardwareId, user);
+    }
+
+    [TestMethod]
     public void Activate_WhenHomeDeviceDoesNotExist_ShouldThrowNotFoundException()
     {
         var hardwareId = "non-existent-id";

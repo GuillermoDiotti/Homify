@@ -216,6 +216,7 @@ public class DeviceControllerTest
     [TestMethod]
     public void Activate_WithValidHardwareId_ShouldReturnActivatedDevice()
     {
+        // Arrange
         var hardwareId = "Device123";
         var user = new User { Id = "testUserId" };
         var homeDevice = new HomeDevice
@@ -229,7 +230,6 @@ public class DeviceControllerTest
                 Members = new List<HomeUser> { new HomeUser { UserId = user.Id } }
             }
         };
-
         var activatedDevice = new HomeDevice
         {
             Id = "Device123",
@@ -246,8 +246,10 @@ public class DeviceControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
+        // Act
         var result = _controller.TurnOnDevice(hardwareId);
 
+        // Assert
         result.Should().NotBeNull();
         result.IsActive.Should().BeTrue();
         _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once);
