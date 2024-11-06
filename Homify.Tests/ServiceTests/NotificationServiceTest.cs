@@ -240,4 +240,19 @@ public class NotificationServiceTest
         _mockRepository.Verify(repo => repo.Get(It.IsAny<Expression<Func<Notification, bool>>>()), Times.Once);
         _mockRepository.Verify(repo => repo.Update(notification), Times.Once);
     }
+
+    [TestMethod]
+    public void Constructor_WithValidArguments_ShouldInitializeHomeDevice()
+    {
+        var homeDevice = new HomeDevice
+        {
+            Device = new Device { Type = "SupportedType" },
+            IsActive = true
+        };
+        var type = "SupportedType";
+
+        var result = new ValidateNotificationDeviceArgs(homeDevice, type);
+
+        result.HomeDevice.Should().Be(homeDevice);
+    }
 }
