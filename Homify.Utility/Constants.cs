@@ -23,4 +23,5 @@ public static class Constants
     public const string SENSOR = "SENSOR";
     public const string CAMERA = "CAMERA";
     public const string LAMP = "LAMP";
+    public const string MOVEMENTSENSOR = "MOVEMENTSENSOR";
 }

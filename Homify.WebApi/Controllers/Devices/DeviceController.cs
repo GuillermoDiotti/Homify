@@ -94,7 +94,9 @@ public class DeviceController : HomifyControllerBase
         return new CreateDeviceResponse(sen);
     }
 
-    [HttpPost]
+    [HttpPost("lamps")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.RegisterLamp)]
     public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
     {
         if (req == null)
@@ -119,6 +121,35 @@ public class DeviceController : HomifyControllerBase
         var lamp = _deviceService.AddLamp(args, companyOwner);
 
         return new CreateDeviceResponse(lamp);
+    }
+
+    [HttpPost("movement-sensor")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.RegisterMovementSensor)]
+    public CreateDeviceResponse RegisterMovementSensor(CreateSensorRequest req)
+    {
+        if (req == null)
+        {
+            throw new NullRequestException();
+        }
+
+        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
+            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, false, false, false);
+        var user = GetUserLogged();
+        var companyOwner = _companyOwnerService.GetById(user.Id);
+        if (companyOwner == null)
+        {
+            throw new NotFoundException("Owner not found");
+        }
+
+        if (companyOwner.IsIncomplete)
+        {
+            throw new InvalidOperationException("Account must be complete");
+        }
+
+        var sensor = _deviceService.AddMovementSensor(args, companyOwner);
+
+        return new CreateDeviceResponse(sensor);
     }
 
     [HttpGet]

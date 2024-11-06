@@ -15,6 +15,8 @@ public static class PermissionsGenerator
     public const string CreateCompany = "companies-Create";
     public const string RegisterCamera = "devices-RegisterCamera";
     public const string RegisterSensor = "companies-RegisterSensor";
+    public const string RegisterLamp = "companies-RegisterLamp";
+    public const string RegisterMovementSensor = "companies-RegisterMovementSensor";
 
     // HOME OWNER PERMISSIONS
     public const string CreateHome = "homes-Create";

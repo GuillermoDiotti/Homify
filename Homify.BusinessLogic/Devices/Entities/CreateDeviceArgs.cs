@@ -37,6 +37,21 @@ public class CreateDeviceArgs
 
         Description = description;
 
+        if(photos == null || photos.Count == 0)
+        {
+            Photos = new List<string>();
+        }
+        else
+        {
+            List<string> list = [];
+            foreach (var p in photos)
+            {
+                list.Add(p);
+            }
+
+            Photos = list;
+        }
+
         // List<string> list = [];
         // foreach (var p in photos)
         // {
@@ -45,7 +60,7 @@ public class CreateDeviceArgs
 
         // Photos = list;
 
-        Photos = photos ?? new List<string>();
+        // Photos = photos ?? new List<string>();
 
         IsExterior = isExterior;
         IsInterior = isInterior;

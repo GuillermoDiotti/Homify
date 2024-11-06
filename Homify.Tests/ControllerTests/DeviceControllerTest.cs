@@ -368,4 +368,30 @@ public class DeviceControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual("lamp1", result.Id);
     }
+
+    [TestMethod]
+    public void RegisterMovementSensor_ValidRequest_ShouldReturnsCreateDeviceResponse()
+    {
+        // Arrange
+        var request = new CreateSensorRequest { Name = "Sensor", Model = "Model Y", Description = "A movement sensor", Photos = new List<string>(), PpalPicture = "ppalPicture" };
+        var user = new User { Id = "user1" };
+        var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false, Company = new Company { Id = "company1" } };
+        var sensor = new MovementSensor { Id = "sensor1", Name = "Sensor", Model = "Model Y", Description = "A movement sensor", CompanyId = "company1"};
+
+        _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
+        _deviceServiceMock.Setup(service => service.AddMovementSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(sensor);
+
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        // Act
+        var result = _controller.RegisterMovementSensor(request);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual("sensor1", result.Id);
+    }
 }

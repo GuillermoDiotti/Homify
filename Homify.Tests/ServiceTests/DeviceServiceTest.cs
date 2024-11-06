@@ -21,6 +21,7 @@ public class DeviceServiceTest
     private DeviceService? _deviceService;
     private Mock<ICompanyService>? _companyServiceMock;
     private Mock<IRepository<Lamp>>? _lampRepositoryMock;
+    private Mock<IRepository<MovementSensor>>? _movementSensorRepositoryMock;
 
     [TestInitialize]
     public void Setup()
@@ -30,8 +31,9 @@ public class DeviceServiceTest
         _deviceRepositoryMock = new Mock<IRepository<Device>>();
         _lampRepositoryMock = new Mock<IRepository<Lamp>>();
         _companyServiceMock = new Mock<ICompanyService>();
+        _movementSensorRepositoryMock = new Mock<IRepository<MovementSensor>>();
         _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object,
-            _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object);
+            _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object, _movementSensorRepositoryMock.Object);
     }
 
     [TestMethod]

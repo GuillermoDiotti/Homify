@@ -15,16 +15,18 @@ public class DeviceService : IDeviceService
     private readonly IRepository<Sensor> _sensorRepository;
     private readonly IRepository<Device> _deviceRepository;
     private readonly IRepository<Lamp> _lampRepository;
+    private readonly IRepository<MovementSensor> _movementSensorRepository;
     private readonly ICompanyService _companyService;
 
     public DeviceService(IRepository<Camera> cameraRepository, IRepository<Sensor> sensorRepository, IRepository<Device> deviceRepository, ICompanyService companyService,
-        IRepository<Lamp> lampRepository)
+        IRepository<Lamp> lampRepository, IRepository<MovementSensor> movementSensorRepository)
     {
         _cameraRepository = cameraRepository;
         _sensorRepository = sensorRepository;
         _deviceRepository = deviceRepository;
         _companyService = companyService;
         _lampRepository = lampRepository;
+        _movementSensorRepository = movementSensorRepository;
     }
 
     public Camera AddCamera(CreateDeviceArgs device, CompanyOwner owner)
@@ -65,6 +67,26 @@ public class DeviceService : IDeviceService
         };
 
         _sensorRepository.Add(sensor);
+        return sensor;
+    }
+
+    public MovementSensor AddMovementSensor(CreateDeviceArgs device, CompanyOwner user)
+    {
+        var owner = (CompanyOwner)user;
+        HasCompany(owner);
+        var sensor = new MovementSensor
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = device.Name,
+            Model = device.Model,
+            Description = device.Description,
+            Photos = device.Photos,
+            PpalPicture = device.PpalPicture,
+            Company = owner.Company,
+            CompanyId = owner.Company.Id
+        };
+
+        _movementSensorRepository.Add(sensor);
         return sensor;
     }
 

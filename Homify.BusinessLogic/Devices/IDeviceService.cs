@@ -10,6 +10,7 @@ public interface IDeviceService
 {
     Camera AddCamera(CreateDeviceArgs device, CompanyOwner? user);
     Sensor AddSensor(CreateDeviceArgs device, CompanyOwner? user);
+    MovementSensor AddMovementSensor(CreateDeviceArgs device, CompanyOwner? user);
     Device GetById(string id);
     List<Device> SearchDevices(SearchDevicesArgs args);
     List<string> SearchSupportedDevices();
