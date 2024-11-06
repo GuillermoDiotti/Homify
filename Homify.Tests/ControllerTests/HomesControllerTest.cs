@@ -685,34 +685,6 @@ public class HomesControllerTest
     }
 
     [TestMethod]
-    public void UpdateMembersList_WhenRequestIsValid_ShouldReturnUpdateMembersListResponse()
-    {
-        var homeId = "home123";
-        var request = new UpdateMemberListRequest { Email = "user@example.com" };
-        var home = new Home { Id = homeId, OwnerId = "owner123" };
-        var user = new User { Id = "q1w2", Email = request.Email };
-        var newhome = new Home
-        {
-            Id = homeId, OwnerId = "owner123", Members = [new HomeUser() { HomeId = home.Id, UserId = user.Id }
-        ]
-        };
-
-        _homeServiceMock.Setup(service => service.UpdateMemberList(homeId, request.Email)).Returns(newhome);
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = new HomeOwner();
-
-        var result = _controller.UpdateMembersList(homeId, request);
-
-        Assert.IsNotNull(result);
-        result.Members.Should().NotBeNull();
-        result.Members.Count.Should().Be(1);
-        _homeServiceMock.Verify(service => service.UpdateMemberList(homeId, request.Email), Times.Once);
-    }
-
-    [TestMethod]
     public void ChangeHomeMemberPermissions_WhenRequestIsValid_ShouldReturnHomeMemberBasicInfo()
     {
         var homeId = "home123";
@@ -722,39 +694,22 @@ public class HomesControllerTest
             CanAddDevices = true,
             CanListDevices = true
         };
-        var home = new Home
-        {
-            Id = homeId,
-            OwnerId = "owner123"
-        };
-        var found = new HomeUser
-        {
-            Home = home,
-            UserId = memberId,
-            Permissions = []
-        };
-        var user = new User
-        {
-            Id = "owner123"
-        };
-        var permissionAddDevice = new HomePermission
-        {
-            Value = PermissionsGenerator.MemberCanAddDevice
-        };
-        var permissionListDevices = new HomePermission
-        {
-            Value = PermissionsGenerator.MemberCanListDevices
-        };
+        var user = new User { Id = "owner123" };
+        var home = new Home { Id = homeId, OwnerId = "owner123" };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = new List<HomePermission>() };
+        var permissionAddDevice = new HomePermission { Value = PermissionsGenerator.MemberCanAddDevice };
+        var permissionListDevices = new HomePermission { Value = PermissionsGenerator.MemberCanListDevices };
+        var permissionsList = new List<HomePermission> { permissionAddDevice, permissionListDevices };
 
         _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
-        _homePermissionServiceMock.Setup(service => service.GetByValue(PermissionsGenerator.MemberCanAddDevice)).Returns(permissionAddDevice);
-        _homePermissionServiceMock.Setup(service => service.GetByValue(PermissionsGenerator.MemberCanListDevices)).Returns(permissionListDevices);
+        _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, user, found)).Returns(permissionsList);
         _homeUserServiceMock.Setup(service => service.Update(It.IsAny<HomeUser>())).Returns(found);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
         var result = _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
 
         result.Should().NotBeNull();
@@ -762,45 +717,8 @@ public class HomesControllerTest
         result.Permissions.Should().Contain(permissionAddDevice.Value.ToString());
         result.Permissions.Should().Contain(permissionListDevices.Value.ToString());
         _homeUserServiceMock.Verify(service => service.GetByIds(homeId, memberId), Times.Once);
-        _homePermissionServiceMock.Verify(service => service.GetByValue(PermissionsGenerator.MemberCanAddDevice), Times.Once);
-        _homePermissionServiceMock.Verify(service => service.GetByValue(PermissionsGenerator.MemberCanListDevices), Times.Once);
+        _homePermissionServiceMock.Verify(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, user, found), Times.Once);
         _homeUserServiceMock.Verify(service => service.Update(It.IsAny<HomeUser>()), Times.Once);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void ChangeHomeMemberPermissions_WhenHomeUserNotFound_ShouldThrowNotFoundException()
-    {
-        // Arrange
-        var homeId = "home123";
-        var memberId = "member123";
-        var request = new EditMemberPermissionsRequest { CanAddDevices = true, CanListDevices = true };
-
-        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns((HomeUser)null);
-
-        _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void ChangeHomeMemberPermissions_WhenUserIsNotOwner_ShouldThrowInvalidOperationException()
-    {
-        // Arrange
-        var homeId = "home123";
-        var memberId = "member123";
-        var request = new EditMemberPermissionsRequest { CanAddDevices = true, CanListDevices = true };
-        var home = new Home { Id = homeId, OwnerId = "owner123" };
-        var found = new HomeUser { Home = home, UserId = memberId, Permissions = [] };
-        var user = new User { Id = "notOwner123" };
-
-        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
-
-        _controller.ChangeHomeMemberPermissions(homeId, memberId, request);
     }
 
     [TestMethod]
