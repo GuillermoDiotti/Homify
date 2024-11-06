@@ -183,7 +183,7 @@ public class HomeServiceTest
         _homeService.UpdateMemberList(homeId, userMail);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateMemberList_WhenHomeMembersListIsFull_ShouldThrowInvalidOperationException()
     {
@@ -199,7 +199,7 @@ public class HomeServiceTest
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(homeFound);
 
         _homeService.UpdateMemberList(homeId, userMail);
-    }*/
+    }
 
     /*[TestMethod]
     [ExpectedException(typeof(NotFoundException))]
