@@ -171,7 +171,7 @@ public class HomeServiceTest
         _homeService.UpdateMemberList(homeId, userMail);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void UpdateMemberList_WhenHomeNotFound_ShouldThrowNotFoundException()
     {
@@ -181,7 +181,7 @@ public class HomeServiceTest
         _mockRepository.Setup(service => service.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns((Home)null);
 
         _homeService.UpdateMemberList(homeId, userMail);
-    }*/
+    }
 
     /*[TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
