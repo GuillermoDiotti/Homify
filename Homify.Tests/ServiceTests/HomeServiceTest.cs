@@ -150,6 +150,16 @@ public class HomeServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void GetHomeDevices_WhenHomeIdIsNull_ShouldThrowNullRequestException()
+    {
+        string homeId = null;
+        var user = new User { Id = "user123" };
+
+        _homeService.GetHomeDevices(homeId, user);
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void UpdateMemberList_WhenMaxMembersReached_ShouldThrowInvalidOperationException()
     {
@@ -158,7 +168,7 @@ public class HomeServiceTest
         var home = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { new HomeUser() },
+            Members = [new HomeUser()],
             MaxMembers = 1
         };
 

@@ -106,6 +106,11 @@ public class HomeService : IHomeService
 
     public HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user)
     {
+        if (homeid == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
         var home = _repository.Get(x => x.Id == homeid);
         var homeUser = home.Members.FirstOrDefault(x => x.UserId == user.Id);
         if (homeUser == null && home.OwnerId != user.Id)
@@ -169,10 +174,14 @@ public class HomeService : IHomeService
         return home.Members.Where(x => x.IsNotificable == true).ToList();
     }
 
-    public List<HomeDevice> GetHomeDevices(string homeId, User u)
+    public List<HomeDevice> GetHomeDevices(string? homeId, User u)
     {
-        var home = _repository
-            .Get(x => x.Id == homeId);
+        if (homeId == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
+        var home = _repository.Get(x => x.Id == homeId);
 
         var user = home.Members.FirstOrDefault(x => x.User.Id == u.Id);
 
