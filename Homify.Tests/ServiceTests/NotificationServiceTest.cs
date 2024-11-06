@@ -9,6 +9,7 @@ using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -254,5 +255,12 @@ public class NotificationServiceTest
         var result = new ValidateNotificationDeviceArgs(homeDevice, type);
 
         result.HomeDevice.Should().Be(homeDevice);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Constructor_WithNullHomeDevice_ShouldThrowNotFoundException()
+    {
+        new ValidateNotificationDeviceArgs(null, "SupportedType");
     }
 }
