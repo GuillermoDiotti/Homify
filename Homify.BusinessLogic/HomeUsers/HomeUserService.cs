@@ -21,7 +21,7 @@ public class HomeUserService : IHomeUserService
             throw new NotFoundException("HomeUser not found");
         }
 
-        return _repository.Get(x => x.HomeId == homeId && x.UserId == userId);
+        return response;
     }
 
     public HomeUser Update(HomeUser hu)
