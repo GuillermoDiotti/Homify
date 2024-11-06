@@ -6,6 +6,7 @@ using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.DataAccess.Repositories.Lamps.Entities;
 using Homify.Exceptions;
 using Moq;
 
@@ -19,6 +20,7 @@ public class DeviceServiceTest
     private Mock<IRepository<Device>>? _deviceRepositoryMock;
     private DeviceService? _deviceService;
     private Mock<ICompanyService>? _companyServiceMock;
+    private Mock<IRepository<Lamp>>? _lampRepositoryMock;
 
     [TestInitialize]
     public void Setup()
@@ -26,8 +28,10 @@ public class DeviceServiceTest
         _cameraRepositoryMock = new Mock<IRepository<Camera>>();
         _sensorRepositoryMock = new Mock<IRepository<Sensor>>();
         _deviceRepositoryMock = new Mock<IRepository<Device>>();
+        _lampRepositoryMock = new Mock<IRepository<Lamp>>();
         _companyServiceMock = new Mock<ICompanyService>();
-        _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object, _deviceRepositoryMock.Object, _companyServiceMock.Object);
+        _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object,
+            _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -278,5 +282,26 @@ public class DeviceServiceTest
 
         Assert.AreEqual(3, result.Count);
         CollectionAssert.AreEqual(new List<string> { "Camera", "Sensor", "Thermostat" }, result);
+    }
+
+    [TestMethod]
+    public void AddLamp_ValidRequest_AddsLamp()
+    {
+        // Arrange
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
+        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", new List<string>(), "ppalPicture", false, false, true);
+        _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
+
+        // Act
+        var result = _deviceService.AddLamp(createDeviceArgs, user);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Lamp", result.Name);
+        Assert.AreEqual("Model X", result.Model);
+        Assert.AreEqual("A smart lamp", result.Description);
+        Assert.AreEqual("company1", result.CompanyId);
+        Assert.IsTrue(result.IsActive);
+        _lampRepositoryMock.Verify(repo => repo.Add(It.IsAny<Lamp>()), Times.Once);
     }
 }

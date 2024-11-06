@@ -14,14 +14,17 @@ public class DeviceService : IDeviceService
     private readonly IRepository<Camera> _cameraRepository;
     private readonly IRepository<Sensor> _sensorRepository;
     private readonly IRepository<Device> _deviceRepository;
+    private readonly IRepository<Lamp> _lampRepository;
     private readonly ICompanyService _companyService;
 
-    public DeviceService(IRepository<Camera> cameraRepository, IRepository<Sensor> sensorRepository, IRepository<Device> deviceRepository, ICompanyService companyService)
+    public DeviceService(IRepository<Camera> cameraRepository, IRepository<Sensor> sensorRepository, IRepository<Device> deviceRepository, ICompanyService companyService,
+        IRepository<Lamp> lampRepository)
     {
         _cameraRepository = cameraRepository;
         _sensorRepository = sensorRepository;
         _deviceRepository = deviceRepository;
         _companyService = companyService;
+        _lampRepository = lampRepository;
     }
 
     public Camera AddCamera(CreateDeviceArgs device, CompanyOwner owner)
@@ -132,6 +135,20 @@ public class DeviceService : IDeviceService
 
     public Lamp AddLamp(CreateDeviceArgs device, CompanyOwner? user)
     {
-        throw new NotImplementedException();
+        var owner = (CompanyOwner)user;
+        HasCompany(owner);
+        var lamp = new Lamp()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = device.Name,
+            Model = device.Model,
+            Description = device.Description,
+            Company = owner.Company,
+            CompanyId = owner.Company.Id,
+            IsActive = device.IsActive
+        };
+
+        _lampRepository.Add(lamp);
+        return lamp;
     }
 }
