@@ -18,6 +18,7 @@ using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
+using Homify.DataAccess.Repositories.Lamps.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Utility;
 using Microsoft.Data.Sqlite;
@@ -45,6 +46,8 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<RoleSystemPermission> RoleSystemPermissions { get; set; }
     public DbSet<Room> Rooms { get; set; }
+    public DbSet<Lamp> Lamps { get; set; }
+    public DbSet<MovementSensor> MovementSensors { get; set; }
 
     public DbSet<UserRole> UserRoles { get; set; }
 

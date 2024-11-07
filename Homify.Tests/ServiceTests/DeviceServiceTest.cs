@@ -289,15 +289,12 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddLamp_ValidRequest_AddsLamp()
     {
-        // Arrange
         var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
         var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", new List<string>(), "ppalPicture", false, false, true);
         _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
 
-        // Act
         var result = _deviceService.AddLamp(createDeviceArgs, user);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual("Lamp", result.Name);
         Assert.AreEqual("Model X", result.Model);
@@ -305,5 +302,22 @@ public class DeviceServiceTest
         Assert.AreEqual("company1", result.CompanyId);
         Assert.IsTrue(result.IsActive);
         _lampRepositoryMock.Verify(repo => repo.Add(It.IsAny<Lamp>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void AddMovementSensor_ValidRequest_ShouldAddsMovementSensor()
+    {
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
+        var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", new List<string>(),
+            "ppalPicture", false, false, true);
+        _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
+
+        var result = _deviceService.AddMovementSensor(createDeviceArgs, user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Sensor", result.Name);
+        Assert.AreEqual("Model Y", result.Model);
+        Assert.AreEqual("A movement sensor", result.Description);
+        Assert.AreEqual("company1", result.CompanyId);
     }
 }
