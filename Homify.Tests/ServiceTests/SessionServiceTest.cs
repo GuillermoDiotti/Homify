@@ -123,7 +123,7 @@ public class SessionServiceTest
         _service.CheckSessionConstraints(request.Email, request.Password);
     }*/
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
     public void Create_WhenPasswordIsIncorrect_ShouldThrowArgumentException()
     {
@@ -144,7 +144,7 @@ public class SessionServiceTest
             .Returns([user]);
 
         _service.CheckSessionConstraints(request.Email, request.Password);
-    }*/
+    }
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
