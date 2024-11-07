@@ -97,7 +97,7 @@ public class SessionServiceTest
         _sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
     }
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
     public void Create_WhenEmailFormatIsInvalid_ShouldThrowInvalidFormatException()
     {
@@ -108,7 +108,7 @@ public class SessionServiceTest
         };
 
         _service.CheckSessionConstraints(request.Email, request.Password);
-    }*/
+    }
 
     [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
