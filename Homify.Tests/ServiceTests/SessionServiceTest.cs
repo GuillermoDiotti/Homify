@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Session.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -145,7 +146,7 @@ public class SessionServiceTest
         _service.CheckSessionConstraints(request.Email, request.Password);
     }*/
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void Create_WhenUserNotFound_ShouldThrowNotFoundException()
     {
@@ -160,7 +161,7 @@ public class SessionServiceTest
             .Returns([]);
 
         _service.CheckSessionConstraints(request.Email, request.Password);
-    }*/
+    }
 
     [TestMethod]
     public void CheckSessionConstraints_WhenValid_ShouldReturnUser()
