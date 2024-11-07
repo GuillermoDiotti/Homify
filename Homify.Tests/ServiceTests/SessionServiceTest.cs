@@ -110,7 +110,7 @@ public class SessionServiceTest
         _service.CheckSessionConstraints(request.Email, request.Password);
     }*/
 
-    /*[TestMethod]
+    [TestMethod]
     [ExpectedException(typeof(ArgsNullException))]
     public void Create_WhenEmailIsNull_ShouldThrowArgsNullException()
     {
@@ -121,7 +121,7 @@ public class SessionServiceTest
         };
 
         _service.CheckSessionConstraints(request.Email, request.Password);
-    }*/
+    }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidFormatException))]
