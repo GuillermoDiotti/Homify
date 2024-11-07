@@ -8,6 +8,7 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
@@ -18,7 +19,6 @@ using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
-using Homify.DataAccess.Repositories.Lamps.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Utility;
 using Microsoft.Data.Sqlite;
@@ -60,6 +60,8 @@ public sealed class HomifyDbContext : DbContext
     {
         modelBuilder.Entity<Sensor>().ToTable("Sensors");
         modelBuilder.Entity<Camera>().ToTable("Cameras");
+        modelBuilder.Entity<Lamp>().ToTable("Lamps");
+        modelBuilder.Entity<MovementSensor>().ToTable("MovementSensors");
 
         modelBuilder.Entity<Admin>().ToTable("Admins");
         modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");

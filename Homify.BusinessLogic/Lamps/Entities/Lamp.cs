@@ -1,7 +1,7 @@
 using Homify.BusinessLogic.Devices;
 using Homify.Utility;
 
-namespace Homify.DataAccess.Repositories.Lamps.Entities;
+namespace Homify.BusinessLogic.Lamps.Entities;
 
 public class Lamp : Device
 {
