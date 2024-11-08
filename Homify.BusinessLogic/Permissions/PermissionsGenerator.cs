@@ -59,7 +59,9 @@ public static class PermissionsGenerator
         [
             new(CreateCompany),
             new(RegisterCamera),
-            new(RegisterSensor)
+            new(RegisterSensor),
+            new(RegisterMovementSensor),
+            new(RegisterLamp)
         ];
         return permissions;
     }
