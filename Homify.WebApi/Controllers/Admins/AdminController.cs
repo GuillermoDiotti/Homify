@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Homify.WebApi.Controllers.Admins.Models.Responses;
@@ -72,43 +71,26 @@ public sealed class AdminController : HomifyControllerBase
     [HttpGet("accounts")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
-    public List<UserBasicInfo> AllAccounts([FromQuery] string? limit, [FromQuery] string? offset,
-        [FromQuery] string? role, [FromQuery] string? fullName)
+    public List<UserBasicInfo> AllAccounts([FromQuery] UserFiltersRequest? req)
     {
         var pageSize = 10;
         var pageOffset = 0;
 
-        if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
         {
             pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
         }
 
-        if (!string.IsNullOrEmpty(offset) && int.TryParse(offset, out var parsedOffset))
+        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
         {
             pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
         }
 
-        List<User> list = _userService.GetAll();
-
-        if (!string.IsNullOrEmpty(role))
-        {
-            list = list.Where(u => u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))).ToList();
-        }
-
-        if (!string.IsNullOrEmpty(fullName))
-        {
-            list = list.Where(u => Helpers.GetUserFullName(u.Name, u.LastName)
-                .Contains(fullName, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
-
-        List<UserBasicInfo> result = [];
-        foreach (User u in paginatedList)
-        {
-            result.Add(new UserBasicInfo(u));
-        }
-
-        return result;
+        return _userService
+                .GetAll(req.Role, req.FullName)
+                .Skip(pageOffset)
+                .Take(pageSize)
+                .Select(m => new UserBasicInfo(m))
+                .ToList();
     }
 }

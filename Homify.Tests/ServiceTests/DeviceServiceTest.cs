@@ -33,6 +33,19 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddCamera_ShouldAddCameraToRepository()
     {
+        var user = new CompanyOwner
+        {
+            Id = "1",
+            Name = "John",
+            Email = "john@example.com",
+            IsIncomplete = false,
+            Company = new Company
+            {
+                Id = "company1",
+                Name = "Test Company"
+            }
+        };
+
         var createDeviceArgs = new CreateDeviceArgs(
             "Test Camera",
             "Model X",
@@ -43,19 +56,8 @@ public class DeviceServiceTest
             ],
             "photo1.jpg",
             true,
-            false);
-
-        var user = new CompanyOwner
-        {
-            Id = "1",
-            Name = "John",
-            Email = "john@example.com",
-            Company = new Company
-            {
-                Id = "company1",
-                Name = "Test Company"
-            }
-        };
+            false,
+            user);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -79,7 +81,9 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddSensor_ShouldAddSensor_WhenValidArguments()
     {
-        // Arrange
+        var company = new Company { Id = "companyId", Name = "Test Company" };
+        var user = new CompanyOwner { Company = company, Id = "1", IsIncomplete = false };
+
         var deviceArgs = new CreateDeviceArgs(
             "Test Sensor",
             "Model X",
@@ -90,10 +94,8 @@ public class DeviceServiceTest
             ],
             "mainphoto.jpg",
             true,
-            false);
-
-        var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company, Id = "1" };
+            false,
+            user);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -147,9 +149,17 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
+    [ExpectedException(typeof(InvalidOperationException))]
     public void AddCamera_WhenCompanyIsNull_ShouldThrowNotFoundException()
     {
+        var user = new CompanyOwner
+        {
+            Id = "1",
+            Name = "John",
+            Email = "john@example.com",
+            IsIncomplete = true
+        };
+
         var createDeviceArgs = new CreateDeviceArgs(
             "Test Camera",
             "Model X",
@@ -160,15 +170,8 @@ public class DeviceServiceTest
             ],
             "photo1.jpg",
             true,
-            false);
-
-        var user = new CompanyOwner
-        {
-            Id = "1",
-            Name = "John",
-            Email = "john@example.com",
-            Company = null
-        };
+            false,
+            user);
 
         _deviceService.AddCamera(createDeviceArgs, user);
     }
@@ -217,15 +220,15 @@ public class DeviceServiceTest
             .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
             .Returns(deviceList);
 
-        var searchArgs = new SearchDevicesArgs
+        var searchArgs = new DeviceFiltersRequest
         {
             DeviceName = "Camera",
             Model = "Model A",
             Company = "Company A",
-            Limit = 10,
-            Offset = 0
+            Limit = "10",
+            Offset = "0"
         };
-        var result = _deviceService.SearchDevices(searchArgs);
+        var result = _deviceService.GetAll(searchArgs);
 
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("Camera 1", result.First().Name);

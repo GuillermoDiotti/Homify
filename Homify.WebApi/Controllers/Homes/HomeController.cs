@@ -4,10 +4,8 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
-using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Controllers.Homes.Models.Requests;
 using Homify.WebApi.Controllers.Homes.Models.Responses;
@@ -66,43 +64,7 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        var homeFound = _homeService.GetHomeById(homeId);
-
-        if (homeFound == null)
-        {
-            throw new NotFoundException("Home not found");
-        }
-
-        if (homeFound.Members.Count >= homeFound.MaxMembers)
-        {
-            throw new InvalidOperationException("Home members list is full");
-        }
-
-        var userFound = _userService.GetAll()
-            .FirstOrDefault(x => x.Email == request.Email && x.Roles.Any(r => r.Role.Name == Constants.HOMEOWNER));
-
-        if (userFound == null)
-        {
-            throw new NotFoundException("User is not a home owner");
-        }
-
-        var userIsAlreadyInHouse = homeFound.Members.Any(m => m.UserId == userFound.Id);
-
-        if (userIsAlreadyInHouse)
-        {
-            throw new InvalidOperationException("User is already in house");
-        }
-
-        var homeUser = new HomeUser()
-        {
-            Home = homeFound,
-            IsNotificable = false,
-            User = userFound,
-            HomeId = homeId,
-            UserId = userFound.Id,
-            Permissions = [],
-        };
-        var home = _homeService.UpdateMemberList(homeId, homeUser);
+        var home = _homeService.UpdateMemberList(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);
     }
@@ -120,35 +82,9 @@ public sealed class HomeController : HomifyControllerBase
 
         var found = _homeUserService.GetByIds(homeId, memberId);
 
-        if (found == null)
-        {
-            throw new NotFoundException("HomeUser not found");
-        }
-
         var user = GetUserLogged();
-        if (user.Id != found.Home.OwnerId)
-        {
-            throw new InvalidOperationException("You must be the owner of this home");
-        }
 
-        var list = new List<HomePermission>();
-        if (req.CanAddDevices)
-        {
-            var permission = _homePermissionService.GetByValue(PermissionsGenerator.MemberCanAddDevice);
-            if (permission != null)
-            {
-                list.Add(permission);
-            }
-        }
-
-        if (req.CanListDevices)
-        {
-            var permission = _homePermissionService.GetByValue(PermissionsGenerator.MemberCanListDevices);
-            if (permission != null)
-            {
-                list.Add(permission);
-            }
-        }
+        var list = _homePermissionService.ChangeHomeMemberPermissions(req.CanAddDevices, req.CanListDevices, user, found);
 
         found.Permissions = list;
         var result = _homeUserService.Update(found);
@@ -165,11 +101,6 @@ public sealed class HomeController : HomifyControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        if (homeId == null)
-        {
-            throw new NullRequestException("HomeId can not be null");
-        }
-
         var user = GetUserLogged();
 
         var result = _homeService.UpdateHomeDevices(request.DeviceId, homeId, user);
@@ -181,21 +112,12 @@ public sealed class HomeController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
     public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
     {
-        if (homeId == null)
-        {
-            throw new NullRequestException("HomeId can not be null");
-        }
-
         var user = GetUserLogged();
 
-        var list = _homeService.GetHomeDevices(homeId, user);
-        var response = new List<GetDevicesResponse>();
-        foreach (var hd in list)
-        {
-            response.Add(new GetDevicesResponse(hd));
-        }
-
-        return response;
+        return _homeService
+            .GetHomeDevices(homeId, user)
+            .Select(hd => new GetDevicesResponse(hd))
+            .ToList();
     }
 
     [HttpGet("{homeId}/members")]
@@ -204,11 +126,11 @@ public sealed class HomeController : HomifyControllerBase
     public List<GetMemberResponse> ObtainMembers([FromRoute] string homeId)
     {
         var user = GetUserLogged();
-        var list = _homeService.GetHomeMembers(homeId, user);
 
-        var responseList = list.Select(hu => new GetMemberResponse(hu)).ToList();
-
-        return responseList;
+        return _homeService
+            .GetHomeMembers(homeId, user)
+            .Select(hu => new GetMemberResponse(hu))
+            .ToList();
     }
 
     [HttpPut("{homeId}/notifications")]
@@ -249,13 +171,9 @@ public sealed class HomeController : HomifyControllerBase
     {
         var user = GetUserLogged();
 
-        var homes = _homeService.GetAllHomes(user);
-        var response = new List<GetHomesResponse>();
-        foreach (var home in homes)
-        {
-            response.Add(new GetHomesResponse(home));
-        }
-
-        return response;
+        return _homeService
+            .GetAllHomes(user)
+            .Select(home => new GetHomesResponse(home))
+            .ToList();
     }
 }

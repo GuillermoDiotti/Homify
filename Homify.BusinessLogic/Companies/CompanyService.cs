@@ -2,6 +2,7 @@ using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Companies;
 
@@ -17,6 +18,21 @@ public class CompanyService : ICompanyService
     public Company Add(CreateCompanyArgs args, User user)
     {
         var owner = (CompanyOwner)user;
+
+        var nameExists = GetAll().Any(x => x.Name == args.Name);
+
+        if (nameExists)
+        {
+            throw new DuplicatedDataException("The name is already taken.");
+        }
+
+        var alreadyHasACompany = GetByUserId(args.Owner.Id);
+
+        if (alreadyHasACompany != null)
+        {
+            throw new InvalidOperationException("User already owns a company");
+        }
+
         owner.IsIncomplete = false;
         var company = new Company
         {
@@ -43,8 +59,21 @@ public class CompanyService : ICompanyService
         }
     }
 
-    public List<Company> GetAll()
+    public List<Company> GetAll(string? owner = null, string? company = null)
     {
-        return _repository.GetAll().ToList();
+        var list = _repository.GetAll();
+
+        if (!string.IsNullOrEmpty(owner))
+        {
+            list = list.Where(c => Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName)
+                .Contains(owner, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(company))
+        {
+            list = list.Where(c => c.Name.Contains(company, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        return list;
     }
 }

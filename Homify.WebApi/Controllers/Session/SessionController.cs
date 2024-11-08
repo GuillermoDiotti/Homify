@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
-using Homify.Utility;
 using Homify.WebApi.Controllers.Session.Models.Requests;
 using Homify.WebApi.Controllers.Session.Models.Responses;
 using Homify.WebApi.Filters;
@@ -31,26 +30,7 @@ public class SessionController : ControllerBase
             throw new NullRequestException("Request can not be null");
         }
 
-        if (request.Email == null)
-        {
-            throw new ArgsNullException("Email can not be null");
-        }
-
-        AccountCredentialsValidator.CheckEmail(request.Email ?? string.Empty);
-
-        var userFound = _userService.GetAll().Find(u => u.Email == request.Email);
-
-        if (userFound == null)
-        {
-            throw new NotFoundException("Cannot find user with email: " + request.Email);
-        }
-
-        AccountCredentialsValidator.CheckPassword(request.Password ?? string.Empty);
-
-        if (request.Password != userFound.Password)
-        {
-            throw new ArgumentException("Incorrect password");
-        }
+        var userFound = _sessionService.CheckSessionConstraints(request.Email, request.Password);
 
         BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.CreateSession(userFound);
 

@@ -8,11 +8,11 @@ public interface IHomeService
 {
     Home AddHome(CreateHomeArgs home);
     Home? GetHomeById(string id);
-    Home UpdateMemberList(string homeId, HomeUser homeOwner);
+    Home UpdateMemberList(string homeId, string userMail);
     HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user);
     List<HomeUser> GetHomeMembers(string homeId, User user);
     List<HomeUser> UpdateNotificatedList(string homeId, string memberId, User owner);
-    List<HomeDevice> GetHomeDevices(string homeId, User u);
+    List<HomeDevice> GetHomeDevices(string? homeId, User u);
     Home UpdateHome(string homeId, string? alias, User u);
     List<Home> GetAllHomes(User user);
 }

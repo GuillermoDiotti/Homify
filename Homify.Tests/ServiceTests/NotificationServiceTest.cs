@@ -9,6 +9,7 @@ using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -239,5 +240,55 @@ public class NotificationServiceTest
 
         _mockRepository.Verify(repo => repo.Get(It.IsAny<Expression<Func<Notification, bool>>>()), Times.Once);
         _mockRepository.Verify(repo => repo.Update(notification), Times.Once);
+    }
+
+    [TestMethod]
+    public void Constructor_WithValidArguments_ShouldInitializeHomeDevice()
+    {
+        var homeDevice = new HomeDevice
+        {
+            Device = new Device { Type = "SupportedType" },
+            IsActive = true
+        };
+        var type = "SupportedType";
+
+        var result = new ValidateNotificationDeviceArgs(homeDevice, type);
+
+        result.HomeDevice.Should().Be(homeDevice);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Constructor_WithNullHomeDevice_ShouldThrowNotFoundException()
+    {
+        new ValidateNotificationDeviceArgs(null, "SupportedType");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Constructor_WithUnsupportedDeviceType_ShouldThrowInvalidOperationException()
+    {
+        var homeDevice = new HomeDevice
+        {
+            Device = new Device { Type = "UnsupportedType" },
+            IsActive = true
+        };
+        var type = "SupportedType";
+
+        new ValidateNotificationDeviceArgs(homeDevice, type);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Constructor_WithInactiveDevice_ShouldThrowInvalidOperationException()
+    {
+        var homeDevice = new HomeDevice
+        {
+            Device = new Device { Type = "SupportedType" },
+            IsActive = false
+        };
+        var type = "SupportedType";
+
+        new ValidateNotificationDeviceArgs(homeDevice, type);
     }
 }
