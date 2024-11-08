@@ -194,7 +194,7 @@ public class CompanyControllerTest
 
         _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), owner)).Throws(new DuplicatedDataException("The name is already taken."));
 
-       _controller.Create(request);
+        _controller.Create(request);
     }
 
     [TestMethod]
