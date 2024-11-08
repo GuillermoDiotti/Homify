@@ -12,7 +12,7 @@ public interface IUserService
     CompanyOwner AddCompanyOwner(CreateUserArgs args);
     HomeOwner AddHomeOwner(CreateHomeOwnerArgs args);
     User? GetById(string id);
-    List<User> GetAll();
+    List<User> GetAll(string? role = null, string? name = null);
     void Delete(string userId);
     void LoadIntermediateTable(string userId, string roleId);
 }

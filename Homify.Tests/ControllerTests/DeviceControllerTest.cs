@@ -135,7 +135,8 @@ public class DeviceControllerTest
                 PpalPicture = "photo1.jpg",
                 Company = new Company
                 {
-                    Name = "Company A"
+                    Name = "Company A",
+                    Owner = new CompanyOwner() { Id = "123456", IsIncomplete = false }
                 }
             },
             new Device
@@ -146,7 +147,8 @@ public class DeviceControllerTest
                 PpalPicture = "photo2.jpg",
                 Company = new Company
                 {
-                    Name = "Company B"
+                    Name = "Company B",
+                    Owner = new CompanyOwner() { Id = "123456", IsIncomplete = false }
                 }
             },
             new Device
@@ -157,16 +159,21 @@ public class DeviceControllerTest
                 PpalPicture = null,
                 Company = new Company
                 {
-                    Name = "Company A"
+                    Name = "Company A",
+                    Owner = new CompanyOwner()
+                    {
+                        Id = "123456",
+                        IsIncomplete = false
+                    }
                 }
             }
         };
 
         _deviceServiceMock
-            .Setup(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()))
+            .Setup(service => service.GetAll(It.IsAny<DeviceFiltersRequest>()))
             .Returns(deviceList);
 
-        var result = _controller.ObtainDevices("Camera", null, null, null, null, null);
+        var result = _controller.ObtainDevices(new DeviceFiltersRequest() { DeviceName = "Camera" });
 
         Assert.AreEqual(3, result.Count);
         Assert.AreEqual("Camera 1", result[0].Name);
@@ -175,7 +182,7 @@ public class DeviceControllerTest
         Assert.AreEqual("Company A", result[0].CompanyName);
         Assert.AreEqual("Camera 2", result[2].Name);
         Assert.AreEqual(string.Empty, result[2].Photo);
-        _deviceServiceMock.Verify(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()), Times.Once);
+        _deviceServiceMock.Verify(service => service.GetAll(It.IsAny<DeviceFiltersRequest>()), Times.Once);
     }
 
     [TestMethod]
@@ -211,41 +218,32 @@ public class DeviceControllerTest
     public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
     {
         var hardwareId = "Device123";
-        var user = new User { Id = "testUserId" };
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = false,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = user.Id,
-                Members = [new HomeUser { UserId = user.Id }]
-            }
-        };
-
+        var logged = new User { Id = "123" };
         var activatedDevice = new HomeDevice
         {
             Id = "Device123",
             IsActive = true,
             HardwareId = hardwareId,
-            Home = homeDevice.Home
+            Home = new Home
+            {
+                OwnerId = logged.Id,
+                Members = [new HomeUser { UserId = logged.Id }]
+            }
         };
 
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
-        _homeDeviceServiceMock.Setup(service => service.Activate(homeDevice)).Returns(activatedDevice);
+        _homeDeviceServiceMock.Setup(service => service.Activate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
 
         var result = _controller.TurnOnDevice(hardwareId);
 
         result.Should().NotBeNull();
+        result.Id.Should().Be("Device123");
         result.IsActive.Should().BeTrue();
-        _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once);
-        _homeDeviceServiceMock.Verify(service => service.Activate(homeDevice), Times.Once);
+        _homeDeviceServiceMock.Verify(service => service.Activate(hardwareId, logged), Times.Once);
     }
 
     [TestMethod]

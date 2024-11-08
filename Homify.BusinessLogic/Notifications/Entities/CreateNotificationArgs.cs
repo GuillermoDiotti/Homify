@@ -9,7 +9,7 @@ public class CreateNotificationArgs
     public bool IsRead { get; init; }
     public string? HardwareId { get; init; }
 
-    public CreateNotificationArgs(string personDetectedId, HomeDevice device, bool isRead, string hardwareId)
+    public CreateNotificationArgs(string personDetectedId, HomeDevice? device, bool isRead, string hardwareId)
     {
         PersonDetectedId = personDetectedId;
 

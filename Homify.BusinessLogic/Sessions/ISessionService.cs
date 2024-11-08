@@ -6,4 +6,5 @@ public interface ISessionService
 {
     Session CreateSession(User u);
     User? GetUserByToken(string token);
+    User CheckSessionConstraints(string? mail, string? password);
 }

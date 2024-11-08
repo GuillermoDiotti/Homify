@@ -4,9 +4,11 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Homes;
 
@@ -15,12 +17,14 @@ public class HomeService : IHomeService
     private readonly IRepository<Home> _repository;
     private readonly IDeviceService _deviceService;
     private readonly IHomeDeviceService _homeDeviceService;
+    private readonly IUserService _userervice;
 
-    public HomeService(IRepository<Home> repository, IDeviceService deviceService, IHomeDeviceService homeDeviceService)
+    public HomeService(IRepository<Home> repository, IDeviceService deviceService, IHomeDeviceService homeDeviceService, IUserService userervice)
     {
         _repository = repository;
         _deviceService = deviceService;
         _homeDeviceService = homeDeviceService;
+        _userervice = userervice;
     }
 
     public Home AddHome(CreateHomeArgs home)
@@ -55,16 +59,58 @@ public class HomeService : IHomeService
         }
     }
 
-    public Home UpdateMemberList(string homeId, HomeUser homeOwner)
+    public Home UpdateMemberList(string homeId, string userMail)
     {
+        var homeFound = GetHomeById(homeId);
+
+        if (homeFound == null)
+        {
+            throw new NotFoundException("Home not found");
+        }
+
+        if (homeFound.Members.Count >= homeFound.MaxMembers)
+        {
+            throw new InvalidOperationException("Home members list is full");
+        }
+
+        var userFound = _userervice.GetAll()
+            .FirstOrDefault(x => x.Email == userMail && x.Roles.Any(r => r.Role.Name == Constants.HOMEOWNER));
+
+        if (userFound == null)
+        {
+            throw new NotFoundException("User is not a home owner");
+        }
+
+        var userIsAlreadyInHouse = homeFound.Members.Any(m => m.UserId == userFound.Id);
+
+        if (userIsAlreadyInHouse)
+        {
+            throw new InvalidOperationException("User is already in house");
+        }
+
+        var homeUser = new HomeUser()
+        {
+            Home = homeFound,
+            IsNotificable = false,
+            User = userFound,
+            HomeId = homeId,
+            UserId = userFound.Id,
+            Permissions = [],
+        };
+
         var home = _repository.Get(x => x.Id == homeId);
-        home.Members.Add(homeOwner);
+        home.Members.Add(homeUser);
         _repository.Update(home);
         return home;
     }
 
     public HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user)
     {
+        if (homeid == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
         var home = _repository.Get(x => x.Id == homeid);
         var homeUser = home.Members.FirstOrDefault(x => x.UserId == user.Id);
         if (homeUser == null && home.OwnerId != user.Id)
@@ -128,10 +174,14 @@ public class HomeService : IHomeService
         return home.Members.Where(x => x.IsNotificable == true).ToList();
     }
 
-    public List<HomeDevice> GetHomeDevices(string homeId, User u)
+    public List<HomeDevice> GetHomeDevices(string? homeId, User u)
     {
-        var home = _repository
-            .Get(x => x.Id == homeId);
+        if (homeId == null)
+        {
+            throw new NullRequestException("HomeId can not be null");
+        }
+
+        var home = _repository.Get(x => x.Id == homeId);
 
         var user = home.Members.FirstOrDefault(x => x.User.Id == u.Id);
 

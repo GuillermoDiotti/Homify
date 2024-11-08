@@ -1,4 +1,7 @@
-﻿namespace Homify.BusinessLogic.Devices.Entities;
+﻿using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.Exceptions;
+
+namespace Homify.BusinessLogic.Devices.Entities;
 
 public class CreateDeviceArgs
 {
@@ -10,10 +13,20 @@ public class CreateDeviceArgs
     public bool IsExterior { get; init; }
     public bool IsInterior { get; init; }
     public bool IsActive { get; init; }
+    public CompanyOwner Owner { get; init; }
 
-    public CreateDeviceArgs(string name, string model, string description, List<string> photos, string ppalPicture, bool isExterior, bool isInterior, bool isActive)
+    public CreateDeviceArgs(
+        string name,
+        string model,
+        string description,
+        List<string> photos,
+        string? ppalPicture,
+        bool isExterior,
+        bool isInterior,
+        CompanyOwner? owner,
+        bool isActive
+    )
     {
-        // PpalPicture = ppalPicture;
         PpalPicture = ppalPicture ?? string.Empty;
 
         if (string.IsNullOrEmpty(name))
@@ -37,7 +50,7 @@ public class CreateDeviceArgs
 
         Description = description;
 
-        if(photos == null || photos.Count == 0)
+        if (photos == null || photos.Count == 0)
         {
             Photos = new List<string>();
         }
@@ -52,18 +65,20 @@ public class CreateDeviceArgs
             Photos = list;
         }
 
-        // List<string> list = [];
-        // foreach (var p in photos)
-        // {
-        //     list.Add(p);
-        // }
-
-        // Photos = list;
-
-        // Photos = photos ?? new List<string>();
-
         IsExterior = isExterior;
         IsInterior = isInterior;
         IsActive = isActive;
+
+        if (owner == null)
+        {
+            throw new NotFoundException("Owner not found");
+        }
+
+        if (owner.IsIncomplete)
+        {
+            throw new InvalidOperationException("Account must be complete");
+        }
+
+        Owner = owner;
     }
 }

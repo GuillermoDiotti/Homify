@@ -1,6 +1,9 @@
 ﻿using System.Linq.Expressions;
+using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Moq;
 
@@ -42,5 +45,24 @@ public class HomePermissionTest
         var result = _service.GetByValue("nonExistingValue");
 
         Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ChangeHomeMemberPermissions_WhenUserIsNotOwner_ShouldThrowInvalidOperationException()
+    {
+        var homeId = "home123";
+        var memberId = "member123";
+        var user = new User { Id = "notOwner123" };
+        var home = new Home { Id = homeId, OwnerId = "owner123" };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = [] };
+
+        var homeUserServiceMock = new Mock<IHomeUserService>();
+        var repositoryMock = new Mock<IRepository<HomePermission>>();
+        var service = new HomePermissionService(repositoryMock.Object);
+
+        homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
+
+        service.ChangeHomeMemberPermissions(true, true, user, found);
     }
 }

@@ -36,20 +36,7 @@ public class NotificationController : HomifyControllerBase
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
-        if (fromDevice == null)
-        {
-            throw new NotFoundException("Device not found");
-        }
-
-        if (fromDevice.Device.Type != Constants.CAMERA)
-        {
-            throw new InvalidOperationException("Only sensors are supported.");
-        }
-
-        if (!fromDevice.IsActive)
-        {
-            throw new InvalidOperationException("Device is not active");
-        }
+        var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
         var arguments = new CreateNotificationArgs(
             request.PersonDetectedId ?? string.Empty,
@@ -58,13 +45,8 @@ public class NotificationController : HomifyControllerBase
             request.HardwareId);
 
         var notification = _notificationService.AddPersonDetectedNotification(arguments);
-        var ret = new List<CreateNotificationResponse>();
-        foreach (var n in notification)
-        {
-            ret.Add(new CreateNotificationResponse(n));
-        }
 
-        return ret;
+        return notification.Select(n => new CreateNotificationResponse(n)).ToList();
     }
 
     [HttpPost("window-movement")]
@@ -77,31 +59,13 @@ public class NotificationController : HomifyControllerBase
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
-        if (fromDevice == null)
-        {
-            throw new NotFoundException("Device not found");
-        }
-
-        if (fromDevice.Device.Type != Constants.SENSOR)
-        {
-            throw new InvalidOperationException("Only sensors are supported.");
-        }
-
-        if (!fromDevice.IsActive)
-        {
-            throw new InvalidOperationException("Device is not active");
-        }
+        var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.SENSOR);
 
         var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action);
 
         var notification = _notificationService.AddWindowNotification(arguments);
-        var ret = new List<CreateGenericNotificationResponse>();
-        foreach (var n in notification)
-        {
-            ret.Add(new CreateGenericNotificationResponse(n));
-        }
 
-        return ret;
+        return notification.Select(n => new CreateGenericNotificationResponse(n)).ToList();
     }
 
     [HttpPost("movement-detected")]
@@ -119,27 +83,13 @@ public class NotificationController : HomifyControllerBase
             throw new NotFoundException("Device not found");
         }
 
-        if (fromDevice.Device.Type != Constants.CAMERA)
-        {
-            throw new InvalidOperationException("Only sensors are supported.");
-        }
-
-        if (!fromDevice.IsActive)
-        {
-            throw new InvalidOperationException("Device is not active");
-        }
+        var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
         var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action);
 
         var notification = _notificationService.AddMovementNotification(arguments);
 
-        var ret = new List<CreateGenericNotificationResponse>();
-        foreach (var n in notification)
-        {
-            ret.Add(new CreateGenericNotificationResponse(n));
-        }
-
-        return ret;
+        return notification.Select(n => new CreateGenericNotificationResponse(n)).ToList();
     }
 
     [HttpGet]

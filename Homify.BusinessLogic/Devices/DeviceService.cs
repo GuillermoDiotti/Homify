@@ -115,7 +115,7 @@ public class DeviceService : IDeviceService
         }
     }
 
-    public List<Device> SearchDevices(SearchDevicesArgs args)
+    public List<Device> GetAll(DeviceFiltersRequest args)
     {
         var devicesQuery = _deviceRepository.GetAll();
         if (!string.IsNullOrEmpty(args.DeviceName))
@@ -137,8 +137,6 @@ public class DeviceService : IDeviceService
         {
             devicesQuery = devicesQuery.Where(d => d.Type.Equals(args.Type, StringComparison.OrdinalIgnoreCase)).ToList();
         }
-
-        devicesQuery = devicesQuery.Skip(args.Offset).Take(args.Limit).ToList();
 
         return devicesQuery.ToList();
     }

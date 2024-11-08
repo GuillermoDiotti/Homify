@@ -8,6 +8,7 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins;
+using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Moq;
 
@@ -351,9 +352,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("2", "1", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "2",
+            Offset = "1"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -416,9 +425,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("invalid", "0", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "invalid",
+            Offset = "0"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
@@ -479,9 +496,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("2", "invalid", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "2",
+            Offset = "invalid"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -543,9 +568,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts(null, null, string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = string.Empty,
+            Offset = string.Empty
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
@@ -574,9 +607,17 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "10",
+            Offset = "0"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(1, result.Count, "Debe haber exactamente un usuario en la lista");
@@ -627,13 +668,25 @@ public class UserControllerTests
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns((string? role, string? name) =>
+                users.Where(u =>
+                    (string.IsNullOrEmpty(role) || u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))) &&
+                    (string.IsNullOrEmpty(name) || Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))).ToList());
 
-        var result = _controller.AllAccounts(limit, offset, role, fullName);
+        var req = new UserFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset,
+            Role = role,
+            FullName = fullName
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("John Doe", Helpers.GetUserFullName(result[0].Name, result[0].LastName));
-        _userServiceMock.Verify(service => service.GetAll(), Times.Once);
     }
 }

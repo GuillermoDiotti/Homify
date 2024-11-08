@@ -1,4 +1,5 @@
 ﻿using Homify.DataAccess.Repositories;
+using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.HomeUsers;
 
@@ -13,7 +14,14 @@ public class HomeUserService : IHomeUserService
 
     public HomeUser? GetByIds(string? homeId, string? userId)
     {
-        return _repository.Get(x => x.HomeId == homeId && x.UserId == userId);
+        var response = _repository.Get(x => x.HomeId == homeId && x.UserId == userId);
+
+        if (response == null)
+        {
+            throw new NotFoundException("HomeUser not found");
+        }
+
+        return response;
     }
 
     public HomeUser Update(HomeUser hu)

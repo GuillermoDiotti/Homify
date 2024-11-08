@@ -10,7 +10,7 @@ public class CreateGenericNotificationArgs
     public DateTimeOffset? Date { get; init; }
     public string? Action { get; init; }
 
-    public CreateGenericNotificationArgs(HomeDevice device, bool isRead, DateTimeOffset date, string hardwareId, string? action = null)
+    public CreateGenericNotificationArgs(HomeDevice? device, bool isRead, DateTimeOffset date, string hardwareId, string? action = null)
     {
         if (hardwareId == null)
         {

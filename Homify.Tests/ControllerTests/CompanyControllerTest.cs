@@ -55,7 +55,10 @@ public class CompanyControllerTest
         };
 
         _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
-        _companyServiceMock.Setup(x => x.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
+
         var company = new Company
         {
             Name = "NewCompany"
@@ -106,7 +109,9 @@ public class CompanyControllerTest
 
         _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
 
-        _companyServiceMock.Setup(c => c.GetAll()).Returns([]);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
 
         _companyServiceMock.Setup(c => c.Add(It.IsAny<CreateCompanyArgs>(), It.IsAny<User>()))
             .Throws(new ArgsNullException("name cannot be null or empty"));
@@ -142,7 +147,9 @@ public class CompanyControllerTest
             },
         };
 
-        _companyServiceMock.Setup(s => s.GetAll()).Returns(companies);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(companies);
 
         var limit = "2";
         var offset = "1";
@@ -152,7 +159,13 @@ public class CompanyControllerTest
             new CompanyBasicInfo(companies[2], companies[2].Owner)
         };
 
-        var result = _controller.AllCompanies(limit, offset, string.Empty, string.Empty);
+        var req = new CompanyFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset
+        };
+
+        var result = _controller.AllCompanies(req);
 
         Assert.AreEqual(2, result.Count);
         CollectionAssert.AreEqual(expectedResult, result);
@@ -162,25 +175,24 @@ public class CompanyControllerTest
     [ExpectedException(typeof(DuplicatedDataException))]
     public void Create_WhenCompanyNameExists_ShouldThrowDuplicatedDataException()
     {
-        var request = new CreateCompanyRequest { Name = "ExistingCompany" };
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([new Company { Name = "ExistingCompany" }]);
-
-        _controller.Create(request);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void Create_WhenUserIsNotCompanyOwner_ShouldThrowInvalidOperationException()
-    {
-        var request = new CreateCompanyRequest { Name = "NewCompany" };
-        var userLogged = new User { Id = "user123" };
-        _controller.ControllerContext = new ControllerContext
+        var request = new CreateCompanyRequest
         {
-            HttpContext = new DefaultHttpContext()
+            Name = "ExistingCompany",
+            LogoUrl = "http://example.com/logo.png",
+            Rut = "12345678-9"
         };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = userLogged;
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
+        var owner = new CompanyOwner
+        {
+            Name = "Valid Owner",
+            LastName = "Owner Last Name",
+            Email = "owner@example.com"
+        };
+
+        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
+
+        _companyServiceMock.Setup(x => x.Add(It.IsAny<CreateCompanyArgs>(), owner)).Throws(new DuplicatedDataException("The name is already taken."));
 
         _controller.Create(request);
     }
@@ -189,32 +201,23 @@ public class CompanyControllerTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void Create_WhenCompanyOwnerAccountIsNotIncomplete_ShouldThrowInvalidOperationException()
     {
-        var request = new CreateCompanyRequest { Name = "NewCompany" };
-        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = false };
+        var companyOwner = new CompanyOwner
+        {
+            Id = "owner123",
+            IsIncomplete = false
+        };
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
-
-        _controller.Create(request);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void Create_WhenUserAlreadyOwnsACompany_ShouldThrowInvalidOperationException()
-    {
-        var request = new CreateCompanyRequest { Name = "NewCompany" };
-        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = true };
-        _controller.ControllerContext = new ControllerContext
+        var request = new CreateCompanyRequest
         {
-            HttpContext = new DefaultHttpContext()
+            Name = "ExistingCompany",
+            LogoUrl = "http://example.com/logo.png",
+            Rut = "12345678-9",
         };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = companyOwner;
-        _companyServiceMock.Setup(service => service.GetByUserId(companyOwner.Id)).Returns(new Company());
-        _companyServiceMock.Setup(service => service.GetAll()).Returns([]);
 
         _controller.Create(request);
     }
@@ -240,9 +243,25 @@ public class CompanyControllerTest
             }
         };
 
-        _companyServiceMock.Setup(service => service.GetAll()).Returns(companies);
+        _companyServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([new Company
+            {
+                Name = "TechCorp",
+                Owner = new CompanyOwner { Name = "John", LastName = "Doe" }
+            }
 
-        var result = _controller.AllCompanies(limit, offset, ownerFullName, company);
+            ]);
+
+        var req = new CompanyFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset,
+            OwnerFullName = ownerFullName,
+            Company = company
+        };
+
+        var result = _controller.AllCompanies(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
