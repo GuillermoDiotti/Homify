@@ -40,8 +40,6 @@ public class DeviceController : HomifyControllerBase
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
-				var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, req.IsExterior, req.IsInterior, companyOwner, false);
 
         var args = new CreateDeviceArgs(
             req.Name ?? string.Empty,
@@ -51,7 +49,8 @@ public class DeviceController : HomifyControllerBase
             req.PpalPicture ?? string.Empty,
             req.IsExterior,
             req.IsInterior,
-            companyOwner);
+            companyOwner,
+            false);
 
         Camera cam = _deviceService.AddCamera(args, companyOwner);
 
@@ -79,8 +78,9 @@ public class DeviceController : HomifyControllerBase
             req.Photos ?? [],
             req.PpalPicture ?? string.Empty,
             isExterior,
-						companyOwner,
-						false);
+            true,
+			companyOwner,
+			false);
 
         if (companyOwner == null)
         {
@@ -108,10 +108,12 @@ public class DeviceController : HomifyControllerBase
             throw new NullRequestException();
         }
 
-        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, null, null, false,false, req.Active);
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
+
+        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
+            req.Description ?? string.Empty, null, null, false, false, companyOwner ,req.Active);
+
         if (companyOwner == null)
         {
             throw new NotFoundException("Owner not found");
@@ -138,10 +140,12 @@ public class DeviceController : HomifyControllerBase
             throw new NullRequestException();
         }
 
-        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, false, false, false);
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
+
+        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
+            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, false, false, companyOwner, false);
+
         if (companyOwner == null)
         {
             throw new NotFoundException("Owner not found");

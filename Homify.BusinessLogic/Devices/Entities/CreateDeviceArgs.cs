@@ -52,7 +52,7 @@ public class CreateDeviceArgs
 
         if (photos == null || photos.Count == 0)
         {
-            Photos = new List<string>();
+            Photos = [];
         }
         else
         {
