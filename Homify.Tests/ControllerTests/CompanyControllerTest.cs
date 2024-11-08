@@ -201,7 +201,11 @@ public class CompanyControllerTest
     [ExpectedException(typeof(InvalidOperationException))]
     public void Create_WhenCompanyOwnerAccountIsNotIncomplete_ShouldThrowInvalidOperationException()
     {
-        var companyOwner = new CompanyOwner { Id = "owner123", IsIncomplete = false };
+        var companyOwner = new CompanyOwner
+        {
+            Id = "owner123",
+            IsIncomplete = false
+        };
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()

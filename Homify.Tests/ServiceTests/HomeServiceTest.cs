@@ -220,14 +220,14 @@ public class HomeServiceTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser>(),
+            Members = [],
             MaxMembers = 5
         };
 
         _mockRepository.Setup(service => service.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(homeFound);
         _userService
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
-            .Returns(new List<User>());
+            .Returns([]);
 
         _homeService.UpdateMemberList(homeId, userMail);
     }
@@ -241,21 +241,21 @@ public class HomeServiceTest
         var homeFound = new Home
         {
             Id = homeId,
-            Members = new List<HomeUser> { new HomeUser { UserId = "user123" } },
+            Members = [new HomeUser { UserId = "user123" }],
             MaxMembers = 5
         };
         var userFound = new User
         {
             Id = "user123",
             Email = userMail,
-            Roles = new List<UserRole>
-            {
+            Roles =
+            [
                 new UserRole { UserId = "user123", RoleId = Constants.HOMEOWNERID, Role = RolesGenerator.HomeOwner() }
-            }
+            ]
         };
 
         _mockRepository.Setup(service => service.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(homeFound);
-        _userService.Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns(new List<User> { userFound });
+        _userService.Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([userFound]);
 
         _homeService.UpdateMemberList(homeId, userMail);
     }

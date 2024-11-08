@@ -89,7 +89,7 @@ public class HomeDeviceServiceTest
             Home = new Home
             {
                 OwnerId = user.Id,
-                Members = new List<HomeUser> { new HomeUser { UserId = user.Id } }
+                Members = [new HomeUser { UserId = user.Id }]
             }
         };
 
@@ -118,13 +118,17 @@ public class HomeDeviceServiceTest
             HardwareId = hardwareId,
             Home = new Home
             {
-                OwnerId = user.Id, Members = new List<HomeUser> { new HomeUser { UserId = user.Id } }
+                OwnerId = user.Id,
+                Members = [new HomeUser { UserId = user.Id }]
             }
         };
 
         var activatedDevice = new HomeDevice
         {
-            Id = "Device123", IsActive = true, HardwareId = hardwareId, Home = homeDevice.Home
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = homeDevice.Home
         };
 
         _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
@@ -175,7 +179,7 @@ public class HomeDeviceServiceTest
             Home = new Home
             {
                 OwnerId = "anotherUserId",
-                Members = new List<HomeUser> { new HomeUser { UserId = "anotherUserId" } }
+                Members = [new HomeUser { UserId = "anotherUserId" }]
             }
         };
 

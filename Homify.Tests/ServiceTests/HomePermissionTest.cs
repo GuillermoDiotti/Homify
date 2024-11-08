@@ -55,14 +55,14 @@ public class HomePermissionTest
         var memberId = "member123";
         var user = new User { Id = "notOwner123" };
         var home = new Home { Id = homeId, OwnerId = "owner123" };
-        var found = new HomeUser { Home = home, UserId = memberId, Permissions = new List<HomePermission>() };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = [] };
 
-        var _homeUserServiceMock = new Mock<IHomeUserService>();
-        var _repositoryMock = new Mock<IRepository<HomePermission>>();
-        var _service = new HomePermissionService(_repositoryMock.Object);
+        var homeUserServiceMock = new Mock<IHomeUserService>();
+        var repositoryMock = new Mock<IRepository<HomePermission>>();
+        var service = new HomePermissionService(repositoryMock.Object);
 
-        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
+        homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
 
-        _service.ChangeHomeMemberPermissions(true, true, user, found);
+        service.ChangeHomeMemberPermissions(true, true, user, found);
     }
 }

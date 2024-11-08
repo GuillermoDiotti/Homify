@@ -171,7 +171,8 @@ public class SessionServiceTest
 
         var user = new User()
         {
-            Email = email, Password = password
+            Email = email,
+            Password = password
         };
         _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([user]);
 

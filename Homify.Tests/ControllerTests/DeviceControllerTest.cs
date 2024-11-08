@@ -172,7 +172,7 @@ public class DeviceControllerTest
             .Setup(service => service.GetAll(It.IsAny<DeviceFiltersRequest>()))
             .Returns(deviceList);
 
-        var result = _controller.ObtainDevices(new DeviceFiltersRequest() { DeviceName = "Camera" } );
+        var result = _controller.ObtainDevices(new DeviceFiltersRequest() { DeviceName = "Camera" });
 
         Assert.AreEqual(3, result.Count);
         Assert.AreEqual("Camera 1", result[0].Name);
@@ -226,7 +226,7 @@ public class DeviceControllerTest
             Home = new Home
             {
                 OwnerId = logged.Id,
-                Members = new List<HomeUser> { new HomeUser { UserId = logged.Id } }
+                Members = [new HomeUser { UserId = logged.Id }]
             }
         };
 

@@ -696,7 +696,7 @@ public class HomesControllerTest
         };
         var user = new User { Id = "owner123" };
         var home = new Home { Id = homeId, OwnerId = "owner123" };
-        var found = new HomeUser { Home = home, UserId = memberId, Permissions = new List<HomePermission>() };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = [] };
         var permissionAddDevice = new HomePermission { Value = PermissionsGenerator.MemberCanAddDevice };
         var permissionListDevices = new HomePermission { Value = PermissionsGenerator.MemberCanListDevices };
         var permissionsList = new List<HomePermission> { permissionAddDevice, permissionListDevices };
