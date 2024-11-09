@@ -1,0 +1,51 @@
+<h2>Create Company Owner</h2>
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="name"
+    type="text"
+    label="Name"
+    placeholder="Enter your name"
+    [formField]="{
+      name: { required: 'Name is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="email"
+    type="text"
+    label="Email"
+    placeholder="Enter your email"
+    [formField]="{
+      email: { required: 'Email is required', email: 'Invalid email format' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="password"
+    type="password"
+    label="Password"
+    placeholder="Enter your password"
+    [formField]="{
+      password: { required: 'Password is required', minlength: 'Minimum length is 6 characters' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="lastName"
+    type="text"
+    label="Last Name"
+    placeholder="Enter your last name"
+    [formField]="{
+      lastName: { required: 'Last name is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+
+	<app-success-message [message]="successMessage"></app-success-message>
+	<app-error-message [message]="errorMessage"></app-error-message>
+</form>
