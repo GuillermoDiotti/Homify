@@ -34,6 +34,6 @@ public class SessionController : ControllerBase
 
         BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.CreateSession(userFound);
 
-        return new CreateSessionResponse(sessionSaved);
+        return new CreateSessionResponse(sessionSaved, userFound);
     }
 }

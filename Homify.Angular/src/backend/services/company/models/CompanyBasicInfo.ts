@@ -1,6 +1,6 @@
 export default interface CompanyBasicInfo {
-    CompanyName: string;
-    OwnerName: string;
-    OwnerMail: string;
-    Rut: string;
+  companyName: string;
+  ownerName: string;
+  ownerMail: string;
+  rut: string;
 }

@@ -6,13 +6,14 @@ import CreateCompanyResponse from './models/CreateCompanyResponse';
 import CompanyBasicInfo from './models/CompanyBasicInfo';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompanyService {
+  constructor(private readonly _repository: CompanyTypeApiRepositoryService) {}
 
-  constructor(private readonly _repository: CompanyTypeApiRepositoryService) { }
-
-  public create(request: CreateCompanyRequest): Observable<CreateCompanyResponse> {
+  public create(
+    request: CreateCompanyRequest
+  ): Observable<CreateCompanyResponse> {
     return this._repository.create(request);
   }
 
@@ -20,9 +21,24 @@ export class CompanyService {
     limit?: string,
     offset?: string,
     ownerfullname?: string,
-    company?: string)
-    : Observable<Array<CompanyBasicInfo>> {
-    const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(ownerfullname ?? '')}&fullName=${encodeURIComponent(company ?? '')}`;
+    company?: string
+  ): Observable<Array<CompanyBasicInfo>> {
+    const queryParams: string[] = [];
+
+    if (limit) {
+      queryParams.push(`limit=${encodeURIComponent(limit)}`);
+    }
+    if (offset) {
+      queryParams.push(`offset=${encodeURIComponent(offset)}`);
+    }
+    if (ownerfullname) {
+      queryParams.push(`role=${encodeURIComponent(ownerfullname)}`);
+    }
+    if (company) {
+      queryParams.push(`fullName=${encodeURIComponent(company)}`);
+    }
+
+    const query = queryParams.join('&');
     return this._repository.getAllCompanies(query);
   }
 }

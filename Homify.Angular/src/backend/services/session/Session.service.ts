@@ -19,12 +19,15 @@ export interface User {
 export class SessionService {
   constructor(private sessionRepository: SessionTypeApiRepositoryService) {}
 
-  public setCurrentUserToken(token: string | null): void {
+  public setCurrentUser(token: string | null, roles: string[] | null): void {
 		localStorage.setItem('token', token ?? '');
+		localStorage.setItem('roles', JSON.stringify(roles));
   }
 
-  public getCurrentUserToken(): string | null {
-    return localStorage.getItem('token') ?? null;
+  public getCurrentUser(): { token: string | null, roles: string[] } {
+    const token = localStorage.getItem('token') ?? null;
+		const roles = JSON.parse(localStorage.getItem('roles') ?? '');
+		return { token, roles };
   }
 
 	public removeCurrentUserToken(): void {
