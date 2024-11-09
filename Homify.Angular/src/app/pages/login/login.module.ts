@@ -5,10 +5,9 @@ import { LoginComponent } from './login.component';
 import { ButtonComponent } from '../../components/button/button.component';
 import { InputComponent } from '../../components/input/input.component';
 import { LoginFormComponent } from '../../business-components/forms/login-form/login-form.component';
-import { NonAuthGuard } from '../../guards/non-auth.guard';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent, canActivate: [NonAuthGuard] },
+  { path: '', component: LoginComponent, canActivate: [] },
 ];
 
 @NgModule({

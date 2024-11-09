@@ -1,4 +1,4 @@
-namespace Homify.WebApi.Controllers.Companies.Models;
+namespace Homify.WebApi.Controllers.Companies.Models.Requests;
 
 public class CompanyFiltersRequest
 {

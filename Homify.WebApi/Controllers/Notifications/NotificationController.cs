@@ -105,11 +105,6 @@ public class NotificationController : HomifyControllerBase
             list = list.Where(n => n.Event == eventTriggered).ToList();
         }
 
-        /*if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
-        {
-            list = list.Where(n => n.Date == parsedDate.Date).ToList();
-        }*/
-
         if (!string.IsNullOrEmpty(date))
         {
             var veryfyDateFormat = HomifyDateTime.Parse(date);
