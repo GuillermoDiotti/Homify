@@ -38,6 +38,6 @@ public class CompanyOwnerServiceTests
     public void GetCompOwnerPermissions()
     {
         var perms = PermissionsGenerator.GetCompanyOwnerPermissions();
-        Assert.AreEqual(3, perms.Count);
+        Assert.AreEqual(5, perms.Count);
     }
 }

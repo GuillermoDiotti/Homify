@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.DataAccess.Repositories;
@@ -104,9 +105,6 @@ public class DeviceServiceTest
             false,
 						user,
             false);
-
-        var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company, Id = "1" };
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -296,7 +294,7 @@ public class DeviceServiceTest
     public void AddLamp_ValidRequest_AddsLamp()
     {
         var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
-        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", new List<string>(), "ppalPicture", false, false, true);
+        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", new List<string>(), "ppalPicture", false, false, new CompanyOwner(), true);
         _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
 
         var result = _deviceService.AddLamp(createDeviceArgs, user);
@@ -315,7 +313,8 @@ public class DeviceServiceTest
     {
         var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
         var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", new List<string>(),
-            "ppalPicture", false, false, true);
+            "ppalPicture", false, false,new CompanyOwner(), true);
+
         _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
 
         var result = _deviceService.AddMovementSensor(createDeviceArgs, user);

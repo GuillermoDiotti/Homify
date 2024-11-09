@@ -82,16 +82,6 @@ public class DeviceController : HomifyControllerBase
 			companyOwner,
 			false);
 
-        if (companyOwner == null)
-        {
-            throw new NotFoundException("Owner not found");
-        }
-
-        if (companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be complete");
-        }
-
         Sensor sen = _deviceService.AddSensor(args, companyOwner);
 
         return new CreateDeviceResponse(sen);
@@ -111,18 +101,16 @@ public class DeviceController : HomifyControllerBase
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
 
-        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, null, null, false, false, companyOwner ,req.Active);
-
-        if (companyOwner == null)
-        {
-            throw new NotFoundException("Owner not found");
-        }
-
-        if (companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be complete");
-        }
+        var args = new CreateDeviceArgs(
+            req.Name ?? string.Empty,
+            req.Model ?? string.Empty,
+            req.Description ?? string.Empty,
+            null,
+            null,
+            false,
+            false,
+            companyOwner,
+            req.Active);
 
         var lamp = _deviceService.AddLamp(args, companyOwner);
 
@@ -143,18 +131,16 @@ public class DeviceController : HomifyControllerBase
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
 
-        var args = new CreateDeviceArgs(req.Name ?? string.Empty, req.Model ?? string.Empty,
-            req.Description ?? string.Empty, req.Photos ?? [], req.PpalPicture ?? string.Empty, false, false, companyOwner, false);
-
-        if (companyOwner == null)
-        {
-            throw new NotFoundException("Owner not found");
-        }
-
-        if (companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be complete");
-        }
+        var args = new CreateDeviceArgs(
+            req.Name ?? string.Empty,
+            req.Model ?? string.Empty,
+            req.Description ?? string.Empty,
+            req.Photos ?? [],
+            req.PpalPicture ?? string.Empty,
+            false,
+            false,
+            companyOwner,
+            false);
 
         var sensor = _deviceService.AddMovementSensor(args, companyOwner);
 
