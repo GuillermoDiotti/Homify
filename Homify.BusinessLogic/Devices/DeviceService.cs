@@ -166,7 +166,7 @@ public class DeviceService : IDeviceService
             Company = owner.Company,
             CompanyId = owner.Company.Id,
             IsActive = device.IsActive,
-            Photos = new List<string>()
+            Photos = []
         };
 
         _lampRepository.Add(lamp);

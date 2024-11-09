@@ -293,8 +293,8 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddLamp_ValidRequest_AddsLamp()
     {
-        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
-        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", new List<string>(), "ppalPicture", false, false, new CompanyOwner(), true);
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
+        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", [], "ppalPicture", false, false, user, true);
         _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
 
         var result = _deviceService.AddLamp(createDeviceArgs, user);
