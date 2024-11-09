@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Homify.WebApi.Controllers.Importers;
 
 [ApiController]
+[Route("importer")]
 public sealed class ImporterController : HomifyControllerBase
 {
     private readonly IImporterService _importerService;
