@@ -20,6 +20,7 @@ export class CompaniesListComponent implements OnInit {
 	ngOnInit() {
 		this.CompanyService.getAllCompanies(this.limit, this.offset).subscribe(
 			response => {
+				console.log(response)
 				this.companies = response;
 			},
 			error => {

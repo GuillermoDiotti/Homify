@@ -8,6 +8,7 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
@@ -45,6 +46,8 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<RoleSystemPermission> RoleSystemPermissions { get; set; }
     public DbSet<Room> Rooms { get; set; }
+    public DbSet<Lamp> Lamps { get; set; }
+    public DbSet<MovementSensor> MovementSensors { get; set; }
 
     public DbSet<UserRole> UserRoles { get; set; }
 
@@ -57,6 +60,8 @@ public sealed class HomifyDbContext : DbContext
     {
         modelBuilder.Entity<Sensor>().ToTable("Sensors");
         modelBuilder.Entity<Camera>().ToTable("Cameras");
+        modelBuilder.Entity<Lamp>().ToTable("Lamps");
+        modelBuilder.Entity<MovementSensor>().ToTable("MovementSensors");
 
         modelBuilder.Entity<Admin>().ToTable("Admins");
         modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");

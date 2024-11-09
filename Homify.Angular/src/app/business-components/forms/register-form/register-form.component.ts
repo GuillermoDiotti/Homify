@@ -33,7 +33,7 @@ export class RegisterFormComponent {
 	}
 
   ngOnInit(): void {
-    const token = this.sessionService.getCurrentUserToken();
+    const { token } = this.sessionService.getCurrentUser();
 		this.currentUserToken = token ?? null;
   }
 

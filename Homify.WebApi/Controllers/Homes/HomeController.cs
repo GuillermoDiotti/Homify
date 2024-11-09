@@ -23,7 +23,11 @@ public sealed class HomeController : HomifyControllerBase
     private readonly IHomeUserService _homeUserService;
     private readonly IHomePermissionService _homePermissionService;
 
-    public HomeController(IHomeService homeService, IUserService userService, IHomeUserService homeUserService, IHomePermissionService homePermissionService)
+    public HomeController(
+        IHomeService homeService,
+        IUserService userService,
+        IHomeUserService homeUserService,
+        IHomePermissionService homePermissionService)
     {
         _homeService = homeService;
         _userService = userService;
@@ -43,12 +47,13 @@ public sealed class HomeController : HomifyControllerBase
 
         var owner = GetUserLogged() as HomeOwner;
         var arguments = new CreateHomeArgs(
-           request.Street ?? string.Empty,
-           request.Number ?? string.Empty,
-           request.Latitude ?? string.Empty,
-           request.Longitud ?? string.Empty,
-           request.MaxMembers, owner,
-           request.Alias ?? string.Empty);
+            request.Street ?? string.Empty,
+            request.Number ?? string.Empty,
+            request.Latitude ?? string.Empty,
+            request.Longitud ?? string.Empty,
+            request.MaxMembers,
+            owner,
+            request.Alias ?? string.Empty);
 
         var homeSaved = _homeService.AddHome(arguments);
         return new CreateHomeResponse(homeSaved);
@@ -57,7 +62,9 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/members")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
-    public UpdateMembersListResponse UpdateMembersList([FromRoute] string homeId, UpdateMemberListRequest? request)
+    public UpdateMembersListResponse UpdateMembersList(
+        [FromRoute] string homeId,
+        UpdateMemberListRequest? request)
     {
         if (request == null)
         {
@@ -72,7 +79,9 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/{memberId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
-    public HomeMemberBasicInfo ChangeHomeMemberPermissions([FromRoute] string? homeId, [FromRoute] string memberId,
+    public HomeMemberBasicInfo ChangeHomeMemberPermissions(
+        [FromRoute] string? homeId,
+        [FromRoute] string memberId,
         EditMemberPermissionsRequest req)
     {
         if (req == null)
@@ -84,7 +93,11 @@ public sealed class HomeController : HomifyControllerBase
 
         var user = GetUserLogged();
 
-        var list = _homePermissionService.ChangeHomeMemberPermissions(req.CanAddDevices, req.CanListDevices, user, found);
+        var list = _homePermissionService.ChangeHomeMemberPermissions(
+            req.CanAddDevices,
+            req.CanListDevices,
+            user,
+            found);
 
         found.Permissions = list;
         var result = _homeUserService.Update(found);
@@ -94,7 +107,9 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/devices")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public UpdateHomeDeviceResponse UpdateHomeDevice(UpdateHomeDevicesRequest request, [FromRoute] string homeId)
+    public UpdateHomeDeviceResponse UpdateHomeDevice(
+        UpdateHomeDevicesRequest request,
+        [FromRoute] string homeId)
     {
         if (request == null)
         {
@@ -136,7 +151,9 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/notifications")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
-    public NotificatedMembersResponse NotificatedMembers([FromRoute] string homeId, NotificatedMembersRequest request)
+    public NotificatedMembersResponse NotificatedMembers(
+        [FromRoute] string homeId,
+        NotificatedMembersRequest request)
     {
         if (request == null)
         {
@@ -144,7 +161,10 @@ public sealed class HomeController : HomifyControllerBase
         }
 
         var user = GetUserLogged();
-        var newMembersToNotify = _homeService.UpdateNotificatedList(homeId, request.HomeUserId, user);
+        var newMembersToNotify = _homeService.UpdateNotificatedList(
+            homeId,
+            request.HomeUserId,
+            user);
         return new NotificatedMembersResponse(newMembersToNotify);
     }
 
@@ -167,12 +187,23 @@ public sealed class HomeController : HomifyControllerBase
     [HttpGet("by-owner")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public List<GetHomesResponse> GetHomes()
+    public List<GetHomesResponse> ObtainHomesWhereUserIsOwner()
     {
         var user = GetUserLogged();
-
         return _homeService
-            .GetAllHomes(user)
+            .GetAllHomesWhereUserIsOwner(user)
+            .Select(home => new GetHomesResponse(home))
+            .ToList();
+    }
+
+    [HttpGet("by-member")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public List<GetHomesResponse> ObtainHomesWhereUserIsMember()
+    {
+        var user = GetUserLogged();
+        return _homeService
+            .GetAllHomesWhereUserIsMember(user)
             .Select(home => new GetHomesResponse(home))
             .ToList();
     }

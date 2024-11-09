@@ -465,7 +465,9 @@ public partial class Initial : Migration
                 { "6", "companies-Create" },
                 { "7", "devices-RegisterCamera" },
                 { "8", "companies-RegisterSensor" },
-                { "9", "homes-Create" }
+                { "9", "homes-Create" },
+                { "20", "companies-RegisterLamp" },
+                { "21", "companies-RegisterMovementSensor" }
             });
 
         migrationBuilder.InsertData(
@@ -516,7 +518,9 @@ public partial class Initial : Migration
                 { "bab54740-89b7-4fd7-9c5a-77d3158c1c29", "18", "HomeOwnerId" },
                 { "eaf017eb-6d0c-41d4-90fc-b50b5a2401e5", "9", "HomeOwnerId" },
                 { "f2f668b8-45e0-4916-aefa-16648a88c50f", "8", "CompanyOwnerId" },
-                { "f4cc5867-d7b5-413b-8017-b8c65d003b23", "7", "CompanyOwnerId" }
+                { "f4cc5867-d7b5-413b-8017-b8c65d003b23", "7", "CompanyOwnerId" },
+                { "f4cc5867-d7b5-413b-8017-b8c65d003b24", "20", "CompanyOwnerId" },
+                { "f4cc5867-d7b5-413b-8017-b8c65d003b25", "21", "CompanyOwnerId" }
             });
 
         migrationBuilder.InsertData(

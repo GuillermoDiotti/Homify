@@ -26,7 +26,7 @@ export class LoginFormComponent {
 	}
 
   ngOnInit(): void {
-    const token = this.sessionService.getCurrentUserToken();
+    const { token } = this.sessionService.getCurrentUser();
 		this.currentUserToken = token ?? null;
   }
 
@@ -43,7 +43,7 @@ export class LoginFormComponent {
 
     this.sessionService.login(email, password).subscribe(
       resp => {
-        this.sessionService.setCurrentUserToken(resp.token);
+        this.sessionService.setCurrentUser(resp.token, resp.roles);
 				this.currentUserToken = resp.token;
         this.errorMessage = '';
       },

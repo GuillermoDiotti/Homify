@@ -9,6 +9,7 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions.HomePermissions;
@@ -82,7 +83,10 @@ services.AddScoped<IRepository<Company>, CompanyRepository>();
 services.AddScoped<ICompanyService, CompanyService>();
 
 services.AddScoped<IRepository<Device>, DeviceRepository>();
+
 services.AddScoped<IRepository<Camera>, Repository<Camera>>();
+services.AddScoped<IRepository<MovementSensor>, Repository<MovementSensor>>();
+services.AddScoped<IRepository<Lamp>, Repository<Lamp>>();
 
 services.AddScoped<IRepository<Sensor>, Repository<Sensor>>();
 services.AddScoped<IDeviceService, DeviceService>();

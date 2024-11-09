@@ -216,8 +216,13 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public List<Home> GetAllHomes(User user)
+    public List<Home> GetAllHomesWhereUserIsOwner(User user)
     {
         return _repository.GetAll(x => x.OwnerId == user.Id);
+    }
+
+    public List<Home> GetAllHomesWhereUserIsMember(User user)
+    {
+        return _repository.GetAll(x => x.Members.Any(m => m.UserId == user.Id));
     }
 }

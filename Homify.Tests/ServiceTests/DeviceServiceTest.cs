@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -19,6 +20,8 @@ public class DeviceServiceTest
     private Mock<IRepository<Device>>? _deviceRepositoryMock;
     private DeviceService? _deviceService;
     private Mock<ICompanyService>? _companyServiceMock;
+    private Mock<IRepository<Lamp>>? _lampRepositoryMock;
+    private Mock<IRepository<MovementSensor>>? _movementSensorRepositoryMock;
 
     [TestInitialize]
     public void Setup()
@@ -26,8 +29,11 @@ public class DeviceServiceTest
         _cameraRepositoryMock = new Mock<IRepository<Camera>>();
         _sensorRepositoryMock = new Mock<IRepository<Sensor>>();
         _deviceRepositoryMock = new Mock<IRepository<Device>>();
+        _lampRepositoryMock = new Mock<IRepository<Lamp>>();
         _companyServiceMock = new Mock<ICompanyService>();
-        _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object, _deviceRepositoryMock.Object, _companyServiceMock.Object);
+        _movementSensorRepositoryMock = new Mock<IRepository<MovementSensor>>();
+        _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object,
+            _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object, _movementSensorRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -57,7 +63,8 @@ public class DeviceServiceTest
             "photo1.jpg",
             true,
             false,
-            user);
+                    user,
+                    false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -95,7 +102,8 @@ public class DeviceServiceTest
             "mainphoto.jpg",
             true,
             false,
-            user);
+                    user,
+                    false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -171,7 +179,8 @@ public class DeviceServiceTest
             "photo1.jpg",
             true,
             false,
-            user);
+                    user,
+            false);
 
         _deviceService.AddCamera(createDeviceArgs, user);
     }
@@ -278,5 +287,41 @@ public class DeviceServiceTest
 
         Assert.AreEqual(3, result.Count);
         CollectionAssert.AreEqual(new List<string> { "Camera", "Sensor", "Thermostat" }, result);
+    }
+
+    [TestMethod]
+    public void AddLamp_ValidRequest_AddsLamp()
+    {
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
+        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", [], "ppalPicture", false, false, user, true);
+        _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
+
+        var result = _deviceService.AddLamp(createDeviceArgs, user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Lamp", result.Name);
+        Assert.AreEqual("Model X", result.Model);
+        Assert.AreEqual("A smart lamp", result.Description);
+        Assert.AreEqual("company1", result.CompanyId);
+        Assert.IsTrue(result.IsActive);
+        _lampRepositoryMock.Verify(repo => repo.Add(It.IsAny<Lamp>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void AddMovementSensor_ValidRequest_ShouldAddsMovementSensor()
+    {
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
+        var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", [],
+            "ppalPicture", false, false, user, true);
+
+        _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
+
+        var result = _deviceService.AddMovementSensor(createDeviceArgs, user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Sensor", result.Name);
+        Assert.AreEqual("Model Y", result.Model);
+        Assert.AreEqual("A movement sensor", result.Description);
+        Assert.AreEqual("company1", result.CompanyId);
     }
 }

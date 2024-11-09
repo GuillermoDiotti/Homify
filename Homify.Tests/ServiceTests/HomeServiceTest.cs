@@ -593,10 +593,34 @@ public class HomeServiceTest
         _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Home, bool>>>()))
             .Returns(homes);
 
-        var result = _homeService.GetAllHomes(user);
+        var result = _homeService.GetAllHomesWhereUserIsOwner(user);
 
+        _mockRepository.VerifyAll();
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
         Assert.IsTrue(result.All(home => home.OwnerId == "user1"));
+    }
+
+    [TestMethod]
+    public void GetAllHomes_ReturnsHomesForUser2()
+    {
+        // Arrange
+        var user = new User { Id = "user1" };
+        var hu1 = new HomeUser()
+        {
+            UserId = "user1"
+        };
+        var homes = new List<Home>()
+        {
+            new Home { Id = "home1", Members = [hu1] },
+        };
+        _mockRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Home, bool>>>()))
+            .Returns(homes);
+
+        var result = _homeService.GetAllHomesWhereUserIsMember(user);
+
+        _mockRepository.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
     }
 }

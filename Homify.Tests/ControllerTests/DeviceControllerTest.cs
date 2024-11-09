@@ -9,6 +9,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
@@ -299,5 +300,63 @@ public class DeviceControllerTest
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
         _controller.RegisterCamera(request);
+    }
+
+    [TestMethod]
+    public void RegisterLamp_ValidRequest_ShouldReturnsCreateDeviceResponse()
+    {
+        var request = new CreateLampRequest
+        {
+            Name = "Lamp",
+            Model = "Model X",
+            Description = "A smart lamp",
+            Active = true
+        };
+        var user = new User { Id = "user1" };
+        var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false };
+        var lamp = new Lamp { Id = "lamp1", Name = "Lamp", Model = "Model X" };
+        _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
+        _deviceServiceMock.Setup(service => service.AddLamp(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(lamp);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        var result = _controller.RegisterLamp(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("lamp1", result.Id);
+    }
+
+    [TestMethod]
+    public void RegisterMovementSensor_ValidRequest_ShouldReturnsCreateDeviceResponse()
+    {
+        var request = new CreateSensorRequest
+        {
+            Name = "Sensor",
+            Model = "Model Y",
+            Description = "A movement sensor",
+            Photos = [],
+            PpalPicture = "ppalPicture"
+        };
+
+        var user = new User { Id = "user1" };
+        var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false, Company = new Company { Id = "company1" } };
+        var sensor = new MovementSensor { Id = "sensor1", Name = "Sensor", Model = "Model Y", Description = "A movement sensor", CompanyId = "company1" };
+
+        _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
+        _deviceServiceMock.Setup(service => service.AddMovementSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(sensor);
+
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+
+        var result = _controller.RegisterMovementSensor(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("sensor1", result.Id);
     }
 }

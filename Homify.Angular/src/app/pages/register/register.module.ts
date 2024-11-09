@@ -5,9 +5,10 @@ import { ButtonComponent } from '../../components/button/button.component';
 import { InputComponent } from '../../components/input/input.component';
 import { RegisterComponent } from './register.component';
 import { RegisterFormComponent } from '../../business-components/forms/register-form/register-form.component';
+import { NonAuthGuard } from '../../guards/non-auth.guard';
 
 const routes: Routes = [
-  { path: '', component: RegisterComponent },
+  { path: '', component: RegisterComponent, canActivate: [NonAuthGuard] },
 ];
 
 @NgModule({

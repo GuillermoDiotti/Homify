@@ -10,6 +10,8 @@ import { UpdateMembersPermissionRequest } from './models/UpdateMembersPermission
 import { HomeMemberBasicInfo } from './models/HomeMemberBasicInfo';
 import { GetMembersResponse } from './models/GetMembersResponse';
 import { GetDevicesResponse } from '../device/models/GetDevicesResponse';
+import { UpdateHomeDevicesRequest } from './models/UpdateHomeDevicesRequest';
+import { UpdateHomeDeviceResponse } from './models/UpdateHomeDeviceResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +29,11 @@ export class HomeService {
     return this._repository.getAllHomesByOwner();
   }
 
+	public getHomesByMember()
+    : Observable<Array<GetAllHomesResponse>> {
+    return this._repository.getAllHomesByMember();
+  }
+
   public UpdateMembers(id:string, request: UpdateMemberListRequest): Observable<UpdateMemberListResponse>{
     return this._repository.UpdateHomeMembers(id, request);
   }
@@ -42,5 +49,9 @@ export class HomeService {
 
 	public getHomeDevices(homeId: string): Observable<GetDevicesResponse[]> {
 		return this._repository.GetHomeDevices(homeId);
+	}
+
+	public addNewDevice(homeId: string, req: UpdateHomeDevicesRequest): Observable<UpdateHomeDeviceResponse> {
+		return this._repository.addNewDevice(homeId, req);
 	}
 }
