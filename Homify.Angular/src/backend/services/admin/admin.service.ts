@@ -26,7 +26,22 @@ export class AdminService {
     role?: string,
     fullName?: string)
     : Observable<UserBasicInfo[]> {
-    const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(role ?? '')}&fullName=${encodeURIComponent(fullName ?? '')}`;
+			const queryParams: string[] = [];
+
+    if (limit) {
+      queryParams.push(`limit=${encodeURIComponent(limit)}`);
+    }
+    if (offset) {
+      queryParams.push(`offset=${encodeURIComponent(offset)}`);
+    }
+		if (role){
+			queryParams.push(`role=${encodeURIComponent(role)}`);
+		}
+		if (fullName){
+			queryParams.push(`fullname=${encodeURIComponent(fullName)}`);
+		}
+
+    const query = queryParams.join('&');
     return this._repository.getAllAccounts(query);
   }
 }
