@@ -311,9 +311,9 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddMovementSensor_ValidRequest_ShouldAddsMovementSensor()
     {
-        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" } };
-        var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", new List<string>(),
-            "ppalPicture", false, false,new CompanyOwner(), true);
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
+        var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", [],
+            "ppalPicture", false, false, user, true);
 
         _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
 
