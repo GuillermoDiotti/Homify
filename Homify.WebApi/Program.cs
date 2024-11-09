@@ -24,6 +24,7 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
 using Homify.DataAccess.Repositories;
+using Homify.DataAccess.Repositories.Importers;
 using Homify.DataAccess.Repositories.Rooms;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.WebApi.Filters;
@@ -114,6 +115,8 @@ services.AddScoped<ICompanyOwnerService, CompanyOwnerService>();
 
 services.AddScoped<IRepository<Notification>, NotificationRepository>();
 services.AddScoped<INotificationService, NotificationService>();
+
+services.AddScoped<IImporterService, ImporterService>();
 
 services.AddScoped<AuthenticationFilterAttribute>();
 
