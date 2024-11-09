@@ -14,7 +14,7 @@ export class NotificationService {
 		offset?: string,
 		eventTriggered?: string,
 		date?: string,
-		read?: boolean
+		read?: string
 	): Observable<NotificationBasicInfo[]> {
 		const queryParams: string[] = [];
 

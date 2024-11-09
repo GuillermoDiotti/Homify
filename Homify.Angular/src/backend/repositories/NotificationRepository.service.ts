@@ -14,6 +14,6 @@ export class NotificationApiRepositoryService extends ApiRepository {
   }
 
   public getUserNotifications(query: string): Observable<Array<NotificationBasicInfo>> {
-    return this.get<Array<NotificationBasicInfo>>("accounts", query).pipe(catchError(this.handleError));
+    return this.get<Array<NotificationBasicInfo>>("", query).pipe(catchError(this.handleError));
   }
 }
