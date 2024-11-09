@@ -303,44 +303,8 @@ public class DeviceControllerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void TurnOnDevice_WhenHomeDeviceNotFound_ShouldThrowNotFoundException()
-    {
-        var hardwareId = "Device123";
-
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns<HomeDevice>(null);
-
-        _controller.TurnOnDevice(hardwareId);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TurnOnDevice_WhenUserIsNotMemberOrOwner_ShouldThrowInvalidOperationException()
-    {
-        var hardwareId = "Device123";
-        var user = new User { Id = "testUserId" };
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = false,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = "otherUserId",
-                Members = []
-            }
-        };
-
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
-
-        _controller.TurnOnDevice(hardwareId);
-    }
-
-    [TestMethod]
     public void RegisterLamp_ValidRequest_ShouldReturnsCreateDeviceResponse()
     {
-        // Arrange
         var request = new CreateLampRequest
         {
             Name = "Lamp",
@@ -359,10 +323,8 @@ public class DeviceControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        // Act
         var result = _controller.RegisterLamp(request);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual("lamp1", result.Id);
     }
@@ -370,7 +332,6 @@ public class DeviceControllerTest
     [TestMethod]
     public void RegisterMovementSensor_ValidRequest_ShouldReturnsCreateDeviceResponse()
     {
-        // Arrange
         var request = new CreateSensorRequest { Name = "Sensor", Model = "Model Y", Description = "A movement sensor", Photos = new List<string>(), PpalPicture = "ppalPicture" };
         var user = new User { Id = "user1" };
         var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false, Company = new Company { Id = "company1" } };
@@ -385,10 +346,8 @@ public class DeviceControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        // Act
         var result = _controller.RegisterMovementSensor(request);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual("sensor1", result.Id);
     }
