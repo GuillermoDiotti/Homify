@@ -4,7 +4,6 @@ using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.DataAccess.Repositories;
@@ -65,7 +64,7 @@ public class DeviceServiceTest
             true,
             false,
 						user,
-            false);
+                        false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -103,8 +102,8 @@ public class DeviceServiceTest
             "mainphoto.jpg",
             true,
             false,
-						user,
-            false);
+                    user,
+                    false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -180,7 +179,7 @@ public class DeviceServiceTest
             "photo1.jpg",
             true,
             false,
-						user,
+                    user,
             false);
 
         _deviceService.AddCamera(createDeviceArgs, user);

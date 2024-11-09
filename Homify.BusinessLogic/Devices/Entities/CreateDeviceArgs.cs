@@ -24,8 +24,7 @@ public class CreateDeviceArgs
         bool isExterior,
         bool isInterior,
         CompanyOwner? owner,
-        bool isActive
-    )
+        bool isActive)
     {
         PpalPicture = ppalPicture ?? string.Empty;
 

@@ -332,7 +332,12 @@ public class DeviceControllerTest
     [TestMethod]
     public void RegisterMovementSensor_ValidRequest_ShouldReturnsCreateDeviceResponse()
     {
-        var request = new CreateSensorRequest { Name = "Sensor", Model = "Model Y", Description = "A movement sensor", Photos = new List<string>(), PpalPicture = "ppalPicture" };
+        var request = new CreateSensorRequest
+        {
+            Name = "Sensor", Model = "Model Y", Description = "A movement sensor", Photos =
+            [], PpalPicture = "ppalPicture"
+        };
+
         var user = new User { Id = "user1" };
         var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false, Company = new Company { Id = "company1" } };
         var sensor = new MovementSensor { Id = "sensor1", Name = "Sensor", Model = "Model Y", Description = "A movement sensor", CompanyId = "company1"};

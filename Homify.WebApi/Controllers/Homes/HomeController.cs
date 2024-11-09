@@ -27,8 +27,7 @@ public sealed class HomeController : HomifyControllerBase
         IHomeService homeService,
         IUserService userService,
         IHomeUserService homeUserService,
-        IHomePermissionService homePermissionService
-    )
+        IHomePermissionService homePermissionService)
     {
         _homeService = homeService;
         _userService = userService;
@@ -54,8 +53,7 @@ public sealed class HomeController : HomifyControllerBase
             request.Longitud ?? string.Empty,
             request.MaxMembers,
             owner,
-            request.Alias ?? string.Empty
-        );
+            request.Alias ?? string.Empty);
 
         var homeSaved = _homeService.AddHome(arguments);
         return new CreateHomeResponse(homeSaved);
@@ -66,8 +64,7 @@ public sealed class HomeController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
     public UpdateMembersListResponse UpdateMembersList(
         [FromRoute] string homeId,
-        UpdateMemberListRequest? request
-    )
+        UpdateMemberListRequest? request)
     {
         if (request == null)
         {
@@ -101,8 +98,7 @@ public sealed class HomeController : HomifyControllerBase
             req.CanAddDevices,
             req.CanListDevices,
             user,
-            found
-        );
+            found);
 
         found.Permissions = list;
         var result = _homeUserService.Update(found);
@@ -114,8 +110,7 @@ public sealed class HomeController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
     public UpdateHomeDeviceResponse UpdateHomeDevice(
         UpdateHomeDevicesRequest request,
-        [FromRoute] string homeId
-    )
+        [FromRoute] string homeId)
     {
         if (request == null)
         {
@@ -159,8 +154,7 @@ public sealed class HomeController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
     public NotificatedMembersResponse NotificatedMembers(
         [FromRoute] string homeId,
-        NotificatedMembersRequest request
-    )
+        NotificatedMembersRequest request)
     {
         if (request == null)
         {
@@ -171,8 +165,7 @@ public sealed class HomeController : HomifyControllerBase
         var newMembersToNotify = _homeService.UpdateNotificatedList(
             homeId,
             request.HomeUserId,
-            user
-        );
+            user);
         return new NotificatedMembersResponse(newMembersToNotify);
     }
 
