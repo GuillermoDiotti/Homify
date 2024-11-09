@@ -343,7 +343,7 @@ public class DeviceControllerTest
 
         var user = new User { Id = "user1" };
         var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false, Company = new Company { Id = "company1" } };
-        var sensor = new MovementSensor { Id = "sensor1", Name = "Sensor", Model = "Model Y", Description = "A movement sensor", CompanyId = "company1"};
+        var sensor = new MovementSensor { Id = "sensor1", Name = "Sensor", Model = "Model Y", Description = "A movement sensor", CompanyId = "company1" };
 
         _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
         _deviceServiceMock.Setup(service => service.AddMovementSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(sensor);
