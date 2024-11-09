@@ -12,12 +12,13 @@ import { HomeMemberListComponent } from '../../business-components/lists/home-me
 import { HomedevicesListComponent } from '../../business-components/lists/homedevices-list/homedevices-list.component';
 import { HomedevicesComponent } from './homedevices/homedevices.component';
 import { MemberHomeListComponent } from '../../business-components/lists/member-home-list/member-home-list.component';
+import { HomeOwnerGuard } from '../../guards/home-owner.guard';
 
 const routes: Routes = [
-  { path: 'create', component: CreateHomeComponent },
-  { path: 'add-member', component: AddMemberComponent },
-  { path: 'update-permissions', component: UpdateMembersPermissionsComponent },
-	{ path: 'devices', component: HomedevicesComponent },
+  { path: 'create', component: CreateHomeComponent, canActivate: [HomeOwnerGuard] },
+  { path: 'add-member', component: AddMemberComponent, canActivate: [HomeOwnerGuard] },
+  { path: 'update-permissions', component: UpdateMembersPermissionsComponent, canActivate: [HomeOwnerGuard] },
+	{ path: 'devices', component: HomedevicesComponent, canActivate: [HomeOwnerGuard] },
 ];
 
 @NgModule({
