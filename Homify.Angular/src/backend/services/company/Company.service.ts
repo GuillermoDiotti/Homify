@@ -31,11 +31,11 @@ export class CompanyService {
     if (offset) {
       queryParams.push(`offset=${encodeURIComponent(offset)}`);
     }
-    if (ownerfullname) {
-      queryParams.push(`role=${encodeURIComponent(ownerfullname)}`);
-    }
     if (company) {
-      queryParams.push(`fullName=${encodeURIComponent(company)}`);
+      queryParams.push(`company=${encodeURIComponent(company)}`);
+    }
+    if (ownerfullname) {
+      queryParams.push(`ownerFullName=${encodeURIComponent(ownerfullname)}`);
     }
 
     const query = queryParams.join('&');
