@@ -82,8 +82,7 @@ public sealed class HomeController : HomifyControllerBase
     public HomeMemberBasicInfo ChangeHomeMemberPermissions(
         [FromRoute] string? homeId,
         [FromRoute] string memberId,
-        EditMemberPermissionsRequest req
-    )
+        EditMemberPermissionsRequest req)
     {
         if (req == null)
         {

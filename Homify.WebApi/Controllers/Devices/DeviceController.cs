@@ -79,8 +79,8 @@ public class DeviceController : HomifyControllerBase
             req.PpalPicture ?? string.Empty,
             isExterior,
             true,
-			companyOwner,
-			false);
+                        companyOwner,
+                        false);
 
         Sensor sen = _deviceService.AddSensor(args, companyOwner);
 

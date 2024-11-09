@@ -334,8 +334,11 @@ public class DeviceControllerTest
     {
         var request = new CreateSensorRequest
         {
-            Name = "Sensor", Model = "Model Y", Description = "A movement sensor", Photos =
-            [], PpalPicture = "ppalPicture"
+            Name = "Sensor",
+            Model = "Model Y",
+            Description = "A movement sensor",
+            Photos = [],
+            PpalPicture = "ppalPicture"
         };
 
         var user = new User { Id = "user1" };

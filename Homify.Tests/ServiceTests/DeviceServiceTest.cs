@@ -63,8 +63,8 @@ public class DeviceServiceTest
             "photo1.jpg",
             true,
             false,
-						user,
-                        false);
+                    user,
+                    false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
