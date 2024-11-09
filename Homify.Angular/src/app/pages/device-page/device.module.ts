@@ -7,11 +7,12 @@ import { SupportedDevicesComponent } from './supported-devices/supported-devices
 import { AllDevicesComponent } from './all-devices/all-devices.component';
 import { SupportedDevicesListComponent } from '../../business-components/lists/supported-devices-list/supported-devices-list.component';
 import { RegisteredDevicesListComponent } from '../../business-components/lists/registered-devices-list/registered-devices-list.component';
+import { AuthGuard } from '../../guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: DevicePageComponent },
-	{ path: 'supported', component: SupportedDevicesComponent },
-	{ path: 'all', component: AllDevicesComponent },
+	{ path: 'supported', component: SupportedDevicesComponent, canActivate: [AuthGuard] },
+	{ path: 'all', component: AllDevicesComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
