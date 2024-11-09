@@ -30,7 +30,6 @@ public class ImporterControllerTest
         {
             ImporterSelected = "importer",
             FilePath = "path",
-            DllPath = "dllPath"
         };
         var user = new User { Id = "userId" };
         _importerController.ControllerContext = new ControllerContext

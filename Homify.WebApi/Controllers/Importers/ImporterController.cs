@@ -35,7 +35,12 @@ public sealed class ImporterController : HomifyControllerBase
         ImporterArgs args = new ImporterArgs(
             request.ImporterSelected,
             request.FilePath,
-            request.DllPath);
-        _importerService.AddImportedDevices(args, user.Id);
+            user);
+
+        // ImporterArgs args = new ImporterArgs(
+        //     request.ImporterSelected,
+        //     request.FilePath,
+        //     request.DllPath);
+        _importerService.AddImportedDevices(args, user);
     }
 }

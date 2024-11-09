@@ -6,5 +6,5 @@ public sealed record class ImportRequest
 
     public string FilePath { get; init; } = null!;
 
-    public string DllPath { get; init; } = null!;
+    // public string DllPath { get; init; } = null!;
 }

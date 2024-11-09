@@ -1,3 +1,4 @@
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 
 namespace Homify.DataAccess.Repositories.Importers.Entities;
@@ -6,9 +7,9 @@ public class ImporterArgs
 {
     public string Importer { get; set; }
     public string Path { get; set; }
-    public string DllPath { get; set; }
+    public User User { get; set; }
 
-    public ImporterArgs(string importer, string path, string dllPath)
+    public ImporterArgs(string importer, string path, User user)
     {
         if (string.IsNullOrEmpty(importer))
         {
@@ -24,11 +25,13 @@ public class ImporterArgs
 
         Path = path;
 
-        if (string.IsNullOrEmpty(dllPath))
-        {
-            throw new ArgsNullException("The path can not be null.");
-        }
+        User = user;
 
-        DllPath = dllPath;
+        // if (string.IsNullOrEmpty(dllPath))
+        // {
+        //     throw new ArgsNullException("The path can not be null.");
+        // }
+
+        // DllPath = dllPath;
     }
 }
