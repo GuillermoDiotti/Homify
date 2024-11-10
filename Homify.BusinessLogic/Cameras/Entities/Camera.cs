@@ -5,8 +5,8 @@ namespace Homify.BusinessLogic.Cameras.Entities;
 
 public class Camera : Device
 {
-    public bool IsExterior { get; init; }
-    public bool IsInterior { get; init; }
+    public bool? IsExterior { get; init; }
+    public bool? IsInterior { get; init; }
 
     public Camera()
         : base()
@@ -14,6 +14,15 @@ public class Camera : Device
         Type = Constants.CAMERA;
         MovementDetection = true;
         PeopleDetection = true;
+        WindowDetection = false;
+    }
+
+    public Camera(bool movementDetection, bool peopleDetection)
+        : base()
+    {
+        Type = Constants.CAMERA;
+        MovementDetection = movementDetection;
+        PeopleDetection = peopleDetection;
         WindowDetection = false;
     }
 }

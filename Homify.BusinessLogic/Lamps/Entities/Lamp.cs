@@ -5,7 +5,7 @@ namespace Homify.BusinessLogic.Lamps.Entities;
 
 public class Lamp : Device
 {
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
     public Lamp()
         : base()
     {

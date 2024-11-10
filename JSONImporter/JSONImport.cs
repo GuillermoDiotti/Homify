@@ -30,16 +30,24 @@ public class JSONImport : ImporterInterface
         List<ReturnImportDevices> returnList = new List<ReturnImportDevices>();
         foreach (var device in devicesList)
         {
-            // ReturnImportDevices returnDevice = new ReturnImportDevices();
-            // returnDevice.Name = device.Name;
-            // returnDevice.Type = device.Type;
-            // returnDevice.Brand = device.Brand;
-            // returnDevice.Model = device.Model;
-            // returnDevice.Price = device.Price;
-            // returnDevice.Warranty = device.Warranty;
-            // returnDevice.DateOfPurchase = device.DateOfPurchase;
-            // returnDevice.Owner = device.Owner;
-            // returnList.Add(returnDevice);
+            ReturnImportDevices returnDevice = new ReturnImportDevices();
+            returnDevice.Name = device.Name;
+            returnDevice.Type = device.Type;
+            returnDevice.Model = device.Model;
+            returnDevice.Id = device.Id;
+            returnDevice.PersonDetection = device.PersonDetection;
+            returnDevice.MovementDetection = device.MovementDetection;
+            List<ReturnPhotos> returnPhotos = new List<ReturnPhotos>();
+            foreach (var photo in device.Photos)
+            {
+                ReturnPhotos foto = new ReturnPhotos();
+                foto.Path = photo.Path;
+                foto.IsPrincipal = photo.IsPrincipal;
+                returnPhotos.Add(foto);
+            }
+
+            returnDevice.Photos = returnPhotos;
+            returnList.Add(returnDevice);
         }
 
         return returnList;

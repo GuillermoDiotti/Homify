@@ -44,6 +44,8 @@ public class DeviceService : IDeviceService
             IsInterior = device.IsInterior,
             Company = owner.Company,
             CompanyId = owner.Company.Id,
+            MovementDetection = device.MovementDetection,
+            PeopleDetection = device.PeopleDetection
         };
 
         _cameraRepository.Add(camera);

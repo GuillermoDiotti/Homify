@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Loader;
 using FluentAssertions;
+using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories.Importers;
 using Homify.DataAccess.Repositories.Importers.Entities;
@@ -18,11 +20,15 @@ public class ImporterServiceTest
 {
     private ImporterService? _importerService;
     private Mock<IImporterService>? _importerServiceMock;
+    private Mock<IDeviceService>? _deviceServiceMock;
+    private Mock<ICompanyOwnerService>? _companyOwnerServiceMock;
 
     public ImporterServiceTest()
     {
         _importerServiceMock = new Mock<IImporterService>();
-        _importerService = new ImporterService();
+        _deviceServiceMock = new Mock<IDeviceService>();
+        _companyOwnerServiceMock = new Mock<ICompanyOwnerService>();
+        _importerService = new ImporterService(_deviceServiceMock.Object, _companyOwnerServiceMock.Object);
     }
 
     [TestMethod]

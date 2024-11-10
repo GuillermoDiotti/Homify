@@ -5,15 +5,23 @@ namespace Homify.BusinessLogic.Devices.Entities;
 
 public class CreateDeviceArgs
 {
-    public string Name { get; init; }
-    public string Model { get; init; }
-    public string Description { get; init; }
-    public List<string> Photos { get; init; }
-    public string PpalPicture { get; init; }
-    public bool IsExterior { get; init; }
-    public bool IsInterior { get; init; }
-    public bool IsActive { get; init; }
-    public CompanyOwner Owner { get; init; }
+    public string? Id { get; set; }
+    public string? Name { get; init; }
+    public string? Model { get; init; }
+    public string? Type { get; set; }
+    public string? Description { get; init; }
+    public List<string>? Photos { get; set; }
+    public string? PpalPicture { get; set; }
+    public bool? IsExterior { get; init; }
+    public bool? IsInterior { get; init; }
+    public bool? IsActive { get; init; }
+    public CompanyOwner? Owner { get; init; }
+    public bool? MovementDetection { get; set; }
+    public bool? PeopleDetection { get; set; }
+
+    public CreateDeviceArgs()
+    {
+    }
 
     public CreateDeviceArgs(
         string name,
