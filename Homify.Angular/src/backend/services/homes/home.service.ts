@@ -12,6 +12,8 @@ import { GetMembersResponse } from './models/GetMembersResponse';
 import { GetDevicesResponse } from '../device/models/GetDevicesResponse';
 import { UpdateHomeDevicesRequest } from './models/UpdateHomeDevicesRequest';
 import { UpdateHomeDeviceResponse } from './models/UpdateHomeDeviceResponse';
+import { NotificatedMembersRequest } from './models/NotificatedMembersRequest';
+import { NotificatedMembersResponse } from './models/NotificatedMembersResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +55,9 @@ export class HomeService {
 
 	public addNewDevice(homeId: string, req: UpdateHomeDevicesRequest): Observable<UpdateHomeDeviceResponse> {
 		return this._repository.addNewDevice(homeId, req);
+	}
+
+	public makeUserNotificable(homeId: string, req: NotificatedMembersRequest): Observable<NotificatedMembersResponse> {
+		return this._repository.makeUserNotificable(homeId, req);
 	}
 }

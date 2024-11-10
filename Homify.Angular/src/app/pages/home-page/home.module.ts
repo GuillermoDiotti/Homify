@@ -13,6 +13,7 @@ import { HomedevicesListComponent } from '../../business-components/lists/homede
 import { HomedevicesComponent } from './homedevices/homedevices.component';
 import { MemberHomeListComponent } from '../../business-components/lists/member-home-list/member-home-list.component';
 import { HomeOwnerGuard } from '../../guards/home-owner.guard';
+import { MakeUserNotificableFormComponent } from '../../business-components/forms/make-user-notificable-form/make-user-notificable-form.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateHomeComponent, canActivate: [HomeOwnerGuard] },
@@ -34,6 +35,7 @@ const routes: Routes = [
     HomeMemberListComponent,
 		HomedevicesListComponent,
 		MemberHomeListComponent,
+		MakeUserNotificableFormComponent,
   ]
 })
 export class HomePageModule { }

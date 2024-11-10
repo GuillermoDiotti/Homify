@@ -7,9 +7,17 @@
   <ul>
     @for (member of members; track $index) {
     <li>
-      <strong>Member Name:</strong> {{ member.fullName }} <br />
+      <strong>Member Name:</strong> {{ member.fullname }} <br />
       <strong>Member Email:</strong> {{ member.email }} <br />
-      <strong>Member Permissions:</strong> {{ member.permissions }} <br />
+      <div style="display: flex; flex-direction: column;">
+				<strong>Member Permissions:</strong>
+				<div style="display: flex; gap: 10px;">
+					@for (perm of member.permissions; track $index){
+						<span>{{ perm }}</span>
+					}
+				</div>
+			</div>
+			<br />
       <app-button (clicked)="onClick(member.id)">Select</app-button>
     </li>
     }

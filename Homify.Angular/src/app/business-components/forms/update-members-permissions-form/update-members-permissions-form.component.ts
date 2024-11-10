@@ -51,6 +51,7 @@ export class UpdateMembersPermissionsFormComponent {
     event.preventDefault();
     this.successMessage = '';
     this.errorMessage = '';
+		console.log(this.selectedMemberId)
 
     if (this.form.valid) {
       const { canAddDevices, canListDevices } = this.form.value;

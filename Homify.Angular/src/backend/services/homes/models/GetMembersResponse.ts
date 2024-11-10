@@ -1,6 +1,6 @@
 export interface GetMembersResponse {
     id:string;
-    fullName: string;
+    fullname: string;
     email: string;
     photo: string;
     permissions: string[];

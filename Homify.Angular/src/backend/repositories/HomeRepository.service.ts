@@ -15,6 +15,8 @@ import { GetMembersResponse } from "../services/homes/models/GetMembersResponse"
 import { GetDevicesResponse } from "../services/device/models/GetDevicesResponse";
 import { UpdateHomeDevicesRequest } from "../services/homes/models/UpdateHomeDevicesRequest";
 import { UpdateHomeDeviceResponse } from "../services/homes/models/UpdateHomeDeviceResponse";
+import { NotificatedMembersRequest } from "../services/homes/models/NotificatedMembersRequest";
+import { NotificatedMembersResponse } from "../services/homes/models/NotificatedMembersResponse";
 
 
 @Injectable({
@@ -61,5 +63,8 @@ import { UpdateHomeDeviceResponse } from "../services/homes/models/UpdateHomeDev
 			public addNewDevice(homeId: string, req: UpdateHomeDevicesRequest): Observable<UpdateHomeDeviceResponse> {
 				return this.putById<UpdateHomeDeviceResponse>(homeId, req, "devices").pipe(catchError(this.handleError));
 			}
-  
+
+			public makeUserNotificable(homeId: string, req: NotificatedMembersRequest): Observable<NotificatedMembersResponse> {
+				return this.putById<NotificatedMembersResponse>(`${homeId}/notifications`, req).pipe(catchError(this.handleError));
+			}
     }
