@@ -79,6 +79,9 @@ public class ImporterService : IImporterService
                 Type = device.Type,
                 PeopleDetection = device.PersonDetection,
                 MovementDetection = device.MovementDetection,
+                Description = "importado",
+                IsExterior = false,
+                IsInterior = false
             };
             List<string> returnList = new List<string>();
             foreach (var photo in device.Photos)
