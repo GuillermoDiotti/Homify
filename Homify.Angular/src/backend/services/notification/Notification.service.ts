@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NotificationApiRepositoryService } from '../../repositories/NotificationRepository.service';
 import { Observable } from 'rxjs';
 import { NotificationBasicInfo } from './models/NotificationBasicInfo';
+import { UpdateNotificationResponse } from './models/UpdateNotificationResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -37,4 +38,8 @@ export class NotificationService {
 		const query = queryParams.join('&');
     return this._repository.getUserNotifications(query);
   }
+
+	public readNotification(id: string): Observable<UpdateNotificationResponse> {
+		return this._repository.readNotification(id);
+	}
 }
