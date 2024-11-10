@@ -11,20 +11,12 @@ export class NotificationService {
   constructor(private readonly _repository: NotificationApiRepositoryService) {}
 
   public getUserNotifications(
-		limit?: string,
-		offset?: string,
 		eventTriggered?: string,
 		date?: string,
 		read?: string
 	): Observable<NotificationBasicInfo[]> {
 		const queryParams: string[] = [];
 
-    if (limit) {
-      queryParams.push(`limit=${encodeURIComponent(limit)}`);
-    }
-    if (offset) {
-      queryParams.push(`offset=${encodeURIComponent(offset)}`);
-    }
 		if (eventTriggered) {
       queryParams.push(`eventTriggered=${encodeURIComponent(eventTriggered)}`);
     }

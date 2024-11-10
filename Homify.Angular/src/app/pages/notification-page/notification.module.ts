@@ -17,6 +17,6 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
 		NotificationListComponent
-  ]
+  ],
 })
 export class NotificationModule { }
