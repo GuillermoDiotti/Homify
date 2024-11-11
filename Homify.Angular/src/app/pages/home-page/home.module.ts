@@ -14,6 +14,9 @@ import { HomedevicesComponent } from './homedevices/homedevices.component';
 import { MemberHomeListComponent } from '../../business-components/lists/member-home-list/member-home-list.component';
 import { HomeOwnerGuard } from '../../guards/home-owner.guard';
 import { MakeUserNotificableFormComponent } from '../../business-components/forms/make-user-notificable-form/make-user-notificable-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'create', component: CreateHomeComponent, canActivate: [HomeOwnerGuard] },
@@ -36,6 +39,9 @@ const routes: Routes = [
 		HomedevicesListComponent,
 		MemberHomeListComponent,
 		MakeUserNotificableFormComponent,
+		MatButtonModule,
+    MatDialogModule,
+		ReactiveFormsModule,
   ]
 })
 export class HomePageModule { }

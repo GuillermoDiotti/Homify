@@ -4,4 +4,5 @@ export interface NotificationBasicInfo {
   deviceId: string;
   date: string;
   isRead: boolean;
+	detail: string;
 }

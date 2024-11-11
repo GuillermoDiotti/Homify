@@ -6,11 +6,14 @@ import { ErrorMessageComponent } from '../../../components/error-message/error-m
 import { UpdateHomeDevicesRequest } from '../../../../backend/services/homes/models/UpdateHomeDevicesRequest';
 import { RegisteredDevicesListComponent } from '../registered-devices-list/registered-devices-list.component';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
+import { GenerateNotificationButtonComponent } from '../../buttons/generate-notification-button/generate-notification-button.component';
 
 @Component({
   selector: 'app-homedevices-list',
   standalone: true,
-  imports: [ErrorMessageComponent, SuccessMessageComponent,RegisteredDevicesListComponent],
+  imports: [ErrorMessageComponent, SuccessMessageComponent, 
+		RegisteredDevicesListComponent, GenerateNotificationButtonComponent,
+	],
   templateUrl: './homedevices-list.component.html',
   styleUrl: './homedevices-list.component.css'
 })
@@ -19,7 +22,6 @@ export class HomedevicesListComponent implements OnInit{
 	@Input() homeId = "";
 	errorMessage = '';
 	successMessage = '';
-	selectedDeviceId = '';
 
 	constructor(private readonly HomeService: HomeService) {}
 

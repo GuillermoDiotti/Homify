@@ -3,6 +3,7 @@ import { NotificationApiRepositoryService } from '../../repositories/Notificatio
 import { Observable } from 'rxjs';
 import { NotificationBasicInfo } from './models/NotificationBasicInfo';
 import { UpdateNotificationResponse } from './models/UpdateNotificationResponse';
+import { GenerateNotificationRequest } from './models/GenerateNotificationRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,9 @@ export class NotificationService {
 
 	public readNotification(id: string): Observable<UpdateNotificationResponse> {
 		return this._repository.readNotification(id);
+	}
+
+	public createNotification(req: GenerateNotificationRequest, type: string): Observable<any> {
+		return this._repository.createNotification(req, type);
 	}
 }
