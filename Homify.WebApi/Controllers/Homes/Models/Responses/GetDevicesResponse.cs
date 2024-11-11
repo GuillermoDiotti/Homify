@@ -8,6 +8,8 @@ public class GetDevicesResponse
     public string Model { get; set; } = null!;
     public string? MainPhoto { get; set; } = null!;
     public bool IsConnected { get; set; }
+    public string DeviceId { get; set; } = null!;
+    public string HardwareId { get; set; } = null!;
 
     public GetDevicesResponse(HomeDevice homeDevice)
     {
@@ -15,5 +17,7 @@ public class GetDevicesResponse
         Model = homeDevice.Device.Model;
         IsConnected = homeDevice.Connected;
         MainPhoto = homeDevice.Device.PpalPicture;
+        HardwareId = homeDevice.HardwareId;
+        DeviceId = homeDevice.DeviceId;
     }
 }
