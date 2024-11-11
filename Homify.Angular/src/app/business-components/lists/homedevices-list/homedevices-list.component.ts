@@ -7,12 +7,14 @@ import { UpdateHomeDevicesRequest } from '../../../../backend/services/homes/mod
 import { RegisteredDevicesListComponent } from '../registered-devices-list/registered-devices-list.component';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 import { GenerateNotificationButtonComponent } from '../../buttons/generate-notification-button/generate-notification-button.component';
+import { TurnOnDeviceButtonComponent } from '../../buttons/turn-on-device-button/turn-on-device-button.component';
 
 @Component({
   selector: 'app-homedevices-list',
   standalone: true,
   imports: [ErrorMessageComponent, SuccessMessageComponent, 
 		RegisteredDevicesListComponent, GenerateNotificationButtonComponent,
+		TurnOnDeviceButtonComponent
 	],
   templateUrl: './homedevices-list.component.html',
   styleUrl: './homedevices-list.component.css'

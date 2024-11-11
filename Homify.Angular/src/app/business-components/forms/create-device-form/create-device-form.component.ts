@@ -5,10 +5,10 @@ import { FormButtonComponent } from '../../../components/form/form-button/form-b
 import { FormInputComponent } from '../../../components/form/form-input/form-input.component';
 import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
-import { DeviceApiRepositoryService } from '../../../../backend/services/device/Device.service';
 import { APIError } from '../../../../interfaces/interfaces';
 import CreateCameraRequest from '../../../../backend/services/device/models/CreateCameraRequest';
 import CreateSensorRequest from '../../../../backend/services/device/models/CreateSensorRequest';
+import { DeviceService } from '../../../../backend/services/device/Device.service';
 
 @Component({
   selector: 'app-create-device-form',
@@ -24,7 +24,7 @@ export class CreateDeviceFormComponent {
 	errorMessage = '';
 	device = 'camera';
 
-  constructor(private fb: FormBuilder, private DeviceService: DeviceApiRepositoryService) {
+  constructor(private fb: FormBuilder, private DeviceService: DeviceService) {
     this.form = this.fb.group({
       name: ["", [Validators.required]],
       model: ["", [Validators.required]],

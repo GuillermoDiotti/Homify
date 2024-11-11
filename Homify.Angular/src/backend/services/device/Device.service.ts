@@ -1,69 +1,81 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
-import ApiRepository from '../../repositories/api-repository';
-import { environment } from '../../../environment';
 import CreateCameraRequest from './models/CreateCameraRequest';
 import CreateDeviceResponse from './models/CreateDeviceResponse';
 import CreateSensorRequest from './models/CreateSensorRequest';
 import SearchDeviceResponse from './models/SearchDeviceResponse';
 import SearchSupportedDevicesResponse from './models/SearchSupportedDevicesResponse';
+import { DeviceTypeApiRepositoryService } from '../../repositories/DeviceRepository.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DeviceApiRepositoryService extends ApiRepository {
-  constructor(http: HttpClient) {
-    super(environment.homifyApi, 'devices', http);
-  }
+export class DeviceService {
+  constructor(private readonly _repository: DeviceTypeApiRepositoryService) {}
 
   public createCamera(
     request: CreateCameraRequest
   ): Observable<CreateDeviceResponse> {
-    return this.post<CreateDeviceResponse>(request, 'cameras').pipe(
-      catchError(this.handleError)
-    );
+    return this._repository.createCamera(request);
   }
 
   public createMovementSensor(
     request: CreateSensorRequest
   ): Observable<CreateDeviceResponse> {
-    return this.post<CreateDeviceResponse>(request, 'movement-sensors').pipe(
-      catchError(this.handleError)
-    );
+    return this._repository.createMovementSensor(request);
   }
 
   public createWindowSensor(
     request: CreateSensorRequest
   ): Observable<CreateDeviceResponse> {
-    return this.post<CreateDeviceResponse>(request, 'window-sensors').pipe(
-      catchError(this.handleError)
-    );
+    return this._repository.createWindowSensor(request);
   }
 
   public createLamp(
     request: CreateSensorRequest
   ): Observable<CreateDeviceResponse> {
-    return this.post<CreateDeviceResponse>(request, 'lamps').pipe(
-      catchError(this.handleError)
-    );
+    return this._repository.createLamp(request);
   }
 
-	public getRegisteredDevices(
+  public getRegisteredDevices(
     limit?: number,
     offset?: number,
-		deviceName?: string,
+    deviceName?: string,
     model?: string,
     companyName?: string,
     deviceType?: string
   ): Observable<any> {
-		const query = `limit=${encodeURIComponent(limit ?? "")}&offset=${encodeURIComponent(offset ?? "")}&deviceName=${encodeURIComponent(deviceName ?? "")}&model=${encodeURIComponent(model ?? "")}&company=${encodeURIComponent(companyName ?? "")}&type=${encodeURIComponent(deviceType ?? "")}`;
-    return this.get<SearchDeviceResponse>('', query).pipe(
-      catchError(this.handleError));
+		const queryParams: string[] = [];
+
+    if (limit) {
+      queryParams.push(`limit=${encodeURIComponent(limit)}`);
+    }
+    if (offset) {
+      queryParams.push(`offset=${encodeURIComponent(offset)}`);
+    }
+		if (deviceType) {
+      queryParams.push(`type=${encodeURIComponent(deviceType)}`);
+    }
+		if (companyName) {
+      queryParams.push(`comapny=${encodeURIComponent(companyName)}`);
+    }
+		if (model) {
+      queryParams.push(`model=${encodeURIComponent(model)}`);
+    }
+		if (deviceName) {
+      queryParams.push(`deviceName=${encodeURIComponent(deviceName)}`);
+    }
+
+		const query = queryParams.join('&');
+    
+		return this._repository.getRegisteredDevices(query);
   }
 
   public getSupportedDevices(): Observable<any> {
-    return this.get<SearchSupportedDevicesResponse>('supported').pipe(
-      catchError(this.handleError));
+    return this._repository.getSupportedDevices();
+  }
+
+  public turnOnDevice(hardwareId: string): Observable<any> {
+    return this._repository.turnOnDevice(hardwareId);
   }
 }

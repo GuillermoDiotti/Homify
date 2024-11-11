@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DeviceApiRepositoryService } from '../../../../backend/services/device/Device.service';
 import { APIError } from '../../../../interfaces/interfaces';
 import SearchSupportedDevicesResponse from '../../../../backend/services/device/models/SearchSupportedDevicesResponse';
+import { DeviceService } from '../../../../backend/services/device/Device.service';
 
 @Component({
   selector: 'app-supported-devices-list',
@@ -13,7 +13,7 @@ import SearchSupportedDevicesResponse from '../../../../backend/services/device/
 export class SupportedDevicesListComponent implements OnInit {
 	supportedDevices: SearchSupportedDevicesResponse[] = [];
 
-	constructor(private readonly DeviceSevice: DeviceApiRepositoryService) {}
+	constructor(private readonly DeviceSevice: DeviceService) {}
 
 	ngOnInit(): void {
 			this.DeviceSevice.getSupportedDevices().subscribe(

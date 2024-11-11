@@ -14,12 +14,17 @@
         <div style="display: flex; align-items: center">
           <div class="col"><strong>Name:</strong> {{ device.name }}</div>
           <div class="col"><strong>Model:</strong> {{ device.model }}</div>
-          <div>
-            <div class="col">
-              <strong>is Connected:</strong> {{ device.isConnected }}
-            </div>
-          </div>
         </div>
+				<div>
+					<div class="col">
+						@if (device?.isActive) {
+							<span class="text-success">ACTIVE</span>
+						} @else {
+							<span class="text-danger">NOT ACTIVE</span>
+							<app-turn-on-device-button [device]="device"></app-turn-on-device-button>
+						}
+					</div>						
+				</div>
 				<app-generate-notification-button [device]="device"></app-generate-notification-button>
       </div>
     </li>

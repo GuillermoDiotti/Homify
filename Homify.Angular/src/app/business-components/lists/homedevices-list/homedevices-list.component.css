@@ -37,3 +37,13 @@ li {
 	justify-content: center;
 	align-items: center;
 }
+
+.text-success {
+  color: green;
+  font-weight: bold;
+}
+
+.text-danger {
+  color: red;
+  font-weight: bold;
+}

@@ -3,6 +3,7 @@ export interface GetDevicesResponse {
 	model: string;
 	mainPhoto?: string;
 	isConnected: boolean;
+	isActive: boolean;
 	deviceId: string;
 	hardwareId: string;
 }

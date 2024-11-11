@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DeviceApiRepositoryService } from '../../../../backend/services/device/Device.service';
 import { APIError } from '../../../../interfaces/interfaces';
 import SearchDeviceResponse from '../../../../backend/services/device/models/SearchDeviceResponse';
 import { ButtonComponent } from '../../../components/button/button.component';
+import { DeviceService } from '../../../../backend/services/device/Device.service';
 
 @Component({
   selector: 'app-registered-devices-list',
@@ -17,7 +17,7 @@ export class RegisteredDevicesListComponent {
 	deviceSelected = '';
 	@Input() displayButtons = false;
 
-	constructor(private readonly DeviceSevice: DeviceApiRepositoryService) {}
+	constructor(private readonly DeviceSevice: DeviceService) {}
 
 	ngOnInit(): void {
 			this.DeviceSevice.getRegisteredDevices().subscribe(
