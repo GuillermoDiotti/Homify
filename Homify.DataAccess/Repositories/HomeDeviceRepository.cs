@@ -19,6 +19,7 @@ public class HomeDeviceRepository : Repository<HomeDevice>
         var query =
             _entities.Include(u => u.Home)
                 .ThenInclude(u => u.Members)
+                .ThenInclude(u => u.Permissions)
                 .Include(u => u.Device)
                 .Where(predicate);
 

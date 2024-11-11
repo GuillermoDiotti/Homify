@@ -38,7 +38,7 @@ public static class PermissionsGenerator
     // HOMEUSERS
     public const string MemberCanAddDevice = "AddDevices";
     public const string MemberCanListDevices = "ListDevices";
-    public const string MemberCanChangeNameDevices = "ChangeNameDevices";
+    public const string MemberCanChangeNameDevices = "ChangeDeviceName";
 
     public static List<SystemPermission> GetAdminPermissions()
     {

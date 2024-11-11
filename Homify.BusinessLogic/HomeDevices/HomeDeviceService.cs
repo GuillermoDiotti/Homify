@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -79,13 +80,26 @@ public class HomeDeviceService : IHomeDeviceService
         return _repository.Get(x => x.Id == id);
     }
 
-    public HomeDevice UpdateHomeDevice(string name, string id)
+    public HomeDevice UpdateHomeDevice(string name, string id, User u)
     {
         var device = GetHomeDeviceById(id);
 
         if (device == null)
         {
             throw new NotFoundException("HomeDevice not found");
+        }
+
+        var home = GetHomeDeviceByHardwareId(device.HardwareId)?.Home;
+        var user = home?.Members.Find(x => x.UserId == u.Id);
+
+        if (user == null)
+        {
+            throw new NotFoundException("User not found in this home");
+        }
+
+        if (!user.Permissions.Any(x => x.Value == PermissionsGenerator.MemberCanChangeNameDevices))
+        {
+            throw new InvalidOperationException("User has no permission to rename devices");
         }
 
         device.CustomName = name;

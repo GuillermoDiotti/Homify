@@ -96,6 +96,7 @@ public sealed class HomeController : HomifyControllerBase
         var list = _homePermissionService.ChangeHomeMemberPermissions(
             req.CanAddDevices,
             req.CanListDevices,
+            req.CanRenameDevices,
             user,
             found);
 

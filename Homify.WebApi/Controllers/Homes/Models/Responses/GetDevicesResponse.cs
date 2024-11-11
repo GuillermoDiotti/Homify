@@ -10,6 +10,7 @@ public class GetDevicesResponse
     public bool IsConnected { get; set; }
     public string DeviceId { get; set; } = null!;
     public string HardwareId { get; set; } = null!;
+    public bool IsActive { get; set; }
 
     public GetDevicesResponse(HomeDevice homeDevice)
     {
@@ -19,5 +20,6 @@ public class GetDevicesResponse
         MainPhoto = homeDevice.Device.PpalPicture;
         HardwareId = homeDevice.HardwareId;
         DeviceId = homeDevice.DeviceId;
+        IsActive = homeDevice.IsActive;
     }
 }

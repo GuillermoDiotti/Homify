@@ -8,5 +8,5 @@ public interface IHomePermissionService
 {
     HomePermission? GetByValue(string value);
 
-    List<HomePermission> ChangeHomeMemberPermissions(bool addDevice, bool listDevice, User user, HomeUser? found);
+    List<HomePermission> ChangeHomeMemberPermissions(bool addDevice, bool listDevice, bool renameDevice, User user, HomeUser? found);
 }

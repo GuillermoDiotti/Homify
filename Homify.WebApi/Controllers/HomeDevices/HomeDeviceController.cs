@@ -20,7 +20,7 @@ public class HomeDeviceController : HomifyControllerBase
 
     [HttpPut("{id}/update")]
     [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.MemberCanChangeNameDevices)]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public string UpdateHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
         if (req == null)
@@ -33,7 +33,8 @@ public class HomeDeviceController : HomifyControllerBase
             throw new ArgumentNullException("CustomName cannot be null");
         }
 
-        var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id);
+        var user = GetUserLogged();
+        var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id, user);
 
         return device.Id;
     }

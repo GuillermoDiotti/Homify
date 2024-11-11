@@ -12,5 +12,5 @@ public interface IHomeDeviceService
     List<HomeDevice> GetHomeDeviceByHomeId(string homeId);
     HomeDevice GetHomeDeviceById(string id);
 
-    HomeDevice UpdateHomeDevice(string name, string id);
+    HomeDevice UpdateHomeDevice(string name, string id, User u);
 }
