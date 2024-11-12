@@ -62,9 +62,9 @@ public class ImporterService : IImporterService
             throw new Exception("File not found");
         }
 
-        List<ReturnImportDevices> buildings = importerFile!.ImportDevices(args.Path);
+        List<ReturnImportDevices> devices = importerFile!.ImportDevices(args.Path);
 
-        Transformation(buildings, user);
+        Transformation(devices, user);
     }
 
     public void Transformation(List<ReturnImportDevices> devices, User user)

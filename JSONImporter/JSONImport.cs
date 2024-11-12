@@ -14,14 +14,14 @@ public class JSONImport : ImporterInterface
     public List<ReturnImportDevices> ImportDevices(string filePath)
     {
         var jsonContent = File.ReadAllText("ImportDevices/" + filePath);
-        var build = JsonConvert.DeserializeObject<ImportationContainer>(jsonContent);
-        var buildings = new List<ImportedDevices>();
-        if (build.Devices != null)
+        var device = JsonConvert.DeserializeObject<ImportationContainer>(jsonContent);
+        var devices = new List<ImportedDevices>();
+        if (device.Devices != null)
         {
-            buildings = build.Devices.ToList();
+            devices = device.Devices.ToList();
         }
 
-        List<ReturnImportDevices> returnList = TransformBuildings(buildings);
+        List<ReturnImportDevices> returnList = TransformBuildings(devices);
         return returnList;
     }
 

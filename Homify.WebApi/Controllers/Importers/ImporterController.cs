@@ -22,8 +22,7 @@ public sealed class ImporterController : HomifyControllerBase
 
     [HttpPost]
     [AuthenticationFilter]
-
-    // [AuthorizationFilter(PermissionsGenerator.ImportDevices)]
+    [AuthorizationFilter(PermissionsGenerator.ImportDevices)]
     public void AddImportedDevices(ImportRequest request)
     {
         // RequestValidator.CheckRequest(request); edify hace un check de null en una clase aparte en el proyecto utilities
