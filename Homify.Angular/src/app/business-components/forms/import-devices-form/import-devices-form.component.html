@@ -1,24 +1,24 @@
-<h2>Create Home</h2>
+<h2>Import devices</h2>
 <form [formGroup]="form" (ngSubmit)="handleSubmit()">
   <app-form-input
     [form]="form"
-    name="importerType"
+    name="importerSelected"
     type="text"
     label="Importer Type"
     placeholder="Type"
     [formField]="{
-      name: { required: 'Importer type is required' }
+      importerSelected: { required: 'Importer type is required' }
     }"
   ></app-form-input>
 
   <app-form-input
     [form]="form"
-    name="path"
+    name="filePath"
     type="text"
     label="File Path"
     placeholder="Path"
     [formField]="{
-      number: { required: 'Path is required'}
+      filePath: { required: 'Path is required'}
     }"
   ></app-form-input>
 
