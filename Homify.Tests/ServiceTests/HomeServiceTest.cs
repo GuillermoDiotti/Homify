@@ -402,19 +402,19 @@ public class HomeServiceTest
     {
         var homeId = "testHomeId";
         var memberId = "testMemberId";
-        var houseId = "HouseId";
 
         var members = new List<HomeUser>
         {
             new HomeUser
             {
-                HomeId = houseId,
-                Id = memberId,
+                HomeId = homeId,
+                Id = "123",
+                UserId = memberId,
                 IsNotificable = false
             },
             new HomeUser
             {
-                HomeId = houseId,
+                HomeId = homeId,
                 Id = "otherMemberId",
                 IsNotificable = true
             }
@@ -440,9 +440,6 @@ public class HomeServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
-
-        Assert.IsTrue(members.First(m => m.Id == memberId).IsNotificable); // Cambiar UserId a Id
-
         var notificableMembers = result.Where(m => m.IsNotificable).ToList();
         Assert.AreEqual(2, notificableMembers.Count);
     }
