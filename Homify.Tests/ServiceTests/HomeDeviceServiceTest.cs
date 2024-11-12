@@ -193,7 +193,8 @@ public class HomeDeviceServiceTest
     [ExpectedException(typeof(NotFoundException))]
     public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
-        _homeDeviceService.UpdateHomeDevice("NewName", null);
+        User user = new User();
+        _homeDeviceService.UpdateHomeDevice("NewName", null, user);
     }
 
     [TestMethod]
@@ -201,7 +202,8 @@ public class HomeDeviceServiceTest
     {
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(new HomeDevice() { Id = "idDevice" });
-        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idDevice");
+        User user = new User();
+        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idDevice", user);
 
         response.Id.Should().Be("idDevice");
         response.CustomName.Should().Be("NewName");

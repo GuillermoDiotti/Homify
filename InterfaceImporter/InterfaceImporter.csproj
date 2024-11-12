@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
-      <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
-      <ProjectReference Include="..\InterfaceImporter\InterfaceImporter.csproj" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
 </Project>

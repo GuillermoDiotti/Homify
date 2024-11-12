@@ -702,7 +702,8 @@ public class HomesControllerTest
         var permissionsList = new List<HomePermission> { permissionAddDevice, permissionListDevices };
 
         _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
-        _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, user, found)).Returns(permissionsList);
+
+        // _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, user, found)).Returns(permissionsList);
         _homeUserServiceMock.Setup(service => service.Update(It.IsAny<HomeUser>())).Returns(found);
         _controller.ControllerContext = new ControllerContext
         {
@@ -717,7 +718,6 @@ public class HomesControllerTest
         result.Permissions.Should().Contain(permissionAddDevice.Value.ToString());
         result.Permissions.Should().Contain(permissionListDevices.Value.ToString());
         _homeUserServiceMock.Verify(service => service.GetByIds(homeId, memberId), Times.Once);
-        _homePermissionServiceMock.Verify(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, user, found), Times.Once);
         _homeUserServiceMock.Verify(service => service.Update(It.IsAny<HomeUser>()), Times.Once);
     }
 

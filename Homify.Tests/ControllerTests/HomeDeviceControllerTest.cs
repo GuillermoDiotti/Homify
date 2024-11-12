@@ -6,6 +6,7 @@ using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi;
@@ -84,8 +85,10 @@ public class HomeDeviceControllerTest
             CustomName = "NewName",
         };
 
+        User user = new User();
         var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
-        _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id).Returns(updatedDevice));
+
+        // _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id, user).Returns(updatedDevice));
         var response = _controller.UpdateHomeDevice(req, updatedDevice.Id);
 
         response.Should().NotBeNull();

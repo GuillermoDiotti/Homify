@@ -17,6 +17,7 @@ public static class PermissionsGenerator
     public const string RegisterSensor = "companies-RegisterSensor";
     public const string RegisterLamp = "companies-RegisterLamp";
     public const string RegisterMovementSensor = "companies-RegisterMovementSensor";
+    public const string ImportDevices = "companies-ImportDevices";
 
     // HOME OWNER PERMISSIONS
     public const string CreateHome = "homes-Create";
@@ -61,7 +62,8 @@ public static class PermissionsGenerator
             new(RegisterCamera),
             new(RegisterSensor),
             new(RegisterMovementSensor),
-            new(RegisterLamp)
+            new(RegisterLamp),
+            new(ImportDevices)
         ];
         return permissions;
     }

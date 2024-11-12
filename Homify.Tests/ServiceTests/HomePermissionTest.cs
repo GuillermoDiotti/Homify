@@ -63,6 +63,6 @@ public class HomePermissionTest
 
         homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
 
-        service.ChangeHomeMemberPermissions(true, true, user, found);
+        service.ChangeHomeMemberPermissions(true, true,true, user, found);
     }
 }
