@@ -1,4 +1,4 @@
 export interface ImportRequest {
-    ImporterSelected: string;
-    FilePath: string;
+    importerSelected: string;
+    filePath: string;
   }

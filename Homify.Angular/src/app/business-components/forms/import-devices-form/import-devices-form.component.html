@@ -1,0 +1,29 @@
+<h2>Create Home</h2>
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <app-form-input
+    [form]="form"
+    name="importerType"
+    type="text"
+    label="Importer Type"
+    placeholder="Type"
+    [formField]="{
+      name: { required: 'Importer type is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-input
+    [form]="form"
+    name="path"
+    type="text"
+    label="File Path"
+    placeholder="Path"
+    [formField]="{
+      number: { required: 'Path is required'}
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+
+	<app-success-message [message]="successMessage"></app-success-message>
+	<app-error-message [message]="errorMessage"></app-error-message>
+</form>

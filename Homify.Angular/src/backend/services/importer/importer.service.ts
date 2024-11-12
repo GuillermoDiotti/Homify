@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 @Injectable({
     providedIn: 'root'
   })
-  export class HomeService {
+  export class ImportService {
   
     constructor(private readonly _repository: ImporterApiRepositoryService) { }
   
