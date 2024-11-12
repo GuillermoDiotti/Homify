@@ -692,7 +692,8 @@ public class HomesControllerTest
         var request = new EditMemberPermissionsRequest
         {
             CanAddDevices = true,
-            CanListDevices = true
+            CanListDevices = true,
+            CanRenameDevices = false
         };
         var user = new User { Id = "owner123" };
         var home = new Home { Id = homeId, OwnerId = "owner123" };
@@ -703,7 +704,7 @@ public class HomesControllerTest
 
         _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
 
-        // _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, user, found)).Returns(permissionsList);
+        _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, request.CanRenameDevices, user, found)).Returns(permissionsList);
         _homeUserServiceMock.Setup(service => service.Update(It.IsAny<HomeUser>())).Returns(found);
         _controller.ControllerContext = new ControllerContext
         {

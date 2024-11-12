@@ -21,11 +21,11 @@ public class JSONImport : ImporterInterface
             devices = device.Devices.ToList();
         }
 
-        List<ReturnImportDevices> returnList = TransformBuildings(devices);
+        List<ReturnImportDevices> returnList = TransformDevices(devices);
         return returnList;
     }
 
-    public List<ReturnImportDevices> TransformBuildings(List<ImportedDevices> devicesList)
+    public List<ReturnImportDevices> TransformDevices(List<ImportedDevices> devicesList)
     {
         List<ReturnImportDevices> returnList = new List<ReturnImportDevices>();
         foreach (var device in devicesList)
