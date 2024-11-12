@@ -8,7 +8,7 @@ import { catchError, Observable } from "rxjs";
 @Injectable({
     providedIn: "root",
   })
-  export class HomeApiRepositoryService extends ApiRepository{    
+  export class ImporterApiRepositoryService extends ApiRepository{    
     constructor(http: HttpClient) {
         super(environment.homifyApi, 'importer', http);
       }
