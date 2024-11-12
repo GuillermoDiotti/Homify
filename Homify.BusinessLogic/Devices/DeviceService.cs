@@ -42,6 +42,8 @@ public class DeviceService : IDeviceService
             PpalPicture = device.PpalPicture,
             IsExterior = device.IsExterior,
             IsInterior = device.IsInterior,
+            PeopleDetection = device.PeopleDetection,
+            MovementDetection = device.MovementDetection,
             Company = owner.Company,
             CompanyId = owner.Company.Id,
         };

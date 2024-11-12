@@ -12,6 +12,8 @@ public class CreateDeviceArgs
     public string PpalPicture { get; init; }
     public bool IsExterior { get; init; }
     public bool IsInterior { get; init; }
+    public bool MovementDetection { get; init; }
+    public bool PeopleDetection { get; init; }
     public bool IsActive { get; init; }
     public CompanyOwner Owner { get; init; }
 
@@ -23,6 +25,8 @@ public class CreateDeviceArgs
         string? ppalPicture,
         bool isExterior,
         bool isInterior,
+        bool movementDetection,
+        bool peopleDetection,
         CompanyOwner? owner,
         bool isActive)
     {
@@ -67,6 +71,8 @@ public class CreateDeviceArgs
         IsExterior = isExterior;
         IsInterior = isInterior;
         IsActive = isActive;
+        PeopleDetection = peopleDetection;
+        MovementDetection = movementDetection;
 
         if (owner == null)
         {

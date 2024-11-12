@@ -49,6 +49,8 @@ public class DeviceController : HomifyControllerBase
             req.PpalPicture ?? string.Empty,
             req.IsExterior,
             req.IsInterior,
+            req.MovementDetection,
+            req.PeopleDetection,
             companyOwner,
             false);
 
@@ -79,8 +81,10 @@ public class DeviceController : HomifyControllerBase
             req.PpalPicture ?? string.Empty,
             isExterior,
             true,
-                        companyOwner,
-                        false);
+            false,
+            false,
+            companyOwner,
+            false);
 
         Sensor sen = _deviceService.AddSensor(args, companyOwner);
 
@@ -106,6 +110,8 @@ public class DeviceController : HomifyControllerBase
             req.Description ?? string.Empty,
             null,
             null,
+            false,
+            false,
             false,
             false,
             companyOwner,
@@ -135,6 +141,8 @@ public class DeviceController : HomifyControllerBase
             req.Description ?? string.Empty,
             req.Photos ?? [],
             req.PpalPicture ?? string.Empty,
+            false,
+            false,
             false,
             false,
             companyOwner,
