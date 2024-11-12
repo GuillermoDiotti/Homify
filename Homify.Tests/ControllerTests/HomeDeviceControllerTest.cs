@@ -13,6 +13,7 @@ using Homify.WebApi;
 using Homify.WebApi.Controllers.HomeDevices;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -56,15 +57,17 @@ public class HomeDeviceControllerTest
             [
                 new UserRole
                 {
-                    UserId = "adminId",
-                    RoleId = Constants.ADMINISTRATORID,
+                    UserId = "Owner123",
+                    RoleId = Constants.HOMEOWNERID,
                     Role = RolesGenerator.HomeOwner()
                 }
 
             ]
         };
-
-        _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = owner;
 
         var updatedDevice = new HomeDevice
@@ -85,10 +88,9 @@ public class HomeDeviceControllerTest
             CustomName = "NewName",
         };
 
-        User user = new User();
         var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
 
-        // _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id, user).Returns(updatedDevice));
+        _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
         var response = _controller.UpdateHomeDevice(req, updatedDevice.Id);
 
         response.Should().NotBeNull();
