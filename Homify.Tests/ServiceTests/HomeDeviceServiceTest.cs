@@ -5,6 +5,8 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -200,12 +202,15 @@ public class HomeDeviceServiceTest
     [TestMethod]
     public void UpdateName_WhenInfoValid_UpdatesName()
     {
+        var user = new User() { Id = "123" };
+        var homeuser = new HomeUser() { UserId = user.Id, HomeId = "idHome", Permissions = [new HomePermission() { Value = PermissionsGenerator.MemberCanChangeNameDevices }] };
+        var home = new Home() { Id = "idHome", Members = [homeuser] };
+        var homeDevice = new HomeDevice() { Id = "idHomeDevice", DeviceId = "idDevice", HomeId = "idHome", Home = home, HardwareId = "hardwareId", CustomName = "oldName" };
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
-            .Returns(new HomeDevice() { Id = "idDevice" });
-        User user = new User();
-        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idDevice", user);
+            .Returns(homeDevice);
+        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idHomeDevice", user);
 
-        response.Id.Should().Be("idDevice");
+        response.Id.Should().Be("idHomeDevice");
         response.CustomName.Should().Be("NewName");
     }
 }
