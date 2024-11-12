@@ -5,15 +5,18 @@ namespace Homify.WebApi.Controllers.Homes.Models.Responses;
 public class GetDevicesResponse
 {
     public string Name { get; set; } = null!;
+    public string CustomName { get; set; } = null!;
     public string Model { get; set; } = null!;
     public string? MainPhoto { get; set; } = null!;
     public bool IsConnected { get; set; }
     public string DeviceId { get; set; } = null!;
     public string HardwareId { get; set; } = null!;
+    public string Id { get; set; } = null!;
     public bool IsActive { get; set; }
 
     public GetDevicesResponse(HomeDevice homeDevice)
     {
+        Id = homeDevice.Id;
         Name = homeDevice.Device.Name;
         Model = homeDevice.Device.Model;
         IsConnected = homeDevice.Connected;
@@ -21,5 +24,6 @@ public class GetDevicesResponse
         HardwareId = homeDevice.HardwareId;
         DeviceId = homeDevice.DeviceId;
         IsActive = homeDevice.IsActive;
+        CustomName = homeDevice.CustomName;
     }
 }

@@ -12,6 +12,12 @@
     <option [value]="false">False</option>
   </select>
 
+	<label for="CanRenameDevices">Rename Devices</label>
+  <select id="CanRenameDevices" formControlName="canRenameDevices">
+    <option [value]="true">True</option>
+    <option [value]="false">False</option>
+  </select>
+
   <button type="submit">Submit</button>
 
   <app-success-message [message]="successMessage"></app-success-message>

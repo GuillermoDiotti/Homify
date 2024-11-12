@@ -1,5 +1,7 @@
 export interface GetDevicesResponse {
+	id: string;
 	name: string;
+	customName: string;
 	model: string;
 	mainPhoto?: string;
 	isConnected: boolean;

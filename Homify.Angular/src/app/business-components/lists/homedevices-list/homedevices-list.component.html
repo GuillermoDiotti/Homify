@@ -13,6 +13,7 @@
       <div class="info-container">
         <div style="display: flex; align-items: center">
           <div class="col"><strong>Name:</strong> {{ device.name }}</div>
+					<div class="col"><strong>Custom Name:</strong> {{ device.customName }}</div>
           <div class="col"><strong>Model:</strong> {{ device.model }}</div>
         </div>
 				<div>
@@ -25,6 +26,7 @@
 						}
 					</div>						
 				</div>
+				<app-rename-device-button [device]="device"></app-rename-device-button>
 				<app-generate-notification-button [device]="device"></app-generate-notification-button>
       </div>
     </li>
