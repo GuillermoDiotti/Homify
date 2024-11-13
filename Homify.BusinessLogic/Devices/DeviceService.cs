@@ -166,7 +166,6 @@ public class DeviceService : IDeviceService
             Description = device.Description,
             Company = owner.Company,
             CompanyId = owner.Company.Id,
-            IsActive = device.IsActive,
             Photos = []
         };
 

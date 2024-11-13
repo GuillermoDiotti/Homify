@@ -93,7 +93,7 @@ public class DeviceController : HomifyControllerBase
 
     [HttpPost("lamps")]
     [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterLamp)]
+    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
     {
         if (req == null)
@@ -122,9 +122,9 @@ public class DeviceController : HomifyControllerBase
         return new CreateDeviceResponse(lamp);
     }
 
-    [HttpPost("movement-sensor")]
+    [HttpPost("movement-sensors")]
     [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterMovementSensor)]
+    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterMovementSensor(CreateSensorRequest req)
     {
         if (req == null)
