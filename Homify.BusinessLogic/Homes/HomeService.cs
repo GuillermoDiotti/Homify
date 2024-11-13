@@ -182,6 +182,12 @@ public class HomeService : IHomeService
         }
 
         var home = _repository.Get(x => x.Id == homeId);
+        var userIsOwner = home.OwnerId == u.Id;
+
+        if (userIsOwner)
+        {
+            return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
+        }
 
         var user = home.Members.FirstOrDefault(x => x.User.Id == u.Id);
 

@@ -90,6 +90,17 @@ public class HomeDeviceService : IHomeDeviceService
         }
 
         var home = GetHomeDeviceByHardwareId(device.HardwareId)?.Home;
+
+        var userIsOwner = home.OwnerId == u.Id;
+
+        if (userIsOwner)
+        {
+            device.CustomName = name;
+            _repository.Update(device);
+
+            return device;
+        }
+
         var user = home?.Members.Find(x => x.UserId == u.Id);
 
         if (user == null)
