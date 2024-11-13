@@ -1,3 +1,4 @@
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;

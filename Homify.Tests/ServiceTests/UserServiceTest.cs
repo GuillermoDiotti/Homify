@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.HomeOwners;
@@ -8,7 +9,6 @@ using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;
 

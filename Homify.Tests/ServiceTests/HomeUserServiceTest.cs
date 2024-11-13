@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Moq;
 

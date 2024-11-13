@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles;
 using Homify.BusinessLogic.UserRoles.Entities;
-using Homify.DataAccess.Repositories;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;

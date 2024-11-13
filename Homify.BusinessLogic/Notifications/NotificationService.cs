@@ -4,7 +4,6 @@ using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.BusinessLogic.Utility;
-using Homify.DataAccess.Repositories;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications;

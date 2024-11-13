@@ -6,7 +6,6 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Homify.Utility;
 
@@ -29,6 +28,13 @@ public class HomeService : IHomeService
 
     public Home AddHome(CreateHomeArgs home)
     {
+        var homeExists = _repository.Exist(h => h.Latitude == home.Latitude && h.Longitude == home.Longitude);
+
+        if (homeExists)
+        {
+            throw new DuplicatedDataException("There's already a house in this location");
+        }
+
         var newHome = new Home()
         {
             Id = Guid.NewGuid().ToString(),

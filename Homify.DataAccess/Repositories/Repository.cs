@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;

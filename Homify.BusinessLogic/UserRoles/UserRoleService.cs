@@ -1,6 +1,5 @@
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.UserRoles;

@@ -4,7 +4,6 @@ using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Devices;

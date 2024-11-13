@@ -1,5 +1,4 @@
-﻿using Homify.DataAccess.Repositories;
-using Homify.Exceptions;
+﻿using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.HomeUsers;
 
