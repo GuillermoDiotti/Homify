@@ -135,7 +135,8 @@ public class HomeService : IHomeService
             DeviceId = device.Id,
             Home = home,
             HomeId = home.Id,
-            Connected = false,
+            Connected = true,
+            IsActive = true,
             HardwareId = Guid.NewGuid().ToString(),
         };
         var result = _homeDeviceService.AddHomeDevice(home, device);

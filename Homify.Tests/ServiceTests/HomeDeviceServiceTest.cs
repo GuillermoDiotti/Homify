@@ -192,10 +192,40 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    public void Deactivate_WithValidHardwareId_ShouldDeactivateDeviceAndUpdateRepository()
+    {
+        var hardwareId = "Device123";
+        var user = new User { Id = "testUserId" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = user.Id,
+                Members = [new HomeUser { UserId = user.Id }]
+            }
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>())).Returns(homeDevice);
+        _homeDeviceRepositoryMock.Setup(repo => repo.Update(It.IsAny<HomeDevice>()));
+
+        var result = _homeDeviceService.Deactivate(hardwareId, user);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.IsActive);
+        Assert.AreEqual(homeDevice.Id, result.Id);
+
+        _homeDeviceRepositoryMock.Verify(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()), Times.Once);
+        _homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once, "The repository update method should be called once.");
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
-        User user = new User();
+        var user = new User();
         _homeDeviceService.UpdateHomeDevice("NewName", null, user);
     }
 

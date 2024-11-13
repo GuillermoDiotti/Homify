@@ -31,7 +31,8 @@ public class HomeDeviceService : IHomeDeviceService
             Device = device,
             Home = home,
             Connected = true,
-            CustomName = device.Name
+            IsActive = true,
+            CustomName = device.Name,
         };
         _repository.Add(homeDevice);
         return homeDevice;
@@ -66,6 +67,27 @@ public class HomeDeviceService : IHomeDeviceService
         }
 
         homeDevice.IsActive = true;
+        _repository.Update(homeDevice);
+        return homeDevice;
+    }
+
+    public HomeDevice Deactivate(string hardwareId, User logged)
+    {
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        var isMember = homeDevice.Home.Members.Any(x => x.UserId == logged.Id);
+        var isOwner = homeDevice.Home.OwnerId == logged.Id;
+
+        if (!isMember && !isOwner)
+        {
+            throw new InvalidOperationException("You are not member of this house");
+        }
+
+        homeDevice.IsActive = false;
         _repository.Update(homeDevice);
         return homeDevice;
     }
