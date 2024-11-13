@@ -20,6 +20,7 @@
 					<div class="col">
 						@if (device?.isActive) {
 							<span class="text-success">ACTIVE</span>
+							<app-turn-off-device-button [device]="device"></app-turn-off-device-button>
 						} @else {
 							<span class="text-danger">NOT ACTIVE</span>
 							<app-turn-on-device-button [device]="device"></app-turn-on-device-button>

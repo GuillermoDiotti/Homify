@@ -8,13 +8,14 @@ import { RegisteredDevicesListComponent } from '../registered-devices-list/regis
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 import { TurnOnDeviceButtonComponent } from '../../buttons/turn-on-device-button/turn-on-device-button.component';
 import { RenameDeviceButtonComponent } from '../../buttons/rename-device-button/rename-device-button.component';
+import { TurnOffDeviceButtonComponent } from '../../buttons/turn-off-device-button/turn-off-device-button.component';
 
 @Component({
   selector: 'app-homedevices-list',
   standalone: true,
   imports: [ErrorMessageComponent, SuccessMessageComponent, 
-		RegisteredDevicesListComponent,
-		TurnOnDeviceButtonComponent, RenameDeviceButtonComponent
+		RegisteredDevicesListComponent, TurnOnDeviceButtonComponent, 
+		RenameDeviceButtonComponent, TurnOffDeviceButtonComponent
 	],
   templateUrl: './homedevices-list.component.html',
   styleUrl: './homedevices-list.component.css'

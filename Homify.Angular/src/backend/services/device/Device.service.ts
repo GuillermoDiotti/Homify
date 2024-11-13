@@ -3,8 +3,6 @@ import { Observable, catchError } from 'rxjs';
 import CreateCameraRequest from './models/CreateCameraRequest';
 import CreateDeviceResponse from './models/CreateDeviceResponse';
 import CreateSensorRequest from './models/CreateSensorRequest';
-import SearchDeviceResponse from './models/SearchDeviceResponse';
-import SearchSupportedDevicesResponse from './models/SearchSupportedDevicesResponse';
 import { DeviceTypeApiRepositoryService } from '../../repositories/DeviceRepository.service';
 
 @Injectable({
@@ -77,5 +75,9 @@ export class DeviceService {
 
   public turnOnDevice(hardwareId: string): Observable<any> {
     return this._repository.turnOnDevice(hardwareId);
+  }
+
+	public turnOffDevice(hardwareId: string): Observable<any> {
+    return this._repository.turnOffDevice(hardwareId);
   }
 }
