@@ -247,6 +247,38 @@ public class DeviceControllerTest
     }
 
     [TestMethod]
+    public void TurnOffDevice_WithValidHardwareId_ShouldReturnDeactivatedDevice()
+    {
+        var hardwareId = "Device123";
+        var logged = new User { Id = "123" };
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = logged.Id,
+                Members = [new HomeUser { UserId = logged.Id }]
+            }
+        };
+
+        _homeDeviceServiceMock.Setup(service => service.Deactivate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
+
+        var result = _controller.TurnOffDevice(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be("Device123");
+        result.IsActive.Should().BeFalse();
+        _homeDeviceServiceMock.Verify(service => service.Deactivate(hardwareId, logged), Times.Once);
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void RegisterSensor_WhenRequestIsNull_ShouldThrowNullRequestException()
     {

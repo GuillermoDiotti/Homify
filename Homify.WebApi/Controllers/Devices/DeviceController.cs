@@ -200,4 +200,15 @@ public class DeviceController : HomifyControllerBase
         var result = _homeDeviceService.Activate(hardwareId, user);
         return new TurnOnDeviceResponse(result);
     }
+
+    [HttpPut("{hardwareId}/deactivate")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOffDevice([FromRoute] string hardwareId)
+    {
+        var user = GetUserLogged();
+
+        var result = _homeDeviceService.Deactivate(hardwareId, user);
+        return new TurnOnDeviceResponse(result);
+    }
 }
