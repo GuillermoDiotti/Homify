@@ -14,6 +14,10 @@ import { catchError, Observable } from "rxjs";
       }
     
       public AddImportedDevices(request: ImportRequest): Observable<any> {
-        return this.post(request).pipe(catchError(this.handleError));
+        return this.post<any>(request).pipe(catchError(this.handleError));
+      }
+
+			public getImporters(): Observable<string[]> {
+        return this.get<string[]>().pipe(catchError(this.handleError));
       }
     }

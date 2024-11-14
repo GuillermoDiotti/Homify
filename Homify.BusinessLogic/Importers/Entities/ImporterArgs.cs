@@ -13,7 +13,7 @@ public class ImporterArgs
     {
         if (string.IsNullOrEmpty(importer))
         {
-            throw new ArgsNullException("The index can not be null.");
+            throw new ArgsNullException("The importer can not be null.");
         }
 
         Importer = importer;

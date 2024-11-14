@@ -13,4 +13,8 @@ import { Observable } from "rxjs";
     public add(request: ImportRequest): Observable<any> {
       return this._repository.AddImportedDevices(request);
     }
+
+		public getImporters(): Observable<string[]> {
+			return this._repository.getImporters();
+		}
 }
