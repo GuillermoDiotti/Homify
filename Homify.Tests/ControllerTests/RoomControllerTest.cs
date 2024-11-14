@@ -1,9 +1,11 @@
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Rooms;
+using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -172,5 +174,27 @@ public class RoomControllerTest
             args.HomeDeviceId == homeDeviceId &&
             args.Owner == mockOwner)), Times.Once);
         Assert.AreEqual(roomId, result.Id);
+    }
+
+    [TestMethod]
+    public void ObtainHomeRooms_ShouldReturnListOfRoomBasicInfo()
+    {
+        var homeId = "home123";
+        var rooms = new List<Room>
+        {
+            new Room { Id = "1", Name = "Living Room" },
+            new Room { Id = "2", Name = "Bedroom" }
+        };
+
+        _mockRoomService.Setup(service => service.GetAllRooms(homeId)).Returns(rooms);
+
+        var result = _controller.ObtainHomeRooms(homeId) as List<RoomBasicInfo>;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Living Room", result[0].Name);
+        Assert.AreEqual("Bedroom", result[1].Name);
+
+        _mockRoomService.Verify(service => service.GetAllRooms(homeId), Times.Once);
     }
 }

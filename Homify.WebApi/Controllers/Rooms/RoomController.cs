@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Rooms;
 using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Homify.WebApi.Controllers.Rooms.Models.Responses;
 using Homify.WebApi.Filters;
@@ -41,6 +42,17 @@ public class RoomController : HomifyControllerBase
 
         var room = _roomService.AddHomeRoom(arguments);
         return new CreateRoomResponse(room.Id);
+    }
+
+    [HttpPost("{homeId}")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
+    {
+        return _roomService
+            .GetAllRooms(homeId)
+            .Select(r => new RoomBasicInfo(r))
+            .ToList();
     }
 
     [HttpPut("{roomId}/{homeDeviceId}")]
