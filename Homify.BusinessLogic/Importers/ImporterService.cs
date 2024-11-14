@@ -3,8 +3,8 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories.Importers.Entities;
 using InterfaceImporter;
 using InterfaceImporter.Models;
 
@@ -21,12 +21,12 @@ public class ImporterService : IImporterService
         _companyOwnerService = companyOwnerService;
     }
 
-    public List<ImporterInterface> GetAllImporters()
+    public List<IImporter> GetAllImporters()
     {
         var importersPath = "./Importers";
         var filePaths = Directory.GetFiles(importersPath);
 
-        var availableImporters = new List<ImporterInterface>();
+        var availableImporters = new List<IImporter>();
 
         foreach (var file in filePaths)
         {
@@ -39,7 +39,7 @@ public class ImporterService : IImporterService
                 {
                     if (ImplementsRequiredInterface(type))
                     {
-                        var instance = (ImporterInterface)Activator.CreateInstance(type);
+                        var instance = (IImporter)Activator.CreateInstance(type);
                         if (instance != null)
                         {
                             availableImporters.Add(instance);
@@ -66,7 +66,7 @@ public class ImporterService : IImporterService
             throw new InvalidOperationException("Owner must have a company to import devices");
         }
 
-        ImporterInterface? importerFile = GetAllImporters()
+        IImporter? importerFile = GetAllImporters()
             .FirstOrDefault(i => i.GetName().Equals(args.Importer, StringComparison.OrdinalIgnoreCase));
 
         if (importerFile == null)
@@ -147,6 +147,6 @@ public class ImporterService : IImporterService
 
     public bool ImplementsRequiredInterface(Type type)
     {
-        return typeof(ImporterInterface).IsAssignableFrom(type) && !type.IsInterface;
+        return typeof(IImporter).IsAssignableFrom(type) && !type.IsInterface;
     }
 }

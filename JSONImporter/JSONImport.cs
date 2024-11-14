@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace JSONImporter;
 
-public class JSONImport : ImporterInterface
+public class JSONImport : IImporter
 {
     public string GetName()
     {
@@ -13,7 +13,7 @@ public class JSONImport : ImporterInterface
 
     public List<ReturnImportDevices> ImportDevices(string filePath)
     {
-        var jsonContent = File.ReadAllText("ImportDevices/" + filePath);
+        var jsonContent = File.ReadAllText(filePath);
         var device = JsonConvert.DeserializeObject<ImportationContainer>(jsonContent);
         var devices = new List<ImportedDevices>();
         if (device.Devices != null)

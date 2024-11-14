@@ -1,18 +1,12 @@
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.Loader;
-using FluentAssertions;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Importers;
+using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories.Importers.Entities;
-using Homify.WebApi.Controllers.Importers;
 using InterfaceImporter;
 using InterfaceImporter.Models;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -33,15 +27,20 @@ public class ImporterServiceTest
         _importerService = new ImporterService(_deviceServiceMock.Object, _companyOwnerServiceMock.Object);
     }
 
+    public ImporterService? ImporterService { get => _importerService; set => _importerService = value; }
+    public Mock<IImporterService>? ImporterServiceMock { get => _importerServiceMock; set => _importerServiceMock = value; }
+    public Mock<IDeviceService>? DeviceServiceMock { get => _deviceServiceMock; set => _deviceServiceMock = value; }
+    public Mock<ICompanyOwnerService>? CompanyOwnerServiceMock { get => _companyOwnerServiceMock; set => _companyOwnerServiceMock = value; }
+
     [TestMethod]
     [ExpectedException(typeof(BadImageFormatException))]
     public void AddImportedDevices_WithValidImporterName_ShouldReturn()
     {
-        var importerMock = new Mock<ImporterInterface>();
+        var importerMock = new Mock<IImporter>();
         importerMock.Setup(i => i.GetName()).Returns("ValidImporter");
-        importerMock.Setup(i => i.ImportDevices(It.IsAny<string>())).Returns(new List<ReturnImportDevices>());
+        importerMock.Setup(i => i.ImportDevices(It.IsAny<string>())).Returns([]);
 
-        var list = new List<ImporterInterface> { importerMock.Object };
+        var list = new List<IImporter> { importerMock.Object };
 
         var user = new User();
         var args = new ImporterArgs("ValidImporter", "somePath", user);
@@ -69,11 +68,11 @@ public class ImporterServiceTest
                 Type = "camera",
                 PersonDetection = true,
                 MovementDetection = true,
-                Photos = new List<ReturnPhotos>
-                {
+                Photos =
+                [
                     new ReturnPhotos { Path = "photo1.jpg", IsPrincipal = true },
                     new ReturnPhotos { Path = "photo2.jpg", IsPrincipal = false }
-                }
+                ]
             }
         };
 

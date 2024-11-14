@@ -1,9 +1,9 @@
 using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories.Importers.Entities;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Importers;
 using Homify.WebApi.Controllers.Importers.Models.Requests;
+using InterfaceImporter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -39,5 +39,20 @@ public class ImporterControllerTest
         _importerController.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
         _importerController.AddImportedDevices(request);
+    }
+
+    [TestMethod]
+    public void ObtainImporters_ReturnsListOfImporters()
+    {
+        var importers = new List<IImporter>
+        {
+            new Mock<IImporter>().Object,
+            new Mock<IImporter>().Object
+        };
+        _importerService.Setup(service => service.GetAllImporters()).Returns(importers);
+
+        var result = _importerController.ObtainImporters();
+
+        Assert.IsNotNull(result);
     }
 }

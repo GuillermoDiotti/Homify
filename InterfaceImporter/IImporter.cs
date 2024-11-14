@@ -2,7 +2,7 @@ using InterfaceImporter.Models;
 
 namespace InterfaceImporter;
 
-public interface ImporterInterface
+public interface IImporter
 {
     string GetName();
 

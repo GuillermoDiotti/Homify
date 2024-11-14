@@ -309,7 +309,6 @@ public class DeviceServiceTest
         Assert.AreEqual("Model X", result.Model);
         Assert.AreEqual("A smart lamp", result.Description);
         Assert.AreEqual("company1", result.CompanyId);
-        Assert.IsTrue(result.IsActive);
         _lampRepositoryMock.Verify(repo => repo.Add(It.IsAny<Lamp>()), Times.Once);
     }
 

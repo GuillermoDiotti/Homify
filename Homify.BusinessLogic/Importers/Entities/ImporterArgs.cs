@@ -1,7 +1,7 @@
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 
-namespace Homify.DataAccess.Repositories.Importers.Entities;
+namespace Homify.BusinessLogic.Importers.Entities;
 
 public class ImporterArgs
 {
