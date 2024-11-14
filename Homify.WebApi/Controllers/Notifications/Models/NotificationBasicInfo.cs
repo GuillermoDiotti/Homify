@@ -10,6 +10,7 @@ public class NotificationBasicInfo
     public string Date { get; init; } = null!;
     public bool IsRead { get; init; }
     public string Detail { get; init; } = null!;
+    public string DeviceType { get; init; } = null!;
 
     public NotificationBasicInfo(Notification noti)
     {
@@ -19,6 +20,7 @@ public class NotificationBasicInfo
         DeviceId = noti.Device?.Id ?? string.Empty;
         IsRead = noti.IsRead;
         Detail = noti.Detail ?? "-";
+        DeviceType = noti?.Device?.Device?.Type ?? string.Empty;
         Date = noti.Date ?? string.Empty;
     }
 }

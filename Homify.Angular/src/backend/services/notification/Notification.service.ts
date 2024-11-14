@@ -11,14 +11,14 @@ export class NotificationService {
   constructor(private readonly _repository: NotificationApiRepositoryService) {}
 
   public getUserNotifications(
-		eventTriggered?: string,
+		deviceType?: string,
 		date?: string,
 		read?: string
 	): Observable<NotificationBasicInfo[]> {
 		const queryParams: string[] = [];
 
-		if (eventTriggered) {
-      queryParams.push(`eventTriggered=${encodeURIComponent(eventTriggered)}`);
+		if (deviceType) {
+      queryParams.push(`deviceType=${encodeURIComponent(deviceType)}`);
     }
 		if (date) {
       queryParams.push(`date=${encodeURIComponent(date)}`);

@@ -55,7 +55,7 @@ export class DeviceService {
       queryParams.push(`type=${encodeURIComponent(deviceType)}`);
     }
 		if (companyName) {
-      queryParams.push(`comapny=${encodeURIComponent(companyName)}`);
+      queryParams.push(`company=${encodeURIComponent(companyName)}`);
     }
 		if (model) {
       queryParams.push(`model=${encodeURIComponent(model)}`);

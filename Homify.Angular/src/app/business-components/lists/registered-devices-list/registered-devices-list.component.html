@@ -1,6 +1,56 @@
 <article>
   <h2>Registered devices list</h2>
-  <button (click)="handleRefresh()">Refresh</button>
+	<div class="filters">
+    <div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="deviceNameFilter">Name</label>
+      <app-input
+        id="deviceNameFilter"
+        type="text"
+        (change)="onNameChange($event)"
+      />
+    </div>
+
+		<div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="deviceModelFilter">Model</label>
+      <app-input
+        id="deviceModelFilter"
+        type="text"
+        (change)="onModelChange($event)"
+      />
+    </div>
+
+		<div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="deviceCompanyFilter">Company</label>
+      <app-input
+        id="deviceCompanyFilter"
+        type="text"
+        (change)="onCompanyChange($event)"
+      />
+    </div>
+
+		<div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="deviceTypeFilter">Type</label>
+      <app-input
+        id="deviceTypeFilter"
+        type="text"
+        (change)="onTypeChange($event)"
+      />
+    </div>
+
+		<div>
+      <app-pagination
+        [limit]="limit"
+        [offset]="offset"
+        (limitChange)="updateLimit($event)"
+        (offsetChange)="updateOffset($event)"
+      ></app-pagination>
+      <p>Current Limit: {{ limit }}, Current Offset: {{ offset }}</p>
+    </div>
+  </div>
+	<div style="display: flex; gap: 10px; margin: 10px 0;">
+		<app-button (click)="handleRefresh()">Refresh</app-button>
+		<app-button (click)="handleRefreshWithoutFilters()">Refresh with no filters</app-button>
+	</div>
   @if (registeredDevices.length > 0) {
   <ul>
     @for (device of registeredDevices; track $index) {

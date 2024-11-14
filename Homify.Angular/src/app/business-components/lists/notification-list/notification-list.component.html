@@ -2,7 +2,7 @@
   <div class="filters">
     <div style="margin: 5px 0; display: flex; align-items: center">
       <label for="eventTriggered">Event</label>
-      <input
+      <app-input
         id="eventTriggered"
         type="text"
         (change)="onEventTriggeredChange($event)"
@@ -24,19 +24,19 @@
     </div>
   </div>
   <div style="display: flex; gap: 10px; margin: 10px 0;">
-    <button (click)="handleRefresh()">Refresh</button>
-    <button (click)="handleSearchWithoutFilters()">
+    <app-button (click)="handleRefresh()">Refresh</app-button>
+    <app-button (click)="handleSearchWithoutFilters()">
       Refresh with no filters
-    </button>
+    </app-button>
   </div>
   @if (notifications.length > 0) {
   <ul>
     @for (noti of notifications; track $index) {
     <li>
-      <strong>ID:</strong> {{ noti.id }} <br />
       <strong>Event:</strong> {{ noti.event }} <br />
       <strong>Device ID:</strong> {{ noti.deviceId }} <br />
 			<strong>Detail:</strong> {{ noti.detail }} <br />
+			<strong>Device Type:</strong> {{ noti.deviceType }} <br />
       <strong>Date:</strong> {{ noti.date }} <br />
       <div>
         <strong>is Read:</strong> {{ noti.isRead }} <br />

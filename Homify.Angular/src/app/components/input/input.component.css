@@ -21,7 +21,6 @@
   border-radius: 4px;
   transition: border-color 0.3s, box-shadow 0.3s;
   outline: none;
-  width: 30%;
 }
 
 .input-field:focus {

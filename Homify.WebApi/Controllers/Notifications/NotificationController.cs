@@ -95,14 +95,14 @@ public class NotificationController : HomifyControllerBase
     [HttpGet]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetUserNotifications)]
-    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string? eventTriggered, [FromQuery] string? date, [FromQuery] string? read)
+    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string? deviceType, [FromQuery] string? date, [FromQuery] string? read)
     {
         var user = GetUserLogged();
         var list = _notificationService.GetAllByUserId(user.Id);
 
-        if (!string.IsNullOrEmpty(eventTriggered))
+        if (!string.IsNullOrEmpty(deviceType))
         {
-            list = list.Where(n => n.Event == eventTriggered).ToList();
+            list = list.Where(n => n?.Device?.Device?.Type.ToLower() == deviceType.ToLower()).ToList();
         }
 
         if (!string.IsNullOrEmpty(date))

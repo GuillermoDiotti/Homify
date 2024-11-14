@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { NotificationService } from '../../../../backend/services/notification/Notification.service';
 import { NotificationBasicInfo } from '../../../../backend/services/notification/models/NotificationBasicInfo';
 import { ReadNotificationButtonComponent } from '../../buttons/read-notification-button/read-notification-button.component';
+import { InputComponent } from '../../../components/input/input.component';
+import { ButtonComponent } from '../../../components/button/button.component';
 
 @Component({
   selector: 'app-notification-list',
   standalone: true,
-  imports: [ReadNotificationButtonComponent],
+  imports: [ReadNotificationButtonComponent, InputComponent, ButtonComponent],
   templateUrl: './notification-list.component.html',
   styleUrl: './notification-list.component.css',
 })
