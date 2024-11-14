@@ -27,20 +27,20 @@ public class JSONImport : ImporterInterface
 
     public List<ReturnImportDevices> TransformDevices(List<ImportedDevices> devicesList)
     {
-        List<ReturnImportDevices> returnList = new List<ReturnImportDevices>();
+        var returnList = new List<ReturnImportDevices>();
         foreach (var device in devicesList)
         {
-            ReturnImportDevices returnDevice = new ReturnImportDevices();
+            var returnDevice = new ReturnImportDevices();
             returnDevice.Name = device.Name;
             returnDevice.Type = device.Type;
             returnDevice.Model = device.Model;
             returnDevice.Id = device.Id;
             returnDevice.PersonDetection = device.PersonDetection;
             returnDevice.MovementDetection = device.MovementDetection;
-            List<ReturnPhotos> returnPhotos = new List<ReturnPhotos>();
+            var returnPhotos = new List<ReturnPhotos>();
             foreach (var photo in device.Photos)
             {
-                ReturnPhotos foto = new ReturnPhotos();
+                var foto = new ReturnPhotos();
                 foto.Path = photo.Path;
                 foto.IsPrincipal = photo.IsPrincipal;
                 returnPhotos.Add(foto);

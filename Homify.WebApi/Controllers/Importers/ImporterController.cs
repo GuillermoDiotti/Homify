@@ -1,6 +1,5 @@
 using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Permissions;
-using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories.Importers.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Importers.Models.Requests;
