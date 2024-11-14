@@ -18,6 +18,8 @@ using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
@@ -26,8 +28,6 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
 using Homify.DataAccess.Repositories;
-using Homify.DataAccess.Repositories.Rooms;
-using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.WebApi.Filters;
 using Microsoft.EntityFrameworkCore;
 

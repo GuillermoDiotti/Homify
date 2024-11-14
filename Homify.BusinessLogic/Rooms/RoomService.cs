@@ -1,12 +1,12 @@
-using Homify.BusinessLogic;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 
-namespace Homify.DataAccess.Repositories.Rooms;
+namespace Homify.BusinessLogic.Rooms;
 
 public class RoomService : IRoomService
 {
@@ -105,6 +105,11 @@ public class RoomService : IRoomService
     }
 
     public List<Room> GetAll()
+    {
+        return _roomRepository.GetAll();
+    }
+
+    public List<Room> GetAllRooms(string homeId)
     {
         return _roomRepository.GetAll();
     }

@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,7 @@
 ﻿using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.BusinessLogic.Rooms.Entities;
 
 namespace Homify.BusinessLogic.Homes.Entities;
 public class Home

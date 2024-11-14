@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories;
-using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;

@@ -5,7 +5,8 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.DataAccess.Repositories.Rooms;
+using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Moq;
@@ -166,5 +167,26 @@ public class RoomServiceTest
 
         Assert.IsTrue(result.Devices.Contains(homeDevice));
         _mockRoomRepository.Verify(r => r.Update(room), Times.Once);
+    }
+
+    [TestMethod]
+    public void GetAllRooms_ShouldReturnAllRooms()
+    {
+        var expectedRooms = new List<Room>
+        {
+            new Room { Id = "1", Name = "Living Room" },
+            new Room { Id = "2", Name = "Bedroom" }
+        };
+
+        _mockRoomRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(expectedRooms);
+
+        var result = _roomService.GetAllRooms("homeId");
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Living Room", result[0].Name);
+        Assert.AreEqual("Bedroom", result[1].Name);
+
+        _mockRoomRepository.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>()), Times.Once);
     }
 }
