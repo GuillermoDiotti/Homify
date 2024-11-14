@@ -1,5 +1,5 @@
+using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories.Importers;
 using Homify.DataAccess.Repositories.Importers.Entities;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Importers;

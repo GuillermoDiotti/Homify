@@ -8,7 +8,7 @@ using Homify.DataAccess.Repositories.Importers.Entities;
 using InterfaceImporter;
 using InterfaceImporter.Models;
 
-namespace Homify.DataAccess.Repositories.Importers;
+namespace Homify.BusinessLogic.Importers;
 
 public class ImporterService : IImporterService
 {
@@ -26,20 +26,20 @@ public class ImporterService : IImporterService
         var importersPath = "./Importers";
         var filePaths = Directory.GetFiles(importersPath);
 
-        List<ImporterInterface> availableImporters = new List<ImporterInterface>();
+        var availableImporters = new List<ImporterInterface>();
 
         foreach (var file in filePaths)
         {
             if (FileIsDll(file))
             {
-                FileInfo dllFile = new FileInfo(file);
-                Assembly myAssembly = Assembly.LoadFile(dllFile.FullName);
+                var dllFile = new FileInfo(file);
+                var myAssembly = Assembly.LoadFile(dllFile.FullName);
 
                 foreach (Type type in myAssembly.GetTypes())
                 {
                     if (ImplementsRequiredInterface(type))
                     {
-                        ImporterInterface instance = (ImporterInterface)Activator.CreateInstance(type);
+                        var instance = (ImporterInterface)Activator.CreateInstance(type);
                         if (instance != null)
                         {
                             availableImporters.Add(instance);
@@ -54,6 +54,18 @@ public class ImporterService : IImporterService
 
     public void AddImportedDevices(ImporterArgs args, User user)
     {
+        var owner = _companyOwnerService.GetById(user.Id);
+
+        if (owner == null)
+        {
+            throw new InvalidOperationException("User is not a company owner");
+        }
+
+        if (owner.Company == null)
+        {
+            throw new InvalidOperationException("Owner must have a company to import devices");
+        }
+
         ImporterInterface? importerFile = GetAllImporters()
             .FirstOrDefault(i => i.GetName().Equals(args.Importer, StringComparison.OrdinalIgnoreCase));
 
@@ -83,7 +95,7 @@ public class ImporterService : IImporterService
                 IsExterior = false,
                 IsInterior = false
             };
-            List<string> returnList = new List<string>();
+            var returnList = new List<string>();
             foreach (var photo in device.Photos)
             {
                 if (photo.IsPrincipal == true)
@@ -117,9 +129,9 @@ public class ImporterService : IImporterService
         }
     }
 
-    public List<string> TransformPhotos(List<ReturnPhotos> photos, Device device)
+    public List<string> TransformPhotos(List<ReturnPhotos> photos)
     {
-        List<string> returnList = new List<string>();
+        var returnList = new List<string>();
         foreach (var photo in photos)
         {
             returnList.Add(photo.Path);

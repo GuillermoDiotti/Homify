@@ -1,6 +1,6 @@
+using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories.Importers;
 using Homify.DataAccess.Repositories.Importers.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Importers.Models.Requests;
@@ -22,18 +22,16 @@ public sealed class ImporterController : HomifyControllerBase
 
     [HttpPost]
     [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.ImportDevices)]
+    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
     public void AddImportedDevices(ImportRequest request)
     {
-        // RequestValidator.CheckRequest(request); edify hace un check de null en una clase aparte en el proyecto utilities
-
         if(request == null)
         {
             throw new NullRequestException("Request can not be null");
         }
 
         var user = GetUserLogged();
-        ImporterArgs args = new ImporterArgs(
+        var args = new ImporterArgs(
             request.ImporterSelected,
             request.FilePath,
             user);

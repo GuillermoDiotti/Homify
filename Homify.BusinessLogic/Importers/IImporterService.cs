@@ -2,7 +2,7 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories.Importers.Entities;
 using InterfaceImporter;
 
-namespace Homify.DataAccess.Repositories.Importers;
+namespace Homify.BusinessLogic.Importers;
 
 public interface IImporterService
 {
