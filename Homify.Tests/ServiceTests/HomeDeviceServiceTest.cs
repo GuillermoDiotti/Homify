@@ -227,7 +227,7 @@ public class HomeDeviceServiceTest
     public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
         var user = new User();
-        _homeDeviceService.UpdateHomeDevice("NewName", null, user);
+        _homeDeviceService.RenameHomeDevice("NewName", null, user);
     }
 
     [TestMethod]
@@ -239,7 +239,7 @@ public class HomeDeviceServiceTest
         var homeDevice = new HomeDevice() { Id = "idHomeDevice", DeviceId = "idDevice", HomeId = "idHome", Home = home, HardwareId = "hardwareId", CustomName = "oldName" };
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(homeDevice);
-        var response = _homeDeviceService.UpdateHomeDevice("NewName", "idHomeDevice", user);
+        var response = _homeDeviceService.RenameHomeDevice("NewName", "idHomeDevice", user);
 
         response.Id.Should().Be("idHomeDevice");
         response.CustomName.Should().Be("NewName");

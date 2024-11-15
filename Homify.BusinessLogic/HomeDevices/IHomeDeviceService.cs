@@ -12,6 +12,5 @@ public interface IHomeDeviceService
     HomeDevice Deactivate(string hardwareId, User logged);
     List<HomeDevice> GetHomeDeviceByHomeId(string homeId);
     HomeDevice GetHomeDeviceById(string id);
-
-    HomeDevice UpdateHomeDevice(string name, string id, User u);
+    HomeDevice RenameHomeDevice(string name, string id, User u);
 }

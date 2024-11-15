@@ -382,7 +382,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevices_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.UpdateHomeDevice(null, "home123");
+        _controller.AssignDeviceToHome(null, "home123");
     }
 
     [TestMethod]
@@ -413,15 +413,15 @@ public class HomesControllerTest
             HardwareId = "1001"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, "home1", user)).Returns(updatedDevice);
+        _homeServiceMock.Setup(service => service.AssignDeviceToHome(request.DeviceId, "home1", user)).Returns(updatedDevice);
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = user;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        var result = _controller.UpdateHomeDevice(request, "home1");
+        var result = _controller.AssignDeviceToHome(request, "home1");
 
-        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, "home1", user), Times.Once);
+        _homeServiceMock.Verify(service => service.AssignDeviceToHome(request.DeviceId, "home1", user), Times.Once);
     }
 
     [TestMethod]
@@ -471,7 +471,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeDevices(homeId, user)).Returns(devices);
 
-        var result = _controller.ObtainHomeDevices(homeId);
+        var result = _controller.AllHomeDevices(homeId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -481,7 +481,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.NotificatedMembers("homeIe", null);
+        _controller.UpdateNotificatedMembers("homeIe", null);
     }
 
     [TestMethod]
@@ -575,7 +575,7 @@ public class HomesControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        var result = _controller.NotificatedMembers(homeId, request);
+        var result = _controller.UpdateNotificatedMembers(homeId, request);
 
         result.Should().NotBeNull();
         result.MembersToNotify.Should().BeEquivalentTo(new List<string> { "user1", "user2" });
@@ -639,7 +639,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateMembersList_WhenRequestIsNull_ShouldThrowNullRequestException()
     {
-        _controller.UpdateMembersList("home123", null);
+        _controller.AddMemberToHome("home123", null);
     }
 
     [TestMethod]

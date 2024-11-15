@@ -66,7 +66,7 @@ public class HomeService : IHomeService
         }
     }
 
-    public Home UpdateMemberList(string homeId, string userMail)
+    public Home AddMemberToHome(string homeId, string userMail)
     {
         var homeFound = GetHomeById(homeId);
 
@@ -111,7 +111,7 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user)
+    public HomeDevice AssignDeviceToHome(string deviceid, string homeid, User user)
     {
         if (homeid == null)
         {

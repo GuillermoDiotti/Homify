@@ -35,7 +35,7 @@ public class HomeDeviceControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevice_WhenRequestIsNull_ThrowsException()
     {
-        _controller.UpdateHomeDevice(null, null);
+        _controller.RenameHomeDevice(null, null);
     }
 
     [TestMethod]
@@ -44,7 +44,7 @@ public class HomeDeviceControllerTest
     {
         var req = new UpdateHomeDeviceRequest() { CustomName = null };
 
-        _controller.UpdateHomeDevice(req, null);
+        _controller.RenameHomeDevice(req, null);
     }
 
     [TestMethod]
@@ -91,8 +91,8 @@ public class HomeDeviceControllerTest
 
         var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
 
-        _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
-        var response = _controller.UpdateHomeDevice(req, updatedDevice.Id);
+        _homeDeviceMock.Setup(x => x.RenameHomeDevice(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
+        var response = _controller.RenameHomeDevice(req, updatedDevice.Id);
 
         response.Should().NotBeNull();
     }

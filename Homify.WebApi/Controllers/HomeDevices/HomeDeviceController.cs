@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Permissions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Controllers.HomeDevices.Models;
+using Homify.WebApi.Controllers.Homes.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,14 +23,14 @@ public class HomeDeviceController : HomifyControllerBase
     [HttpPut("{id}/update")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public string UpdateHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
+    public string RenameHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
         Helpers.ValidateRequest(req);
 
         Helpers.ValidateArgsNull("CustomName", req.CustomName);
 
         var user = GetUserLogged();
-        var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id, user);
+        var device = _homeDeviceService.RenameHomeDevice(req.CustomName, id, user);
 
         return device.Id;
     }

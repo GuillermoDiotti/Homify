@@ -111,7 +111,7 @@ public class HomeServiceTest
                 new User { Email = userMail, Roles = [] }
             ]);
 
-        _homeService.UpdateMemberList(homeId, userMail);
+        _homeService.AddMemberToHome(homeId, userMail);
     }
 
     [TestMethod]
@@ -142,7 +142,7 @@ public class HomeServiceTest
         _userService
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([userFound]);
-        var updatedHome = _homeService.UpdateMemberList(homeId, userMail);
+        var updatedHome = _homeService.AddMemberToHome(homeId, userMail);
 
         Assert.IsNotNull(updatedHome);
         Assert.AreEqual(homeId, updatedHome.Id);
@@ -179,7 +179,7 @@ public class HomeServiceTest
                 new User { Email = userMail, Roles = [new UserRole { Role = new Role { Name = Constants.HOMEOWNER } }] }
             ]);
 
-        _homeService.UpdateMemberList(homeId, userMail);
+        _homeService.AddMemberToHome(homeId, userMail);
     }
 
     [TestMethod]
@@ -191,7 +191,7 @@ public class HomeServiceTest
 
         _mockRepository.Setup(service => service.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns((Home)null);
 
-        _homeService.UpdateMemberList(homeId, userMail);
+        _homeService.AddMemberToHome(homeId, userMail);
     }
 
     [TestMethod]
@@ -209,7 +209,7 @@ public class HomeServiceTest
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(homeFound);
 
-        _homeService.UpdateMemberList(homeId, userMail);
+        _homeService.AddMemberToHome(homeId, userMail);
     }
 
     [TestMethod]
@@ -230,7 +230,7 @@ public class HomeServiceTest
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
 
-        _homeService.UpdateMemberList(homeId, userMail);
+        _homeService.AddMemberToHome(homeId, userMail);
     }
 
     [TestMethod]
@@ -258,7 +258,7 @@ public class HomeServiceTest
         _mockRepository.Setup(service => service.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(homeFound);
         _userService.Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([userFound]);
 
-        _homeService.UpdateMemberList(homeId, userMail);
+        _homeService.AddMemberToHome(homeId, userMail);
     }
 
     [TestMethod]
@@ -299,7 +299,7 @@ public class HomeServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
         _deviceService.Setup(d => d.GetById(deviceId)).Returns(device);
 
-        _homeService.UpdateHomeDevices(deviceId, homeId, user);
+        _homeService.AssignDeviceToHome(deviceId, homeId, user);
 
         _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Devices.Any(d => d.DeviceId == deviceId))), Times.Once);
     }
@@ -512,7 +512,7 @@ public class HomeServiceTest
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
-        _homeService.UpdateHomeDevices(deviceid, homeid, user);
+        _homeService.AssignDeviceToHome(deviceid, homeid, user);
     }
 
     [TestMethod]
@@ -527,7 +527,7 @@ public class HomeServiceTest
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
 
-        _homeService.UpdateHomeDevices(deviceid, homeid, user);
+        _homeService.AssignDeviceToHome(deviceid, homeid, user);
     }
 
     [TestMethod]
@@ -547,7 +547,7 @@ public class HomeServiceTest
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
         _deviceService.Setup(service => service.GetById(deviceid)).Returns((Device)null);
 
-        _homeService.UpdateHomeDevices(deviceid, homeid, user);
+        _homeService.AssignDeviceToHome(deviceid, homeid, user);
     }
 
     [TestMethod]

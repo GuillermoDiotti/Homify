@@ -5,6 +5,7 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.Utility;
+using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Controllers.Homes.Models.Requests;
 using Homify.WebApi.Controllers.Homes.Models.Responses;
@@ -52,16 +53,16 @@ public sealed class HomeController : HomifyControllerBase
         return new CreateHomeResponse(homeSaved);
     }
 
-    [HttpPut("{homeId}/members")]
+    [HttpPut("{homeId}/add-member")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
-    public UpdateMembersListResponse UpdateMembersList(
+    public UpdateMembersListResponse AddMemberToHome(
         [FromRoute] string homeId,
         UpdateMemberListRequest? request)
     {
         Helpers.ValidateRequest(request);
 
-        var home = _homeService.UpdateMemberList(homeId, request.Email);
+        var home = _homeService.AddMemberToHome(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);
     }
@@ -92,10 +93,10 @@ public sealed class HomeController : HomifyControllerBase
         return new HomeMemberBasicInfo(result);
     }
 
-    [HttpPut("{homeId}/devices")]
+    [HttpPut("{homeId}/addDevice")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public UpdateHomeDeviceResponse UpdateHomeDevice(
+    public UpdateHomeDeviceResponse AssignDeviceToHome(
         UpdateHomeDevicesRequest request,
         [FromRoute] string homeId)
     {
@@ -103,21 +104,8 @@ public sealed class HomeController : HomifyControllerBase
 
         var user = GetUserLogged();
 
-        var result = _homeService.UpdateHomeDevices(request.DeviceId, homeId, user);
+        var result = _homeService.AssignDeviceToHome(request.DeviceId, homeId, user);
         return new UpdateHomeDeviceResponse(result);
-    }
-
-    [HttpGet("{homeId}/devices")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
-    public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
-    {
-        var user = GetUserLogged();
-
-        return _homeService
-            .GetHomeDevices(homeId, user)
-            .Select(hd => new GetDevicesResponse(hd))
-            .ToList();
     }
 
     [HttpGet("{homeId}/members")]
@@ -133,10 +121,10 @@ public sealed class HomeController : HomifyControllerBase
             .ToList();
     }
 
-    [HttpPut("{homeId}/notifications")]
+    [HttpPut("{homeId}/notificated-member")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
-    public NotificatedMembersResponse NotificatedMembers(
+    public NotificatedMembersResponse UpdateNotificatedMembers(
         [FromRoute] string homeId,
         NotificatedMembersRequest request)
     {
@@ -184,6 +172,19 @@ public sealed class HomeController : HomifyControllerBase
         return _homeService
             .GetAllHomesWhereUserIsMember(user)
             .Select(home => new GetHomesResponse(home))
+            .ToList();
+    }
+
+    [HttpGet("{homeId}/allDevices")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
+    public List<GetHomeDevicesResponse> AllHomeDevices([FromRoute] string homeId)
+    {
+        var user = GetUserLogged();
+
+        return _homeService
+            .GetHomeDevices(homeId, user)
+            .Select(hd => new GetHomeDevicesResponse(hd))
             .ToList();
     }
 }

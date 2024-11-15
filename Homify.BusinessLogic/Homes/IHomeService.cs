@@ -8,8 +8,8 @@ public interface IHomeService
 {
     Home AddHome(CreateHomeArgs home);
     Home? GetHomeById(string id);
-    Home UpdateMemberList(string homeId, string userMail);
-    HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user);
+    Home AddMemberToHome(string homeId, string userMail);
+    HomeDevice AssignDeviceToHome(string deviceid, string homeid, User user);
     List<HomeUser> GetHomeMembers(string homeId, User user);
     List<HomeUser> UpdateNotificatedList(string homeId, string memberId, User owner);
     List<HomeDevice> GetHomeDevices(string? homeId, User u);
