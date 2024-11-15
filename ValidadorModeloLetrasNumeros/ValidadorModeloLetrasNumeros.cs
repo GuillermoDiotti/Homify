@@ -11,7 +11,7 @@ public class ValidadorModeloLetrasNumeros : IModeloValidador
 
         var nombre = modelo.Value;
 
-        if (nombre.Length < 6)
+        if (nombre.Length != 6)
         {
             return false;
         }
