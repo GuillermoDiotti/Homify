@@ -145,18 +145,8 @@ public class DeviceController : HomifyControllerBase
     [AuthenticationFilter]
     public List<SearchDevicesResponse> ObtainDevices([FromQuery] DeviceFiltersRequest? req)
     {
-        var pageSize = 10;
-        var pageOffset = 0;
-
-        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
-        {
-            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
-        }
-
-        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
-        {
-            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
-        }
+        var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
+        var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
         var response = _deviceService
                 .GetAll(req)

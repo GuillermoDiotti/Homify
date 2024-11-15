@@ -29,8 +29,6 @@ public static class PermissionsGenerator
     public const string GetUserNotifications = "notifications-ObtainNotifications";
     public const string UpdateUserNotification = "notifications-UpdateNotification";
 
-    // NON AUTHENTICATED USER
-
     // HOMEUSERS
     public const string MemberCanAddDevice = "AddDevices";
     public const string MemberCanListDevices = "ListDevices";
