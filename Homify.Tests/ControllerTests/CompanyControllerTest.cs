@@ -55,7 +55,7 @@ public class CompanyControllerTest
             HttpContext = httpContext
         };
 
-        _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(x => x.GetByOwner(companyOwner.Id)).Returns((Company)null);
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
@@ -108,7 +108,7 @@ public class CompanyControllerTest
             }
         };
 
-        _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(c => c.GetByOwner(companyOwner.Id)).Returns((Company)null);
 
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))

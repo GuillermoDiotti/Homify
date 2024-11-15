@@ -80,7 +80,7 @@ public class DeviceController : HomifyControllerBase
             companyOwner,
             false);
 
-        WindowSensor sen = _deviceService.AddSWindowensor(args, companyOwner);
+        WindowSensor sen = _deviceService.AddWindowSensor(args, companyOwner);
 
         return new CreateDeviceResponse(sen);
     }

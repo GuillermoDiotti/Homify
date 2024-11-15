@@ -77,7 +77,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         Helpers.ValidateRequest(req);
 
-        var found = _homeUserService.GetByIds(homeId, memberId);
+        var found = _homeUserService.GetHomeUser(homeId, memberId);
 
         var user = GetUserLogged();
 

@@ -34,7 +34,7 @@ public class HomeUserServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()))
             .Returns(expectedHomeUser);
 
-        var result = _homeUserService.GetByIds(homeId, userId);
+        var result = _homeUserService.GetHomeUser(homeId, userId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedHomeUser.HomeId, result.HomeId);
@@ -51,7 +51,7 @@ public class HomeUserServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()))
             .Returns((HomeUser)null);
 
-        _homeUserService.GetByIds(homeId, userId);
+        _homeUserService.GetHomeUser(homeId, userId);
     }
 
     [TestMethod]

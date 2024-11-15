@@ -26,7 +26,7 @@ public class CompanyService : ICompanyService
             throw new DuplicatedDataException("The name is already taken.");
         }
 
-        var alreadyHasACompany = GetByUserId(args.Owner.Id);
+        var alreadyHasACompany = GetByOwner(args.Owner.Id);
 
         if (alreadyHasACompany != null)
         {
@@ -47,7 +47,7 @@ public class CompanyService : ICompanyService
         return company;
     }
 
-    public Company? GetByUserId(string userId)
+    public Company? GetByOwner(string userId)
     {
         try
         {

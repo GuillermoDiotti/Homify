@@ -71,7 +71,7 @@ public class DeviceServiceTest
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
-        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
+        _companyServiceMock.Setup(r => r.GetByOwner("1")).Returns(user.Company);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -112,9 +112,9 @@ public class DeviceServiceTest
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
-        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
+        _companyServiceMock.Setup(r => r.GetByOwner("1")).Returns(user.Company);
 
-        var result = _deviceService.AddSWindowensor(deviceArgs, user);
+        var result = _deviceService.AddWindowSensor(deviceArgs, user);
 
         _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<WindowSensor>()), Times.Once);
         Assert.IsNotNull(result);
@@ -301,7 +301,7 @@ public class DeviceServiceTest
     {
         var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
         var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", [], "ppalPicture", false, false,false, false, user, true);
-        _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
+        _companyServiceMock.Setup(service => service.GetByOwner(user.Id)).Returns(user.Company);
 
         var result = _deviceService.AddLamp(createDeviceArgs, user);
 
@@ -320,7 +320,7 @@ public class DeviceServiceTest
         var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", [],
             "ppalPicture", false, false,true,false, user, true);
 
-        _companyServiceMock.Setup(service => service.GetByUserId(user.Id)).Returns(user.Company);
+        _companyServiceMock.Setup(service => service.GetByOwner(user.Id)).Returns(user.Company);
 
         var result = _deviceService.AddMovementSensor(createDeviceArgs, user);
 

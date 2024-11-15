@@ -136,19 +136,9 @@ public class HomeService : IHomeService
             throw new NotFoundException("Device not found");
         }
 
-        var homeDevice = new HomeDevice()
-        {
-            Device = device,
-            DeviceId = device.Id,
-            Home = home,
-            HomeId = home.Id,
-            Connected = true,
-            IsActive = true,
-            HardwareId = Guid.NewGuid().ToString(),
-        };
         var result = _homeDeviceService.AddHomeDevice(home, device);
+        home.Devices.Add(result);
         _repository.Update(home);
-        home.Devices.Add(homeDevice);
         return result;
     }
 

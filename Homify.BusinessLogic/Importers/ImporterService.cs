@@ -125,7 +125,7 @@ public class ImporterService : IImporterService
         }
         else if (device.Type == "sensor-open-close")
         {
-            _deviceService.AddSWindowensor(device, user);
+            _deviceService.AddWindowSensor(device, user);
         }
     }
 

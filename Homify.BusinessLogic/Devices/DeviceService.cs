@@ -51,7 +51,7 @@ public class DeviceService : IDeviceService
         return camera;
     }
 
-    public WindowSensor AddSWindowensor(CreateDeviceArgs device, CompanyOwner user)
+    public WindowSensor AddWindowSensor(CreateDeviceArgs device, CompanyOwner user)
     {
         var owner = (CompanyOwner)user;
         HasCompany(owner);
@@ -109,7 +109,7 @@ public class DeviceService : IDeviceService
 
     private void HasCompany(CompanyOwner? owner)
     {
-        var company = _companyService.GetByUserId(owner.Id);
+        var company = _companyService.GetByOwner(owner.Id);
         if (company == null)
         {
             throw new NotFoundException("The user does not have a company");

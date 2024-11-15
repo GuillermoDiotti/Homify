@@ -110,7 +110,7 @@ public class DeviceControllerTest
             CompanyId = companyOwner.Id
         };
 
-        _deviceServiceMock.Setup(d => d.AddSWindowensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
+        _deviceServiceMock.Setup(d => d.AddWindowSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
         _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns(companyOwner);
         _controller.ControllerContext = new ControllerContext
         {
