@@ -8,5 +8,5 @@ public interface ICompanyService
     Company Add(CreateCompanyArgs args, User user);
     Company? GetByUserId(string userId);
     List<Company> GetAll(string? owner = null, string? company = null);
-    string AddValidatorModel(string model);
+    string AddValidatorModel(string model, User u);
 }

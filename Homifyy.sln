@@ -19,11 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceImporter", "Interf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSONImporter", "JSONImporter\JSONImporter.csproj", "{1973D492-BE15-415A-9906-1D52BB565E21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModeloValidador.Abstracciones", "ModeloValidador.Abstracciones\ModeloValidador.Abstracciones.csproj", "{BE9AF50E-A420-4898-A62E-9C119D7816A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidadorModeloLetrasNumeros", "ValidadorModeloLetrasNumeros\ValidadorModeloLetrasNumeros.csproj", "{3027EE97-EF6B-4435-B873-79815BB2581C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidadorModeloLetrasNumeros", "ValidadorModeloLetrasNumeros\ValidadorModeloLetrasNumeros.csproj", "{3027EE97-EF6B-4435-B873-79815BB2581C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidadorModeloSoloLetras", "ValidadorSoloLetras\ValidadorModeloSoloLetras.csproj", "{CC4030F5-1845-4F21-9C56-3E46F0D683F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidadorModeloSoloLetras", "ValidadorSoloLetras\ValidadorModeloSoloLetras.csproj", "{CC4030F5-1845-4F21-9C56-3E46F0D683F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{1973D492-BE15-415A-9906-1D52BB565E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1973D492-BE15-415A-9906-1D52BB565E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1973D492-BE15-415A-9906-1D52BB565E21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE9AF50E-A420-4898-A62E-9C119D7816A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE9AF50E-A420-4898-A62E-9C119D7816A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE9AF50E-A420-4898-A62E-9C119D7816A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE9AF50E-A420-4898-A62E-9C119D7816A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3027EE97-EF6B-4435-B873-79815BB2581C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3027EE97-EF6B-4435-B873-79815BB2581C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3027EE97-EF6B-4435-B873-79815BB2581C}.Release|Any CPU.ActiveCfg = Release|Any CPU

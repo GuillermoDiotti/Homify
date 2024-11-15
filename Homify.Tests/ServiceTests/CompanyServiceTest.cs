@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Moq;
 
@@ -45,6 +46,7 @@ public class CompanyServiceTest
             "Test Company",
             "https://example.com/logo.png",
             "123456789",
+            string.Empty,
             user);
 
         _companyRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Company, bool>>>()))
@@ -78,6 +80,7 @@ public class CompanyServiceTest
             "Test Company",
             "https://example.com/logo.png",
             "123456789",
+            string.Empty,
             companyOwner);
 
         _companyRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Company, bool>>>()))
@@ -108,5 +111,31 @@ public class CompanyServiceTest
             .Throws(new NotFoundException("Test Company"));
         var result = _service.GetByUserId(userId);
         Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void AddValidatorModel_ShouldReturnModel_WhenCompanyExists()
+    {
+        var user = new User { Id = "1" };
+        var company = new Company { OwnerId = "1" };
+        var model = "ValidatorModel";
+
+        _companyRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<Company, bool>>>())).Returns(company);
+
+        var result = _service.AddValidatorModel(model, user);
+
+        Assert.AreEqual(model, result);
+        _companyRepositoryMock.Verify(r => r.Update(It.Is<Company>(c => c.ValidatorType == model)), Times.Once);
+    }
+
+    [TestMethod]
+    public void AddValidatorModel_ShouldThrowNotFoundException_WhenCompanyDoesNotExist()
+    {
+        var user = new User { Id = "1" };
+        var model = "ValidatorModel";
+
+        _companyRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<Company, bool>>>())).Returns((Company)null);
+
+        Assert.ThrowsException<NotFoundException>(() => _service.AddValidatorModel(model, user));
     }
 }
