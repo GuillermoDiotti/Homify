@@ -77,6 +77,7 @@ public class RoomService : IRoomService
         }
 
         room.Devices.Add(homeDevice);
+        homeDevice.Room = room;
         _roomRepository.Update(room);
 
         return room;
