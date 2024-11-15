@@ -24,21 +24,33 @@ public class ImporterService : IImporterService
 
     public List<IModeloValidador> GetAllValidators()
     {
-        var rutaDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ModeloValidador.dll");
+        var rutaDll = "./Validators";
+        var filePaths = Directory.GetFiles(rutaDll);
 
-        if (!File.Exists(rutaDll))
+        var availableImporters = new List<IModeloValidador>();
+
+        foreach (var file in filePaths)
         {
-            throw new FileNotFoundException("Validator's dll file not found.");
+            if (FileIsDll(file))
+            {
+                var dllFile = new FileInfo(file);
+                var myAssembly = Assembly.LoadFile(dllFile.FullName);
+
+                foreach (Type type in myAssembly.GetTypes())
+                {
+                    if (ImplementsRequiredInterface<IModeloValidador>(type))
+                    {
+                        var instance = (IModeloValidador)Activator.CreateInstance(type);
+                        if (instance != null)
+                        {
+                            availableImporters.Add(instance);
+                        }
+                    }
+                }
+            }
         }
 
-        var assembly = Assembly.LoadFrom(rutaDll);
-
-        var validadores = assembly.GetTypes()
-            .Where(t => typeof(IModeloValidador).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-            .Select(tipo => (IModeloValidador)Activator.CreateInstance(tipo)!)
-            .ToList();
-
-        return validadores;
+        return availableImporters;
     }
 
     public List<IImporter> GetAllImporters()
@@ -57,7 +69,7 @@ public class ImporterService : IImporterService
 
                 foreach (Type type in myAssembly.GetTypes())
                 {
-                    if (ImplementsRequiredInterface(type))
+                    if (ImplementsRequiredInterface<IImporter>(type))
                     {
                         var instance = (IImporter)Activator.CreateInstance(type);
                         if (instance != null)
@@ -165,8 +177,8 @@ public class ImporterService : IImporterService
         return file.EndsWith("dll");
     }
 
-    public bool ImplementsRequiredInterface(Type type)
+    public bool ImplementsRequiredInterface<T>(Type type)
     {
-        return typeof(IImporter).IsAssignableFrom(type) && !type.IsInterface;
+        return typeof(T).IsAssignableFrom(type) && !type.IsInterface;
     }
 }
