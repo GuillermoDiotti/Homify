@@ -11,6 +11,7 @@ using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ServiceTests;
 

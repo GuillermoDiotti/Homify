@@ -14,6 +14,7 @@ using Homify.WebApi.Controllers.Notifications.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 

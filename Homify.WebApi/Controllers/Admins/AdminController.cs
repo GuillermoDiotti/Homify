@@ -2,7 +2,6 @@ using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
@@ -53,15 +52,9 @@ public sealed class AdminController : HomifyControllerBase
     public void Delete(string adminId)
     {
         var admin = _userService.GetById(adminId);
-        if (admin == null)
-        {
-            throw new NotFoundException("Admin not found");
-        }
+        Helpers.ValidateNotFound("Admin", admin);
 
-        if (!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR))
-        {
-            throw new InvalidOperationException("Target user is not an admin");
-        }
+        Helpers.ValidateInvalidOperation(!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR));
 
         _userService.Delete(adminId);
     }

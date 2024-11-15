@@ -11,6 +11,7 @@ using Homify.WebApi.Controllers.Admins;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 

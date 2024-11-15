@@ -25,10 +25,7 @@ public class HomeDeviceController : HomifyControllerBase
     {
         Helpers.ValidateRequest(req);
 
-        if (req.CustomName == null)
-        {
-            throw new ArgumentNullException("CustomName cannot be null");
-        }
+        Helpers.ValidateArgsNull("CustomName", req.CustomName);
 
         var user = GetUserLogged();
         var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id, user);

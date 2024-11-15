@@ -2,6 +2,7 @@
 using Homify.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.WebApi.Filters;
 
