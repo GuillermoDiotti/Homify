@@ -1,6 +1,4 @@
 ﻿using Homify.BusinessLogic.Sessions;
-using Homify.BusinessLogic.Users;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Session.Models.Requests;
 using Homify.WebApi.Controllers.Session.Models.Responses;
@@ -14,12 +12,10 @@ namespace Homify.WebApi.Controllers.Session;
 public class SessionController : ControllerBase
 {
     private readonly ISessionService _sessionService;
-    private readonly IUserService _userService;
 
-    public SessionController(ISessionService sessionService, IUserService userService)
+    public SessionController(ISessionService sessionService)
     {
         _sessionService = sessionService;
-        _userService = userService;
     }
 
     [HttpPost]

@@ -1,6 +1,5 @@
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Filters;

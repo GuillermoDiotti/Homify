@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.HomeOwners.Models.Requests;
 using Homify.WebApi.Controllers.HomeOwners.Models.Responses;

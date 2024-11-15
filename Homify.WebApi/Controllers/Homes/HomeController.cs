@@ -4,8 +4,6 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
-using Homify.BusinessLogic.Users;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Controllers.Homes.Models.Requests;
@@ -20,18 +18,15 @@ namespace Homify.WebApi.Controllers.Homes;
 public sealed class HomeController : HomifyControllerBase
 {
     private readonly IHomeService _homeService;
-    private readonly IUserService _userService;
     private readonly IHomeUserService _homeUserService;
     private readonly IHomePermissionService _homePermissionService;
 
     public HomeController(
         IHomeService homeService,
-        IUserService userService,
         IHomeUserService homeUserService,
         IHomePermissionService homePermissionService)
     {
         _homeService = homeService;
-        _userService = userService;
         _homeUserService = homeUserService;
         _homePermissionService = homePermissionService;
     }

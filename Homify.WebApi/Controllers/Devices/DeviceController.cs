@@ -5,7 +5,6 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Homify.WebApi.Controllers.Devices.Models.Responses;

@@ -28,16 +28,14 @@ public class HomesControllerTest
 {
     private readonly HomeController? _controller;
     private readonly Mock<IHomeService>? _homeServiceMock;
-    private readonly Mock<IUserService>? _userServiceMock;
     private readonly Mock<IHomeUserService> _homeUserServiceMock;
     private readonly Mock<IHomePermissionService> _homePermissionServiceMock;
     public HomesControllerTest()
     {
         _homeServiceMock = new Mock<IHomeService>(MockBehavior.Strict);
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _homeUserServiceMock = new Mock<IHomeUserService>(MockBehavior.Strict);
         _homePermissionServiceMock = new Mock<IHomePermissionService>(MockBehavior.Strict);
-        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object, _homeUserServiceMock.Object, _homePermissionServiceMock.Object);
+        _controller = new HomeController(_homeServiceMock.Object, _homeUserServiceMock.Object, _homePermissionServiceMock.Object);
     }
 
     [TestMethod]

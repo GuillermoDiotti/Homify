@@ -16,13 +16,11 @@ public class SessionControllerTest
 {
     private readonly SessionController _controller;
     private readonly Mock<ISessionService> _sessionServiceMock;
-    private readonly Mock<IUserService> _userServiceMock;
 
     public SessionControllerTest()
     {
         _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new SessionController(_sessionServiceMock.Object, _userServiceMock.Object);
+        _controller = new SessionController(_sessionServiceMock.Object);
     }
 
     [TestMethod]
