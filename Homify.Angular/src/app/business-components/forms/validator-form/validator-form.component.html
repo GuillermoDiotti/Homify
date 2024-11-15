@@ -1,0 +1,36 @@
+<h2>Import devices</h2>
+<form
+  [formGroup]="form"
+  (ngSubmit)="handleSubmit()"
+  style="display: flex; flex-direction: column; align-items: start"
+>
+  <div style="display: flex; flex-direction: row; align-items: center; gap: 5">
+    <div>
+      <label for="importer">Importer</label>
+      <select id="importer" name="importer" (change)="onImporterChange($event)">
+        @for (imp of importers; track $index) {
+        <option value="{{ imp }}">{{ imp }}</option>
+        }
+      </select>
+    </div>
+    <app-button (click)="handleRefreshImporters()"
+      >Refresh importers</app-button
+    >
+  </div>
+
+  <app-form-input
+    [form]="form"
+    name="filePath"
+    type="text"
+    label="File Path"
+    placeholder="Path"
+    [formField]="{
+      filePath: { required: 'Path is required' }
+    }"
+  ></app-form-input>
+
+  <app-form-button type="submit" title="Submit"></app-form-button>
+
+  <app-success-message [message]="successMessage"></app-success-message>
+  <app-error-message [message]="errorMessage"></app-error-message>
+</form>

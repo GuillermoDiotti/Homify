@@ -4,6 +4,7 @@ import { CompanyTypeApiRepositoryService } from '../../repositories/CompanyRepos
 import CreateCompanyRequest from './models/CreateCompanyRequest';
 import CreateCompanyResponse from './models/CreateCompanyResponse';
 import CompanyBasicInfo from './models/CompanyBasicInfo';
+import AddValidatorBasicInfo from './models/AddValidatorBasicInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,9 @@ export class CompanyService {
 
     const query = queryParams.join('&');
     return this._repository.getAllCompanies(query);
+  }
+
+  public addValidator(request: AddValidatorBasicInfo): Observable<AddValidatorBasicInfo> {
+      return this._repository.addValidator(request);
   }
 }

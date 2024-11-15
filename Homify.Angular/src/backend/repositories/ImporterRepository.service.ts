@@ -20,4 +20,8 @@ import { catchError, Observable } from "rxjs";
 			public getImporters(): Observable<string[]> {
         return this.get<string[]>().pipe(catchError(this.handleError));
       }
+
+      public getValidators(): Observable<string[]> {
+        return this.get<string[]>().pipe(catchError(this.handleError));
+      }
     }
