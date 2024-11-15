@@ -31,6 +31,12 @@ public class DeviceService : IDeviceService
     public Camera AddCamera(CreateDeviceArgs device, CompanyOwner owner)
     {
         HasCompany(owner);
+
+        if (!string.IsNullOrEmpty(owner.Company.ValidatorType))
+        {
+            owner.Company.ValidateModel(device.Model ?? string.Empty);
+        }
+
         var camera = new Camera
         {
             Id = Guid.NewGuid().ToString(),
@@ -55,6 +61,12 @@ public class DeviceService : IDeviceService
     {
         var owner = (CompanyOwner)user;
         HasCompany(owner);
+
+        if (!string.IsNullOrEmpty(owner.Company.ValidatorType))
+        {
+            owner.Company.ValidateModel(device.Model ?? string.Empty);
+        }
+
         var sensor = new Sensor
         {
             Id = Guid.NewGuid().ToString(),
@@ -75,6 +87,12 @@ public class DeviceService : IDeviceService
     {
         var owner = (CompanyOwner)user;
         HasCompany(owner);
+
+        if (!string.IsNullOrEmpty(owner.Company.ValidatorType))
+        {
+            owner.Company.ValidateModel(device.Model ?? string.Empty);
+        }
+
         var sensor = new MovementSensor
         {
             Id = Guid.NewGuid().ToString(),
@@ -158,6 +176,12 @@ public class DeviceService : IDeviceService
     {
         var owner = (CompanyOwner)user;
         HasCompany(owner);
+
+        if (!string.IsNullOrEmpty(owner.Company.ValidatorType))
+        {
+            owner.Company.ValidateModel(device.Model ?? string.Empty);
+        }
+
         var lamp = new Lamp()
         {
             Id = Guid.NewGuid().ToString(),

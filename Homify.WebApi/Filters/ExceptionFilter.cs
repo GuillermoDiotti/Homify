@@ -97,7 +97,18 @@ public class ExceptionFilter : IExceptionFilter
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest
                 }
-        }
+        },
+        {
+            typeof(InvalidDataException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "InvalidData",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
      };
 
     public void OnException(ExceptionContext context)

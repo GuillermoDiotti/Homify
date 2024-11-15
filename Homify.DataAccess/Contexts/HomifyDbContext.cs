@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Cameras.Entities;
-using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;

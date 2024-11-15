@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.Companies;
+﻿using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.CompanyOwners.Entities;

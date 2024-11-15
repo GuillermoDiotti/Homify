@@ -12,4 +12,10 @@
       <ProjectReference Include="..\InterfaceImporter\InterfaceImporter.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="ModeloValidador.Abstracciones">
+        <HintPath>..\lib\ModeloValidador.Abstracciones.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
