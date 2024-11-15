@@ -31,7 +31,7 @@ public class Company
     {
         if (string.IsNullOrEmpty(ValidatorType))
         {
-            throw new InvalidOperationException("Validator type is not defined.");
+            return;
         }
 
         var rutaDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ModeloValidador.dll");

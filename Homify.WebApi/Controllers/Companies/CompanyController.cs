@@ -39,6 +39,7 @@ public class CompanyController : HomifyControllerBase
             request.Name ?? string.Empty,
             request.LogoUrl ?? string.Empty,
             request.Rut ?? string.Empty,
+            request.Validator ?? string.Empty,
             companyOwner);
 
         var company = _companyService.Add(args, companyOwner!);

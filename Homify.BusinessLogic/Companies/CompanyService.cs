@@ -40,6 +40,7 @@ public class CompanyService : ICompanyService
             Name = args.Name,
             LogoUrl = args.LogoUrl,
             Rut = args.Rut,
+            ValidatorType = args.Validator,
             Owner = owner
         };
 
