@@ -17,7 +17,7 @@ namespace Homify.Tests.ServiceTests;
 public class DeviceServiceTest
 {
     private Mock<IRepository<Camera>>? _cameraRepositoryMock;
-    private Mock<IRepository<Sensor>>? _sensorRepositoryMock;
+    private Mock<IRepository<WindowSensor>>? _sensorRepositoryMock;
     private Mock<IRepository<Device>>? _deviceRepositoryMock;
     private DeviceService? _deviceService;
     private Mock<ICompanyService>? _companyServiceMock;
@@ -28,7 +28,7 @@ public class DeviceServiceTest
     public void Setup()
     {
         _cameraRepositoryMock = new Mock<IRepository<Camera>>();
-        _sensorRepositoryMock = new Mock<IRepository<Sensor>>();
+        _sensorRepositoryMock = new Mock<IRepository<WindowSensor>>();
         _deviceRepositoryMock = new Mock<IRepository<Device>>();
         _lampRepositoryMock = new Mock<IRepository<Lamp>>();
         _companyServiceMock = new Mock<ICompanyService>();
@@ -114,9 +114,9 @@ public class DeviceServiceTest
 
         _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
 
-        var result = _deviceService.AddSensor(deviceArgs, user);
+        var result = _deviceService.AddSWindowensor(deviceArgs, user);
 
-        _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<Sensor>()), Times.Once);
+        _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<WindowSensor>()), Times.Once);
         Assert.IsNotNull(result);
         Assert.AreEqual(deviceArgs.Name, result.Name);
         Assert.AreEqual(deviceArgs.Model, result.Model);

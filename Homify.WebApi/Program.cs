@@ -90,7 +90,7 @@ services.AddScoped<IRepository<Camera>, Repository<Camera>>();
 services.AddScoped<IRepository<MovementSensor>, Repository<MovementSensor>>();
 services.AddScoped<IRepository<Lamp>, Repository<Lamp>>();
 
-services.AddScoped<IRepository<Sensor>, Repository<Sensor>>();
+services.AddScoped<IRepository<WindowSensor>, Repository<WindowSensor>>();
 services.AddScoped<IDeviceService, DeviceService>();
 
 services.AddScoped<IRepository<Session>, SessionRepository>();

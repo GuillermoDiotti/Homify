@@ -59,7 +59,7 @@ public class DeviceController : HomifyControllerBase
     [HttpPost("window-sensors")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
-    public CreateDeviceResponse RegisterSensor(CreateSensorRequest? req)
+    public CreateDeviceResponse RegisterWindowSensor(CreateSensorRequest? req)
     {
         Helpers.ValidateRequest(req);
 
@@ -80,7 +80,7 @@ public class DeviceController : HomifyControllerBase
             companyOwner,
             false);
 
-        Sensor sen = _deviceService.AddSensor(args, companyOwner);
+        WindowSensor sen = _deviceService.AddSWindowensor(args, companyOwner);
 
         return new CreateDeviceResponse(sen);
     }
