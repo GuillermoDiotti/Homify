@@ -8,6 +8,7 @@ using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
 using Homify.WebApi.Controllers.Companies.Models.Requests;
+using Homify.WebApi.Controllers.Companies.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -267,6 +268,23 @@ public class CompanyControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("TechCorp", result[0].CompanyName);
+    }
+
+    [TestMethod]
+    public void UpdateCompanyValidator_ShouldReturnUpdatedModel_WhenRequestIsValid()
+    {
+        var user = new User { Id = "1" };
+        var request = new AddValidatorBasicInfo("TestModel");
+        var updatedModel = "UpdatedModel";
+
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+        _companyServiceMock.Setup(s => s.AddValidatorModel(It.IsAny<string>(), It.IsAny<User>())).Returns(updatedModel);
+
+        var result = _controller.UpdateCompanyValidator(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(updatedModel, result.Model);
+        _companyServiceMock.Verify(s => s.AddValidatorModel("TestModel", user), Times.Once);
     }
 }
 

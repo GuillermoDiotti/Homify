@@ -72,4 +72,14 @@ public class CompanyController : HomifyControllerBase
             .Select(m => new CompanyBasicInfo(m, m.Owner))
             .ToList();
     }
+
+    [HttpPut]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    public AddValidatorBasicInfo UpdateCompanyValidator(AddValidatorBasicInfo req)
+    {
+        var user = GetUserLogged();
+        var resp = _companyService.AddValidatorModel(req.Model ?? string.Empty, user);
+        return new AddValidatorBasicInfo(resp);
+    }
 }
