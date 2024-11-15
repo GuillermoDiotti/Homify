@@ -77,4 +77,18 @@ public class CompanyService : ICompanyService
 
         return list;
     }
+
+    public string AddValidatorModel(string model, User u)
+    {
+        var company = _repository.Get(c => c.OwnerId == u.Id);
+
+        if (company == null)
+        {
+            throw new NotFoundException("Company not found");
+        }
+
+        company.ValidatorType = model;
+        _repository.Update(company);
+        return model;
+    }
 }
