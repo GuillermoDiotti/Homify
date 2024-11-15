@@ -19,6 +19,6 @@ import { Observable } from "rxjs";
 		}
 
     public getValidators(): Observable<string[]> {
-			return this._repository.getImporters();
+			return this._repository.getValidators();
 		}
 }

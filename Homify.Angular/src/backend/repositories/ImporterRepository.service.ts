@@ -22,6 +22,6 @@ import { catchError, Observable } from "rxjs";
       }
 
       public getValidators(): Observable<string[]> {
-        return this.get<string[]>().pipe(catchError(this.handleError));
+        return this.get<string[]>("validators").pipe(catchError(this.handleError));
       }
     }

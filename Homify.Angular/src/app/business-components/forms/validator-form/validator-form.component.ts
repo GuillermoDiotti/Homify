@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ImportService } from '../../../../backend/services/importer/importer.service';
 import { APIError } from '../../../../interfaces/interfaces';
 import { CompanyService } from '../../../../backend/services/company/Company.service';
 import AddValidatorBasicInfo from '../../../../backend/services/company/models/AddValidatorBasicInfo';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
+import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 
 @Component({
   selector: 'app-validator-form',
   standalone: true,
-  imports: [],
+  imports: [
+    SuccessMessageComponent,
+    ErrorMessageComponent,
+		ButtonComponent,],
   templateUrl: './validator-form.component.html',
   styleUrl: './validator-form.component.css'
 })
@@ -36,7 +41,7 @@ export class ValidatorFormComponent {
     );
   }
 
-	handleRefreshImporters() {
+	handleRefreshValidators() {
 		this.successMessage = '';
     this.errorMessage = '';
 
@@ -65,7 +70,7 @@ export class ValidatorFormComponent {
       );
   }
 
-	onImporterChange(event: Event) {
+	onValidatorChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedValidator = selectElement.value;
   }
