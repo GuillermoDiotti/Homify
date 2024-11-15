@@ -47,4 +47,15 @@ public sealed class ImporterController : HomifyControllerBase
             .Select(x => x.GetName())
             .ToList();
     }
+
+    [HttpGet("validators")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    public List<string> GetAllValidators()
+    {
+        return _importerService
+            .GetAllValidators()
+            .Select(v => v.GetType().Name)
+            .ToList();
+    }
 }

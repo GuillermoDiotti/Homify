@@ -6,6 +6,7 @@ using Homify.WebApi.Controllers.Importers.Models.Requests;
 using InterfaceImporter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ModeloValidador.Abstracciones;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -54,5 +55,25 @@ public class ImporterControllerTest
         var result = _importerController.ObtainImporters();
 
         Assert.IsNotNull(result);
+    }
+
+    [TestMethod]
+    public void GetAllValidators_ShouldReturnValidatorNames()
+    {
+        var mockValidators = new List<IModeloValidador>
+        {
+            new Mock<IModeloValidador>().Object,
+            new Mock<IModeloValidador>().Object
+        };
+
+        _importerService
+            .Setup(service => service.GetAllValidators())
+            .Returns(mockValidators);
+
+        var result = _importerController.GetAllValidators();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(mockValidators.Count, result.Count);
+        CollectionAssert.AreEqual(mockValidators.Select(v => v.GetType().Name).ToList(), result);
     }
 }
