@@ -29,40 +29,49 @@ public class Company
 
     private void LoadValidator()
     {
-        if (string.IsNullOrEmpty(ValidatorType))
+        var rutaDll = "./Validators";
+        var filePaths = Directory.GetFiles(rutaDll, $"{ValidatorType}.dll");
+
+        foreach (var file in filePaths)
         {
-            return;
+            if (File.Exists(file))
+            {
+                var dllFile = new FileInfo(file);
+                var myAssembly = Assembly.LoadFile(dllFile.FullName);
+
+                foreach (Type type in myAssembly.GetTypes())
+                {
+                    if (ImplementsRequiredInterface<IModeloValidador>(type))
+                    {
+                        var instance = (IModeloValidador)Activator.CreateInstance(type);
+                        if (instance != null)
+                        {
+                            _validator = instance;
+                            return;
+                        }
+                    }
+                }
+            }
         }
-
-        var rutaDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ModeloValidador.dll");
-
-        if (!File.Exists(rutaDll))
-        {
-            throw new FileNotFoundException("Validator's dll file not found.");
-        }
-
-        var assembly = Assembly.LoadFrom(rutaDll);
-
-        Type tipoValidador = assembly.GetType(ValidatorType);
-
-        if (tipoValidador == null)
-        {
-            throw new InvalidOperationException("Could not find a IModeloValidador implementation.");
-        }
-
-        if (!typeof(IModeloValidador).IsAssignableFrom(tipoValidador))
-        {
-            throw new InvalidOperationException($"Type {ValidatorType} does not implement IModeloValidador.");
-        }
-
-        _validator = (IModeloValidador)Activator.CreateInstance(tipoValidador)!;
     }
 
     public void ValidateModel(string model)
     {
+        LoadValidator();
+
+        if (_validator == null)
+        {
+            throw new InvalidDataException($"Validator {ValidatorType} not found.");
+        }
+
         if (!_validator.EsValido(new Modelo(model)))
         {
             throw new InvalidDataException($"Model does not match {ValidatorType} validation.");
         }
+    }
+
+    private bool ImplementsRequiredInterface<T>(Type type)
+    {
+        return typeof(T).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract;
     }
 }

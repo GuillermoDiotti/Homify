@@ -73,7 +73,7 @@ public class CompanyController : HomifyControllerBase
             .ToList();
     }
 
-    [HttpPut]
+    [HttpPut("validators")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
     public AddValidatorBasicInfo UpdateCompanyValidator(AddValidatorBasicInfo req)
