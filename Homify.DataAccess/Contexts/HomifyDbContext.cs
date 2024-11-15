@@ -196,21 +196,6 @@ public sealed class HomifyDbContext : DbContext
             {
                 Id = "16",
                 Value = PermissionsGenerator.UpdateUserNotification
-            },
-            new SystemPermission
-            {
-                Id = "17",
-                Value = PermissionsGenerator.ViewRegisteredDevices
-            },
-            new SystemPermission
-            {
-                Id = "18",
-                Value = PermissionsGenerator.ViewSupportedDevices
-            },
-            new SystemPermission
-            {
-                Id = "19",
-                Value = PermissionsGenerator.CreateNotification
             });
 
         modelBuilder.Entity<HomePermission>().HasData(

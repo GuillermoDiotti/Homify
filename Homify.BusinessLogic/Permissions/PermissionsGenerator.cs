@@ -30,11 +30,6 @@ public static class PermissionsGenerator
     public const string UpdateUserNotification = "notifications-UpdateNotification";
 
     // NON AUTHENTICATED USER
-    public const string ViewRegisteredDevices = "devices-ViewRegistered";
-    public const string ViewSupportedDevices = "companies-ViewSupported";
-
-    // ???
-    public const string CreateNotification = "notifications-Create";
 
     // HOMEUSERS
     public const string MemberCanAddDevice = "AddDevices";
