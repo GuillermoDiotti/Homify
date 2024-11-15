@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +24,7 @@ public class HomeDeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public string UpdateHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request cannot null");
-        }
+        Helpers.ValidateRequest(req);
 
         if (req.CustomName == null)
         {

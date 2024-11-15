@@ -29,10 +29,7 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("person-detected")]
     public List<CreateNotificationResponse> PersonDetectedNotification(CreateNotificationRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null.");
-        }
+        Helpers.ValidateRequest(request);
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
@@ -52,10 +49,7 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("window-movement")]
     public List<CreateGenericNotificationResponse> WindowMovementNotification(CreateGenericNotificationRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null.");
-        }
+        Helpers.ValidateRequest(request);
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
@@ -71,10 +65,7 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("movement-detected")]
     public List<CreateGenericNotificationResponse> MovementNotification(CreateGenericNotificationRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Exception cannot be null");
-        }
+        Helpers.ValidateRequest(req);
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(req.HardwareId);
 

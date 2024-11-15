@@ -6,6 +6,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Filters;
@@ -33,10 +34,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterCamera)]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -64,10 +62,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterSensor(CreateSensorRequest? req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var isExterior = false;
         var user = GetUserLogged();
@@ -96,10 +91,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -127,10 +119,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterMovementSensor(CreateSensorRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);

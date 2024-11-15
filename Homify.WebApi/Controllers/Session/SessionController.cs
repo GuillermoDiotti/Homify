@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Session.Models.Requests;
 using Homify.WebApi.Controllers.Session.Models.Responses;
 using Homify.WebApi.Filters;
@@ -25,10 +26,7 @@ public class SessionController : ControllerBase
     [NonAuthenticationFilter]
     public CreateSessionResponse Create(CreateSessionRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var userFound = _sessionService.CheckSessionConstraints(request.Email, request.Password);
 

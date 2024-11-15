@@ -3,6 +3,7 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Homify.WebApi.Controllers.Admins.Models.Responses;
@@ -30,10 +31,7 @@ public sealed class AdminController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateAdmin)]
     public CreateAdminResponse Create(CreateAdminRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var adminRole = _roleService.GetRole(Constants.ADMINISTRATOR);
 

@@ -2,6 +2,7 @@
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Companies.Models;
 using Homify.WebApi.Controllers.Companies.Models.Requests;
 using Homify.WebApi.Controllers.Companies.Models.Responses;
@@ -26,10 +27,7 @@ public class CompanyController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(request);
 
         var userLogged = GetUserLogged();
 

@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Permissions;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Importers.Models.Requests;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +24,7 @@ public sealed class ImporterController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
     public void AddImportedDevices(ImportRequest request)
     {
-        if(request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var user = GetUserLogged();
         var args = new BusinessLogic.Importers.Entities.ImporterArgs(

@@ -29,10 +29,7 @@ public class CompanyOwnerController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateCompanyOwner)]
     public CreateCompanyOwnerResponse Create(CreateCompanyOwnerRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var adminRole = _roleService.GetRole(Constants.COMPANYOWNER);
 

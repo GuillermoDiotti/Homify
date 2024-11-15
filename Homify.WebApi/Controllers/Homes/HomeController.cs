@@ -6,6 +6,7 @@ using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Users;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Controllers.Homes.Models.Requests;
 using Homify.WebApi.Controllers.Homes.Models.Responses;
@@ -40,10 +41,7 @@ public sealed class HomeController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public CreateHomeResponse Create(CreateHomeRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var owner = GetUserLogged() as HomeOwner;
         var arguments = new CreateHomeArgs(
@@ -66,10 +64,7 @@ public sealed class HomeController : HomifyControllerBase
         [FromRoute] string homeId,
         UpdateMemberListRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var home = _homeService.UpdateMemberList(homeId, request.Email);
 
@@ -84,10 +79,7 @@ public sealed class HomeController : HomifyControllerBase
         [FromRoute] string memberId,
         EditMemberPermissionsRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(req);
 
         var found = _homeUserService.GetByIds(homeId, memberId);
 
@@ -112,10 +104,7 @@ public sealed class HomeController : HomifyControllerBase
         UpdateHomeDevicesRequest request,
         [FromRoute] string homeId)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var user = GetUserLogged();
 
@@ -156,10 +145,7 @@ public sealed class HomeController : HomifyControllerBase
         [FromRoute] string homeId,
         NotificatedMembersRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var user = GetUserLogged();
         var newMembersToNotify = _homeService.UpdateNotificatedList(
@@ -174,10 +160,7 @@ public sealed class HomeController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var result = _homeService.UpdateHome(homeId, req.Alias, user);
