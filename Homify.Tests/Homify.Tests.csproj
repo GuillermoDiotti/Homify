@@ -40,6 +40,9 @@
       <Reference Include="JetBrains.ReSharper.TestRunner.Merged">
         <HintPath>..\..\..\..\..\..\Applications\Rider.app\Contents\lib\ReSharperHost\TestRunner\netcoreapp3.0\JetBrains.ReSharper.TestRunner.Merged.dll</HintPath>
       </Reference>
+      <Reference Include="ModeloValidador.Abstracciones">
+        <HintPath>..\lib\ModeloValidador.Abstracciones.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

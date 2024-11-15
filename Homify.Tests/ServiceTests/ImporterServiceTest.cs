@@ -1,3 +1,4 @@
+using System.Reflection;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
@@ -7,6 +8,7 @@ using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using InterfaceImporter;
 using InterfaceImporter.Models;
+using ModeloValidador.Abstracciones;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -92,5 +94,34 @@ public class ImporterServiceTest
             d.Photos.Contains("photo1.jpg") &&
             d.Photos.Contains("photo2.jpg")
         ), companyOwner), Times.Once);
+    }
+
+    [TestMethod]
+    public void GetAllValidators_ShouldReturnValidators_WhenDllExists()
+    {
+        var mockValidator1 = new Mock<IModeloValidador>().Object;
+        var mockValidator2 = new Mock<IModeloValidador>().Object;
+
+        var mockAssembly = new Mock<Assembly>();
+        mockAssembly
+            .Setup(a => a.GetTypes())
+            .Returns([mockValidator1.GetType(), mockValidator2.GetType()]);
+
+        var rutaDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ModeloValidador.dll");
+        File.Create(rutaDll).Dispose();
+
+        var mockFile = new Mock<FileInfo>(rutaDll);
+        var mockPath = new Mock<string>();
+        var mockAssemblyLoadFrom = new Mock<Func<string, Assembly>>();
+        mockAssemblyLoadFrom.Setup(f => f(It.IsAny<string>())).Returns(mockAssembly.Object);
+
+        var assembly = Assembly.LoadFrom(rutaDll);
+
+        var result = assembly.GetTypes()
+            .Where(t => typeof(IModeloValidador).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+            .Select(tipo => (IModeloValidador)Activator.CreateInstance(tipo)!)
+            .ToList();
+
+        File.Delete(rutaDll);
     }
 }

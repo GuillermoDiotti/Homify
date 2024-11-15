@@ -60,7 +60,8 @@ public class Company
 
     public void ValidateModel(string model)
     {
-        if (!_validator.EsValido(new Modelo(model))) {
+        if (!_validator.EsValido(new Modelo(model)))
+        {
             throw new InvalidDataException($"Model does not match {ValidatorType} validation.");
         }
     }

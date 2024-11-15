@@ -7,6 +7,7 @@ using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using InterfaceImporter;
 using InterfaceImporter.Models;
+using ModeloValidador.Abstracciones;
 
 namespace Homify.BusinessLogic.Importers;
 
@@ -19,6 +20,25 @@ public class ImporterService : IImporterService
     {
         _deviceService = deviceService;
         _companyOwnerService = companyOwnerService;
+    }
+
+    public List<IModeloValidador> GetAllValidators()
+    {
+        var rutaDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ModeloValidador.dll");
+
+        if (!File.Exists(rutaDll))
+        {
+            throw new FileNotFoundException("Validator's dll file not found.");
+        }
+
+        var assembly = Assembly.LoadFrom(rutaDll);
+
+        var validadores = assembly.GetTypes()
+            .Where(t => typeof(IModeloValidador).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+            .Select(tipo => (IModeloValidador)Activator.CreateInstance(tipo)!)
+            .ToList();
+
+        return validadores;
     }
 
     public List<IImporter> GetAllImporters()
