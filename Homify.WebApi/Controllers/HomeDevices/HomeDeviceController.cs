@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.Utility;
+using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -31,5 +32,27 @@ public class HomeDeviceController : HomifyControllerBase
         var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id, user);
 
         return device.Id;
+    }
+
+    [HttpPut("{hardwareId}/activate")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOnHomeDevice([FromRoute] string hardwareId)
+    {
+        var user = GetUserLogged();
+
+        var result = _homeDeviceService.Activate(hardwareId, user);
+        return new TurnOnDeviceResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/deactivate")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOffHomeDevice([FromRoute] string hardwareId)
+    {
+        var user = GetUserLogged();
+
+        var result = _homeDeviceService.Deactivate(hardwareId, user);
+        return new TurnOnDeviceResponse(result);
     }
 }
