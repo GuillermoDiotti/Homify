@@ -15,13 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homify.DataAccess", "Homify
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homify.Utility", "Homify.Utility\Homify.Utility.csproj", "{7C408973-CB86-48B4-B7A2-4A60AF14A802}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homify.Importer.Abstractions", "InterfaceImporter\Homify.Importer.Abstractions.csproj", "{47E64946-BB95-4893-9721-BC0443A25CFC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSONImporter", "JSONImporter\JSONImporter.csproj", "{1973D492-BE15-415A-9906-1D52BB565E21}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidadorModeloLetrasNumeros", "ValidadorModeloLetrasNumeros\ValidadorModeloLetrasNumeros.csproj", "{3027EE97-EF6B-4435-B873-79815BB2581C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidadorModeloSoloLetras", "ValidadorSoloLetras\ValidadorModeloSoloLetras.csproj", "{CC4030F5-1845-4F21-9C56-3E46F0D683F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homify.Importer.Abstractions", "Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj", "{A3F8C9EC-642E-4857-A2D6-59B3285FCEB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,6 @@ Global
 		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C408973-CB86-48B4-B7A2-4A60AF14A802}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47E64946-BB95-4893-9721-BC0443A25CFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47E64946-BB95-4893-9721-BC0443A25CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47E64946-BB95-4893-9721-BC0443A25CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47E64946-BB95-4893-9721-BC0443A25CFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1973D492-BE15-415A-9906-1D52BB565E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1973D492-BE15-415A-9906-1D52BB565E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1973D492-BE15-415A-9906-1D52BB565E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{CC4030F5-1845-4F21-9C56-3E46F0D683F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC4030F5-1845-4F21-9C56-3E46F0D683F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC4030F5-1845-4F21-9C56-3E46F0D683F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F8C9EC-642E-4857-A2D6-59B3285FCEB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F8C9EC-642E-4857-A2D6-59B3285FCEB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F8C9EC-642E-4857-A2D6-59B3285FCEB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F8C9EC-642E-4857-A2D6-59B3285FCEB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

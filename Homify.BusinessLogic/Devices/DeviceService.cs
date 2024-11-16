@@ -11,13 +11,13 @@ namespace Homify.BusinessLogic.Devices;
 public class DeviceService : IDeviceService
 {
     private readonly IRepository<Camera> _cameraRepository;
-    private readonly IRepository<Sensor> _sensorRepository;
+    private readonly IRepository<WindowSensor> _sensorRepository;
     private readonly IRepository<Device> _deviceRepository;
     private readonly IRepository<Lamp> _lampRepository;
     private readonly IRepository<MovementSensor> _movementSensorRepository;
     private readonly ICompanyService _companyService;
 
-    public DeviceService(IRepository<Camera> cameraRepository, IRepository<Sensor> sensorRepository, IRepository<Device> deviceRepository, ICompanyService companyService,
+    public DeviceService(IRepository<Camera> cameraRepository, IRepository<WindowSensor> sensorRepository, IRepository<Device> deviceRepository, ICompanyService companyService,
         IRepository<Lamp> lampRepository, IRepository<MovementSensor> movementSensorRepository)
     {
         _cameraRepository = cameraRepository;
@@ -57,7 +57,7 @@ public class DeviceService : IDeviceService
         return camera;
     }
 
-    public Sensor AddSensor(CreateDeviceArgs device, CompanyOwner user)
+    public WindowSensor AddWindowSensor(CreateDeviceArgs device, CompanyOwner user)
     {
         var owner = (CompanyOwner)user;
         HasCompany(owner);
@@ -67,7 +67,7 @@ public class DeviceService : IDeviceService
             owner.Company.ValidateModel(device.Model ?? string.Empty);
         }
 
-        var sensor = new Sensor
+        var sensor = new WindowSensor
         {
             Id = Guid.NewGuid().ToString(),
             Name = device.Name,
@@ -127,7 +127,7 @@ public class DeviceService : IDeviceService
 
     private void HasCompany(CompanyOwner? owner)
     {
-        var company = _companyService.GetByUserId(owner.Id);
+        var company = _companyService.GetByOwner(owner.Id);
         if (company == null)
         {
             throw new NotFoundException("The user does not have a company");

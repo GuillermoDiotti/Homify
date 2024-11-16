@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;

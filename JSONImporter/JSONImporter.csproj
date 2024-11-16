@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Homify.InterfaceImporter\InterfaceImporter.csproj" />
+      <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

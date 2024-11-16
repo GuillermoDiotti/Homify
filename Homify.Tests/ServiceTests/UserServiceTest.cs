@@ -248,7 +248,7 @@ public class UserServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
+    [ExpectedException(typeof(System.InvalidOperationException))]
     public void Delete_WhenUserIsNotAdmin_ThrowsInvalidOperationException()
     {
         var adminId = "testAdminId";
@@ -267,7 +267,7 @@ public class UserServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
+    [ExpectedException(typeof(System.InvalidOperationException))]
     public void Delete_WhenAdminHasMoreThanOneRole_ThrowsInvalidOperationException()
     {
         var adminId = "testAdminId";

@@ -1,24 +1,23 @@
-import { Injectable } from "@angular/core";
-import { ImporterApiRepositoryService } from "../../repositories/ImporterRepository.service";
-import { ImportRequest } from "./models/ImportRequest";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { ImporterApiRepositoryService } from '../../repositories/ImporterRepository.service';
+import { ImportRequest } from './models/ImportRequest';
+import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
-  })
-  export class ImportService {
-  
-    constructor(private readonly _repository: ImporterApiRepositoryService) { }
-  
-    public add(request: ImportRequest): Observable<any> {
-      return this._repository.AddImportedDevices(request);
-    }
+  providedIn: 'root',
+})
+export class ImportService {
+  constructor(private readonly _repository: ImporterApiRepositoryService) {}
 
-		public getImporters(): Observable<string[]> {
-			return this._repository.getImporters();
-		}
+  public add(request: ImportRequest): Observable<any> {
+    return this._repository.AddImportedDevices(request);
+  }
 
-    public getValidators(): Observable<string[]> {
-			return this._repository.getValidators();
-		}
+  public getImporters(): Observable<string[]> {
+    return this._repository.getImporters();
+  }
+
+  public getValidators(): Observable<string[]> {
+    return this._repository.getValidators();
+  }
 }

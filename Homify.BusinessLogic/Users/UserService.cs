@@ -124,12 +124,12 @@ public class UserService : IUserService
 
         if (!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR))
         {
-            throw new InvalidOperationException("Target user is not an admin");
+            throw new System.InvalidOperationException("Target user is not an admin");
         }
 
         if (admin.Roles.Count > 1)
         {
-            throw new InvalidOperationException("Admins with more than one role cannot be deleted");
+            throw new System.InvalidOperationException("Admins with more than one role cannot be deleted");
         }
 
         if (admin != null)
