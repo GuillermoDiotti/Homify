@@ -6,7 +6,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using InterfaceImporter;
+using Homify.Importer.Abstractions;
 using InterfaceImporter.Models;
 using ModeloValidador.Abstracciones;
 using Moq;

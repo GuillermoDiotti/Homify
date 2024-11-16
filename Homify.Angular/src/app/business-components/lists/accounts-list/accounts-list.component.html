@@ -11,13 +11,9 @@
       </select>
     </div>
 
-    <div style="margin: 5px 0; display: flex; align-items: center;">
+    <div style="margin: 5px 0; display: flex; align-items: center">
       <label for="accFullName">Fullname</label>
-      <input
-        id="accFullName"
-        type="text"
-        (change)="onFullNameChange($event)"
-      />
+      <input id="accFullName" type="text" (change)="onFullNameChange($event)" />
     </div>
 
     <div>
@@ -39,15 +35,14 @@
       <strong>Name:</strong> {{ account.name }} <br />
       <strong>Lastname:</strong> {{ account.lastName }} <br />
       <strong>Fullname:</strong> {{ account.fullName }} <br />
-      <div>
-        <strong>Role:</strong> {{ account.role }} <br />
-        @if (account.role === 'ADMINISTRATOR') {
-        <app-delete-admin-button
-          [adminId]="account.id"
-        ></app-delete-admin-button>
-        }
-      </div>
+      <strong>Role:</strong> {{ account.role }} <br />
       <strong>Created at:</strong> {{ account.createdAt }} <br />
+				@if (account.role.includes('ADMINISTRATOR')) {
+					<hr>
+					<app-delete-admin-button
+						[adminId]="account.id"
+					></app-delete-admin-button>
+					}
     </li>
     }
   </ul>

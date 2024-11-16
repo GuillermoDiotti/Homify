@@ -114,21 +114,27 @@ public class UserService : IUserService
         return list;
     }
 
-    public void Delete(string userId)
+    public void Delete(string adminId)
     {
-        User user;
-        try
+        var admin = _repository.Get(x => x.Id == adminId);
+        if (admin == null)
         {
-            user = _repository.Get(x => x.Id == userId);
-        }
-        catch (NotFoundException)
-        {
-            user = null;
+            throw new NotFoundException("Admin not found");
         }
 
-        if (user != null)
+        if (!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR))
         {
-            _repository.Remove(user);
+            throw new InvalidOperationException("Target user is not an admin");
+        }
+
+        if (admin.Roles.Count > 1)
+        {
+            throw new InvalidOperationException("Admins with more than one role cannot be deleted");
+        }
+
+        if (admin != null)
+        {
+            _repository.Remove(admin);
         }
     }
 

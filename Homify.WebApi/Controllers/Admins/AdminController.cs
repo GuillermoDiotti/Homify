@@ -54,17 +54,6 @@ public sealed class AdminController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.DeleteAdmin)]
     public void Delete(string adminId)
     {
-        var admin = _userService.GetById(adminId);
-        if (admin == null)
-        {
-            throw new NotFoundException("Admin not found");
-        }
-
-        if (!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR))
-        {
-            throw new InvalidOperationException("Target user is not an admin");
-        }
-
         _userService.Delete(adminId);
     }
 
