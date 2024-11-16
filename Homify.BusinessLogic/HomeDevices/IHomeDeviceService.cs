@@ -13,4 +13,5 @@ public interface IHomeDeviceService
     List<HomeDevice> GetHomeDeviceByHomeId(string homeId);
     HomeDevice GetHomeDeviceById(string id);
     HomeDevice RenameHomeDevice(string name, string id, User u);
+    HomeDevice LampOn(string hardwareId);
 }

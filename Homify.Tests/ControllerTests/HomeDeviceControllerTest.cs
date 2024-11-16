@@ -160,4 +160,26 @@ public class HomeDeviceControllerTest
         result.IsActive.Should().BeFalse();
         _homeDeviceMock.Verify(service => service.Deactivate(hardwareId, logged), Times.Once);
     }
+
+    [TestMethod]
+    public void LampOn_WhenLampSwitchOn_ShouldTurnOn()
+    {
+        var hardwareId = "test-hardware-id";
+        var request = new UpdateLampStateRequest { IsOn = true };
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = true
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.LampOn(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.LampOn(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(hardwareId);
+        result.IsOn.Should().BeTrue();
+    }
 }

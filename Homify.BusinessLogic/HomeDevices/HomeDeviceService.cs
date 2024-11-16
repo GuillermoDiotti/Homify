@@ -140,4 +140,9 @@ public class HomeDeviceService : IHomeDeviceService
 
         return device;
     }
+
+    public HomeDevice LampOn(string hardwareId)
+    {
+        throw new NotImplementedException();
+    }
 }

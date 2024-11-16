@@ -55,4 +55,11 @@ public class HomeDeviceController : HomifyControllerBase
         var result = _homeDeviceService.Deactivate(hardwareId, user);
         return new TurnOnDeviceResponse(result);
     }
+
+    [HttpPut("{hardwareId}/lampOn")]
+    public TurnOnOffLampResponse LampOn([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.LampOn(hardwareId);
+        return new TurnOnOffLampResponse(result);
+    }
 }
