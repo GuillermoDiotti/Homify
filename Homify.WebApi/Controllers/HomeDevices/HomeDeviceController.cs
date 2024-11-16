@@ -76,4 +76,11 @@ public class HomeDeviceController : HomifyControllerBase
         var result = _homeDeviceService.OpenWindow(hardwareId);
         return new OpenWindowResponse(result);
     }
+
+    [HttpPut("{hardwareId}/windowClose")]
+    public OpenWindowResponse WindowClose([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.CloseWindow(hardwareId);
+        return new OpenWindowResponse(result);
+    }
 }

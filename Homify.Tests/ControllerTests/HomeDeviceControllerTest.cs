@@ -206,7 +206,7 @@ public class HomeDeviceControllerTest
     }
 
     [TestMethod]
-    public void WindowOpen_WhenWindowOper_ShouldReturnOpenWindowResponse()
+    public void WindowOpen_WhenWindowOpen_ShouldReturnOpenWindowResponse()
     {
         var hardwareId = "test-hardware-id";
         var expectedDevice = new HomeDevice
@@ -220,6 +220,26 @@ public class HomeDeviceControllerTest
             .Returns(expectedDevice);
 
         var result = _controller.WindowOpen(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(hardwareId, result.Id);
+    }
+
+    [TestMethod]
+    public void WindowClose_WhenWindowclose_ShouldReturnCloseWindowResponse()
+    {
+        var hardwareId = "test-hardware-id";
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = false
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.CloseWindow(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.WindowClose(hardwareId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(hardwareId, result.Id);

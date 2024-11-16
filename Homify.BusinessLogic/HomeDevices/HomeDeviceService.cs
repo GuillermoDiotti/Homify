@@ -185,4 +185,9 @@ public class HomeDeviceService : IHomeDeviceService
     {
         throw new NotImplementedException();
     }
+
+    public HomeDevice CloseWindow(string hardwareId)
+    {
+        throw new NotImplementedException();
+    }
 }

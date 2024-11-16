@@ -16,4 +16,5 @@ public interface IHomeDeviceService
     HomeDevice LampOn(string hardwareId);
     HomeDevice LampOff(string hardwareId);
     HomeDevice OpenWindow(string hardwareId);
+    HomeDevice CloseWindow(string hardwareId);
 }
