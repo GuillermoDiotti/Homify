@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './rooms-page.component.css'
 })
 export class RoomsPageComponent {
-
+	selectedHomeId: string | null = null;
+  onHomeSelected(id: string) { this.selectedHomeId = id; }
 }
