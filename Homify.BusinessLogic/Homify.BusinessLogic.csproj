@@ -10,7 +10,7 @@
       <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
       <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
       <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
-      <ProjectReference Include="..\InterfaceImporter\Homify.Importer.Abstractions.csproj" />
+      <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

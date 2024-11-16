@@ -42,6 +42,8 @@ export class SessionService {
 
   public removeCurrentUserToken(): void {
     localStorage.removeItem('token');
+		localStorage.removeItem('roles');
+		localStorage.removeItem('name');
   }
 
   public login(

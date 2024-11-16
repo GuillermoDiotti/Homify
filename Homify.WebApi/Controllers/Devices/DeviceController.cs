@@ -44,10 +44,10 @@ public class DeviceController : HomifyControllerBase
             req.Description ?? string.Empty,
             req.Photos ?? [],
             req.PpalPicture ?? string.Empty,
-            req.IsExterior,
-            req.IsInterior,
-            req.MovementDetection,
-            req.PeopleDetection,
+            req.IsExterior ?? false,
+            req.IsInterior ?? false,
+            req.MovementDetection ?? false,
+            req.PeopleDetection ?? false,
             companyOwner,
             false);
 
