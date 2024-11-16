@@ -10,6 +10,7 @@ using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -204,13 +205,20 @@ public class UserServiceTest
     public void Delete_WhenUserExists_ShouldRemoveUser()
     {
         var userId = Guid.NewGuid().ToString();
-        var user = new User
+        var user = new Admin
         {
             Id = userId,
             Name = "John",
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
+            Roles = [
+                new UserRole()
+                {
+                    Role = new Role() { Name = Constants.ADMINISTRATOR }
+                }
+
+            ]
         };
 
         var user2 = new User(
