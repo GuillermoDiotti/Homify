@@ -235,4 +235,34 @@ public class UserServiceTest
 
         _userRepositoryMock.Verify(r => r.Remove(It.Is<User>(u => u.Id == userId)), Times.Once);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Delete_WhenAdminNotFound_ThrowsNotFoundException()
+    {
+        var adminId = "nonexistentAdminId";
+
+        _userRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns((User)null);
+
+        _service.Delete(adminId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Delete_WhenUserIsNotAdmin_ThrowsInvalidOperationException()
+    {
+        var adminId = "testAdminId";
+        var admin = new User
+        {
+            Id = adminId,
+            Roles =
+            [
+                new UserRole { Role = new Role { Name = "NonAdminRole" } }
+            ]
+        };
+
+        _userRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(admin);
+
+        _service.Delete(adminId);
+    }
 }
