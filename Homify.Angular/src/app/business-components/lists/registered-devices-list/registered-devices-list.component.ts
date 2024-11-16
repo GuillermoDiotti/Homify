@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { APIError } from '../../../../interfaces/interfaces';
 import SearchDeviceResponse from '../../../../backend/services/device/models/SearchDeviceResponse';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { DeviceService } from '../../../../backend/services/device/Device.service';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { InputComponent } from '../../../components/input/input.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DevicePhotosListComponent } from '../../../components/device-photos-list/device-photos-list.component';
 
 @Component({
   selector: 'app-registered-devices-list',
@@ -16,10 +18,13 @@ import { InputComponent } from '../../../components/input/input.component';
 export class RegisteredDevicesListComponent {
   registeredDevices: SearchDeviceResponse[] = [];
   @Output() deviceEmitter = new EventEmitter<string>();
-  deviceSelected = '';
+  deviceSelected: string = '';
   @Input() displayButtons = false;
 
-  constructor(private readonly DeviceSevice: DeviceService) {}
+  constructor(
+    private readonly DeviceSevice: DeviceService,
+		public dialog: MatDialog
+  ) {}
 
   filterByDeviceName = '';
   filterByModel = '';
@@ -36,6 +41,14 @@ export class RegisteredDevicesListComponent {
   updateOffset(newOffset: number) {
     this.offset = newOffset;
   }
+
+	handleViewPhotos(device: SearchDeviceResponse) {
+		this.dialog.open(DevicePhotosListComponent, {
+			data: {
+				device,
+			}
+		});
+	}
 
   ngOnInit(): void {
     this.DeviceSevice.getRegisteredDevices(
@@ -74,7 +87,7 @@ export class RegisteredDevicesListComponent {
 
   onDeviceClick(id: string) {
     this.deviceSelected = id;
-    this.deviceEmitter.emit(this.deviceSelected);
+    this.deviceEmitter.emit(id);
   }
 
   onNameChange(event: Event) {

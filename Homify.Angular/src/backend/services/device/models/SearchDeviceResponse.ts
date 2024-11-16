@@ -4,4 +4,5 @@ export default interface SearchDeviceResponse {
     model: string;
     photo: string;
     companyName: string;
+		photos: string[];
 }
