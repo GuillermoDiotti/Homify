@@ -182,4 +182,26 @@ public class HomeDeviceControllerTest
         result.Id.Should().Be(hardwareId);
         result.IsOn.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void LampOff_WhenLampSwitchOff_ShouldTurnOff()
+    {
+        var hardwareId = "test-hardware-id";
+        var request = new UpdateLampStateRequest { IsOn = false };
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = false
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.LampOff(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.LampOff(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(hardwareId);
+        result.IsOn.Should().BeFalse();
+    }
 }

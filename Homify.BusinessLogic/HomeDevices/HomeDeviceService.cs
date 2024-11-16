@@ -153,4 +153,9 @@ public class HomeDeviceService : IHomeDeviceService
         _repository.Update(homeDevice);
         return homeDevice;
     }
+
+    public HomeDevice LampOff(string hardwareId)
+    {
+        throw new NotImplementedException();
+    }
 }

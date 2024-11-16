@@ -62,4 +62,11 @@ public class HomeDeviceController : HomifyControllerBase
         var result = _homeDeviceService.LampOn(hardwareId);
         return new TurnOnOffLampResponse(result);
     }
+
+    [HttpPut("{hardwareId}/lampOff")]
+    public TurnOnOffLampResponse LampOff([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.LampOff(hardwareId);
+        return new TurnOnOffLampResponse(result);
+    }
 }
