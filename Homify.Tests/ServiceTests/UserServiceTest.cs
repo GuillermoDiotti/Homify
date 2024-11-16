@@ -265,4 +265,24 @@ public class UserServiceTest
 
         _service.Delete(adminId);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Delete_WhenAdminHasMoreThanOneRole_ThrowsInvalidOperationException()
+    {
+        var adminId = "testAdminId";
+        var admin = new User
+        {
+            Id = adminId,
+            Roles =
+            [
+                new UserRole { Role = new Role { Name = Constants.ADMINISTRATOR } },
+                new UserRole { Role = new Role { Name = "AnotherRole" } }
+            ]
+        };
+
+        _userRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(admin);
+
+        _service.Delete(adminId);
+    }
 }
