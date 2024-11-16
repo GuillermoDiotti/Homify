@@ -1,9 +1,11 @@
+using System.Data;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.HomeDevices;
@@ -11,10 +13,12 @@ namespace Homify.BusinessLogic.HomeDevices;
 public class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
+    private readonly DeviceService _deviceService;
 
-    public HomeDeviceService(IRepository<HomeDevice> repository)
+    public HomeDeviceService(IRepository<HomeDevice> repository, DeviceService deviceService)
     {
         _repository = repository;
+        _deviceService = deviceService;
     }
 
     public HomeDevice AddHomeDevice(Home home, Device device)
@@ -149,6 +153,11 @@ public class HomeDeviceService : IHomeDeviceService
             throw new NotFoundException("Device not found");
         }
 
+        if(homeDevice.Device.Type != Constants.LAMP)
+        {
+            throw new InvalidOperationException("This device is not a lamp");
+        }
+
         homeDevice.IsOn = true;
         _repository.Update(homeDevice);
         return homeDevice;
@@ -160,6 +169,11 @@ public class HomeDeviceService : IHomeDeviceService
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
+        }
+
+        if(homeDevice.Device.Type != Constants.LAMP)
+        {
+            throw new InvalidOperationException("This device is not a lamp");
         }
 
         homeDevice.IsOn = false;

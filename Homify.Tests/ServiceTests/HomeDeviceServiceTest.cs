@@ -20,14 +20,16 @@ public class HomeDeviceServiceTest
 {
     private Mock<IRepository<HomeDevice>>? _homeDeviceRepositoryMock;
     private HomeDeviceService? _homeDeviceService;
-    private Mock<HomeDeviceService>? _deviceServiceMock;
+    private Mock<HomeDeviceService>? _homedeviceServiceMock;
+    private Mock<DeviceService>? _deviceServiceMock;
 
     [TestInitialize]
     public void Setup()
     {
         _homeDeviceRepositoryMock = new Mock<IRepository<HomeDevice>>();
-        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object);
-        _deviceServiceMock = new Mock<HomeDeviceService>();
+        _deviceServiceMock = new Mock<DeviceService>();
+        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _deviceServiceMock.Object);
+        _homedeviceServiceMock = new Mock<HomeDeviceService>();
     }
 
     [TestMethod]
