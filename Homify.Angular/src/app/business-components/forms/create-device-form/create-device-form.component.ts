@@ -14,6 +14,7 @@ import { APIError } from '../../../../interfaces/interfaces';
 import CreateCameraRequest from '../../../../backend/services/device/models/CreateCameraRequest';
 import CreateSensorRequest from '../../../../backend/services/device/models/CreateSensorRequest';
 import { DeviceService } from '../../../../backend/services/device/Device.service';
+import { PhotosAdderComponent } from '../../../components/photos-adder/photos-adder.component';
 
 @Component({
   selector: 'app-create-device-form',
@@ -25,6 +26,7 @@ import { DeviceService } from '../../../../backend/services/device/Device.servic
     FormInputComponent,
     SuccessMessageComponent,
     ErrorMessageComponent,
+		PhotosAdderComponent,
   ],
   templateUrl: './create-device-form.component.html',
   styleUrl: './create-device-form.component.css',
@@ -34,6 +36,7 @@ export class CreateDeviceFormComponent {
   successMessage = '';
   errorMessage = '';
   device = 'camera';
+	photos: string[] = [];
 
   constructor(private fb: FormBuilder, private DeviceService: DeviceService) {
     this.form = this.fb.group({
@@ -58,6 +61,8 @@ export class CreateDeviceFormComponent {
     this.errorMessage = '';
     if (this.form.valid) {
       this.createDevice(this.device);
+			this.form.reset();
+			this.photos = [];
     } else {
       this.errorMessage = 'Form is invalid';
     }
@@ -71,7 +76,6 @@ export class CreateDeviceFormComponent {
       ppalPicture,
       isExterior,
       isInterior,
-      photos,
       movementDetection,
       peopleDetection,
     } = this.form.value;
@@ -85,7 +89,7 @@ export class CreateDeviceFormComponent {
           ppalPicture,
           isExterior,
           isInterior,
-          photos,
+          photos: this.photos,
           movementDetection,
           peopleDetection,
         };
@@ -105,7 +109,7 @@ export class CreateDeviceFormComponent {
           description,
           model,
           name,
-          photos,
+          photos: this.photos,
           ppalPicture,
         };
 
@@ -124,7 +128,7 @@ export class CreateDeviceFormComponent {
           description,
           model,
           name,
-          photos,
+          photos: this.photos,
           ppalPicture,
         };
 
@@ -145,7 +149,7 @@ export class CreateDeviceFormComponent {
           description,
           model,
           name,
-          photos,
+          photos: this.photos,
           ppalPicture,
         };
 

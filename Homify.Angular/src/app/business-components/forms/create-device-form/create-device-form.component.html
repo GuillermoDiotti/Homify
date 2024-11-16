@@ -1,12 +1,18 @@
 <h2>Create Device</h2>
-<form [formGroup]="form" (ngSubmit)="handleSubmit()">
-  <label for="deviceType">Device Type</label>
-  <select id="deviceType" name="device" (change)="onDeviceTypeChange($event)">
-    <option value="camera">Camera</option>
-    <option value="window-sensor">Window Sensor</option>
-    <option value="movement-sensor">Movement Sensor</option>
-    <option value="lamp">Lamp</option>
-  </select>
+<form
+  [formGroup]="form"
+  (ngSubmit)="handleSubmit()"
+  style="display: flex; flex-direction: column; align-items: center"
+>
+  <div style="margin-bottom: 20px">
+    <label for="deviceType">Device Type</label>
+    <select id="deviceType" name="device" (change)="onDeviceTypeChange($event)">
+      <option value="camera">Camera</option>
+      <option value="window-sensor">Window Sensor</option>
+      <option value="movement-sensor">Movement Sensor</option>
+      <option value="lamp">Lamp</option>
+    </select>
+  </div>
 
   <app-form-input
     [form]="form"
@@ -52,37 +58,43 @@
     }"
   ></app-form-input>
 
-	@if (device == "camera"){
-		<div>
-			<label>
-				<input type="checkbox" formControlName="isInterior" />
-				Is Interior
-			</label>
-		</div>
-	
-		<div>
-			<label>
-				<input type="checkbox" formControlName="isExterior" />
-				Is Exterior
-			</label>
-		</div>
+	<hr />
 
-		<div>
-			<label>
-				<input type="checkbox" formControlName="movementDetection" />
-				Movement Detection
-			</label>
-		</div>
+  <app-photos-adder [photos]="photos"></app-photos-adder>
 
-		<div>
-			<label>
-				<input type="checkbox" formControlName="peopleDetection" />
-				People Detection
-			</label>
-		</div>
-	}
+  @if (device == "camera"){
+  <div style="margin-top: 20px">
+    <div>
+      <label>
+        <input type="checkbox" formControlName="isInterior" />
+        Is Interior
+      </label>
+    </div>
 
-  <app-form-button type="submit" title="Submit"></app-form-button>
+    <div>
+      <label>
+        <input type="checkbox" formControlName="isExterior" />
+        Is Exterior
+      </label>
+    </div>
+
+    <div>
+      <label>
+        <input type="checkbox" formControlName="movementDetection" />
+        Movement Detection
+      </label>
+    </div>
+
+    <div>
+      <label>
+        <input type="checkbox" formControlName="peopleDetection" />
+        People Detection
+      </label>
+    </div>
+  </div>
+  }
+
+  <app-form-button type="submit" title="Submit" style="margin-top: 20px"></app-form-button>
 
   <app-success-message [message]="successMessage"></app-success-message>
   <app-error-message [message]="errorMessage"></app-error-message>
