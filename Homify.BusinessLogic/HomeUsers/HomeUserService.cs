@@ -11,7 +11,7 @@ public class HomeUserService : IHomeUserService
         _repository = repository;
     }
 
-    public HomeUser? GetByIds(string? homeId, string? userId)
+    public HomeUser? GetHomeUser(string? homeId, string? userId)
     {
         var response = _repository.Get(x => x.HomeId == homeId && x.UserId == userId);
 

@@ -1,8 +1,8 @@
 ﻿using Homify.BusinessLogic.HomeDevices.Entities;
 
-namespace Homify.WebApi.Controllers.Homes.Models.Responses;
+namespace Homify.WebApi.Controllers.HomeDevices.Models;
 
-public class GetDevicesResponse
+public class GetHomeDevicesResponse
 {
     public string Name { get; set; } = null!;
     public string CustomName { get; set; } = null!;
@@ -14,7 +14,7 @@ public class GetDevicesResponse
     public string Id { get; set; } = null!;
     public bool IsActive { get; set; }
 
-    public GetDevicesResponse(HomeDevice homeDevice)
+    public GetHomeDevicesResponse(HomeDevice homeDevice)
     {
         Id = homeDevice.Id;
         Name = homeDevice.Device.Name;

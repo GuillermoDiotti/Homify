@@ -8,6 +8,7 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Homes;
 
@@ -65,7 +66,7 @@ public class HomeService : IHomeService
         }
     }
 
-    public Home UpdateMemberList(string homeId, string userMail)
+    public Home AddMemberToHome(string homeId, string userMail)
     {
         var homeFound = GetHomeById(homeId);
 
@@ -110,7 +111,7 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public HomeDevice UpdateHomeDevices(string deviceid, string homeid, User user)
+    public HomeDevice AssignDeviceToHome(string deviceid, string homeid, User user)
     {
         if (homeid == null)
         {
@@ -135,19 +136,9 @@ public class HomeService : IHomeService
             throw new NotFoundException("Device not found");
         }
 
-        var homeDevice = new HomeDevice()
-        {
-            Device = device,
-            DeviceId = device.Id,
-            Home = home,
-            HomeId = home.Id,
-            Connected = true,
-            IsActive = true,
-            HardwareId = Guid.NewGuid().ToString(),
-        };
         var result = _homeDeviceService.AddHomeDevice(home, device);
+        home.Devices.Add(result);
         _repository.Update(home);
-        home.Devices.Add(homeDevice);
         return result;
     }
 

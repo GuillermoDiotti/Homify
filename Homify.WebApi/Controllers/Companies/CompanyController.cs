@@ -1,7 +1,7 @@
 ﻿using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Permissions;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Companies.Models;
 using Homify.WebApi.Controllers.Companies.Models.Requests;
 using Homify.WebApi.Controllers.Companies.Models.Responses;
@@ -26,10 +26,7 @@ public class CompanyController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(request);
 
         var userLogged = GetUserLogged();
 
@@ -52,18 +49,8 @@ public class CompanyController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
     public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest? req)
     {
-        var pageSize = 10;
-        var pageOffset = 0;
-
-        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
-        {
-            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
-        }
-
-        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
-        {
-            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
-        }
+        var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
+        var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
         return _companyService
             .GetAll(req.OwnerFullName, req.Company)

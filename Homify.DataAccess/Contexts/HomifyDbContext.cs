@@ -37,7 +37,7 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<Session> Sessions { get; set; }
     public DbSet<Camera> Cameras { get; set; }
     public DbSet<Device> Devices { get; set; }
-    public DbSet<Sensor> Sensors { get; set; }
+    public DbSet<WindowSensor> WindowSensors { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<HomeUser> HomeUser { get; set; }
     public DbSet<Admin> Admins { get; set; }
@@ -58,7 +58,7 @@ public sealed class HomifyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Sensor>().ToTable("Sensors");
+        modelBuilder.Entity<WindowSensor>().ToTable("WindowSensors");
         modelBuilder.Entity<Camera>().ToTable("Cameras");
         modelBuilder.Entity<Lamp>().ToTable("Lamps");
         modelBuilder.Entity<MovementSensor>().ToTable("MovementSensors");
@@ -196,21 +196,6 @@ public sealed class HomifyDbContext : DbContext
             {
                 Id = "16",
                 Value = PermissionsGenerator.UpdateUserNotification
-            },
-            new SystemPermission
-            {
-                Id = "17",
-                Value = PermissionsGenerator.ViewRegisteredDevices
-            },
-            new SystemPermission
-            {
-                Id = "18",
-                Value = PermissionsGenerator.ViewSupportedDevices
-            },
-            new SystemPermission
-            {
-                Id = "19",
-                Value = PermissionsGenerator.CreateNotification
             });
 
         modelBuilder.Entity<HomePermission>().HasData(
@@ -350,21 +335,6 @@ public sealed class HomifyDbContext : DbContext
                 {
                     RoleId = Constants.HOMEOWNERID,
                     PermissionId = "16"
-                },
-                new RoleSystemPermission
-                {
-                    RoleId = Constants.HOMEOWNERID,
-                    PermissionId = "17"
-                },
-                new RoleSystemPermission
-                {
-                    RoleId = Constants.HOMEOWNERID,
-                    PermissionId = "18"
-                },
-                new RoleSystemPermission
-                {
-                    RoleId = Constants.HOMEOWNERID,
-                    PermissionId = "19"
                 });
 
         User admin = new Admin()

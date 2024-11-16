@@ -12,6 +12,7 @@ using Homify.WebApi.Controllers.Companies.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -56,7 +57,7 @@ public class CompanyControllerTest
             HttpContext = httpContext
         };
 
-        _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(x => x.GetByOwner(companyOwner.Id)).Returns((Company)null);
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
@@ -109,7 +110,7 @@ public class CompanyControllerTest
             }
         };
 
-        _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(c => c.GetByOwner(companyOwner.Id)).Returns((Company)null);
 
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))

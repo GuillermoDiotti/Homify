@@ -1,5 +1,6 @@
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.Exceptions;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 

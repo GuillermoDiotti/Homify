@@ -1,7 +1,6 @@
 ﻿using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.HomeOwners.Models.Requests;
 using Homify.WebApi.Controllers.HomeOwners.Models.Responses;
@@ -27,10 +26,7 @@ public class HomeOwnerController : HomifyControllerBase
     [NonAuthenticationFilter]
     public CreateHomeOwnerResponse Create(CreateHomeOwnerRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
+        Helpers.ValidateRequest(req);
 
         var role = _roleService.GetRole(Constants.HOMEOWNER);
         var args = new CreateHomeOwnerArgs(

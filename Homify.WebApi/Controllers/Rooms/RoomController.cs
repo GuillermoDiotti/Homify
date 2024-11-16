@@ -3,7 +3,7 @@ using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Rooms;
 using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories.Rooms.Entities;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Homify.WebApi.Controllers.Rooms.Models.Responses;
@@ -28,10 +28,7 @@ public class RoomController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public CreateRoomResponse Create(CreateRoomRequest request, [FromRoute] string homeId)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var owner = GetUserLogged() as HomeOwner;
 

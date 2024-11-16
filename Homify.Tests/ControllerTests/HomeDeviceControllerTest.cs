@@ -4,6 +4,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -34,7 +35,7 @@ public class HomeDeviceControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevice_WhenRequestIsNull_ThrowsException()
     {
-        _controller.UpdateHomeDevice(null, null);
+        _controller.RenameHomeDevice(null, null);
     }
 
     [TestMethod]
@@ -43,7 +44,7 @@ public class HomeDeviceControllerTest
     {
         var req = new UpdateHomeDeviceRequest() { CustomName = null };
 
-        _controller.UpdateHomeDevice(req, null);
+        _controller.RenameHomeDevice(req, null);
     }
 
     [TestMethod]
@@ -90,9 +91,73 @@ public class HomeDeviceControllerTest
 
         var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
 
-        _homeDeviceMock.Setup(x => x.UpdateHomeDevice(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
-        var response = _controller.UpdateHomeDevice(req, updatedDevice.Id);
+        _homeDeviceMock.Setup(x => x.RenameHomeDevice(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
+        var response = _controller.RenameHomeDevice(req, updatedDevice.Id);
 
         response.Should().NotBeNull();
+    }
+
+    [TestMethod]
+    public void TurnOnHomeDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
+    {
+        var hardwareId = "Device123";
+        var logged = new User { Id = "123" };
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = logged.Id,
+                Members = [new HomeUser { UserId = logged.Id }]
+            }
+        };
+
+        _homeDeviceMock.Setup(service => service.Activate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
+
+        var result = _controller.TurnOnHomeDevice(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be("Device123");
+        result.IsActive.Should().BeTrue();
+        _homeDeviceMock.Verify(service => service.Activate(hardwareId, logged), Times.Once);
+    }
+
+    [TestMethod]
+    public void TurnOffHomeDevice_WithValidHardwareId_ShouldReturnDeactivatedDevice()
+    {
+        var hardwareId = "Device123";
+        var logged = new User { Id = "123" };
+        var activatedDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = true,
+            HardwareId = hardwareId,
+            Home = new Home
+            {
+                OwnerId = logged.Id,
+                Members = [new HomeUser { UserId = logged.Id }]
+            }
+        };
+
+        _homeDeviceMock.Setup(service => service.Deactivate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
+
+        var result = _controller.TurnOffHomeDevice(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be("Device123");
+        result.IsActive.Should().BeFalse();
+        _homeDeviceMock.Verify(service => service.Deactivate(hardwareId, logged), Times.Once);
     }
 }

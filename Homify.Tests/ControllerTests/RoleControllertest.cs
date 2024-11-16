@@ -21,7 +21,7 @@ public class RoleControllertest
             HttpContext = new DefaultHttpContext()
         };
 
-        var result = controller.CreateRoleToExistingUser();
+        var result = controller.AssignRoleToExistingUser();
 
         Assert.IsInstanceOfType(result, typeof(UnauthorizedResult));
     }
@@ -44,7 +44,7 @@ public class RoleControllertest
             HttpContext = httpContext
         };
 
-        var result = controller.CreateRoleToExistingUser();
+        var result = controller.AssignRoleToExistingUser();
 
         Assert.IsInstanceOfType(result, typeof(OkObjectResult));
     }

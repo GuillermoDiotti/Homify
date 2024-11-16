@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.HomeDevices;
 
@@ -101,7 +102,7 @@ public class HomeDeviceService : IHomeDeviceService
         return _repository.Get(x => x.Id == id);
     }
 
-    public HomeDevice UpdateHomeDevice(string name, string id, User u)
+    public HomeDevice RenameHomeDevice(string name, string id, User u)
     {
         var device = GetHomeDeviceById(id);
 

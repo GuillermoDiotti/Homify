@@ -8,6 +8,7 @@ using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -98,7 +99,7 @@ public class CompanyServiceTest
         var expectedCompany = new Company { Id = Guid.NewGuid().ToString(), Name = "Test Company", OwnerId = userId };
         _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
             .Returns(expectedCompany);
-        var result = _service.GetByUserId(userId);
+        var result = _service.GetByOwner(userId);
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedCompany, result);
     }
@@ -109,7 +110,7 @@ public class CompanyServiceTest
         var userId = "test-user-id";
         _companyRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Company, bool>>>()))
             .Throws(new NotFoundException("Test Company"));
-        var result = _service.GetByUserId(userId);
+        var result = _service.GetByOwner(userId);
         Assert.IsNull(result);
     }
 

@@ -1,5 +1,6 @@
 ﻿using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.Exceptions;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Companies;
 

@@ -15,9 +15,9 @@ public class RoleController : HomifyControllerBase
         _roleService = roleService;
     }
 
-    [HttpPost]
+    [HttpPut]
     [AuthenticationFilter]
-    public IActionResult CreateRoleToExistingUser()
+    public IActionResult AssignRoleToExistingUser()
     {
         var user = GetUserLogged();
 

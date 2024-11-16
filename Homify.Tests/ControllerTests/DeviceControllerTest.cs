@@ -19,6 +19,7 @@ using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -98,7 +99,7 @@ public class DeviceControllerTest
         };
         var user = new User { Id = "testUserId" };
         var companyOwner = new CompanyOwner { Id = "companyOwnerId", IsIncomplete = false };
-        var expectedSensor = new Sensor
+        var expectedSensor = new WindowSensor
         {
             Name = request.Name,
             PpalPicture = request.PpalPicture,
@@ -109,7 +110,7 @@ public class DeviceControllerTest
             CompanyId = companyOwner.Id
         };
 
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
+        _deviceServiceMock.Setup(d => d.AddWindowSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
         _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns(companyOwner);
         _controller.ControllerContext = new ControllerContext
         {
@@ -117,7 +118,7 @@ public class DeviceControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        var response = _controller.RegisterSensor(request);
+        var response = _controller.RegisterWindowSensor(request);
 
         response.Should().NotBeNull();
     }
@@ -215,76 +216,12 @@ public class DeviceControllerTest
     }
 
     [TestMethod]
-    public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
-    {
-        var hardwareId = "Device123";
-        var logged = new User { Id = "123" };
-        var activatedDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = true,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = logged.Id,
-                Members = [new HomeUser { UserId = logged.Id }]
-            }
-        };
-
-        _homeDeviceServiceMock.Setup(service => service.Activate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
-
-        var result = _controller.TurnOnDevice(hardwareId);
-
-        result.Should().NotBeNull();
-        result.Id.Should().Be("Device123");
-        result.IsActive.Should().BeTrue();
-        _homeDeviceServiceMock.Verify(service => service.Activate(hardwareId, logged), Times.Once);
-    }
-
-    [TestMethod]
-    public void TurnOffDevice_WithValidHardwareId_ShouldReturnDeactivatedDevice()
-    {
-        var hardwareId = "Device123";
-        var logged = new User { Id = "123" };
-        var activatedDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = true,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = logged.Id,
-                Members = [new HomeUser { UserId = logged.Id }]
-            }
-        };
-
-        _homeDeviceServiceMock.Setup(service => service.Deactivate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = logged;
-
-        var result = _controller.TurnOffDevice(hardwareId);
-
-        result.Should().NotBeNull();
-        result.Id.Should().Be("Device123");
-        result.IsActive.Should().BeFalse();
-        _homeDeviceServiceMock.Verify(service => service.Deactivate(hardwareId, logged), Times.Once);
-    }
-
-    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void RegisterSensor_WhenRequestIsNull_ShouldThrowNullRequestException()
     {
         CreateSensorRequest request = null;
 
-        _controller.RegisterSensor(request);
+        _controller.RegisterWindowSensor(request);
     }
 
     [TestMethod]

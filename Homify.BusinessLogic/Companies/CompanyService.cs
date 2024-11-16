@@ -3,6 +3,7 @@ using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Companies;
 
@@ -26,7 +27,7 @@ public class CompanyService : ICompanyService
             throw new DuplicatedDataException("The name is already taken.");
         }
 
-        var alreadyHasACompany = GetByUserId(args.Owner.Id);
+        var alreadyHasACompany = GetByOwner(args.Owner.Id);
 
         if (alreadyHasACompany != null)
         {
@@ -48,7 +49,7 @@ public class CompanyService : ICompanyService
         return company;
     }
 
-    public Company? GetByUserId(string userId)
+    public Company? GetByOwner(string userId)
     {
         try
         {

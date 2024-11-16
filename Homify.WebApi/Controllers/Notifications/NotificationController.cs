@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Utility;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
 using Homify.WebApi.Controllers.Notifications.Models.Requests;
@@ -29,10 +28,7 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("person-detected")]
     public List<CreateNotificationResponse> PersonDetectedNotification(CreateNotificationRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null.");
-        }
+        Helpers.ValidateRequest(request);
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
@@ -52,10 +48,7 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("window-movement")]
     public List<CreateGenericNotificationResponse> WindowMovementNotification(CreateGenericNotificationRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null.");
-        }
+        Helpers.ValidateRequest(request);
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
 
@@ -71,17 +64,11 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("movement-detected")]
     public List<CreateGenericNotificationResponse> MovementNotification(CreateGenericNotificationRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Exception cannot be null");
-        }
+        Helpers.ValidateRequest(req);
 
         var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(req.HardwareId);
 
-        if (fromDevice == null)
-        {
-            throw new NotFoundException("Device not found");
-        }
+        Helpers.ValidateNotFound("Device", fromDevice);
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
@@ -128,10 +115,7 @@ public class NotificationController : HomifyControllerBase
         var user = GetUserLogged();
         var noti = _notificationService.ReadNotificationById(notificationId, user);
 
-        if (noti == null)
-        {
-            throw new NotFoundException("Notification not found");
-        }
+        Helpers.ValidateNotFound("Notification", noti);
 
         return new UpdateNotificationResponse(noti);
     }

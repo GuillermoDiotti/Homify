@@ -5,7 +5,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Filters;
@@ -33,10 +33,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterCamera)]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -62,12 +59,9 @@ public class DeviceController : HomifyControllerBase
     [HttpPost("window-sensors")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
-    public CreateDeviceResponse RegisterSensor(CreateSensorRequest? req)
+    public CreateDeviceResponse RegisterWindowSensor(CreateSensorRequest? req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var isExterior = false;
         var user = GetUserLogged();
@@ -86,7 +80,7 @@ public class DeviceController : HomifyControllerBase
             companyOwner,
             false);
 
-        Sensor sen = _deviceService.AddSensor(args, companyOwner);
+        WindowSensor sen = _deviceService.AddWindowSensor(args, companyOwner);
 
         return new CreateDeviceResponse(sen);
     }
@@ -96,10 +90,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -127,10 +118,7 @@ public class DeviceController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterMovementSensor(CreateSensorRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -157,18 +145,8 @@ public class DeviceController : HomifyControllerBase
     [AuthenticationFilter]
     public List<SearchDevicesResponse> ObtainDevices([FromQuery] DeviceFiltersRequest? req)
     {
-        var pageSize = 10;
-        var pageOffset = 0;
-
-        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
-        {
-            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
-        }
-
-        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
-        {
-            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
-        }
+        var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
+        var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
         var response = _deviceService
                 .GetAll(req)
@@ -188,27 +166,5 @@ public class DeviceController : HomifyControllerBase
             .SearchSupportedDevices()
             .Select(d => new SearchSupportedDevicesResponse(d))
             .ToList();
-    }
-
-    [HttpPut("{hardwareId}/activate")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public TurnOnDeviceResponse TurnOnDevice([FromRoute] string hardwareId)
-    {
-        var user = GetUserLogged();
-
-        var result = _homeDeviceService.Activate(hardwareId, user);
-        return new TurnOnDeviceResponse(result);
-    }
-
-    [HttpPut("{hardwareId}/deactivate")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public TurnOnDeviceResponse TurnOffDevice([FromRoute] string hardwareId)
-    {
-        var user = GetUserLogged();
-
-        var result = _homeDeviceService.Deactivate(hardwareId, user);
-        return new TurnOnDeviceResponse(result);
     }
 }

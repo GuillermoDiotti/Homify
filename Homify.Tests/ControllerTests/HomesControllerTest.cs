@@ -21,6 +21,7 @@ using Homify.WebApi.Controllers.Homes.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 [TestClass]
@@ -28,16 +29,14 @@ public class HomesControllerTest
 {
     private readonly HomeController? _controller;
     private readonly Mock<IHomeService>? _homeServiceMock;
-    private readonly Mock<IUserService>? _userServiceMock;
     private readonly Mock<IHomeUserService> _homeUserServiceMock;
     private readonly Mock<IHomePermissionService> _homePermissionServiceMock;
     public HomesControllerTest()
     {
         _homeServiceMock = new Mock<IHomeService>(MockBehavior.Strict);
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _homeUserServiceMock = new Mock<IHomeUserService>(MockBehavior.Strict);
         _homePermissionServiceMock = new Mock<IHomePermissionService>(MockBehavior.Strict);
-        _controller = new HomeController(_homeServiceMock.Object, _userServiceMock.Object, _homeUserServiceMock.Object, _homePermissionServiceMock.Object);
+        _controller = new HomeController(_homeServiceMock.Object, _homeUserServiceMock.Object, _homePermissionServiceMock.Object);
     }
 
     [TestMethod]
@@ -383,7 +382,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateHomeDevices_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.UpdateHomeDevice(null, "home123");
+        _controller.AssignDeviceToHome(null, "home123");
     }
 
     [TestMethod]
@@ -414,15 +413,15 @@ public class HomesControllerTest
             HardwareId = "1001"
         };
 
-        _homeServiceMock.Setup(service => service.UpdateHomeDevices(request.DeviceId, "home1", user)).Returns(updatedDevice);
+        _homeServiceMock.Setup(service => service.AssignDeviceToHome(request.DeviceId, "home1", user)).Returns(updatedDevice);
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = user;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        var result = _controller.UpdateHomeDevice(request, "home1");
+        var result = _controller.AssignDeviceToHome(request, "home1");
 
-        _homeServiceMock.Verify(service => service.UpdateHomeDevices(request.DeviceId, "home1", user), Times.Once);
+        _homeServiceMock.Verify(service => service.AssignDeviceToHome(request.DeviceId, "home1", user), Times.Once);
     }
 
     [TestMethod]
@@ -472,7 +471,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeDevices(homeId, user)).Returns(devices);
 
-        var result = _controller.ObtainHomeDevices(homeId);
+        var result = _controller.AllHomeDevices(homeId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -482,7 +481,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateNotificatorsList_WhenRequestIsNull_ShouldThrowException()
     {
-        _controller.NotificatedMembers("homeIe", null);
+        _controller.UpdateNotificatedMembers("homeIe", null);
     }
 
     [TestMethod]
@@ -576,7 +575,7 @@ public class HomesControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        var result = _controller.NotificatedMembers(homeId, request);
+        var result = _controller.UpdateNotificatedMembers(homeId, request);
 
         result.Should().NotBeNull();
         result.MembersToNotify.Should().BeEquivalentTo(new List<string> { "user1", "user2" });
@@ -640,7 +639,7 @@ public class HomesControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void UpdateMembersList_WhenRequestIsNull_ShouldThrowNullRequestException()
     {
-        _controller.UpdateMembersList("home123", null);
+        _controller.AddMemberToHome("home123", null);
     }
 
     [TestMethod]
@@ -702,7 +701,7 @@ public class HomesControllerTest
         var permissionListDevices = new HomePermission { Value = PermissionsGenerator.MemberCanListDevices };
         var permissionsList = new List<HomePermission> { permissionAddDevice, permissionListDevices };
 
-        _homeUserServiceMock.Setup(service => service.GetByIds(homeId, memberId)).Returns(found);
+        _homeUserServiceMock.Setup(service => service.GetHomeUser(homeId, memberId)).Returns(found);
 
         _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, request.CanRenameDevices, user, found)).Returns(permissionsList);
         _homeUserServiceMock.Setup(service => service.Update(It.IsAny<HomeUser>())).Returns(found);
@@ -718,7 +717,7 @@ public class HomesControllerTest
         result.UserId.Should().Be(memberId);
         result.Permissions.Should().Contain(permissionAddDevice.Value.ToString());
         result.Permissions.Should().Contain(permissionListDevices.Value.ToString());
-        _homeUserServiceMock.Verify(service => service.GetByIds(homeId, memberId), Times.Once);
+        _homeUserServiceMock.Verify(service => service.GetHomeUser(homeId, memberId), Times.Once);
         _homeUserServiceMock.Verify(service => service.Update(It.IsAny<HomeUser>()), Times.Once);
     }
 

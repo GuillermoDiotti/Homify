@@ -3,9 +3,9 @@ using Homify.Utility;
 
 namespace Homify.BusinessLogic.Sensors.Entities;
 
-public class Sensor : Device
+public class WindowSensor : Device
 {
-    public Sensor()
+    public WindowSensor()
         : base()
     {
         Type = Constants.SENSOR;
