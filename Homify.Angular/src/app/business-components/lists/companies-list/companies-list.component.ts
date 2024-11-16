@@ -39,7 +39,6 @@ export class CompaniesListComponent implements OnInit {
 	ngOnInit() {
 		this.CompanyService.getAllCompanies(this.limit.toString(), this.offset.toString(), this.ownerFullnameFilter, this.companyFilter).subscribe(
 			response => {
-				console.log(response)
 				this.companies = response;
 			},
 			error => {
