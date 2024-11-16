@@ -1,0 +1,24 @@
+.div {
+	display: flex;
+	flex-direction: column;
+}
+
+.homeowner-info {
+  background-color: #f0f4f8;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.homeowner-message {
+  color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}

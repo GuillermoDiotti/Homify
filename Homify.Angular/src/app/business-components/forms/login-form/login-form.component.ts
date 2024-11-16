@@ -5,17 +5,21 @@ import { FormComponent } from '../../../components/form/form/form.component';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormInputComponent } from '../../../components/form/form-input/form-input.component';
+import { HomifyConstants } from '../../../../utility/HomifyConstants';
+import { HomeownerButtonComponent } from '../../buttons/homeowner-button/homeowner-button.component';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [FormComponent, FormInputComponent, ButtonComponent],
+  imports: [FormComponent, FormInputComponent, ButtonComponent, 
+		HomeownerButtonComponent],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
 	form: FormGroup;
   currentUserToken: string | null = null;
+	currentUserName: string = '';
   errorMessage: string = '';
 
   constructor(private fb: FormBuilder ,private sessionService: SessionService) {
@@ -26,8 +30,9 @@ export class LoginFormComponent {
 	}
 
   ngOnInit(): void {
-    const { token } = this.sessionService.getCurrentUser();
+    const { token, name, roles } = this.sessionService.getCurrentUser();
 		this.currentUserToken = token ?? null;
+		this.currentUserName = name;
   }
 
   onSubmit(event: Event) {
@@ -43,7 +48,7 @@ export class LoginFormComponent {
 
     this.sessionService.login(email, password).subscribe(
       resp => {
-        this.sessionService.setCurrentUser(resp.token, resp.roles);
+        this.sessionService.setCurrentUser(resp.token, resp.roles, resp.name);
 				this.currentUserToken = resp.token;
         this.errorMessage = '';
       },

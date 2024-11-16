@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ImportService } from '../../../../backend/services/importer/importer.service';
+import { ImportService } from '../../../../backend/services/importer/Importer.service';
 import { APIError } from '../../../../interfaces/interfaces';
 import { CompanyService } from '../../../../backend/services/company/Company.service';
 import AddValidatorBasicInfo from '../../../../backend/services/company/models/AddValidatorBasicInfo';

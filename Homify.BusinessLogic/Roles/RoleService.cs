@@ -33,11 +33,6 @@ public class RoleService : IRoleService
     {
         var roles = u.Roles.Select(x => x.Role).ToList();
 
-        if (!roles.Contains(GetRole(Constants.ADMINISTRATOR)) || !roles.Contains(GetRole(Constants.COMPANYOWNER)))
-        {
-            throw new InvalidOperationException("You don't have permission to add roles");
-        }
-
         if (roles.Contains(GetRole(Constants.HOMEOWNER)))
         {
             throw new InvalidOperationException("User already has the role");

@@ -1,6 +1,6 @@
 using InterfaceImporter.Models;
 
-namespace InterfaceImporter;
+namespace Homify.Importer.Abstractions;
 
 public interface IImporter
 {

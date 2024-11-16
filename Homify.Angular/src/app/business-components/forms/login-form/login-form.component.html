@@ -1,9 +1,20 @@
 @if (currentUserToken){
 <div class="div">
-  <span class="span"
-    >Welcome, <strong>{{ currentUserToken }}</strong
-    >!</span
+  <h1>
+    Welcome, <strong>{{ currentUserName }}</strong
+    >!
+  </h1>
+
+  <div
+    class="homeowner-info"
   >
+    <p class="homeowner-message">
+      You can try Home Owner's functionalities by adding a new role to your
+      account
+    </p>
+    <app-homeowner-button></app-homeowner-button>
+  </div>
+
   <app-button (click)="onLogout()">Logout</app-button>
 </div>
 } @else {

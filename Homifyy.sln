@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homify.DataAccess", "Homify
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homify.Utility", "Homify.Utility\Homify.Utility.csproj", "{7C408973-CB86-48B4-B7A2-4A60AF14A802}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceImporter", "InterfaceImporter\InterfaceImporter.csproj", "{47E64946-BB95-4893-9721-BC0443A25CFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homify.Importer.Abstractions", "InterfaceImporter\Homify.Importer.Abstractions.csproj", "{47E64946-BB95-4893-9721-BC0443A25CFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSONImporter", "JSONImporter\JSONImporter.csproj", "{1973D492-BE15-415A-9906-1D52BB565E21}"
 EndProject

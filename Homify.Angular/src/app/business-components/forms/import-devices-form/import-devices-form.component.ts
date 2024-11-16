@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ImportService } from '../../../../backend/services/importer/importer.service';
+import { ImportService } from '../../../../backend/services/importer/Importer.service';
 import { ImportRequest } from '../../../../backend/services/importer/models/ImportRequest';
 import { APIError } from '../../../../interfaces/interfaces';
 import { FormComponent } from '../../../components/form/form/form.component';

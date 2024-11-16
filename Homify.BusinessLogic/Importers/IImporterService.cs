@@ -1,6 +1,6 @@
 using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using InterfaceImporter;
+using Homify.Importer.Abstractions;
 using ModeloValidador.Abstracciones;
 
 namespace Homify.BusinessLogic.Importers;
