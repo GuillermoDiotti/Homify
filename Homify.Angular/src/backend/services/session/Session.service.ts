@@ -25,8 +25,8 @@ export class SessionService {
     name: string
   ): void {
     localStorage.setItem('token', token ?? '');
-    localStorage.setItem('roles', JSON.stringify(roles));
-		localStorage.setItem('name', name);
+    localStorage.setItem('roles', JSON.stringify(roles) ?? '[]');
+		localStorage.setItem('name', name ?? '');
   }
 
   public getCurrentUser(): {
@@ -35,8 +35,8 @@ export class SessionService {
     name: string;
   } {
     const token = localStorage.getItem('token') ?? null;
-    const roles = JSON.parse(localStorage.getItem('roles') ?? '');
 		const name = localStorage.getItem('name') ?? '';
+		const roles = JSON.parse(localStorage.getItem('roles') ?? '[]');
     return { token, roles, name };
   }
 

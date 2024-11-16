@@ -10,8 +10,8 @@ export class NonAuthGuard implements CanActivate {
   constructor(private readonly SessionService: SessionService) {}
 
   canActivate(): boolean {
-		const { token, roles } = this.SessionService.getCurrentUser(); 
- 
+		const { token } = this.SessionService.getCurrentUser(); 
+		console.log(token)
     if (!token) {
       return true;
     } else {

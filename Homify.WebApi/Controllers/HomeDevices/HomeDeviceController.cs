@@ -3,7 +3,6 @@ using Homify.BusinessLogic.Permissions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Controllers.HomeDevices.Models;
-using Homify.WebApi.Controllers.Homes.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 

@@ -53,7 +53,7 @@ public sealed class HomeController : HomifyControllerBase
         return new CreateHomeResponse(homeSaved);
     }
 
-    [HttpPut("{homeId}/add-member")]
+    [HttpPut("{homeId}/members")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
     public UpdateMembersListResponse AddMemberToHome(
@@ -93,7 +93,7 @@ public sealed class HomeController : HomifyControllerBase
         return new HomeMemberBasicInfo(result);
     }
 
-    [HttpPut("{homeId}/addDevice")]
+    [HttpPut("{homeId}/devices")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
     public UpdateHomeDeviceResponse AssignDeviceToHome(
@@ -121,7 +121,7 @@ public sealed class HomeController : HomifyControllerBase
             .ToList();
     }
 
-    [HttpPut("{homeId}/notificated-member")]
+    [HttpPut("{homeId}/notifications")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
     public NotificatedMembersResponse UpdateNotificatedMembers(
@@ -138,7 +138,7 @@ public sealed class HomeController : HomifyControllerBase
         return new NotificatedMembersResponse(newMembersToNotify);
     }
 
-    [HttpPatch("{homeId}/update")]
+    [HttpPut("{homeId}/rename")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
@@ -175,7 +175,7 @@ public sealed class HomeController : HomifyControllerBase
             .ToList();
     }
 
-    [HttpGet("{homeId}/allDevices")]
+    [HttpGet("{homeId}/devices")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
     public List<GetHomeDevicesResponse> AllHomeDevices([FromRoute] string homeId)

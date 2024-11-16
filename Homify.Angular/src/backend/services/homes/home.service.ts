@@ -14,6 +14,7 @@ import { UpdateHomeDevicesRequest } from './models/UpdateHomeDevicesRequest';
 import { UpdateHomeDeviceResponse } from './models/UpdateHomeDeviceResponse';
 import { NotificatedMembersRequest } from './models/NotificatedMembersRequest';
 import { NotificatedMembersResponse } from './models/NotificatedMembersResponse';
+import { RenameHomeRequest } from './models/RenameHomeRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,10 @@ export class HomeService {
     : Observable<Array<GetAllHomesResponse>> {
     return this._repository.getAllHomesByMember();
   }
+
+	public renameHome(id: string, request: RenameHomeRequest) : Observable<any> {
+		return this._repository.renameHome(id, request);
+	}
 
   public UpdateMembers(id:string, request: UpdateMemberListRequest): Observable<UpdateMemberListResponse>{
     return this._repository.UpdateHomeMembers(id, request);

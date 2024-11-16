@@ -5,7 +5,6 @@ import { FormComponent } from '../../../components/form/form/form.component';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormInputComponent } from '../../../components/form/form-input/form-input.component';
-import { HomifyConstants } from '../../../../utility/HomifyConstants';
 import { HomeownerButtonComponent } from '../../buttons/homeowner-button/homeowner-button.component';
 
 @Component({
@@ -30,7 +29,7 @@ export class LoginFormComponent {
 	}
 
   ngOnInit(): void {
-    const { token, name, roles } = this.sessionService.getCurrentUser();
+    const { token, name } = this.sessionService.getCurrentUser();
 		this.currentUserToken = token ?? null;
 		this.currentUserName = name;
   }

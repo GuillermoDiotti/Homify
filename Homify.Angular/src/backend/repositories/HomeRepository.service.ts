@@ -17,6 +17,7 @@ import { UpdateHomeDevicesRequest } from "../services/homes/models/UpdateHomeDev
 import { UpdateHomeDeviceResponse } from "../services/homes/models/UpdateHomeDeviceResponse";
 import { NotificatedMembersRequest } from "../services/homes/models/NotificatedMembersRequest";
 import { NotificatedMembersResponse } from "../services/homes/models/NotificatedMembersResponse";
+import { RenameHomeRequest } from "../services/homes/models/RenameHomeRequest";
 
 
 @Injectable({
@@ -44,6 +45,11 @@ import { NotificatedMembersResponse } from "../services/homes/models/Notificated
       public UpdateHomeMembers(id:string, request: UpdateMemberListRequest)
         :Observable<UpdateMemberListResponse>{
           return this.putById<UpdateMemberListResponse>(id, request, "members").pipe(catchError(this.handleError));
+      }
+
+			public renameHome(id:string, request: RenameHomeRequest)
+        :Observable<any>{
+          return this.putById<any>(id, request, "rename").pipe(catchError(this.handleError));
       }
 
       public UpdateMembersPermissions(homeId:string, memberId:string, request:UpdateMembersPermissionRequest)
