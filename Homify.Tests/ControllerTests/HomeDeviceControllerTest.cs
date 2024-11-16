@@ -204,4 +204,24 @@ public class HomeDeviceControllerTest
         result.Id.Should().Be(hardwareId);
         result.IsOn.Should().BeFalse();
     }
+
+    [TestMethod]
+    public void WindowOpen_WhenWindowOper_ShouldReturnOpenWindowResponse()
+    {
+        var hardwareId = "test-hardware-id";
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = true
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.OpenWindow(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.WindowOpen(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(hardwareId, result.Id);
+    }
 }

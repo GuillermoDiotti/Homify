@@ -13,9 +13,9 @@ namespace Homify.BusinessLogic.HomeDevices;
 public class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
-    private readonly DeviceService _deviceService;
+    private readonly IDeviceService _deviceService;
 
-    public HomeDeviceService(IRepository<HomeDevice> repository, DeviceService deviceService)
+    public HomeDeviceService(IRepository<HomeDevice> repository, IDeviceService deviceService)
     {
         _repository = repository;
         _deviceService = deviceService;
@@ -179,5 +179,10 @@ public class HomeDeviceService : IHomeDeviceService
         homeDevice.IsOn = false;
         _repository.Update(homeDevice);
         return homeDevice;
+    }
+
+    public HomeDevice OpenWindow(string hardwareId)
+    {
+        throw new NotImplementedException();
     }
 }

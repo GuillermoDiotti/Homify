@@ -69,4 +69,11 @@ public class HomeDeviceController : HomifyControllerBase
         var result = _homeDeviceService.LampOff(hardwareId);
         return new TurnOnOffLampResponse(result);
     }
+
+    [HttpPut("{hardwareId}/windowOpen")]
+    public OpenWindowResponse WindowOpen([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.OpenWindow(hardwareId);
+        return new OpenWindowResponse(result);
+    }
 }
