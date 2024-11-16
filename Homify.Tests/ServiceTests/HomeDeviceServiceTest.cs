@@ -244,4 +244,19 @@ public class HomeDeviceServiceTest
         response.Id.Should().Be("idHomeDevice");
         response.CustomName.Should().Be("NewName");
     }
+
+    [TestMethod]
+    public void LampOn_WhenIsOk_ShouldTurnOnLampAndReturnHomeDevice()
+    {
+        var hardwareId = "test-hardware-id";
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOn(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsOn);
+    }
 }
