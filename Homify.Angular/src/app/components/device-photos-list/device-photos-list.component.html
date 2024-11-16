@@ -1,7 +1,12 @@
-<ul>
-	@for (ph of data.device?.photos; track $index){
-		<li>
-			<img src="ph" alt="ph" style="width: 200px; height: 200px; max-width: 200px; max-height: 200px;">
-		</li>
+<ul style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+	@if (photos.length > 0){
+		@for (ph of photos; track $index){
+			<li>
+				<img src="ph" alt="ph" style="width: 200px; height: 200px; max-width: 200px; max-height: 200px;">
+			</li>
+		}
+	}
+	@else {
+		<p>Device has no photos to show.</p>
 	}
 </ul>

@@ -14,4 +14,6 @@ export class DevicePhotosListComponent {
     public dialogRef: MatDialogRef<DevicePhotosListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { device: SearchDeviceResponse | null }
   ) {}
+
+	photos = this.data.device?.photos ?? [];
 }
