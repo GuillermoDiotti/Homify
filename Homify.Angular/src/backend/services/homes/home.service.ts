@@ -54,8 +54,8 @@ export class HomeService {
     return this._repository.GetHomeMembers(homeId);
   }
 
-	public getHomeDevices(homeId: string): Observable<GetDevicesResponse[]> {
-		return this._repository.GetHomeDevices(homeId);
+	public getHomeDevices(homeId: string, filterByRoom: string): Observable<GetDevicesResponse[]> {
+		return this._repository.GetHomeDevices(homeId, filterByRoom);
 	}
 
 	public addNewDevice(homeId: string, req: UpdateHomeDevicesRequest): Observable<UpdateHomeDeviceResponse> {

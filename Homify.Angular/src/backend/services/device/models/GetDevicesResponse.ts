@@ -8,4 +8,5 @@ export interface GetDevicesResponse {
 	isActive: boolean;
 	deviceId: string;
 	hardwareId: string;
+	room: string;
 }

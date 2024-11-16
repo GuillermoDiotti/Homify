@@ -4,6 +4,7 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.Utility;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Controllers.Homes.Models;
@@ -178,12 +179,18 @@ public sealed class HomeController : HomifyControllerBase
     [HttpGet("{homeId}/devices")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
-    public List<GetHomeDevicesResponse> AllHomeDevices([FromRoute] string homeId)
+    public List<GetHomeDevicesResponse> AllHomeDevices([FromRoute] string homeId, [FromQuery] string? room)
     {
         var user = GetUserLogged();
 
-        return _homeService
-            .GetHomeDevices(homeId, user)
+        var devices = _homeService.GetHomeDevices(homeId, user);
+
+        if (!string.IsNullOrEmpty(room))
+        {
+           devices = devices.Where(d => d.Room != null && (d.Room?.Name.ToLower() == room.ToLower())).ToList();
+        }
+
+        return devices
             .Select(hd => new GetHomeDevicesResponse(hd))
             .ToList();
     }

@@ -1,5 +1,12 @@
 <article>
   <h2>Listing of Home Devices</h2>
+	<app-input
+	[label]="'Filter by room'"
+	[value]="filterByRoom"
+	(change)="handleFilterChange($event)"
+	>
+	</app-input>
+
   <button (click)="handleRefresh()">Refresh</button>
   <app-success-message [message]="successMessage"></app-success-message>
   <app-error-message [message]="errorMessage"></app-error-message>
@@ -15,6 +22,7 @@
           <div class="col"><strong>Name:</strong> {{ device.name }}</div>
 					<div class="col"><strong>Custom Name:</strong> {{ device.customName }}</div>
           <div class="col"><strong>Model:</strong> {{ device.model }}</div>
+					<div class="col"><strong>Room:</strong> {{ device.room }}</div>
         </div>
 				<div>
 					<div class="col">

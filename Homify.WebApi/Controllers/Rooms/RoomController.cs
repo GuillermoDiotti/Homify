@@ -41,10 +41,10 @@ public class RoomController : HomifyControllerBase
         return new CreateRoomResponse(room.Id);
     }
 
-    [HttpPost("{homeId}")]
+    [HttpGet("{homeId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
+    public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId, [FromQuery] string? room)
     {
         return _roomService
             .GetAllRooms(homeId)

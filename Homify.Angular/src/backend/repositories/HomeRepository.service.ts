@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, filter } from "rxjs/operators";
 import { environment } from "../../environment";
 import ApiRepository from "./api-repository";
 import { CreateHomeRequest } from "../services/homes/models/CreateHomeRequest";
@@ -62,7 +62,11 @@ import { RenameHomeRequest } from "../services/homes/models/RenameHomeRequest";
         return this.get<Array<GetMembersResponse>>(`${homeId}/members`).pipe(catchError(this.handleError));
       }
 
-			public GetHomeDevices(homeId:string): Observable<GetDevicesResponse[]>{
+			public GetHomeDevices(homeId:string, filterByRoom: string): Observable<GetDevicesResponse[]>{
+				console.log(filterByRoom)
+				if (filterByRoom)
+					return this.get<GetDevicesResponse[]>(`${homeId}/devices?room=${filterByRoom}`).pipe(catchError(this.handleError));
+				
 				return this.get<GetDevicesResponse[]>(`${homeId}/devices`).pipe(catchError(this.handleError));
 			}
 

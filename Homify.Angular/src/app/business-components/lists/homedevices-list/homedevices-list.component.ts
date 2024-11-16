@@ -9,13 +9,16 @@ import { SuccessMessageComponent } from '../../../components/success-message/suc
 import { TurnOnDeviceButtonComponent } from '../../buttons/turn-on-device-button/turn-on-device-button.component';
 import { RenameDeviceButtonComponent } from '../../buttons/rename-device-button/rename-device-button.component';
 import { TurnOffDeviceButtonComponent } from '../../buttons/turn-off-device-button/turn-off-device-button.component';
+import { InputComponent } from '../../../components/input/input.component';
+import { ButtonComponent } from '../../../components/button/button.component';
 
 @Component({
   selector: 'app-homedevices-list',
   standalone: true,
   imports: [ErrorMessageComponent, SuccessMessageComponent, 
 		RegisteredDevicesListComponent, TurnOnDeviceButtonComponent, 
-		RenameDeviceButtonComponent, TurnOffDeviceButtonComponent
+		RenameDeviceButtonComponent, TurnOffDeviceButtonComponent,
+		InputComponent, ButtonComponent
 	],
   templateUrl: './homedevices-list.component.html',
   styleUrl: './homedevices-list.component.css'
@@ -23,6 +26,7 @@ import { TurnOffDeviceButtonComponent } from '../../buttons/turn-off-device-butt
 export class HomedevicesListComponent implements OnInit{
 	homeDevices: GetDevicesResponse[] = [];
 	@Input() homeId = "";
+	filterByRoom = '';
 	errorMessage = '';
 	successMessage = '';
 
@@ -31,7 +35,7 @@ export class HomedevicesListComponent implements OnInit{
 	ngOnInit(): void {
 		this.errorMessage = '';
 		this.successMessage = '';
-		this.HomeService.getHomeDevices(this.homeId).subscribe(
+		this.HomeService.getHomeDevices(this.homeId, this.filterByRoom).subscribe(
 			res => {
 				this.homeDevices = res;
 			},
@@ -42,7 +46,7 @@ export class HomedevicesListComponent implements OnInit{
 	handleRefresh() {
 		this.errorMessage = '';
 		this.successMessage = '';
-		this.HomeService.getHomeDevices(this.homeId).subscribe(
+		this.HomeService.getHomeDevices(this.homeId, this.filterByRoom).subscribe(
 			res => {
 				this.homeDevices = res;
 			},
@@ -62,5 +66,9 @@ export class HomedevicesListComponent implements OnInit{
 			res => this.successMessage = "Device added to selected home",
 			(error: APIError) => this.errorMessage = error.error.message,
 		)
+	}
+
+	handleFilterChange(event: Event) {
+		this.filterByRoom = (event.target as HTMLInputElement).value;
 	}
 }

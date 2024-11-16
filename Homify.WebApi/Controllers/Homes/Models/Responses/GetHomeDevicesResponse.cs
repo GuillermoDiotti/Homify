@@ -13,6 +13,7 @@ public class GetHomeDevicesResponse
     public string HardwareId { get; set; } = null!;
     public string Id { get; set; } = null!;
     public bool IsActive { get; set; }
+    public string Room { get; set; } = null!;
 
     public GetHomeDevicesResponse(HomeDevice homeDevice)
     {
@@ -25,5 +26,6 @@ public class GetHomeDevicesResponse
         DeviceId = homeDevice.DeviceId;
         IsActive = homeDevice.IsActive;
         CustomName = homeDevice.CustomName;
+        Room = homeDevice.Room == null ? string.Empty : homeDevice.Room.Name;
     }
 }

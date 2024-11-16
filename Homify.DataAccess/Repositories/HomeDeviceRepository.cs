@@ -21,6 +21,7 @@ public class HomeDeviceRepository : Repository<HomeDevice>
                 .ThenInclude(u => u.Members)
                 .ThenInclude(u => u.Permissions)
                 .Include(u => u.Device)
+                .Include(u => u.Room)
                 .Where(predicate);
 
         var user = query.FirstOrDefault();
@@ -38,13 +39,17 @@ public class HomeDeviceRepository : Repository<HomeDevice>
         if (predicate == null)
         {
             return _entities.Include(u => u.Home)
-                .Include(u => u.Device).ToList();
+                .Include(u => u.Device)
+                .Include(u => u.Room)
+                .ToList();
         }
 
         var query =
             _entities.Include(u => u.Home)
                 .Include(u => u.Device)
-                .Where(predicate).ToList();
+                .Include(u => u.Room)
+                .Where(predicate)
+                .ToList();
 
         return query;
     }
