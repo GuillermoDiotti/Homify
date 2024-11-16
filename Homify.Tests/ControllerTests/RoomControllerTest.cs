@@ -186,7 +186,7 @@ public class RoomControllerTest
             new Room { Id = "2", Name = "Bedroom" }
         };
 
-        _mockRoomService.Setup(service => service.GetAllRooms(homeId)).Returns(rooms);
+        _mockRoomService.Setup(service => service.GetAllRoomsOfHouse(homeId)).Returns(rooms);
 
         var result = _controller.ObtainHomeRooms(homeId) as List<RoomBasicInfo>;
 
@@ -195,6 +195,6 @@ public class RoomControllerTest
         Assert.AreEqual("Living Room", result[0].Name);
         Assert.AreEqual("Bedroom", result[1].Name);
 
-        _mockRoomService.Verify(service => service.GetAllRooms(homeId), Times.Once);
+        _mockRoomService.Verify(service => service.GetAllRoomsOfHouse(homeId), Times.Once);
     }
 }

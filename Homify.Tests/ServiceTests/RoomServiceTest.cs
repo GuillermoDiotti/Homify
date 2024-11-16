@@ -181,7 +181,7 @@ public class RoomServiceTest
 
         _mockRoomRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(expectedRooms);
 
-        var result = _roomService.GetAllRooms("homeId");
+        var result = _roomService.GetAllRoomsOfHouse("homeId");
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);

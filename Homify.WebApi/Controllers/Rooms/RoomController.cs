@@ -47,7 +47,7 @@ public class RoomController : HomifyControllerBase
     public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
     {
         return _roomService
-            .GetAllRooms(homeId)
+            .GetAllRoomsOfHouse(homeId)
             .Select(r => new RoomBasicInfo(r))
             .ToList();
     }
