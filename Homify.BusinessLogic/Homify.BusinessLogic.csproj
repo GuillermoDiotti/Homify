@@ -9,7 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
       <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
-      <ProjectReference Include="..\Homify.InterfaceImporter\Homify.InterfaceImporter.csproj" />
+      <ProjectReference Include="..\Homify.InterfaceImporter\InterfaceImporter.csproj" />
     </ItemGroup>
 
 </Project>
