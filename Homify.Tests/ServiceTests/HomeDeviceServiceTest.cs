@@ -261,4 +261,19 @@ public class HomeDeviceServiceTest
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsOn);
     }
+
+    [TestMethod]
+    public void LampOff_WhenIsOk_ShouldTurnOffLampAndReturnHomeDevice()
+    {
+        var hardwareId = "test-hardware-id";
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOff(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.IsOn);
+    }
 }

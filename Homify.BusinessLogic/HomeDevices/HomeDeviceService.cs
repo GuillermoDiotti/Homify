@@ -156,6 +156,14 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice LampOff(string hardwareId)
     {
-        throw new NotImplementedException();
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        homeDevice.IsOn = false;
+        _repository.Update(homeDevice);
+        return homeDevice;
     }
 }
