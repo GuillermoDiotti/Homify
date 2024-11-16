@@ -72,7 +72,7 @@ public class NotificationService : INotificationService
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Event = "Window state switch detected",
+                    Event = notification.Event ?? "Window state switch detected",
                     Device = notification.Device,
                     IsRead = false,
                     Date = HomifyDateTime.GetActualDate(),

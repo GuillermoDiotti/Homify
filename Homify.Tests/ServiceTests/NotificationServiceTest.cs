@@ -71,7 +71,7 @@ public class NotificationServiceTest
             new HomeUser { UserId = "User2", IsNotificable = false },
             new HomeUser { UserId = "User3", IsNotificable = true }
         };
-        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Window opened");
+        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Window opened", "abierta");
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
 
@@ -170,7 +170,7 @@ public class NotificationServiceTest
             homeDevice,
             false,
             homeUsers[0]);
-        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Movement detected");
+        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Movement detected", null);
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
 
@@ -200,7 +200,7 @@ public class NotificationServiceTest
         };
 
         var notificationArgs =
-            new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId);
+            new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId, "movement detected", null);
 
         _mockHomeUserService
             .Setup(service => service.GetHomeUsersByHomeId("Home123"))
