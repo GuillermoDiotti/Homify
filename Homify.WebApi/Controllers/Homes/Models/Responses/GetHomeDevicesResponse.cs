@@ -1,6 +1,6 @@
 ﻿using Homify.BusinessLogic.HomeDevices.Entities;
 
-namespace Homify.WebApi.Controllers.HomeDevices.Models;
+namespace Homify.WebApi.Controllers.Homes.Models.Responses;
 
 public class GetHomeDevicesResponse
 {

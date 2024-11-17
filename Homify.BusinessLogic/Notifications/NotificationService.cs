@@ -1,4 +1,3 @@
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
@@ -11,15 +10,13 @@ namespace Homify.BusinessLogic.Notifications;
 public class NotificationService : INotificationService
 {
     private readonly IRepository<Notification> _notificationRepository;
-    private readonly IHomeDeviceService _homeDeviceService;
     private readonly IHomeUserService _homeUserService;
     private readonly IUserService _userService;
 
-    public NotificationService(IRepository<Notification> notificationRepository, IHomeDeviceService homeDeviceService,
+    public NotificationService(IRepository<Notification> notificationRepository,
         IHomeUserService homeUserService, IUserService userService)
     {
         _notificationRepository = notificationRepository;
-        _homeDeviceService = homeDeviceService;
         _homeUserService = homeUserService;
         _userService = userService;
     }

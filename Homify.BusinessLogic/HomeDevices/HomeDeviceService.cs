@@ -1,4 +1,3 @@
-using System.Data;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
@@ -6,9 +5,7 @@ using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
-using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.Utility;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
