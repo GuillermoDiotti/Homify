@@ -6,6 +6,7 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -22,13 +23,17 @@ public class HomeDeviceServiceTest
     private HomeDeviceService? _homeDeviceService;
     private Mock<HomeDeviceService>? _homedeviceServiceMock;
     private Mock<DeviceService>? _deviceServiceMock;
+    private Mock<INotificationService>? _notificationServiceMock;
+    private Mock<IHomeUserService>? _homeUserServiceMock;
 
     [TestInitialize]
     public void Setup()
     {
         _homeDeviceRepositoryMock = new Mock<IRepository<HomeDevice>>();
         _deviceServiceMock = new Mock<DeviceService>();
-        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _deviceServiceMock.Object);
+        _notificationServiceMock = new Mock<INotificationService>();
+        _homeUserServiceMock = new Mock<IHomeUserService>();
+        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _deviceServiceMock.Object, _notificationServiceMock.Object, _homeUserServiceMock.Object);
         _homedeviceServiceMock = new Mock<HomeDeviceService>();
     }
 

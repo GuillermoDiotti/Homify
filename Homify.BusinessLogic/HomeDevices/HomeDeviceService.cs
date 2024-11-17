@@ -2,8 +2,13 @@ using System.Data;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Notifications;
+using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.Utility;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
@@ -14,11 +19,16 @@ public class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
     private readonly IDeviceService _deviceService;
+    private readonly INotificationService _notificationService;
+    private readonly IHomeUserService _homeUserService;
 
-    public HomeDeviceService(IRepository<HomeDevice> repository, IDeviceService deviceService)
+    public HomeDeviceService(IRepository<HomeDevice> repository, IDeviceService deviceService, INotificationService notificationService,
+        IHomeUserService homeUserService)
     {
         _repository = repository;
         _deviceService = deviceService;
+        _notificationService = notificationService;
+        _homeUserService = homeUserService;
     }
 
     public HomeDevice AddHomeDevice(Home home, Device device)
@@ -159,6 +169,9 @@ public class HomeDeviceService : IHomeDeviceService
         }
 
         homeDevice.IsOn = true;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Lamp state switch detected", "Lamp On");
+        _notificationService.AddLampNotifications(notificationArgs);
+
         _repository.Update(homeDevice);
         return homeDevice;
     }
@@ -177,6 +190,8 @@ public class HomeDeviceService : IHomeDeviceService
         }
 
         homeDevice.IsOn = false;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Lamp state switch detected", "Lamp Off");
+        _notificationService.AddLampNotifications(notificationArgs);
         _repository.Update(homeDevice);
         return homeDevice;
     }
