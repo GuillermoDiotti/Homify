@@ -305,4 +305,25 @@ public class HomeDeviceServiceTest
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsOn);
     }
+
+    [TestMethod]
+    public void CloseWindow_WithValidSensor_ShouldCloseWindow()
+    {
+        var hardwareId = "12345";
+        var sensorDevice = new Device { Type = Constants.SENSOR };
+        var homeDevice = new HomeDevice
+        {
+            HardwareId = hardwareId,
+            Device = sensorDevice,
+            IsOn = false
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.CloseWindow(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.IsOn);
+    }
 }
