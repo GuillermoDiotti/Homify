@@ -160,7 +160,7 @@ public class HomeDeviceService : IHomeDeviceService
             throw new NotFoundException("Device not found");
         }
 
-        if(homeDevice.Device.Type != Constants.LAMP)
+        if (homeDevice.Device.Type != Constants.LAMP)
         {
             throw new InvalidOperationException("This device is not a lamp");
         }
@@ -181,7 +181,7 @@ public class HomeDeviceService : IHomeDeviceService
             throw new NotFoundException("Device not found");
         }
 
-        if(homeDevice.Device.Type != Constants.LAMP)
+        if (homeDevice.Device.Type != Constants.LAMP)
         {
             throw new InvalidOperationException("This device is not a lamp");
         }
@@ -201,7 +201,7 @@ public class HomeDeviceService : IHomeDeviceService
             throw new NotFoundException("Device not found");
         }
 
-        if(homeDevice.Device.Type != Constants.SENSOR)
+        if (homeDevice.Device.Type != Constants.SENSOR)
         {
             throw new InvalidOperationException("This device is not a window sensor");
         }
@@ -222,7 +222,7 @@ public class HomeDeviceService : IHomeDeviceService
             throw new NotFoundException("Device not found");
         }
 
-        if(homeDevice.Device.Type != Constants.SENSOR)
+        if (homeDevice.Device.Type != Constants.SENSOR)
         {
             throw new InvalidOperationException("This device is not a window sensor");
         }

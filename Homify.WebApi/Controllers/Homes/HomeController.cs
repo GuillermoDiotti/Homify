@@ -185,7 +185,7 @@ public sealed class HomeController : HomifyControllerBase
 
         if (!string.IsNullOrEmpty(room))
         {
-           devices = devices.Where(d => d.Room != null && (d.Room?.Name.ToLower() == room.ToLower())).ToList();
+            devices = devices.Where(d => d.Room != null && (d.Room?.Name.ToLower() == room.ToLower())).ToList();
         }
 
         return devices
