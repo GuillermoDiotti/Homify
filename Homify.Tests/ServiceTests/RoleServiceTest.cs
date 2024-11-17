@@ -7,6 +7,7 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Utility;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -49,17 +50,11 @@ public class RoleServiceTest
     {
         var user = new User
         {
-            Roles =
-            [
-                new UserRole { Role = new Role { Name = "Test role" } }
-            ]
+            Roles = new List<UserRole> { new UserRole { Role = RolesGenerator.HomeOwner() } }
         };
 
         _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
-            .Returns(new Role
-            {
-                Name = "Test role"
-            });
+            .Returns(RolesGenerator.HomeOwner);
 
         Assert.ThrowsException<InvalidOperationException>(() => _service.AddRoleToUser(user));
     }

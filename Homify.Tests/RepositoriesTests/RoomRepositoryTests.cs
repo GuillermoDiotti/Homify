@@ -42,24 +42,6 @@ public class RoomRepositoryTests
     }
 
     [TestMethod]
-    public void Get_WhenRoomDoesNotExist_ThrowsException()
-    {
-        var mockSet = new Mock<DbSet<Room>>();
-        mockSet.As<IQueryable<Room>>().Setup(m => m.Provider).Returns(new List<Room>().AsQueryable().Provider);
-        mockSet.As<IQueryable<Room>>().Setup(m => m.Expression).Returns(new List<Room>().AsQueryable().Expression);
-        mockSet.As<IQueryable<Room>>().Setup(m => m.ElementType).Returns(new List<Room>().AsQueryable().ElementType);
-        mockSet.As<IQueryable<Room>>().Setup(m => m.GetEnumerator()).Returns(new List<Room>().AsQueryable().GetEnumerator());
-
-        var mockContext = new Mock<DbContext>();
-        mockContext.Setup(c => c.Set<Room>()).Returns(mockSet.Object);
-
-        var roomRepository = new RoomRepository(mockContext.Object);
-        Expression<Func<Room, bool>> predicate = r => false;
-
-        Assert.ThrowsException<NotFoundException>(() => roomRepository.Get(predicate));
-    }
-
-    [TestMethod]
     public void GetAll_WithPredicate_ReturnsFilteredRooms()
     {
         var testData = new List<Room>

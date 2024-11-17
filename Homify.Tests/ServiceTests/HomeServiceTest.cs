@@ -274,18 +274,14 @@ public class HomeServiceTest
         var home = new Home
         {
             Id = homeId,
-            OwnerId = userId,
+            OwnerId = "ownerId",
             Members =
             [
                 new HomeUser
                 {
-                    Id = userId,
-                    Permissions = [new HomePermission()
-                    {
-                        Value = PermissionsGenerator.MemberCanAddDevice
-                    }
-
-                    ]
+                    UserId = userId,
+                    HomeId = homeId,
+                    Permissions = [new HomePermission { Value = PermissionsGenerator.MemberCanAddDevice }]
                 }
 
             ],
@@ -298,10 +294,11 @@ public class HomeServiceTest
 
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(home);
         _deviceService.Setup(d => d.GetById(deviceId)).Returns(device);
+        _homeDeviceService.Setup(h => h.AddHomeDevice(home, device)).Returns(new HomeDevice { DeviceId = deviceId, Device = device });
 
         _homeService.AssignDeviceToHome(deviceId, homeId, user);
 
-        _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Devices.Any(d => d.DeviceId == deviceId))), Times.Once);
+        _mockRepository.Verify(r => r.Update(It.Is<Home>(h => h.Devices.Any(d => d.Device.Id == deviceId))), Times.Once);
     }
 
     [TestMethod]

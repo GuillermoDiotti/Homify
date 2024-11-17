@@ -35,7 +35,6 @@ public class NotificationServiceTest
     [TestMethod]
     public void AddPersonDetectedNotification_ShouldAddNotifications_WhenUsersAreNotificable()
     {
-        // Arrange
         var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123" };
         var homeUsers = new List<HomeUser>
         {
@@ -49,10 +48,8 @@ public class NotificationServiceTest
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
         _mockUserService.Setup(s => s.GetById("Person123")).Returns(detectedUser);
 
-        // Act
         var result = _notificationService.AddPersonDetectedNotification(notificationArgs);
 
-        // Assert
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual("Person Detected", result[0].Event);
         Assert.AreEqual("John Doe", result[0].Detail);
@@ -61,7 +58,6 @@ public class NotificationServiceTest
     [TestMethod]
     public void AddWindowNotification_ShouldAddNotifications_WhenUsersAreNotificable()
     {
-        // Arrange
         var homeDevice = new HomeDevice { Id = "Device123", HomeId = "Home123" };
         var homeUsers = new List<HomeUser>
         {
@@ -69,17 +65,17 @@ public class NotificationServiceTest
             new HomeUser { UserId = "User2", IsNotificable = false },
             new HomeUser { UserId = "User3", IsNotificable = true }
         };
-        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Window opened", "abierta");
+        var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Window state switch detected", "Window opened");
 
         _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
 
-        // Act
         var result = _notificationService.AddWindowNotification(notificationArgs);
 
-        // Assert
         Assert.AreEqual(2, result.Count);
-        Assert.AreEqual("Window state switch detected", result[0].Event);
-        Assert.AreEqual("Window opened", result[0].Detail);
+        Assert.AreEqual("Window opened", result[0].Event);
+        Assert.AreEqual("Window state switch detected", result[0].Detail);
+        Assert.AreEqual("Window opened", result[1].Event);
+        Assert.AreEqual("Window state switch detected", result[1].Detail);
     }
 
     [TestMethod]

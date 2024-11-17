@@ -34,9 +34,9 @@ public class RoleService : IRoleService
     {
         var roles = u.Roles.Select(x => x.Role).ToList();
 
-        if (roles.Contains(GetRole(Constants.HOMEOWNER)))
+        if (!roles.Contains(GetRole(Constants.ADMINISTRATOR)) && !roles.Contains(GetRole(Constants.COMPANYOWNER)))
         {
-            throw new InvalidOperationException("User already has the role");
+            throw new InvalidOperationException("User must be an admin or company owner to add a role.");
         }
 
         _userService.LoadIntermediateTable(u.Id, Constants.HOMEOWNERID);

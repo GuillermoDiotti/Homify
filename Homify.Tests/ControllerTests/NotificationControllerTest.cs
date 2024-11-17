@@ -5,6 +5,7 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi;
@@ -91,8 +92,8 @@ public class NotificationControllerTest
         var user = new User { Id = userId };
         var notifications = new List<Notification>
         {
-            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1" }, Date = "10/10/2024" },
-            new Notification { Event = "Event2", IsRead = true, Device = new HomeDevice { Id = "Device2" } }
+            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1", Device = new Device { Type = "Event1" } }, Date = HomifyDateTime.Parse("10/10/2024") },
+            new Notification { Event = "Event2", IsRead = true, Device = new HomeDevice { Id = "Device2", Device = new Device { Type = "Event2" } } }
         };
 
         _notificationService.Setup(n => n.GetAllByUserId(userId)).Returns(notifications);
@@ -108,7 +109,7 @@ public class NotificationControllerTest
             }
         };
 
-        var result = mockController.ObtainNotifications("Event1", "10/10/2024", "false");
+        var result = mockController.ObtainNotifications("event1", "10/10/2024", "false");
 
         result.Should().NotBeNull();
         result.Count.Should().Be(1);

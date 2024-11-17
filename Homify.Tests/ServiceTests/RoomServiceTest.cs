@@ -175,8 +175,8 @@ public class RoomServiceTest
     {
         var expectedRooms = new List<Room>
         {
-            new Room { Id = "1", Name = "Living Room" },
-            new Room { Id = "2", Name = "Bedroom" }
+            new Room { Id = "1", Name = "Living Room", HomeId = "homeId", Home = new Home() { Id = "homeId" } },
+            new Room { Id = "2", Name = "Bedroom", HomeId = "homeId", Home = new Home() { Id = "homeId" } }
         };
 
         _mockRoomRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(expectedRooms);

@@ -39,7 +39,7 @@ public class HomeDeviceControllerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
+    [ExpectedException(typeof(ArgsNullException))]
     public void UpdateHomeDevice_WhenRequestNameIsNull_ThrowsException()
     {
         var req = new UpdateHomeDeviceRequest() { CustomName = null };
@@ -134,19 +134,19 @@ public class HomeDeviceControllerTest
     {
         var hardwareId = "Device123";
         var logged = new User { Id = "123" };
-        var activatedDevice = new HomeDevice
+        var deactivatedDevice = new HomeDevice
         {
             Id = "Device123",
-            IsActive = true,
+            IsActive = false,
             HardwareId = hardwareId,
             Home = new Home
             {
                 OwnerId = logged.Id,
-                Members = [new HomeUser { UserId = logged.Id }]
+                Members = new List<HomeUser> { new HomeUser { UserId = logged.Id } }
             }
         };
 
-        _homeDeviceMock.Setup(service => service.Deactivate(It.IsAny<string>(), It.IsAny<User>())).Returns(activatedDevice);
+        _homeDeviceMock.Setup(service => service.Deactivate(It.IsAny<string>(), It.IsAny<User>())).Returns(deactivatedDevice);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
