@@ -19,10 +19,6 @@ public class RoomRepository : Repository<Room>
             .Where(predicate);
 
         var room = query.FirstOrDefault();
-        if (room == null)
-        {
-            throw new NotFoundException("Room not found");
-        }
 
         return room;
     }

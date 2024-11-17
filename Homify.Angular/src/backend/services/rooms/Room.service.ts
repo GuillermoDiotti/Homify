@@ -14,7 +14,7 @@ export class RoomService {
     return this._repository.create(req);
   }
 
-	public getAllHomeRooms(homeId: string): Observable<RoomBasicInfo> {
+	public getAllHomeRooms(homeId: string): Observable<RoomBasicInfo[]> {
 		return this._repository.getAllHomeRooms(homeId);
 	}
 

@@ -23,10 +23,10 @@ public class RoomController : HomifyControllerBase
         _roomService = roomService;
     }
 
-    [HttpPost("{homeId}")]
+    [HttpPost]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public CreateRoomResponse Create(CreateRoomRequest request, [FromRoute] string homeId)
+    public CreateRoomResponse Create(CreateRoomRequest request)
     {
         Helpers.ValidateRequest(request);
 
@@ -34,7 +34,7 @@ public class RoomController : HomifyControllerBase
 
         var arguments = new CreateRoomArgs(
             request.Name ?? string.Empty,
-            homeId ?? string.Empty,
+            request.HomeId ?? string.Empty,
             owner);
 
         var room = _roomService.AddHomeRoom(arguments);
@@ -44,7 +44,7 @@ public class RoomController : HomifyControllerBase
     [HttpGet("{homeId}")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId, [FromQuery] string? room)
+    public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
     {
         return _roomService
             .GetAllRooms(homeId)

@@ -5,7 +5,7 @@ import { ButtonComponent } from '../../../components/button/button.component';
 import { DeviceService } from '../../../../backend/services/device/Device.service';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { InputComponent } from '../../../components/input/input.component';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DevicePhotosListComponent } from '../../../components/device-photos-list/device-photos-list.component';
 
 @Component({

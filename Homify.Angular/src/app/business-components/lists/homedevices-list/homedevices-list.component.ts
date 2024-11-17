@@ -11,6 +11,7 @@ import { RenameDeviceButtonComponent } from '../../buttons/rename-device-button/
 import { TurnOffDeviceButtonComponent } from '../../buttons/turn-off-device-button/turn-off-device-button.component';
 import { InputComponent } from '../../../components/input/input.component';
 import { ButtonComponent } from '../../../components/button/button.component';
+import { AssingDeviceToRoomButtonComponent } from '../../buttons/assing-device-to-room-button/assing-device-to-room-button.component';
 
 @Component({
   selector: 'app-homedevices-list',
@@ -18,7 +19,7 @@ import { ButtonComponent } from '../../../components/button/button.component';
   imports: [ErrorMessageComponent, SuccessMessageComponent, 
 		RegisteredDevicesListComponent, TurnOnDeviceButtonComponent, 
 		RenameDeviceButtonComponent, TurnOffDeviceButtonComponent,
-		InputComponent, ButtonComponent
+		InputComponent, ButtonComponent, AssingDeviceToRoomButtonComponent
 	],
   templateUrl: './homedevices-list.component.html',
   styleUrl: './homedevices-list.component.css'

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { APIError } from '../../../../interfaces/interfaces';
 import { RoomService } from '../../../../backend/services/rooms/Room.service';
 import { CreateRoomRequest } from '../../../../backend/services/rooms/models/CreateRoomRequest';
@@ -16,17 +16,20 @@ import { InputComponent } from '../../../components/input/input.component';
   styleUrl: './add-rooms-form.component.css'
 })
 export class AddRoomsFormComponent {
+	@Input() homeId = '';
 	errorMessage = '';
 	successMessage = ''; 
 	roomName: string = '';
 
+	
 	constructor(private readonly RoomService: RoomService) {}
-
+	
 	handleSubmit() {
 		this.successMessage = '';
 		this.errorMessage = '';
 
 		const req: CreateRoomRequest = {
+			homeId: this.homeId,
 			name: this.roomName,
 		};
 

@@ -18,8 +18,8 @@ export class RoomApiRepositoryService extends ApiRepository {
     return this.post<any>(req).pipe(catchError(this.handleError));
   }
 
-	public getAllHomeRooms(homeId: string): Observable<RoomBasicInfo> {
-		return this.get<RoomBasicInfo>(homeId).pipe(catchError(this.handleError));
+	public getAllHomeRooms(homeId: string): Observable<RoomBasicInfo[]> {
+		return this.get<RoomBasicInfo[]>(homeId).pipe(catchError(this.handleError));
 	}
 
 	public assingHomeDeviceToRoom(roomId: string, homeDeviceId: string) {

@@ -1,0 +1,23 @@
+<article style="width: 400px; height: 400px; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+	<h2>Assign device to room</h2>
+	@if (rooms.length > 0) {
+		<div style="margin-bottom: 20px">
+			<label for="homerooms">Home Room</label>
+			<select id="homerooms" name="device" (change)="onRoomChange($event)">
+				@for (room of rooms; track $index){
+					<option value="room.id">{{ room.name }}</option>
+				}
+			</select>
+		</div>
+		
+		<app-button
+		(click)="handleAssign()"
+		>Assign</app-button>
+	
+	<app-success-message [message]="successMessage"></app-success-message>
+	<app-error-message [message]="errorMessage"></app-error-message>
+	}
+	@else {
+		<p>This home has no rooms in it.</p>
+	}
+</article>

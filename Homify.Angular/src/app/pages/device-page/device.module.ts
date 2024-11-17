@@ -9,7 +9,6 @@ import { SupportedDevicesListComponent } from '../../business-components/lists/s
 import { RegisteredDevicesListComponent } from '../../business-components/lists/registered-devices-list/registered-devices-list.component';
 import { AuthGuard } from '../../guards/auth.guard';
 import { CompanyOwnerGuard } from '../../guards/company-owner.guard';
-import { DeviceService } from '../../../backend/services/device/Device.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 

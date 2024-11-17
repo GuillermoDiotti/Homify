@@ -63,7 +63,6 @@ import { RenameHomeRequest } from "../services/homes/models/RenameHomeRequest";
       }
 
 			public GetHomeDevices(homeId:string, filterByRoom: string): Observable<GetDevicesResponse[]>{
-				console.log(filterByRoom)
 				if (filterByRoom)
 					return this.get<GetDevicesResponse[]>(`${homeId}/devices?room=${filterByRoom}`).pipe(catchError(this.handleError));
 				

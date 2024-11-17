@@ -73,7 +73,7 @@ public class RoomService : IRoomService
 
         if (ExistsDeviceInOtherRoom(homeDevice))
         {
-            throw new InvalidOperationException("The device is already in another room of the house");
+            throw new InvalidOperationException("The device is already in this or another room of the house");
         }
 
         room.Devices.Add(homeDevice);
