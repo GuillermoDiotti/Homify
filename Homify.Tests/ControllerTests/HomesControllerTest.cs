@@ -10,7 +10,6 @@ using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
-using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
@@ -471,7 +470,7 @@ public class HomesControllerTest
 
         _homeServiceMock.Setup(service => service.GetHomeDevices(homeId, user)).Returns(devices);
 
-        var result = _controller.AllHomeDevices(homeId);
+        var result = _controller.AllHomeDevices(homeId, null);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);

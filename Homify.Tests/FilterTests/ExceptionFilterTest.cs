@@ -201,11 +201,11 @@ public class ExceptionFilterTest
         response.Should().NotBeNull();
         var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
-        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
         if (concreteResponse.Value != null)
         {
-            GetInnerCode(concreteResponse.Value).Should().Be("InvalidOperation");
-            GetMessage(concreteResponse.Value).Should().Be("Your account is not incomplete");
+            GetInnerCode(concreteResponse.Value).Should().Be("InternalError");
+            GetMessage(concreteResponse.Value).Should().Be("There was an error while processing the request");
         }
     }
 

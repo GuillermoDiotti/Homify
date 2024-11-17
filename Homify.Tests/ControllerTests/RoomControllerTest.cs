@@ -29,7 +29,7 @@ public class RoomControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void Create_NullRequest_ThrowsNullRequestException()
     {
-        _controller.Create(null, "homeId");
+        _controller.Create(null);
     }
 
     [TestMethod]
@@ -38,10 +38,11 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = "Living Room"
+            Name = "Living Room",
+            HomeId = null
         };
 
-        _controller.Create(request, null);
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -50,10 +51,11 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = null
+            Name = null,
+            HomeId = "id"
         };
 
-        _controller.Create(request, "id");
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -66,10 +68,11 @@ public class RoomControllerTest
 
         var request = new CreateRoomRequest
         {
-            Name = "name"
+            Name = "name",
+            HomeId = "id"
         };
 
-        _controller.Create(request, "id");
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -77,7 +80,8 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = "Living Room"
+            Name = "Living Room",
+            HomeId = "testHomeId"
         };
         var homeId = "testHomeId";
 
@@ -93,7 +97,7 @@ public class RoomControllerTest
         _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>()))
             .Returns(new Room { Id = "roomId" });
 
-        var response = _controller.Create(request, homeId);
+        var response = _controller.Create(request);
 
         _mockRoomService.Verify(s => s.AddHomeRoom(It.Is<CreateRoomArgs>(args =>
                 args.Name == request.Name &&
@@ -108,7 +112,8 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = "Kitchen"
+            Name = "Kitchen",
+            HomeId = "home123"
         };
         var homeId = "home123";
         var room = new Room { Id = "room456" };
@@ -124,7 +129,7 @@ public class RoomControllerTest
 
         _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>())).Returns(room);
 
-        var result = _controller.Create(request, homeId);
+        var result = _controller.Create(request);
 
         Assert.AreEqual("room456", result.Id);
     }

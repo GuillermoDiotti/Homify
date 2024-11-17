@@ -20,18 +20,16 @@ public class NotificationServiceTest
 {
     private Mock<IRepository<Notification>>? _mockRepository;
     private NotificationService? _notificationService;
-    private Mock<IHomeDeviceService>? _mockHomeDeviceService;
     private Mock<IHomeUserService>? _mockHomeUserService;
     private Mock<IUserService>? _mockUserService;
 
     [TestInitialize]
     public void Setup()
     {
-        _mockHomeDeviceService = new Mock<IHomeDeviceService>();
         _mockRepository = new Mock<IRepository<Notification>>();
         _mockHomeUserService = new Mock<IHomeUserService>();
         _mockUserService = new Mock<IUserService>();
-        _notificationService = new NotificationService(_mockRepository.Object, _mockHomeDeviceService.Object, _mockHomeUserService.Object, _mockUserService.Object);
+        _notificationService = new NotificationService(_mockRepository.Object, _mockHomeUserService.Object, _mockUserService.Object);
     }
 
     [TestMethod]
