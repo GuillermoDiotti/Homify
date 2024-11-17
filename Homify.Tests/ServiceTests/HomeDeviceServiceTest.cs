@@ -6,10 +6,12 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Moq;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
@@ -20,12 +22,20 @@ public class HomeDeviceServiceTest
 {
     private Mock<IRepository<HomeDevice>>? _homeDeviceRepositoryMock;
     private HomeDeviceService? _homeDeviceService;
+    private Mock<IHomeDeviceService>? _homedeviceServiceMock;
+    private Mock<IDeviceService>? _deviceServiceMock;
+    private Mock<INotificationService>? _notificationServiceMock;
+    private Mock<IHomeUserService>? _homeUserServiceMock;
 
     [TestInitialize]
     public void Setup()
     {
         _homeDeviceRepositoryMock = new Mock<IRepository<HomeDevice>>();
-        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object);
+        _deviceServiceMock = new Mock<IDeviceService>();
+        _notificationServiceMock = new Mock<INotificationService>();
+        _homeUserServiceMock = new Mock<IHomeUserService>();
+        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _deviceServiceMock.Object, _notificationServiceMock.Object, _homeUserServiceMock.Object);
+        _homedeviceServiceMock = new Mock<IHomeDeviceService>();
     }
 
     [TestMethod]
@@ -243,5 +253,77 @@ public class HomeDeviceServiceTest
 
         response.Id.Should().Be("idHomeDevice");
         response.CustomName.Should().Be("NewName");
+    }
+
+    [TestMethod]
+    public void LampOn_WhenIsOk_ShouldTurnOnLampAndReturnHomeDevice()
+    {
+        var hardwareId = "test-hardware-id";
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOn(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsOn);
+    }
+
+    [TestMethod]
+    public void LampOff_WhenIsOk_ShouldTurnOffLampAndReturnHomeDevice()
+    {
+        var hardwareId = "test-hardware-id";
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOff(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.IsOn);
+    }
+
+    [TestMethod]
+    public void OpenWindow_WithValidSensor_ShouldOpenWindow()
+    {
+        var hardwareId = "12345";
+        var sensorDevice = new Device { Type = Constants.SENSOR };
+        var homeDevice = new HomeDevice
+        {
+            HardwareId = hardwareId,
+            Device = sensorDevice,
+            IsOn = false
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.OpenWindow(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsOn);
+    }
+
+    [TestMethod]
+    public void CloseWindow_WithValidSensor_ShouldCloseWindow()
+    {
+        var hardwareId = "12345";
+        var sensorDevice = new Device { Type = Constants.SENSOR };
+        var homeDevice = new HomeDevice
+        {
+            HardwareId = hardwareId,
+            Device = sensorDevice,
+            IsOn = false
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.CloseWindow(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.IsOn);
     }
 }

@@ -54,7 +54,7 @@ public class NotificationController : HomifyControllerBase
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.SENSOR);
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action, request.Event);
 
         var notification = _notificationService.AddWindowNotification(arguments);
 
@@ -72,7 +72,7 @@ public class NotificationController : HomifyControllerBase
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action, req.Event);
 
         var notification = _notificationService.AddMovementNotification(arguments);
 

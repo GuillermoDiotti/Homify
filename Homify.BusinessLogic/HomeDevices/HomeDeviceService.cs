@@ -1,9 +1,16 @@
+using System.Data;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Notifications;
+using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
+using Homify.Utility;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.HomeDevices;
@@ -11,10 +18,17 @@ namespace Homify.BusinessLogic.HomeDevices;
 public class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
+    private readonly IDeviceService _deviceService;
+    private readonly INotificationService _notificationService;
+    private readonly IHomeUserService _homeUserService;
 
-    public HomeDeviceService(IRepository<HomeDevice> repository)
+    public HomeDeviceService(IRepository<HomeDevice> repository, IDeviceService deviceService, INotificationService notificationService,
+        IHomeUserService homeUserService)
     {
         _repository = repository;
+        _deviceService = deviceService;
+        _notificationService = notificationService;
+        _homeUserService = homeUserService;
     }
 
     public HomeDevice AddHomeDevice(Home home, Device device)
@@ -139,5 +153,88 @@ public class HomeDeviceService : IHomeDeviceService
         _repository.Update(device);
 
         return device;
+    }
+
+    public HomeDevice LampOn(string hardwareId)
+    {
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if(homeDevice.Device.Type != Constants.LAMP)
+        {
+            throw new InvalidOperationException("This device is not a lamp");
+        }
+
+        homeDevice.IsOn = true;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Lamp state switch detected", "Lamp On");
+        _notificationService.AddLampNotifications(notificationArgs);
+
+        _repository.Update(homeDevice);
+        return homeDevice;
+    }
+
+    public HomeDevice LampOff(string hardwareId)
+    {
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if(homeDevice.Device.Type != Constants.LAMP)
+        {
+            throw new InvalidOperationException("This device is not a lamp");
+        }
+
+        homeDevice.IsOn = false;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Lamp state switch detected", "Lamp Off");
+        _notificationService.AddLampNotifications(notificationArgs);
+        _repository.Update(homeDevice);
+        return homeDevice;
+    }
+
+    public HomeDevice OpenWindow(string hardwareId)
+    {
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if(homeDevice.Device.Type != Constants.SENSOR)
+        {
+            throw new InvalidOperationException("This device is not a window sensor");
+        }
+
+        homeDevice.IsOn = true;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Open");
+        _notificationService.AddWindowNotification(notificationArgs);
+
+        _repository.Update(homeDevice);
+        return homeDevice;
+    }
+
+    public HomeDevice CloseWindow(string hardwareId)
+    {
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if(homeDevice.Device.Type != Constants.SENSOR)
+        {
+            throw new InvalidOperationException("This device is not a window sensor");
+        }
+
+        homeDevice.IsOn = false;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Open");
+        _notificationService.AddWindowNotification(notificationArgs);
+
+        _repository.Update(homeDevice);
+        return homeDevice;
     }
 }

@@ -9,5 +9,6 @@ public interface INotificationService
     List<Notification> AddPersonDetectedNotification(CreateNotificationArgs notification);
     List<Notification> AddWindowNotification(CreateGenericNotificationArgs notification);
     List<Notification> AddMovementNotification(CreateGenericNotificationArgs notification);
+    List<Notification> AddLampNotifications(CreateGenericNotificationArgs notification);
     Notification ReadNotificationById(string id, User u);
 }

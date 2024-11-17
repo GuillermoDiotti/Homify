@@ -72,12 +72,41 @@ public class NotificationService : INotificationService
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Event = "Window state switch detected",
+                    Event = notification.Event ?? "Window state switch detected",
                     Device = notification.Device,
                     IsRead = false,
                     Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = notification.Action,
+                    HomeUserId = users.UserId,
+                    HomeUser = users,
+                };
+                returnNotification.Add(noti);
+                _notificationRepository.Add(noti);
+            }
+        }
+
+        return returnNotification;
+    }
+
+    public List<Notification> AddLampNotifications(CreateGenericNotificationArgs notificationArgs)
+    {
+        var homeId = notificationArgs.Device.HomeId;
+        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var returnNotification = new List<Notification>();
+        foreach (var users in homeUsers)
+        {
+            if (users.IsNotificable)
+            {
+                var noti = new Notification()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Event = notificationArgs.Event ?? "Lamp state switch detected",
+                    Device = notificationArgs.Device,
+                    IsRead = false,
+                    Date = HomifyDateTime.GetActualDate(),
+                    HomeDeviceId = notificationArgs.Device.Id,
+                    Detail = notificationArgs.Action,
                     HomeUserId = users.UserId,
                     HomeUser = users,
                 };

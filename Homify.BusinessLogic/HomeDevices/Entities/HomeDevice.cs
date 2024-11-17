@@ -14,6 +14,7 @@ public class HomeDevice
     public bool Connected { get; set; }
     public string HardwareId { get; set; } = null!;
     public bool IsActive { get; set; }
+    public bool IsOn { get; set; }
     public Room? Room { get; set; }
 
     public HomeDevice()

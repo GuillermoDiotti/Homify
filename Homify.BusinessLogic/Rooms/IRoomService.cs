@@ -9,5 +9,5 @@ public interface IRoomService
 
     Room AssignHomeDeviceToRoom(UpdateRoomArgs args);
 
-    List<Room> GetAllRooms(string homeId);
+    List<Room> GetAllRoomsOfHouse(string homeId);
 }

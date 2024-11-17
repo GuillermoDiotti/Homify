@@ -95,7 +95,7 @@ public class RoomService : IRoomService
 
     public bool ExistsDeviceInOtherRoom(HomeDevice homeDevice)
     {
-        foreach (var r in GetAll())
+        foreach (var r in GetAllRoomsOfHouse(homeDevice.Home.Id))
         {
             if (r.Devices.Contains(homeDevice))
             {
@@ -111,8 +111,8 @@ public class RoomService : IRoomService
         return _roomRepository.GetAll();
     }
 
-    public List<Room> GetAllRooms(string homeId)
+    public List<Room> GetAllRoomsOfHouse(string homeId)
     {
-        return _roomRepository.GetAll();
+        return _roomRepository.GetAll().Where(x => x.Home.Id == homeId).ToList();
     }
 }

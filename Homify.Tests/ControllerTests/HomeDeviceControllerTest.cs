@@ -160,4 +160,88 @@ public class HomeDeviceControllerTest
         result.IsActive.Should().BeFalse();
         _homeDeviceMock.Verify(service => service.Deactivate(hardwareId, logged), Times.Once);
     }
+
+    [TestMethod]
+    public void LampOn_WhenLampSwitchOn_ShouldTurnOn()
+    {
+        var hardwareId = "test-hardware-id";
+        var request = new UpdateLampStateRequest { IsOn = true };
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = true
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.LampOn(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.LampOn(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(hardwareId);
+        result.IsOn.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public void LampOff_WhenLampSwitchOff_ShouldTurnOff()
+    {
+        var hardwareId = "test-hardware-id";
+        var request = new UpdateLampStateRequest { IsOn = false };
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = false
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.LampOff(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.LampOff(hardwareId);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(hardwareId);
+        result.IsOn.Should().BeFalse();
+    }
+
+    [TestMethod]
+    public void WindowOpen_WhenWindowOpen_ShouldReturnOpenWindowResponse()
+    {
+        var hardwareId = "test-hardware-id";
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = true
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.OpenWindow(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.WindowOpen(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(hardwareId, result.Id);
+    }
+
+    [TestMethod]
+    public void WindowClose_WhenWindowclose_ShouldReturnCloseWindowResponse()
+    {
+        var hardwareId = "test-hardware-id";
+        var expectedDevice = new HomeDevice
+        {
+            Id = hardwareId,
+            IsOn = false
+        };
+
+        _homeDeviceMock
+            .Setup(service => service.CloseWindow(hardwareId))
+            .Returns(expectedDevice);
+
+        var result = _controller.WindowClose(hardwareId);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(hardwareId, result.Id);
+    }
 }

@@ -55,4 +55,32 @@ public class HomeDeviceController : HomifyControllerBase
         var result = _homeDeviceService.Deactivate(hardwareId, user);
         return new TurnOnDeviceResponse(result);
     }
+
+    [HttpPut("{hardwareId}/lampOn")]
+    public TurnOnOffLampResponse LampOn([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.LampOn(hardwareId);
+        return new TurnOnOffLampResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/lampOff")]
+    public TurnOnOffLampResponse LampOff([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.LampOff(hardwareId);
+        return new TurnOnOffLampResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/windowOpen")]
+    public OpenWindowResponse WindowOpen([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.OpenWindow(hardwareId);
+        return new OpenWindowResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/windowClose")]
+    public OpenWindowResponse WindowClose([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.CloseWindow(hardwareId);
+        return new OpenWindowResponse(result);
+    }
 }

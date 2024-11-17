@@ -1,4 +1,4 @@
-using InterfaceImporter;
+using Homify.Importer.Abstractions;
 using InterfaceImporter.Models;
 using Newtonsoft.Json;
 
