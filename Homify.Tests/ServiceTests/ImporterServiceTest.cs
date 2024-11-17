@@ -92,8 +92,7 @@ public class ImporterServiceTest
             d.Description == "importado" &&
             d.PpalPicture == "photo1.jpg" &&
             d.Photos.Contains("photo1.jpg") &&
-            d.Photos.Contains("photo2.jpg")
-        ), companyOwner), Times.Once);
+            d.Photos.Contains("photo2.jpg")), companyOwner), Times.Once);
     }
 
     [TestMethod]

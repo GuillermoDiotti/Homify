@@ -142,7 +142,7 @@ public class HomeDeviceControllerTest
             Home = new Home
             {
                 OwnerId = logged.Id,
-                Members = new List<HomeUser> { new HomeUser { UserId = logged.Id } }
+                Members = [new HomeUser { UserId = logged.Id }]
             }
         };
 

@@ -10,7 +10,7 @@ public static class Helpers
         return $"{name} {lastName}";
     }
 
-    public static void ValidateRequest(Object? obj)
+    public static void ValidateRequest(object? obj)
     {
         if (obj == null)
         {
@@ -18,7 +18,7 @@ public static class Helpers
         }
     }
 
-    public static void ValidateNotFound(string? actor, Object? obj)
+    public static void ValidateNotFound(string? actor, object? obj)
     {
         if (obj == null)
         {
@@ -34,7 +34,7 @@ public static class Helpers
         }
     }
 
-    public static void ValidateArgsNull(string? actor, Object? obj)
+    public static void ValidateArgsNull(string? actor, object? obj)
     {
         if (obj == null)
         {

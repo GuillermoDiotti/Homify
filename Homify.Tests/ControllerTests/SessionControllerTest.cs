@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
-using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Session;

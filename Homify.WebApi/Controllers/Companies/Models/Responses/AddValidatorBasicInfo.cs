@@ -8,6 +8,4 @@ public sealed record class AddValidatorBasicInfo
     {
         Model = str;
     }
-
-    public AddValidatorBasicInfo() { }
 }
