@@ -198,7 +198,23 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice OpenWindow(string hardwareId)
     {
-        throw new NotImplementedException();
+        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        if (homeDevice == null)
+        {
+            throw new NotFoundException("Device not found");
+        }
+
+        if(homeDevice.Device.Type != Constants.SENSOR)
+        {
+            throw new InvalidOperationException("This device is not a window sensor");
+        }
+
+        homeDevice.IsOn = true;
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Open");
+        _notificationService.AddWindowNotification(notificationArgs);
+
+        _repository.Update(homeDevice);
+        return homeDevice;
     }
 
     public HomeDevice CloseWindow(string hardwareId)
