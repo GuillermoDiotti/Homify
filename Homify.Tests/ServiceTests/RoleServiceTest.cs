@@ -50,7 +50,7 @@ public class RoleServiceTest
     {
         var user = new User
         {
-            Roles = new List<UserRole> { new UserRole { Role = RolesGenerator.HomeOwner() } }
+            Roles = [new UserRole { Role = RolesGenerator.HomeOwner() }]
         };
 
         _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
