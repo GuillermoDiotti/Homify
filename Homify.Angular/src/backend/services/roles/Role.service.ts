@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { RoleApiRepositoryService } from "../../repositories/RoleRepository.service";
+import { RoleBasicInfo } from "./models/roles/RolesBasicInfo";
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ import { RoleApiRepositoryService } from "../../repositories/RoleRepository.serv
   
     constructor(private readonly _repository: RoleApiRepositoryService) { }
   
-    public addRoleToExistingUser(): Observable<any> {
+    public addRoleToExistingUser(): Observable<RoleBasicInfo> {
       return this._repository.addRoleToExistingUser();
     }
 }

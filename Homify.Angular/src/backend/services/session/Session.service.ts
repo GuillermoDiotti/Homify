@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { SessionTypeApiRepositoryService } from '../../repositories/SessionRepository.service';
 import CreateSessionResponse from './models/CreateSessionResponse';
 import { CreateHomeOwnerResponse } from './models/CreateHomeOwnerResponse';
+import { UpdateProfileRequest } from './models/UpdateProfileRequest';
 
 export interface User {
   id: string;
