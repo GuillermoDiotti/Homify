@@ -10,6 +10,7 @@ public class SearchDevicesResponse
     public string Photo { get; set; }
     public string CompanyName { get; set; }
     public List<string> Photos { get; set; }
+    public string Type { get; set; }
 
     public SearchDevicesResponse(Device d)
     {
@@ -19,5 +20,6 @@ public class SearchDevicesResponse
         Photo = d.PpalPicture ?? string.Empty;
         CompanyName = d.Company.Name;
         Photos = d.Photos ?? [];
+        Type = d.Type ?? string.Empty;
     }
 }
