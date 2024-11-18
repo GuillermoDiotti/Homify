@@ -1,11 +1,16 @@
-﻿using FluentAssertions;
+﻿using System.ComponentModel.DataAnnotations;
+using FluentAssertions;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.WebApi;
 using Homify.WebApi.Controllers.HomeOwners;
 using Homify.WebApi.Controllers.HomeOwners.Models.Requests;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -89,5 +94,30 @@ public class HomeOwnerControllerTest
     public void CreateHomeOwner_WhenLastNameIsNull_ThrowsArgumentNullException()
     {
         new CreateHomeOwnerArgs("test", "example@domain.com", ".Qwhnd123", null, "pic", RolesGenerator.HomeOwner());
+    }
+
+    [TestMethod]
+    public void UpdateProfileResponse_ValidRequest_UpdatesProfilePicture()
+    {
+        var validRequest = new UpdateProfileRequest { ProfilePicture = "newProfilePic.jpg" };
+        var user = new User { Id = "1", ProfilePicture = "oldProfilePic.jpg" };
+        var updatedUser = new User { Id = "1", ProfilePicture = "newProfilePic.jpg" };
+
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = null;
+        var mockController = new HomeOwnerController(_userService.Object, _roleService.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        _userService.Setup(s => s.UpdateProfilePicture(It.IsAny<string>(), It.IsAny<User>())).Returns(updatedUser);
+
+        var response = mockController.UpdateProfileResponse(validRequest);
+
+        Assert.IsNotNull(response);
+        Assert.AreEqual(updatedUser.ProfilePicture, response.ProfilePicture);
     }
 }

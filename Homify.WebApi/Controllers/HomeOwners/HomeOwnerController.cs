@@ -1,4 +1,5 @@
 ﻿using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.Utility;
@@ -40,5 +41,16 @@ public class HomeOwnerController : HomifyControllerBase
         var user = _userService.AddHomeOwner(args);
 
         return new CreateHomeOwnerResponse(user);
+    }
+
+    [HttpPut("profile")]
+    [AuthenticationFilter]
+    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    public UpdateProfileResponse UpdateProfileResponse(UpdateProfileRequest req)
+    {
+        Helpers.ValidateRequest(req);
+        var user = GetUserLogged();
+        var result = _userService.UpdateProfilePicture(req.ProfilePicture ?? string.Empty, user);
+        return new UpdateProfileResponse(result);
     }
 }

@@ -14,4 +14,5 @@ public interface IUserService
     List<User> GetAll(string? role = null, string? name = null);
     void Delete(string userId);
     void LoadIntermediateTable(string userId, string roleId);
+    User UpdateProfilePicture(string pfp, User u);
 }
