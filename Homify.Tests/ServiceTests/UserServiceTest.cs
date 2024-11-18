@@ -291,4 +291,19 @@ public class UserServiceTest
     {
         _service.UpdateProfilePicture("newProfilePic.jpg", null);
     }
+
+    [TestMethod]
+    public void UpdateProfilePicture_ValidUser_UpdatesProfilePicture()
+    {
+        var user = new User { Id = "1", ProfilePicture = "oldProfilePic.jpg" };
+        var newProfilePicture = "newProfilePic.jpg";
+
+        _userRepositoryMock.Setup(r => r.Update(It.IsAny<User>())).Verifiable();
+
+        var updatedUser = _service.UpdateProfilePicture(newProfilePicture, user);
+
+        _userRepositoryMock.Verify(r => r.Update(It.Is<User>(u => u.ProfilePicture == newProfilePicture)), Times.Once);
+        Assert.IsNotNull(updatedUser);
+        Assert.AreEqual(newProfilePicture, updatedUser.ProfilePicture);
+    }
 }
