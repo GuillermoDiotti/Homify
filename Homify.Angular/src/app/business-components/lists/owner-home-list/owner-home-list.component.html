@@ -13,6 +13,9 @@
     </li>
     }
   </ul>
+	@if (selectedHomeId) {
+		<app-rename-home-button [homeId]="selectedHomeId"></app-rename-home-button>
+	}
   } @else {
   <p>There aren't homes available.</p>
   }

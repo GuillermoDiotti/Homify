@@ -7,11 +7,11 @@ import { UpdateHomeDevicesRequest } from '../../../../backend/services/homes/mod
 import { RegisteredDevicesListComponent } from '../registered-devices-list/registered-devices-list.component';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 import { TurnOnDeviceButtonComponent } from '../../buttons/turn-on-device-button/turn-on-device-button.component';
-import { RenameDeviceButtonComponent } from '../../buttons/rename-device-button/rename-device-button.component';
+import { RenameDeviceButtonComponent } from '../../../components/rename-device-button/rename-device-button.component';
 import { TurnOffDeviceButtonComponent } from '../../buttons/turn-off-device-button/turn-off-device-button.component';
 import { InputComponent } from '../../../components/input/input.component';
 import { ButtonComponent } from '../../../components/button/button.component';
-import { AssingDeviceToRoomButtonComponent } from '../../buttons/assing-device-to-room-button/assing-device-to-room-button.component';
+import { AssingDeviceToRoomButtonComponent } from '../../../components/assing-device-to-room-button/assing-device-to-room-button.component';
 
 @Component({
   selector: 'app-homedevices-list',

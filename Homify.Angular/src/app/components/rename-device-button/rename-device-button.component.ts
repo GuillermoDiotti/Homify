@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { GetDevicesResponse } from '../../../../backend/services/device/models/GetDevicesResponse';
+import { GetDevicesResponse } from '../../../backend/services/device/models/GetDevicesResponse';
 import { MatDialog } from '@angular/material/dialog';
-import { RenameDeviceFormComponent } from '../../forms/rename-device-form/rename-device-form.component';
-import { ButtonComponent } from '../../../components/button/button.component';
+import { RenameDeviceFormComponent } from '../../business-components/forms/rename-device-form/rename-device-form.component';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-rename-device-button',

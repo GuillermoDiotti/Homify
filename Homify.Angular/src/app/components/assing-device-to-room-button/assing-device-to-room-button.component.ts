@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { GetDevicesResponse } from '../../../../backend/services/device/models/GetDevicesResponse';
 import { MatDialog } from '@angular/material/dialog';
-import { AssingDeviceToRoomFormComponent } from '../../forms/assing-device-to-room-form/assing-device-to-room-form.component';
-import { ButtonComponent } from '../../../components/button/button.component';
+import { ButtonComponent } from '../button/button.component';
+import { GetDevicesResponse } from '../../../backend/services/device/models/GetDevicesResponse';
+import { AssingDeviceToRoomFormComponent } from '../../business-components/forms/assing-device-to-room-form/assing-device-to-room-form.component';
 
 @Component({
   selector: 'app-assing-device-to-room-button',

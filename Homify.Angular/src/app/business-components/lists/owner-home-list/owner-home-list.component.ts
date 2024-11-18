@@ -2,11 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { GetAllHomesResponse } from '../../../../backend/services/homes/models/GetAllHomesResponse';
 import { HomeService } from '../../../../backend/services/homes/home.service';
 import { ButtonComponent } from '../../../components/button/button.component';
+import { RenameHomeButtonComponent } from '../../../components/rename-home-button/rename-home-button.component';
 
 @Component({
   selector: 'app-owner-home-list',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, RenameHomeButtonComponent],
   templateUrl: './owner-home-list.component.html',
   styleUrl: './owner-home-list.component.css'
 })

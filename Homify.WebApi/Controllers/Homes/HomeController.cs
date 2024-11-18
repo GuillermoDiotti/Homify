@@ -140,14 +140,14 @@ public sealed class HomeController : HomifyControllerBase
     [HttpPut("{homeId}/rename")]
     [AuthenticationFilter]
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
+    public UpdateHomeResponse UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
         Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var result = _homeService.UpdateHome(homeId, req.Alias, user);
 
-        return result;
+        return new UpdateHomeResponse(result);
     }
 
     [HttpGet("by-owner")]

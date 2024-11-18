@@ -47,11 +47,6 @@ import { RenameHomeRequest } from "../services/homes/models/RenameHomeRequest";
           return this.putById<UpdateMemberListResponse>(id, request, "members").pipe(catchError(this.handleError));
       }
 
-			public renameHome(id:string, request: RenameHomeRequest)
-        :Observable<any>{
-          return this.putById<any>(id, request, "rename").pipe(catchError(this.handleError));
-      }
-
       public UpdateMembersPermissions(homeId:string, memberId:string, request:UpdateMembersPermissionRequest)
       :Observable<HomeMemberBasicInfo>{
         return this.putById<HomeMemberBasicInfo>(homeId, request, memberId).pipe(catchError(this.handleError));
@@ -75,5 +70,9 @@ import { RenameHomeRequest } from "../services/homes/models/RenameHomeRequest";
 
 			public makeUserNotificable(homeId: string, req: NotificatedMembersRequest): Observable<NotificatedMembersResponse> {
 				return this.putById<NotificatedMembersResponse>(`${homeId}/notifications`, req).pipe(catchError(this.handleError));
+			}
+
+			public renameHome(homeId: string, req: RenameHomeRequest): Observable<{ id: string, alias:string }> {
+				return this.putById<{ id: string, alias: string }>(`${homeId}/rename`, req).pipe(catchError(this.handleError));
 			}
     }

@@ -6,12 +6,13 @@ import { ButtonComponent } from '../../../components/button/button.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormInputComponent } from '../../../components/form/form-input/form-input.component';
 import { HomeownerButtonComponent } from '../../buttons/homeowner-button/homeowner-button.component';
+import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
   imports: [FormComponent, FormInputComponent, ButtonComponent, 
-		HomeownerButtonComponent],
+		HomeownerButtonComponent, ErrorMessageComponent],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
