@@ -1,4 +1,4 @@
-using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.HomeOwners.Entities;
 
 namespace Homify.DataAccess.Repositories.Rooms.Entities;
 

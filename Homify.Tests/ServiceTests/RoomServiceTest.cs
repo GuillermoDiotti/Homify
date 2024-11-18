@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using Homify.BusinessLogic;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
-using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Rooms;

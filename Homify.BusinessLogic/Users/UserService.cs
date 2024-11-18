@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -136,6 +135,18 @@ public class UserService : IUserService
         {
             _repository.Remove(admin);
         }
+    }
+
+    public User UpdateProfilePicture(string pfp, User u)
+    {
+        if (u == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        u.ProfilePicture = pfp;
+        _repository.Update(u);
+        return u;
     }
 
     private void ValidateEmailIsNotRepeated(string email)

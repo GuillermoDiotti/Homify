@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using Homify.BusinessLogic;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
@@ -284,5 +283,12 @@ public class UserServiceTest
         _userRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<User, bool>>>())).Returns(admin);
 
         _service.Delete(adminId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateProfilePicture_UserIsNull_ThrowsNotFoundException()
+    {
+        _service.UpdateProfilePicture("newProfilePic.jpg", null);
     }
 }

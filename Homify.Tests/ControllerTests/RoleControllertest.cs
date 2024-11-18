@@ -1,11 +1,9 @@
-using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
-using Homify.WebApi.Controllers.Notifications;
 using Homify.WebApi.Controllers.Roles;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

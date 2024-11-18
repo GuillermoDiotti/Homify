@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.HomeOwners;
+﻿using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.Homes.Entities;
