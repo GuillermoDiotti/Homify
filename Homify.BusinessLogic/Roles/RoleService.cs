@@ -39,6 +39,11 @@ public class RoleService : IRoleService
             throw new InvalidOperationException("User must be an admin or company owner to add a role.");
         }
 
+        if (roles.Contains(GetRole(Constants.HOMEOWNER)))
+        {
+            throw new InvalidOperationException("User has already the HomeOwner Role");
+        }
+
         _userService.LoadIntermediateTable(u.Id, Constants.HOMEOWNERID);
     }
 }

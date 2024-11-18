@@ -13,6 +13,6 @@ import { catchError, Observable } from "rxjs";
       }
     
       public addRoleToExistingUser(): Observable<any> {
-        return this.post<any>("").pipe(catchError(this.handleError));
+        return this.putById<any>("").pipe(catchError(this.handleError));
       }
 }
