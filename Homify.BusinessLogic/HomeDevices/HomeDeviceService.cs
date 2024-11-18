@@ -228,7 +228,7 @@ public class HomeDeviceService : IHomeDeviceService
         }
 
         homeDevice.IsOn = false;
-        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Open");
+        CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Closed");
         _notificationService.AddWindowNotification(notificationArgs);
 
         _repository.Update(homeDevice);
