@@ -306,4 +306,19 @@ public class UserServiceTest
         Assert.IsNotNull(updatedUser);
         Assert.AreEqual(newProfilePicture, updatedUser.ProfilePicture);
     }
+
+    [TestMethod]
+    public void UpdateProfilePicture_ValidUser_ReturnsUpdatedUser()
+    {
+        var user = new User { Id = "1", ProfilePicture = "oldProfilePic.jpg" };
+        var newProfilePicture = "newProfilePic.jpg";
+
+        _userRepositoryMock.Setup(r => r.Update(It.IsAny<User>())).Verifiable();
+
+        var updatedUser = _service.UpdateProfilePicture(newProfilePicture, user);
+
+        Assert.AreEqual(user, updatedUser);
+        Assert.AreEqual(newProfilePicture, updatedUser.ProfilePicture);
+        _userRepositoryMock.Verify(r => r.Update(user), Times.Once);
+    }
 }
