@@ -1,4 +1,6 @@
 using Homify.BusinessLogic.Roles;
+using Homify.Exceptions;
+using Homify.WebApi.Controllers.Roles.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,17 +19,17 @@ public class RoleController : HomifyControllerBase
 
     [HttpPut]
     [AuthenticationFilter]
-    public IActionResult AssignRoleToExistingUser()
+    public RoleBasicInfo AssignRoleToExistingUser()
     {
         var user = GetUserLogged();
 
         if (user == null)
         {
-            return Unauthorized();
+            throw new NotFoundException("User not found");
         }
 
         _roleService.AddRoleToUser(user);
 
-        return Ok($"Role added to {user} successfully");
+        return new RoleBasicInfo(user);
     }
 }
