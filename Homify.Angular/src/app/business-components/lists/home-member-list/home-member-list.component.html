@@ -4,9 +4,12 @@
 		Refresh
 	</button>
   @if (members.length > 0) {
-  <ul>
+  <ul style="list-style: none;">
     @for (member of members; track $index) {
-    <li>
+    <li class="homeowner-card">
+			<picture style="width: 100px; height: 100px;">
+				<img src="member.photo" alt="member.name" style="width: 100%; height: 100%; border-radius: 100%;">
+			</picture> <br />
       <strong>Member Name:</strong> {{ member.fullname }} <br />
       <strong>Member Email:</strong> {{ member.email }} <br />
       <div style="display: flex; flex-direction: column;">
@@ -18,7 +21,9 @@
 				</div>
 			</div>
 			<br />
-      <app-button (clicked)="onClick(member.id)">Select</app-button>
+      @if (selectedMemberId){
+				<app-button (clicked)="onClick(member.id)">Select</app-button>
+			}
     </li>
     }
   </ul>
