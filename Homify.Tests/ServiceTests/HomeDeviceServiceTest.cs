@@ -259,7 +259,8 @@ public class HomeDeviceServiceTest
     public void LampOn_WhenIsOk_ShouldTurnOnLampAndReturnHomeDevice()
     {
         var hardwareId = "test-hardware-id";
-        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+        var device = new Device { Type = Constants.LAMP };
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false, Device = device };
 
         _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(homeDevice);
@@ -271,10 +272,63 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void LampOn_WhenDeviceIsNotLamp_ShouldThrowException()
+    {
+        var hardwareId = "test-hardware-id";
+        var device = new Device { Type = Constants.SENSOR };
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false, Device = device };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOn(hardwareId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void LampOff_WhenDeviceIsNotLamp_ShouldThrowException()
+    {
+        var hardwareId = "test-hardware-id";
+        var device = new Device { Type = Constants.SENSOR };
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false, Device = device };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOff(hardwareId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void LampOff_WhenDeviceIsNull_ShouldThrowException()
+    {
+        var hardwareId = "test-hardware-id";
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns((HomeDevice)null);
+
+        var result = _homeDeviceService.LampOff(hardwareId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void LampOn_WhenDeviceIsNull_ShouldThrowException()
+    {
+        var hardwareId = "test-hardware-id";
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns((HomeDevice)null);
+
+        var result = _homeDeviceService.LampOn(hardwareId);
+    }
+
+    [TestMethod]
     public void LampOff_WhenIsOk_ShouldTurnOffLampAndReturnHomeDevice()
     {
         var hardwareId = "test-hardware-id";
-        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+        var device = new Device { Type = Constants.LAMP };
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false, Device = device };
 
         _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(homeDevice);

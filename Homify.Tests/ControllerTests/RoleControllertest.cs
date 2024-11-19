@@ -41,7 +41,6 @@ public class RoleControllertest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
     public void AssignRoleToExistingUser_UserWithoutRequiredRole_ThrowsInvalidOperationException()
     {
         var user = new User
