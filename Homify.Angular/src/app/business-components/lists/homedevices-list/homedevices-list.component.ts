@@ -12,14 +12,21 @@ import { TurnOffDeviceButtonComponent } from '../../buttons/turn-off-device-butt
 import { InputComponent } from '../../../components/input/input.component';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { AssingDeviceToRoomButtonComponent } from '../../../components/assing-device-to-room-button/assing-device-to-room-button.component';
+import { TurnOnLampButtonComponent } from '../../buttons/turn-on-lamp-button/turn-on-lamp-button.component';
+import { TurnOffLampButtonComponent } from '../../buttons/turn-off-lamp-button/turn-off-lamp-button.component';
+import { CommonModule } from '@angular/common';
+import { TurnOnSensorButtonComponent } from '../../buttons/turn-on-sensor-button/turn-on-sensor-button.component';
+import { TurnOffSensorButtonComponent } from '../../buttons/turn-off-sensor-button/turn-off-sensor-button.component';
 
 @Component({
   selector: 'app-homedevices-list',
   standalone: true,
-  imports: [ErrorMessageComponent, SuccessMessageComponent, 
+  imports: [CommonModule, ErrorMessageComponent, SuccessMessageComponent, 
 		RegisteredDevicesListComponent, TurnOnDeviceButtonComponent, 
 		RenameDeviceButtonComponent, TurnOffDeviceButtonComponent,
-		InputComponent, ButtonComponent, AssingDeviceToRoomButtonComponent
+		InputComponent, ButtonComponent, AssingDeviceToRoomButtonComponent,
+		TurnOnLampButtonComponent, TurnOffLampButtonComponent,
+		TurnOnSensorButtonComponent, TurnOffSensorButtonComponent
 	],
   templateUrl: './homedevices-list.component.html',
   styleUrl: './homedevices-list.component.css'

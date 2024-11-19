@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.Importer.Abstractions;
 using InterfaceImporter.Models;
 using ModeloValidador.Abstracciones;
@@ -90,12 +91,12 @@ public class ImporterService : IImporterService
 
         if (owner == null)
         {
-            throw new InvalidOperationException("User is not a company owner");
+            throw new System.InvalidOperationException("User is not a company owner");
         }
 
         if (owner.Company == null)
         {
-            throw new InvalidOperationException("Owner must have a company to import devices");
+            throw new System.InvalidOperationException("Owner must have a company to import devices");
         }
 
         IImporter? importerFile = GetAllImporters()
@@ -103,7 +104,7 @@ public class ImporterService : IImporterService
 
         if (importerFile == null)
         {
-            throw new Exception("File not found");
+            throw new NotFoundException("File not found");
         }
 
         List<ReturnImportDevices> devices = importerFile!.ImportDevices(args.Path);

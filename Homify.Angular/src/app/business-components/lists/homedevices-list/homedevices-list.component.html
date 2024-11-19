@@ -1,11 +1,11 @@
 <article>
   <h2>Listing of Home Devices</h2>
-	<app-input
-	[label]="'Filter by room'"
-	[value]="filterByRoom"
-	(change)="handleFilterChange($event)"
-	>
-	</app-input>
+  <app-input
+    [label]="'Filter by room'"
+    [value]="filterByRoom"
+    (change)="handleFilterChange($event)"
+  >
+  </app-input>
 
   <button (click)="handleRefresh()">Refresh</button>
   <app-success-message [message]="successMessage"></app-success-message>
@@ -20,23 +20,60 @@
       <div class="info-container">
         <div style="display: flex; align-items: center">
           <div class="col"><strong>Name:</strong> {{ device.name }}</div>
-					<div class="col"><strong>Custom Name:</strong> {{ device.customName }}</div>
+          <div class="col">
+            <strong>Custom Name:</strong> {{ device.customName }}
+          </div>
           <div class="col"><strong>Model:</strong> {{ device.model }}</div>
-					<div class="col"><strong>Room:</strong> {{ device.room }}</div>
+          <div class="col"><strong>Room:</strong> {{ device.room }}</div>
         </div>
-				<div>
-					<div class="col">
-						@if (device?.isActive) {
-							<span class="text-success">ACTIVE</span>
-							<app-turn-off-device-button [device]="device"></app-turn-off-device-button>
-						} @else {
-							<span class="text-danger">NOT ACTIVE</span>
-							<app-turn-on-device-button [device]="device"></app-turn-on-device-button>
-						}
-					</div>						
-				</div>
-				<app-rename-device-button [device]="device"></app-rename-device-button>
-				<app-assing-device-to-room-button [homeId]="homeId" [device]="device"></app-assing-device-to-room-button>
+        <div>
+          <div class="col">
+            @if (device?.isActive) {
+            <span class="text-success">ACTIVE</span>
+            <app-turn-off-device-button
+              [device]="device"
+            ></app-turn-off-device-button>
+            } @else {
+            <span class="text-danger">NOT ACTIVE</span>
+            <app-turn-on-device-button
+              [device]="device"
+            ></app-turn-on-device-button>
+            }
+          </div>
+
+          <div class="col" *ngIf="device?.deviceType === 'LAMP'">
+            @if (device?.isOn) {
+            <span class="text-success">ON</span>
+            <app-turn-off-lamp-button
+              [device]="device"
+            ></app-turn-off-lamp-button>
+            } @else {
+            <span class="text-danger">OFF</span>
+            <app-turn-on-lamp-button
+              [device]="device"
+            ></app-turn-on-lamp-button>
+            }
+          </div>
+
+					<div class="col" *ngIf="device?.deviceType === 'SENSOR'">
+            @if (device?.isOn) {
+            <span class="text-success">OPEN</span>
+            <app-turn-off-sensor-button
+              [device]="device"
+            ></app-turn-off-sensor-button>
+            } @else {
+            <span class="text-danger">CLOSED</span>
+            <app-turn-on-sensor-button
+              [device]="device"
+            ></app-turn-on-sensor-button>
+            }
+          </div>
+        </div>
+        <app-rename-device-button [device]="device"></app-rename-device-button>
+        <app-assing-device-to-room-button
+          [homeId]="homeId"
+          [device]="device"
+        ></app-assing-device-to-room-button>
       </div>
     </li>
     }

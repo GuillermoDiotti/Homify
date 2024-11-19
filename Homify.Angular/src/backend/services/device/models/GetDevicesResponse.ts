@@ -10,4 +10,5 @@ export interface GetDevicesResponse {
 	hardwareId: string;
 	room: string;
 	deviceType: string;
+	isOn: boolean;
 }
