@@ -43,4 +43,42 @@ public class JSONImportTest
 
         _jsonImport.ImportDevices(filePath);
     }
+
+    [TestMethod]
+    public void ImportDevices_ValidJson_ReturnsCorrectDevices()
+    {
+        var filePath = "validDevices.json";
+        var jsonContent = @"
+        {
+            'dispositivos': [
+                {
+                    'nombre': 'Device1',
+                    'tipo': 'Type1',
+                    'modelo': 'Model1',
+                    'id': '1',
+                    'movement_detection': false,
+                    'fotos': [
+                        {
+                            'Path': 'path1',
+                            'IsPrincipal': true
+                        }
+                    ]
+                }
+            ]
+        }";
+        File.WriteAllText(filePath, jsonContent);
+
+        var result = _jsonImport.ImportDevices(filePath);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("Device1", result[0].Name);
+        Assert.AreEqual("Type1", result[0].Type);
+        Assert.AreEqual("Model1", result[0].Model);
+        Assert.AreEqual("1", result[0].Id);
+        Assert.IsFalse(result[0].MovementDetection);
+        Assert.AreEqual(1, result[0].Photos.Count);
+        Assert.AreEqual("path1", result[0].Photos[0].Path);
+
+        File.Delete(filePath);
+    }
 }
