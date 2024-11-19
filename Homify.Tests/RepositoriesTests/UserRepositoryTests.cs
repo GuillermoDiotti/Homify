@@ -55,4 +55,30 @@ public class UserRepositoryTests
         Assert.AreEqual("John", result.Name);
         Assert.AreEqual("Admin", result.Roles.First().Role.Name);
     }
+
+    [TestMethod]
+    public void GetAll_WithPredicate_ReturnsFilteredUsers()
+    {
+        var testData = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe" },
+            new User { Id = "2", Name = "Jane", LastName = "Smith" }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
+
+        var userRepository = new UserRepository(mockContext.Object);
+
+        var result = userRepository.GetAll(u => u.Name == "John");
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("John", result[0].Name);
+    }
 }
