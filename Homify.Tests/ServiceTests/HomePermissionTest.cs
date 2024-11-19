@@ -2,6 +2,7 @@
 using Homify.BusinessLogic;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -67,13 +68,19 @@ public class HomePermissionTest
     }
 
     [TestMethod]
-    public void GetPermissionByValue()
+    public void ChangeHomeMemberPermissions_AddDeviceTrue_AddsCorrectPermission()
     {
-        _repositoryMock.Setup(p => p.Get(It.IsAny<Expression<Func<HomePermission, bool>>>()))
-            .Returns(new HomePermission { Value = "testValue" });
+        var user = new User { Id = "1" };
+        var homeUser = new HomeUser { Home = new Home { OwnerId = "1" } };
+        var permission = new HomePermission { Value = PermissionsGenerator.MemberCanAddDevice };
+        _repositoryMock.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomePermission, bool>>>()))
+            .Returns(permission);
 
-        var result = _service.GetByValue("testValue");
+        // Act
+        var result = _service.ChangeHomeMemberPermissions(true, false, false, user, homeUser);
 
-        Assert.IsNotNull(result);
+        // Assert
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(PermissionsGenerator.MemberCanAddDevice, result[0].Value);
     }
 }
