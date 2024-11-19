@@ -160,4 +160,18 @@ public class ImporterServiceTest
 
         _deviceServiceMock.Verify(ds => ds.AddMovementSensor(device, user), Times.Once);
     }
+
+    [TestMethod]
+    public void AddImportedDeviceByType_WhenDeviceTypeIsSensorOpenClose_CallsAddWindowSensor()
+    {
+        // Arrange
+        var device = new CreateDeviceArgs { Type = "sensor-open-close" };
+        var user = new CompanyOwner();
+
+        // Act
+        _importerService.AddImportedDeviceByType(device, user);
+
+        // Assert
+        _deviceServiceMock.Verify(ds => ds.AddWindowSensor(device, user), Times.Once);
+    }
 }
