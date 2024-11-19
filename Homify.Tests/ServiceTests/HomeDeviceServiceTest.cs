@@ -272,6 +272,20 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void LampOn_WhenDeviceIsNotLamp_ShouldThrowException()
+    {
+        var hardwareId = "test-hardware-id";
+        var device = new Device { Type = Constants.SENSOR };
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false, Device = device };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.LampOn(hardwareId);
+    }
+
+    [TestMethod]
     public void LampOff_WhenIsOk_ShouldTurnOffLampAndReturnHomeDevice()
     {
         var hardwareId = "test-hardware-id";
