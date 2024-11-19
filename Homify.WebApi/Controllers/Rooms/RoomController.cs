@@ -30,7 +30,7 @@ public class RoomController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var owner = GetUserLogged() as HomeOwner;
+        var owner = GetUserLogged();
 
         var arguments = new CreateRoomArgs(
             request.Name ?? string.Empty,
@@ -57,7 +57,7 @@ public class RoomController : HomifyControllerBase
     [AuthorizationFilter(PermissionsGenerator.CreateHome)]
     public Room AssignHomeDeviceToRoom([FromRoute] string roomId, [FromRoute] string homeDeviceId)
     {
-        var owner = GetUserLogged() as HomeOwner;
+        var owner = GetUserLogged();
 
         var args = new UpdateRoomArgs(
             roomId ?? string.Empty,

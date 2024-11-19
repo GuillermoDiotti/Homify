@@ -1,14 +1,14 @@
-using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.Users.Entities;
 
-namespace Homify.DataAccess.Repositories.Rooms.Entities;
+namespace Homify.BusinessLogic.Rooms.Entities;
 
 public class CreateRoomArgs
 {
     public readonly string Name;
     public readonly string HomeId;
-    public readonly HomeOwner Owner;
+    public readonly User Owner;
 
-    public CreateRoomArgs(string name, string homeId, HomeOwner? owner)
+    public CreateRoomArgs(string name, string homeId, User? owner)
     {
         if (string.IsNullOrEmpty(name))
         {

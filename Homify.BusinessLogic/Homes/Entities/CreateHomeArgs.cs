@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.HomeOwners.Entities;
+﻿using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 
@@ -12,9 +12,9 @@ public class CreateHomeArgs
     public readonly string Longitude;
     public readonly int MaxMembers;
     public readonly string Alias;
-    public readonly HomeOwner Owner;
+    public readonly User Owner;
 
-    public CreateHomeArgs(string street, string number, string latitude, string longitude, int maxMembers, HomeOwner? owner, string alias)
+    public CreateHomeArgs(string street, string number, string latitude, string longitude, int maxMembers, User? owner, string alias)
     {
         if (string.IsNullOrWhiteSpace(street))
         {
