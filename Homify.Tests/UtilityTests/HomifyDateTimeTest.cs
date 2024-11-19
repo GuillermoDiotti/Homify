@@ -14,4 +14,14 @@ public class HomifyDateTimeTest
 
         Assert.AreEqual("25/12/2023", result);
     }
+
+    [TestMethod]
+    public void Parse_InvalidDate_ThrowsArgumentException()
+    {
+        var invalidDate = "2023-12-25";
+
+        var result = HomifyDateTime.Parse(invalidDate);
+
+        Assert.AreEqual("Invalid date format", result);
+    }
 }
