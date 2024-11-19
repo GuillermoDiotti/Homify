@@ -59,13 +59,25 @@ public class CompanyServiceTest
     [TestMethod]
     public void ValidateModel_ShouldThrowInvalidDataException_WhenValidatorNotFound()
     {
-        // Arrange
         var model = "ValidModel";
         var mockFilePaths = new string[] { };
 
         _mockDirectory.Setup(d => d.GetFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(mockFilePaths);
 
-        // Act & Assert
+        Assert.ThrowsException<InvalidDataException>(() => _company.ValidateModel(model));
+    }
+
+    [TestMethod]
+    public void ValidateModel_ShouldThrowInvalidDataException_WhenModelIsInvalid()
+    {
+        var model = "InvalidModel";
+        var mockFilePaths = new[] { "validator.dll" };
+        var mockTypes = new[] { typeof(MockValidator) };
+
+        _mockDirectory.Setup(d => d.GetFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(mockFilePaths);
+        _mockAssemblyLoader.Setup(a => a.LoadFile(It.IsAny<string>())).Returns(Assembly.GetExecutingAssembly());
+        _mockValidator.Setup(v => v.EsValido(It.IsAny<Modelo>())).Returns(false);
+
         Assert.ThrowsException<InvalidDataException>(() => _company.ValidateModel(model));
     }
 
