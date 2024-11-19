@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using FluentAssertions;
 using Homify.BusinessLogic;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
@@ -35,7 +36,14 @@ public class DeviceServiceTest
         _companyServiceMock = new Mock<ICompanyService>();
         _movementSensorRepositoryMock = new Mock<IRepository<MovementSensor>>();
         _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object,
-            _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object, _movementSensorRepositoryMock.Object);
+        _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object, _movementSensorRepositoryMock.Object);
+    }
+
+    [TestMethod]
+    public void CreateCameraFromConstructor()
+    {
+        var cam = new Camera(true, true);
+        cam.Should().NotBeNull();
     }
 
     [TestMethod]
