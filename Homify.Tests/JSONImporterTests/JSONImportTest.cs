@@ -34,4 +34,13 @@ public class JSONImportTest
 
         File.Delete(filePath);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(FileNotFoundException))]
+    public void ImportDevices_InvalidFilePath_ThrowsFileNotFoundException()
+    {
+        var filePath = "invalidPath.json";
+
+        _jsonImport.ImportDevices(filePath);
+    }
 }
