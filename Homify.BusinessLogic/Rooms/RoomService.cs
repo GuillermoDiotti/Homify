@@ -3,7 +3,6 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Rooms.Entities;
-using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 

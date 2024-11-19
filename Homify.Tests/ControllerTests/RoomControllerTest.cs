@@ -1,7 +1,6 @@
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Rooms;
 using Homify.BusinessLogic.Rooms.Entities;
-using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Rooms;

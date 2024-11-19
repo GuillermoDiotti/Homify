@@ -1,6 +1,6 @@
 using Homify.BusinessLogic.Users.Entities;
 
-namespace Homify.DataAccess.Repositories.Rooms.Entities;
+namespace Homify.BusinessLogic.Rooms.Entities;
 
 public class UpdateRoomArgs
 {

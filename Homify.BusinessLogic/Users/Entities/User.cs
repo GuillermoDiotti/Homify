@@ -1,7 +1,7 @@
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
-using Homify.BusinessLogic.Utility;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Users.Entities;
 

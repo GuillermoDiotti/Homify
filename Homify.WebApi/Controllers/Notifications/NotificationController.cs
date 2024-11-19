@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
-using Homify.BusinessLogic.Utility;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
 using Homify.WebApi.Controllers.Notifications.Models.Requests;

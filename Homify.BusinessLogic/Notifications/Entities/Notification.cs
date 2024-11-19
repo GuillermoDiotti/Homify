@@ -1,6 +1,6 @@
 ﻿using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.BusinessLogic.Utility;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 

@@ -5,7 +5,6 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi;
