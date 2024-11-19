@@ -275,7 +275,8 @@ public class HomeDeviceServiceTest
     public void LampOff_WhenIsOk_ShouldTurnOffLampAndReturnHomeDevice()
     {
         var hardwareId = "test-hardware-id";
-        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false };
+        var device = new Device { Type = Constants.LAMP };
+        var homeDevice = new HomeDevice { HardwareId = hardwareId, IsOn = false, Device = device };
 
         _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(homeDevice);
