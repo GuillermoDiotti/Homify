@@ -76,11 +76,24 @@ public class HomePermissionTest
         _repositoryMock.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomePermission, bool>>>()))
             .Returns(permission);
 
-        // Act
         var result = _service.ChangeHomeMemberPermissions(true, false, false, user, homeUser);
 
-        // Assert
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual(PermissionsGenerator.MemberCanAddDevice, result[0].Value);
+    }
+
+    [TestMethod]
+    public void ChangeHomeMemberPermissions_ListDeviceTrue_AddsCorrectPermission()
+    {
+        var user = new User { Id = "1" };
+        var homeUser = new HomeUser { Home = new Home { OwnerId = "1" } };
+        var permission = new HomePermission { Value = PermissionsGenerator.MemberCanListDevices };
+        _repositoryMock.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomePermission, bool>>>()))
+            .Returns(permission);
+
+        var result = _service.ChangeHomeMemberPermissions(false, true, false, user, homeUser);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(PermissionsGenerator.MemberCanListDevices, result[0].Value);
     }
 }
