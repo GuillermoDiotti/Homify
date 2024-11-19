@@ -179,5 +179,12 @@ public class ImporterServiceTest
     {
         var args = new ImporterArgs(null, "path", new User());
     }
+
+    [ExpectedException(typeof(ArgsNullException))]
+    [TestMethod]
+    public void ImporterArgs_WhenPathNull_ThrowsException()
+    {
+        var args = new ImporterArgs("importer", null, new User());
+    }
 }
 
