@@ -300,6 +300,18 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void LampOff_WhenDeviceIsNull_ShouldThrowException()
+    {
+        var hardwareId = "test-hardware-id";
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns((HomeDevice)null);
+
+        var result = _homeDeviceService.LampOff(hardwareId);
+    }
+
+    [TestMethod]
     public void LampOff_WhenIsOk_ShouldTurnOffLampAndReturnHomeDevice()
     {
         var hardwareId = "test-hardware-id";
