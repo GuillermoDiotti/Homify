@@ -48,7 +48,6 @@ public class ImporterServiceTest
             Directory.CreateDirectory(importersPath);
         }
 
-        // Crea un archivo DLL simulado
         var fakeDllPath = Path.Combine(importersPath, "FakeImporter.dll");
         if (!File.Exists(fakeDllPath))
         {
@@ -90,8 +89,6 @@ public class ImporterServiceTest
         _importerServiceMock.Setup(i => i.GetAllImporters()).Returns(list);
 
         _importerService.AddImportedDevices(args, user);
-
-        // importerMock.Verify(i => i.ImportDevices(args.Path), Times.Once);
     }
 
     [TestMethod]
@@ -153,29 +150,14 @@ public class ImporterServiceTest
             d.Photos.Contains("photo2.jpg")), companyOwner), Times.Once);
     }
 
-    // [TestMethod]
-    // public void GetAllValidators_ShouldReturnValidators_WhenDllExists()
-    // {
-    //     var mockValidator1 = new Mock<IModeloValidador>().Object;
-    //     var mockValidator2 = new Mock<IModeloValidador>().Object;
-    //
-    //     var mockAssembly = new Mock<Assembly>();
-    //     mockAssembly
-    //         .Setup(a => a.GetTypes())
-    //         .Returns([mockValidator1.GetType(), mockValidator2.GetType()]);
-    //
-    //     var mockFile = new Mock<FileInfo>(validatorpath);
-    //     var mockPath = new Mock<string>();
-    //     var mockAssemblyLoadFrom = new Mock<Func<string, Assembly>>();
-    //     mockAssemblyLoadFrom.Setup(f => f(It.IsAny<string>())).Returns(mockAssembly.Object);
-    //
-    //     var assembly = Assembly.LoadFrom(validatorpath);
-    //
-    //     var result = assembly.GetTypes()
-    //         .Where(t => typeof(IModeloValidador).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-    //         .Select(tipo => (IModeloValidador)Activator.CreateInstance(tipo)!)
-    //         .ToList();
-    //
-    //     File.Delete(validatorpath);
-    // }
+    [TestMethod]
+    public void AddImportedDeviceByType_WhenDeviceTypeIsSensorMovement_CallsAddMovementSensor()
+    {
+        var device = new CreateDeviceArgs { Type = "sensor-movement" };
+        var user = new CompanyOwner();
+
+        _importerService.AddImportedDeviceByType(device, user);
+
+        _deviceServiceMock.Verify(ds => ds.AddMovementSensor(device, user), Times.Once);
+    }
 }
