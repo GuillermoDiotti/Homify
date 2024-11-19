@@ -26,12 +26,5 @@ public class ImporterArgs
         Path = path;
 
         User = user;
-
-        // if (string.IsNullOrEmpty(dllPath))
-        // {
-        //     throw new ArgsNullException("The path can not be null.");
-        // }
-
-        // DllPath = dllPath;
     }
 }

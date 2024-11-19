@@ -7,6 +7,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.Importer.Abstractions;
 using InterfaceImporter.Models;
 using ModeloValidador.Abstracciones;
@@ -164,14 +165,19 @@ public class ImporterServiceTest
     [TestMethod]
     public void AddImportedDeviceByType_WhenDeviceTypeIsSensorOpenClose_CallsAddWindowSensor()
     {
-        // Arrange
         var device = new CreateDeviceArgs { Type = "sensor-open-close" };
         var user = new CompanyOwner();
 
-        // Act
         _importerService.AddImportedDeviceByType(device, user);
 
-        // Assert
         _deviceServiceMock.Verify(ds => ds.AddWindowSensor(device, user), Times.Once);
     }
+
+    [ExpectedException(typeof(ArgsNullException))]
+    [TestMethod]
+    public void ImporterArgs_WhenImporterNull_ThrowsException()
+    {
+        var args = new ImporterArgs(null, "path", new User());
+    }
 }
+
