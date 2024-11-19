@@ -20,4 +20,18 @@ public class JSONImportTest
 
         Assert.AreEqual("Json importer", result);
     }
+
+    [TestMethod]
+    public void ImportDevices_EmptyDevices_ReturnsEmptyList()
+    {
+        var filePath = "emptyDevices.json";
+        var jsonContent = @"{ 'Devices': [] }";
+        File.WriteAllText(filePath, jsonContent);
+
+        var result = _jsonImport.ImportDevices(filePath);
+
+        Assert.AreEqual(0, result.Count);
+
+        File.Delete(filePath);
+    }
 }
