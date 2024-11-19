@@ -30,4 +30,28 @@ export class HomeDeviceTypeApiRepositoryService extends ApiRepository {
       catchError(this.handleError)
     );
   }
+
+	public turnOnLamp(hardwareId: string): Observable<any> {
+    return this.putById(`${hardwareId}/lampOn`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+	public turnOffLamp(hardwareId: string): Observable<any> {
+    return this.putById(`${hardwareId}/lampOff`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+	public turnOnSensor(hardwareId: string): Observable<any> {
+    return this.putById(`${hardwareId}/windowOpen`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+	public turnOffSensor(hardwareId: string): Observable<any> {
+    return this.putById(`${hardwareId}/windowClose`).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

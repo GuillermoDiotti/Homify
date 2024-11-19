@@ -20,4 +20,20 @@ export class HomeDeviceService {
 	public turnOffDevice(hardwareId: string): Observable<any> {
     return this._repository.turnOffDevice(hardwareId);
   }
+
+	public turnOnLamp(hardwareId: string): Observable<any> {
+		return this._repository.turnOnLamp(hardwareId);
+	}
+
+	public turnOffLamp(hardwareId: string): Observable<any> {
+		return this._repository.turnOffLamp(hardwareId);
+	}
+
+	public turnOnSensor(hardwareId: string): Observable<any> {
+		return this._repository.turnOnSensor(hardwareId);
+	}
+
+	public turnOffSensor(hardwareId: string): Observable<any> {
+		return this._repository.turnOffSensor(hardwareId);
+	}
 }

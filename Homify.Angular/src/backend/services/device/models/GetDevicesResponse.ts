@@ -9,4 +9,5 @@ export interface GetDevicesResponse {
 	deviceId: string;
 	hardwareId: string;
 	room: string;
+	deviceType: string;
 }

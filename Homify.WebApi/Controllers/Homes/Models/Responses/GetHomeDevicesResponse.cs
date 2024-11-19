@@ -14,6 +14,8 @@ public class GetHomeDevicesResponse
     public string Id { get; set; } = null!;
     public bool IsActive { get; set; }
     public string Room { get; set; } = null!;
+    public string DeviceType { get; set; } = null!;
+    public bool IsOn { get; set; }
 
     public GetHomeDevicesResponse(HomeDevice homeDevice)
     {
@@ -24,7 +26,9 @@ public class GetHomeDevicesResponse
         MainPhoto = homeDevice.Device.PpalPicture;
         HardwareId = homeDevice.HardwareId;
         DeviceId = homeDevice.DeviceId;
+        IsOn = homeDevice.IsOn;
         IsActive = homeDevice.IsActive;
+        DeviceType = homeDevice.Device.Type;
         CustomName = homeDevice.CustomName;
         Room = homeDevice.Room == null ? string.Empty : homeDevice.Room.Name;
     }
