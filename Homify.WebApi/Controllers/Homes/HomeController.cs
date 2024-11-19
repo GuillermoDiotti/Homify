@@ -38,7 +38,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var owner = GetUserLogged() as HomeOwner;
+        var owner = GetUserLogged();
         var arguments = new CreateHomeArgs(
             request.Street ?? string.Empty,
             request.Number ?? string.Empty,

@@ -67,7 +67,7 @@ public sealed class HomifyDbContext : DbContext
         modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");
         modelBuilder.Entity<HomeOwner>().ToTable("HomeOwners");
 
-        modelBuilder.Entity<HomeOwner>()
+        modelBuilder.Entity<User>()
             .HasMany(h => h.Homes)
             .WithOne(o => o.Owner)
             .HasForeignKey(i => i.OwnerId)

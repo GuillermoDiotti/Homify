@@ -44,7 +44,7 @@ public class HomeService : IHomeService
             Latitude = home.Latitude,
             Longitude = home.Longitude,
             Number = home.Number,
-            Owner = home.Owner as HomeOwner,
+            Owner = home.Owner,
             Street = home.Street,
             MaxMembers = home.MaxMembers,
             Alias = home.Alias,
