@@ -35,6 +35,7 @@
       <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
       <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
       <ProjectReference Include="..\Homify.WebApi\Homify.WebApi.csproj" />
+      <ProjectReference Include="..\JSONImporter\JSONImporter.csproj" />
     </ItemGroup>
 
     <ItemGroup>
