@@ -65,4 +65,15 @@ public class HomePermissionTest
 
         service.ChangeHomeMemberPermissions(true, true, true, user, found);
     }
+
+    [TestMethod]
+    public void GetPermissionByValue()
+    {
+        _repositoryMock.Setup(p => p.Get(It.IsAny<Expression<Func<HomePermission, bool>>>()))
+            .Returns(new HomePermission { Value = "testValue" });
+
+        var result = _service.GetByValue("testValue");
+
+        Assert.IsNotNull(result);
+    }
 }
