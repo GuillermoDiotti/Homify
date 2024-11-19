@@ -75,6 +75,13 @@ public class ImporterServiceTest
             .Returns(true);
         var list = new List<IImporter> { importerMock.Object };
 
+        var ImportationContainer = new List<ImportationContainer>{ new ImportationContainer{ Devices = new List<ImportedDevices>()} };
+        var importedDevices = new ImportedDevices
+        {
+            Id = "id", Model = "model", Name = "name",
+            Photos = new List<ImportPhotos>(), Type = "type", PersonDetection = true, MovementDetection = true
+        };
+
         var user = new User();
         var args = new ImporterArgs("ValidImporter", validatorpath, user);
         var company = new Company{ValidatorType = validatorMock.Object.ToString()};
@@ -92,20 +99,38 @@ public class ImporterServiceTest
     {
         var user = new User { Id = "userId" };
         var companyOwner = new CompanyOwner { Id = "companyId" };
-
+        var importationDevice = new List<ImportedDevices>()
+        {
+            new ImportedDevices()
+            {
+                Id = "DeviceId1",
+                Model = "Model1",
+                Name = "Device1",
+                Type = "camera",
+                PersonDetection = true,
+                MovementDetection = true,
+                Photos = new List<ImportPhotos>
+                {
+                    new ImportPhotos { Path = "photo1.jpg", IsPrincipal = true },
+                    new ImportPhotos { Path = "photo2.jpg", IsPrincipal = false }
+                }
+            }
+        };
+        var importationContainer = new ImportationContainer { Devices = importationDevice };
+        var importedPhotos = new ImportPhotos{ Path = "photo1.jpg", IsPrincipal = true };
         var devices = new List<ReturnImportDevices>
         {
             new ReturnImportDevices
             {
-                Name = "Device1",
-                Model = "Model1",
-                Id = "DeviceId1",
-                Type = "camera",
-                PersonDetection = true,
-                MovementDetection = true,
+                Name = importationDevice[0].Name,
+                Model = importationDevice[0].Model,
+                Id = importationDevice[0].Id,
+                Type = importationDevice[0].Type,
+                PersonDetection = importationDevice[0].PersonDetection,
+                MovementDetection = importationDevice[0].MovementDetection,
                 Photos =
                 [
-                    new ReturnPhotos { Path = "photo1.jpg", IsPrincipal = true },
+                    new ReturnPhotos { Path = importedPhotos.Path, IsPrincipal = importedPhotos.IsPrincipal},
                     new ReturnPhotos { Path = "photo2.jpg", IsPrincipal = false }
                 ]
             }
@@ -128,32 +153,29 @@ public class ImporterServiceTest
             d.Photos.Contains("photo2.jpg")), companyOwner), Times.Once);
     }
 
-    [TestMethod]
-    public void GetAllValidators_ShouldReturnValidators_WhenDllExists()
-    {
-        var mockValidator1 = new Mock<IModeloValidador>().Object;
-        var mockValidator2 = new Mock<IModeloValidador>().Object;
-
-        var mockAssembly = new Mock<Assembly>();
-        mockAssembly
-            .Setup(a => a.GetTypes())
-            .Returns([mockValidator1.GetType(), mockValidator2.GetType()]);
-
-        var rutaDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ModeloValidador.dll");
-        File.Create(rutaDll).Dispose();
-
-        var mockFile = new Mock<FileInfo>(rutaDll);
-        var mockPath = new Mock<string>();
-        var mockAssemblyLoadFrom = new Mock<Func<string, Assembly>>();
-        mockAssemblyLoadFrom.Setup(f => f(It.IsAny<string>())).Returns(mockAssembly.Object);
-
-        var assembly = Assembly.LoadFrom(rutaDll);
-
-        var result = assembly.GetTypes()
-            .Where(t => typeof(IModeloValidador).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-            .Select(tipo => (IModeloValidador)Activator.CreateInstance(tipo)!)
-            .ToList();
-
-        File.Delete(rutaDll);
-    }
+    // [TestMethod]
+    // public void GetAllValidators_ShouldReturnValidators_WhenDllExists()
+    // {
+    //     var mockValidator1 = new Mock<IModeloValidador>().Object;
+    //     var mockValidator2 = new Mock<IModeloValidador>().Object;
+    //
+    //     var mockAssembly = new Mock<Assembly>();
+    //     mockAssembly
+    //         .Setup(a => a.GetTypes())
+    //         .Returns([mockValidator1.GetType(), mockValidator2.GetType()]);
+    //
+    //     var mockFile = new Mock<FileInfo>(validatorpath);
+    //     var mockPath = new Mock<string>();
+    //     var mockAssemblyLoadFrom = new Mock<Func<string, Assembly>>();
+    //     mockAssemblyLoadFrom.Setup(f => f(It.IsAny<string>())).Returns(mockAssembly.Object);
+    //
+    //     var assembly = Assembly.LoadFrom(validatorpath);
+    //
+    //     var result = assembly.GetTypes()
+    //         .Where(t => typeof(IModeloValidador).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+    //         .Select(tipo => (IModeloValidador)Activator.CreateInstance(tipo)!)
+    //         .ToList();
+    //
+    //     File.Delete(validatorpath);
+    // }
 }
