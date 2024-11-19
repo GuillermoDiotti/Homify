@@ -64,6 +64,33 @@ public class CompanyServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void Constructor_ShouldThrowArgsNullException_WhenRutIsNullOrEmpty()
+    {
+        var name = "validName";
+        var logoUrl = "validLogoUrl";
+        string rut = null;
+        var validator = "validValidator";
+        var owner = new CompanyOwner { IsIncomplete = true };
+
+        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Constructor_ShouldThrowInvalidOperationException_WhenOwnerIsNull()
+    {
+        var name = "validName";
+        var logoUrl = "validLogoUrl";
+        var rut = "validRut";
+        var validator = "validValidator";
+        CompanyOwner owner = null;
+
+        // 
+        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+    }
+
+    [TestMethod]
     public void ValidateModel_ShouldThrowInvalidDataException_WhenValidatorNotFound()
     {
         var model = "ValidModel";
