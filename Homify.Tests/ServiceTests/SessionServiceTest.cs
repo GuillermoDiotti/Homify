@@ -193,4 +193,15 @@ public class SessionServiceTest
         var result = _service.GetUserByToken(token);
         Assert.IsNull(result);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CheckSessionConstraints_ShouldThrowNotFoundException_WhenUserNotFound()
+    {
+        var email = "nonexistent@example.com";
+        var password = "password";
+        _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([new User()]);
+
+        _service.CheckSessionConstraints(email, password);
+    }
 }
