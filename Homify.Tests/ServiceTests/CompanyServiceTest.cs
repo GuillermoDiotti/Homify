@@ -86,7 +86,19 @@ public class CompanyServiceTest
         var validator = "validValidator";
         CompanyOwner owner = null;
 
-        // 
+        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Constructor_ShouldThrowInvalidOperationException_WhenOwnerIsNotIncomplete()
+    {
+        var name = "validName";
+        var logoUrl = "validLogoUrl";
+        var rut = "validRut";
+        var validator = "validValidator";
+        var owner = new CompanyOwner { IsIncomplete = false };
+
         var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
     }
 
