@@ -181,4 +181,16 @@ public class SessionServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(user, result);
     }
+
+    [TestMethod]
+    public void GetUserByToken_ShouldReturnNull_WhenNotFoundExceptionIsThrown()
+    {
+        var token = "invalidToken";
+
+        _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
+            .Throws(new NotFoundException("Not found"));
+
+        var result = _service.GetUserByToken(token);
+        Assert.IsNull(result);
+    }
 }
