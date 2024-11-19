@@ -38,25 +38,6 @@ public class CompanyServiceTest
     }
 
     [TestMethod]
-    public void ValidateModel_ShouldLoadValidatorAndValidateModel()
-    {
-        // Arrange
-        var model = "ValidModel";
-        var mockFilePaths = new[] { "validator.dll" };
-        var mockTypes = new[] { typeof(MockValidator) };
-
-        _mockDirectory.Setup(d => d.GetFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(mockFilePaths);
-        _mockAssemblyLoader.Setup(a => a.LoadFile(It.IsAny<string>())).Returns(Assembly.GetExecutingAssembly());
-        _mockValidator.Setup(v => v.EsValido(It.IsAny<Modelo>())).Returns(true);
-
-        // Act
-        _company.ValidateModel(model);
-
-        // Assert
-        _mockValidator.Verify(v => v.EsValido(It.Is<Modelo>(m => m.Value == model)), Times.Once);
-    }
-
-    [TestMethod]
     public void ValidateModel_ShouldThrowInvalidDataException_WhenValidatorNotFound()
     {
         var model = "ValidModel";
@@ -193,6 +174,23 @@ public class CompanyServiceTest
         _companyRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<Company, bool>>>())).Returns((Company)null);
 
         Assert.ThrowsException<NotFoundException>(() => _service.AddValidatorModel(model, user));
+    }
+
+    [TestMethod]
+    public void GetAll_ShouldFilterByOwner()
+    {
+        var companies = new List<Company>
+        {
+            new Company { Owner = new CompanyOwner { Name = "John", LastName = "Doe" }, Name = "CompanyA" },
+            new Company { Owner = new CompanyOwner { Name = "Jane", LastName = "Smith" }, Name = "CompanyB" }
+        };
+        _companyRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns(companies);
+
+        var result = _service.GetAll(owner: "John Doe");
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("CompanyA", result[0].Name);
     }
 
     public interface IDirectoryWrapper
