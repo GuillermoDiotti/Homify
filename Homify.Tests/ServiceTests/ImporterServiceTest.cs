@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentAssertions;
 using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
@@ -185,6 +186,16 @@ public class ImporterServiceTest
     public void ImporterArgs_WhenPathNull_ThrowsException()
     {
         var args = new ImporterArgs("importer", null, new User());
+    }
+
+    [TestMethod]
+    public void GetAttributes_ImporterArgs()
+    {
+        var args = new ImporterArgs("importer", "path", new User());
+
+        args.Importer.Should().NotBeNull();
+        args.Path.Should().NotBeNull();
+        args.User.Should().NotBeNull();
     }
 }
 
