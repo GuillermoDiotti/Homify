@@ -3,6 +3,7 @@ using Homify.BusinessLogic;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
@@ -28,6 +29,22 @@ public class UserServiceTest
         _userRoleRepositoryMock = new Mock<IRepository<UserRole>>();
         _userRepositoryMock = new Mock<IRepository<User>>();
         _service = new UserService(_userRepositoryMock.Object, _userRoleRepositoryMock.Object);
+    }
+
+    [TestMethod]
+    public void CreatePermission()
+    {
+        var per = new SystemPermission()
+        {
+            Id = "123",
+            Value = "test",
+            Roles = [new Role()]
+        };
+
+        Assert.IsNotNull(per);
+        Assert.AreEqual("123", per.Id);
+        Assert.AreEqual("test", per.Value);
+        Assert.IsNotNull(per.Roles);
     }
 
     [TestMethod]
