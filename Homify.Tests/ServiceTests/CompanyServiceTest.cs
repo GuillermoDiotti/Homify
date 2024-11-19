@@ -193,6 +193,24 @@ public class CompanyServiceTest
         Assert.AreEqual("CompanyA", result[0].Name);
     }
 
+    [TestMethod]
+    public void GetAll_ShouldFilterByCompany()
+    {
+        // Arrange
+        var companies = new List<Company>
+        {
+            new Company { Owner = new CompanyOwner { Name = "John", LastName = "Doe" }, Name = "CompanyA" },
+            new Company { Owner = new CompanyOwner { Name = "Jane", LastName = "Smith" }, Name = "CompanyB" }
+        };
+        _companyRepositoryMock.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Company, bool>>>()))
+            .Returns(companies);
+        var result = _service.GetAll(company: "CompanyB");
+
+        // Assert
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("CompanyB", result[0].Name);
+    }
+
     public interface IDirectoryWrapper
     {
         string[] GetFiles(string path, string searchPattern);
