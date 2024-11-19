@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using Homify.BusinessLogic;
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Companies.Entities;
@@ -7,6 +8,7 @@ using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using ModeloValidador.Abstracciones;
 using Moq;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
@@ -16,14 +18,55 @@ namespace Homify.Tests.ServiceTests;
 public class CompanyServiceTest
 {
     private Mock<IRepository<Company>>? _companyRepositoryMock;
-
     private CompanyService? _service;
+
+    private Mock<IDirectoryWrapper>? _mockDirectory;
+    private Mock<IAssemblyLoader>? _mockAssemblyLoader;
+    private Mock<IModeloValidador>? _mockValidator;
+    private Company? _company;
 
     [TestInitialize]
     public void Setup()
     {
         _companyRepositoryMock = new Mock<IRepository<Company>>();
         _service = new CompanyService(_companyRepositoryMock.Object);
+
+        _mockDirectory = new Mock<IDirectoryWrapper>();
+        _mockAssemblyLoader = new Mock<IAssemblyLoader>();
+        _mockValidator = new Mock<IModeloValidador>();
+        _company = new Company();
+    }
+
+    [TestMethod]
+    public void ValidateModel_ShouldLoadValidatorAndValidateModel()
+    {
+        // Arrange
+        var model = "ValidModel";
+        var mockFilePaths = new[] { "validator.dll" };
+        var mockTypes = new[] { typeof(MockValidator) };
+
+        _mockDirectory.Setup(d => d.GetFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(mockFilePaths);
+        _mockAssemblyLoader.Setup(a => a.LoadFile(It.IsAny<string>())).Returns(Assembly.GetExecutingAssembly());
+        _mockValidator.Setup(v => v.EsValido(It.IsAny<Modelo>())).Returns(true);
+
+        // Act
+        _company.ValidateModel(model);
+
+        // Assert
+        _mockValidator.Verify(v => v.EsValido(It.Is<Modelo>(m => m.Value == model)), Times.Once);
+    }
+
+    [TestMethod]
+    public void ValidateModel_ShouldThrowInvalidDataException_WhenValidatorNotFound()
+    {
+        // Arrange
+        var model = "ValidModel";
+        var mockFilePaths = new string[] { };
+
+        _mockDirectory.Setup(d => d.GetFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(mockFilePaths);
+
+        // Act & Assert
+        Assert.ThrowsException<InvalidDataException>(() => _company.ValidateModel(model));
     }
 
     [TestMethod]
@@ -138,5 +181,20 @@ public class CompanyServiceTest
         _companyRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<Company, bool>>>())).Returns((Company)null);
 
         Assert.ThrowsException<NotFoundException>(() => _service.AddValidatorModel(model, user));
+    }
+
+    public interface IDirectoryWrapper
+    {
+        string[] GetFiles(string path, string searchPattern);
+    }
+
+    public interface IAssemblyLoader
+    {
+        Assembly LoadFile(string path);
+    }
+
+    public class MockValidator : IModeloValidador
+    {
+        public bool EsValido(Modelo modelo) => true;
     }
 }
