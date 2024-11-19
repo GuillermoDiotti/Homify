@@ -2,7 +2,11 @@
 using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
+using Homify.BusinessLogic.Utility;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
@@ -11,6 +15,7 @@ using Homify.WebApi.Controllers.Companies.Models.Requests;
 using Homify.WebApi.Controllers.Companies.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ModeloValidador.Abstracciones;
 using Moq;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
@@ -32,6 +37,18 @@ public class CompanyControllerTest
         {
             HttpContext = httpContext
         };
+    }
+
+    [TestInitialize]
+    public void TestSetup()
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "Validators");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        File.WriteAllText(Path.Combine(path, "FakeValidator.dll"), "Fake content");
     }
 
     [TestMethod]
@@ -128,26 +145,35 @@ public class CompanyControllerTest
     [TestMethod]
     public void AllCompanies_ShouldReturnPaginatedCompanyBasicInfo()
     {
+        var validatorMock = new Mock<IModeloValidador>();
+        validatorMock
+            .Setup(v => v.EsValido(It.IsAny<Modelo>()))
+            .Returns(true);
+
+        var expectedRole = new Role
+        {
+            Name = "COMPANYOWNER",
+            Permissions = new List<SystemPermission> { new SystemPermission { Value = "companies-Create" } }
+        };
+
+        var owner = new CompanyOwner
+        {
+            Name = "name",
+            LastName = "lastName",
+            Email = "mail@gmail.com",
+            Password = "password",
+            Id = Guid.NewGuid().ToString(),
+            ProfilePicture = "foto",
+            Roles = new List<UserRole> { new UserRole { UserId = "123", Role = expectedRole } },
+            IsIncomplete = true,
+            CreatedAt = HomifyDateTime.GetActualDate()
+        };
+
         var companies = new List<Company>
         {
-            new Company
-            {
-                Id = "1",
-                Name = "Company A",
-                Owner = new CompanyOwner()
-            },
-            new Company
-            {
-                Id = "2",
-                Name = "Company B",
-                Owner = new CompanyOwner()
-            },
-            new Company
-            {
-                Id = "3",
-                Name = "Company C",
-                Owner = new CompanyOwner()
-            },
+            new Company { Id = "1", Name = "Company A", Owner = owner, ValidatorType = validatorMock.Object.ToString() },
+            new Company { Id = "2", Name = "Company B", Owner = owner, ValidatorType = validatorMock.Object.ToString() },
+            new Company { Id = "3", Name = "Company C", Owner = owner, ValidatorType = validatorMock.Object.ToString() }
         };
 
         _companyServiceMock
@@ -162,7 +188,7 @@ public class CompanyControllerTest
             new CompanyBasicInfo(companies[2], companies[2].Owner)
         };
 
-        var req = new CompanyFiltersRequest()
+        var req = new CompanyFiltersRequest
         {
             Limit = limit,
             Offset = offset
