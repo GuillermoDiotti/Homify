@@ -38,6 +38,19 @@ public class CompanyServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void Constructor_ShouldThrowArgsNullException_WhenNameIsNullOrEmpty()
+    {
+        string name = null;
+        var logoUrl = "validLogoUrl";
+        var rut = "validRut";
+        var validator = "validValidator";
+        var owner = new CompanyOwner { IsIncomplete = true };
+
+        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+    }
+
+    [TestMethod]
     public void ValidateModel_ShouldThrowInvalidDataException_WhenValidatorNotFound()
     {
         var model = "ValidModel";
