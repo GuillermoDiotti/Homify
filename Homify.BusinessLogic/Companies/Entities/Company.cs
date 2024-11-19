@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using Homify.BusinessLogic.CompanyOwners.Entities;
-using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using ModeloValidador.Abstracciones;
 
 namespace Homify.BusinessLogic.Companies.Entities;

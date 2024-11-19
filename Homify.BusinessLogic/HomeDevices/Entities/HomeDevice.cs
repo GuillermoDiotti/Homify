@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Rooms.Entities;
 

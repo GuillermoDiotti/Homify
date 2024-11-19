@@ -144,6 +144,11 @@ public class UserService : IUserService
             throw new NotFoundException("User not found");
         }
 
+        if (!u.Roles.Any(x => x.Role.Name == Constants.HOMEOWNER))
+        {
+            throw new Exceptions.InvalidOperationException("User is not a homeowner");
+        }
+
         u.ProfilePicture = pfp;
         _repository.Update(u);
         return u;

@@ -99,7 +99,7 @@ public class DeviceController : HomifyControllerBase
             req.Name ?? string.Empty,
             req.Model ?? string.Empty,
             req.Description ?? string.Empty,
-            null,
+            req.Photos ?? [],
             null,
             false,
             false,

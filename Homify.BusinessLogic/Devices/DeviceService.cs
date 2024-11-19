@@ -5,6 +5,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Devices;
 
@@ -162,14 +163,14 @@ public class DeviceService : IDeviceService
 
     public List<string> SearchSupportedDevices()
     {
-        var devices = _deviceRepository.GetAll();
-
-        var supportedDeviceTypes = devices
-            .Select(d => d.Type)
-            .Distinct()
-            .ToList();
-
-        return supportedDeviceTypes;
+        var list = new List<string>()
+        {
+            Constants.SENSOR,
+            Constants.MOVEMENTSENSOR,
+            Constants.LAMP,
+            Constants.CAMERA
+        };
+        return list;
     }
 
     public Lamp AddLamp(CreateDeviceArgs device, CompanyOwner? user)
@@ -190,7 +191,7 @@ public class DeviceService : IDeviceService
             Description = device.Description,
             Company = owner.Company,
             CompanyId = owner.Company.Id,
-            Photos = []
+            Photos = device.Photos ?? [],
         };
 
         _lampRepository.Add(lamp);

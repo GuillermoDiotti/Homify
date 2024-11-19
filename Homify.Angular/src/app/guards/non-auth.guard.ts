@@ -11,7 +11,6 @@ export class NonAuthGuard implements CanActivate {
 
   canActivate(): boolean {
 		const { token } = this.SessionService.getCurrentUser(); 
-		console.log(token)
     if (!token) {
       return true;
     } else {

@@ -6,4 +6,5 @@ public class CreateLampRequest
     public bool Active { get; set; }
     public string? Model { get; init; }
     public string? Description { get; init; }
+    public List<string>? Photos { get; init; }
 }

@@ -1,6 +1,6 @@
 ﻿using Homify.BusinessLogic.Companies.Entities;
 
-namespace Homify.BusinessLogic.Devices;
+namespace Homify.BusinessLogic.Devices.Entities;
 
 public class Device
 {

@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.Devices.Entities;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Sensors.Entities;

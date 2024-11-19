@@ -18,7 +18,6 @@ export class DeviceTypeApiRepositoryService extends ApiRepository{
   }
 
   public createCamera(request: CreateCameraRequest): Observable<CreateDeviceResponse> {
-		console.log(request)
     return this.post<CreateDeviceResponse>(request, "cameras").pipe(catchError(this.handleError));
   }
 

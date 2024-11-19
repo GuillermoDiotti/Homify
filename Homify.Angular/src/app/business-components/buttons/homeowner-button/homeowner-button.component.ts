@@ -38,7 +38,6 @@ export class HomeownerButtonComponent implements OnInit {
 
     this.RoleService.addRoleToExistingUser().subscribe(
       (res) => {
-				console.log(res)
         this.successMessage = 'New role added successfully';
         localStorage.setItem('roles', JSON.stringify(res.roles));
         const roles =

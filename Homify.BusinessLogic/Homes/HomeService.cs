@@ -1,6 +1,7 @@
 ﻿using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
+using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
@@ -43,7 +44,7 @@ public class HomeService : IHomeService
             Latitude = home.Latitude,
             Longitude = home.Longitude,
             Number = home.Number,
-            Owner = home.Owner,
+            Owner = home.Owner as HomeOwner,
             Street = home.Street,
             MaxMembers = home.MaxMembers,
             Alias = home.Alias,

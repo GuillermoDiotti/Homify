@@ -50,6 +50,7 @@ export class LoginFormComponent {
       resp => {
         this.sessionService.setCurrentUser(resp.token, resp.roles, resp.name);
 				this.currentUserToken = resp.token;
+				this.currentUserName = resp.name;
         this.errorMessage = '';
       },
       (error: APIError) => {
@@ -61,6 +62,8 @@ export class LoginFormComponent {
 
   onLogout(){
     this.currentUserToken = null;
+		this.currentUserName = '';
+		this.errorMessage = '';
 		this.sessionService.removeCurrentUserToken();
   }
 }
