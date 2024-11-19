@@ -17,6 +17,7 @@ import { MakeUserNotificableFormComponent } from '../../business-components/form
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HomeIntegrantsListComponent } from '../../business-components/lists/home-integrants-list/home-integrants-list.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateHomeComponent, canActivate: [HomeOwnerGuard] },
@@ -39,6 +40,7 @@ const routes: Routes = [
 		HomedevicesListComponent,
 		MemberHomeListComponent,
 		MakeUserNotificableFormComponent,
+		HomeIntegrantsListComponent,
 		MatButtonModule,
     MatDialogModule,
 		ReactiveFormsModule,
