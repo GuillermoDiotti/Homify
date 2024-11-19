@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using FluentAssertions;
 using Homify.BusinessLogic;
-using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications;

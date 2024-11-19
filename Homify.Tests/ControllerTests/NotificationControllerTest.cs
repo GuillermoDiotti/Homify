@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Notifications;

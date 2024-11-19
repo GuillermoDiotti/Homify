@@ -295,7 +295,18 @@ public class UserServiceTest
     [TestMethod]
     public void UpdateProfilePicture_ValidUser_UpdatesProfilePicture()
     {
-        var user = new User { Id = "1", ProfilePicture = "oldProfilePic.jpg" };
+        var user = new User
+        {
+            Id = "1",
+            ProfilePicture = "oldProfilePic.jpg",
+            Roles = [new UserRole()
+            {
+                Role = new Role(){ Name = "HOMEOWNER" }
+            }
+
+            ]
+        };
+
         var newProfilePicture = "newProfilePic.jpg";
 
         _userRepositoryMock.Setup(r => r.Update(It.IsAny<User>())).Verifiable();
@@ -310,7 +321,18 @@ public class UserServiceTest
     [TestMethod]
     public void UpdateProfilePicture_ValidUser_ReturnsUpdatedUser()
     {
-        var user = new User { Id = "1", ProfilePicture = "oldProfilePic.jpg" };
+        var user = new User
+        {
+            Id = "1",
+            ProfilePicture = "oldProfilePic.jpg",
+            Roles = [new UserRole()
+            {
+                Role = new Role(){ Name = "HOMEOWNER" }
+            }
+
+            ]
+        };
+
         var newProfilePicture = "newProfilePic.jpg";
 
         _userRepositoryMock.Setup(r => r.Update(It.IsAny<User>())).Verifiable();

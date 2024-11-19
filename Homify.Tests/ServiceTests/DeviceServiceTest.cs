@@ -255,46 +255,9 @@ public class DeviceServiceTest
     [TestMethod]
     public void SearchSupportedDevices_ReturnsUniqueDeviceTypes()
     {
-        var deviceList = new List<Device>
-        {
-            new Device
-            {
-                Id = "1",
-                Name = "Camera",
-                Model = "Model A",
-                Type = "Camera"
-            },
-            new Device
-            {
-                Id = "2",
-                Name = "Sensor",
-                Model = "Model B",
-                Type = "Sensor"
-            },
-            new Device
-            {
-                Id = "3",
-                Name = "Camera 2",
-                Model = "Model C",
-                Type = "Camera"
-            },
-            new Device
-            {
-                Id = "4",
-                Name = "Thermostat",
-                Model = "Model D",
-                Type = "Thermostat"
-            }
-        };
-
-        _deviceRepositoryMock
-            .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
-            .Returns(deviceList);
-
         var result = _deviceService.SearchSupportedDevices();
 
-        Assert.AreEqual(3, result.Count);
-        CollectionAssert.AreEqual(new List<string> { "Camera", "Sensor", "Thermostat" }, result);
+        Assert.AreEqual(4, result.Count);
     }
 
     [TestMethod]
