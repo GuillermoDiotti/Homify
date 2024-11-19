@@ -108,4 +108,27 @@ public class UserRepositoryTests
         Assert.AreEqual("John", result[0].Name);
         Assert.AreEqual("Jane", result[1].Name);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Get_UserNotFound_ThrowsNotFoundException()
+    {
+        var testData = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe" }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
+
+        var userRepository = new UserRepository(mockContext.Object);
+
+        userRepository.Get(u => u.Id == "999");
+    }
 }
