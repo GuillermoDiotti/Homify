@@ -12,4 +12,12 @@ export class HomeDeviceService {
 	public renameDevice(req: UpdateHomeDeviceRequest, id: string): Observable<any> {
 		return this._repository.renameDevice(req, id);
 	}
+
+	public turnOnDevice(hardwareId: string): Observable<any> {
+    return this._repository.turnOnDevice(hardwareId);
+  }
+
+	public turnOffDevice(hardwareId: string): Observable<any> {
+    return this._repository.turnOffDevice(hardwareId);
+  }
 }

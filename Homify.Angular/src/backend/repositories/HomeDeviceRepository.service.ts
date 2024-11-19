@@ -18,4 +18,16 @@ export class HomeDeviceTypeApiRepositoryService extends ApiRepository {
       catchError(this.handleError)
     );
 	}
+
+	public turnOnDevice(hardwareId: string): Observable<any> {
+    return this.putById(`${hardwareId}/activate`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+	public turnOffDevice(hardwareId: string): Observable<any> {
+    return this.putById(`${hardwareId}/deactivate`).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

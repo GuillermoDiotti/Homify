@@ -5,6 +5,7 @@ import { APIError } from '../../../../interfaces/interfaces';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
+import { HomeDeviceService } from '../../../../backend/services/homedevice/HomeDevice.service';
 
 @Component({
   selector: 'app-turn-off-device-button',
@@ -19,13 +20,13 @@ export class TurnOffDeviceButtonComponent {
 	successMessage = '';
 	errorMessage = '';
 
-	constructor(private readonly DeviceService: DeviceService) {}
+	constructor(private readonly HomeDeviceService: HomeDeviceService) {}
 
 	handleTurnOnDevice() {
 		this.successMessage = '';
 		this.errorMessage = '';
 
-		this.DeviceService.turnOffDevice(this.device?.hardwareId ?? '').subscribe(
+		this.HomeDeviceService.turnOffDevice(this.device?.hardwareId ?? '').subscribe(
 			res => this.successMessage = 'Device is now OFF',
 			(err: APIError) => this.errorMessage = err.error.message,
 		)

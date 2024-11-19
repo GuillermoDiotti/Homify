@@ -72,12 +72,4 @@ export class DeviceService {
   public getSupportedDevices(): Observable<any> {
     return this._repository.getSupportedDevices();
   }
-
-  public turnOnDevice(hardwareId: string): Observable<any> {
-    return this._repository.turnOnDevice(hardwareId);
-  }
-
-	public turnOffDevice(hardwareId: string): Observable<any> {
-    return this._repository.turnOffDevice(hardwareId);
-  }
 }
