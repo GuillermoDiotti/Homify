@@ -42,6 +42,13 @@ public class RoomServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void AddHomeRoom_RoomNameNull_ThrowsNotFoundException()
+    {
+        var args = new CreateRoomArgs(null, "home123", new HomeOwner { Id = "owner123" });
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddHomeRoom_RoomNameAlreadyExists_ThrowsInvalidOperationException()
     {
