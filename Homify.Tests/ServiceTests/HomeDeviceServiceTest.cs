@@ -23,18 +23,14 @@ public class HomeDeviceServiceTest
 {
     private Mock<IRepository<HomeDevice>>? _homeDeviceRepositoryMock;
     private HomeDeviceService? _homeDeviceService;
-    private Mock<IDeviceService>? _deviceServiceMock;
     private Mock<INotificationService>? _notificationServiceMock;
-    private Mock<IHomeUserService>? _homeUserServiceMock;
 
     [TestInitialize]
     public void Setup()
     {
         _homeDeviceRepositoryMock = new Mock<IRepository<HomeDevice>>();
-        _deviceServiceMock = new Mock<IDeviceService>();
         _notificationServiceMock = new Mock<INotificationService>();
-        _homeUserServiceMock = new Mock<IHomeUserService>();
-        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _deviceServiceMock.Object, _notificationServiceMock.Object, _homeUserServiceMock.Object);
+        _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _notificationServiceMock.Object);
     }
 
     [TestMethod]

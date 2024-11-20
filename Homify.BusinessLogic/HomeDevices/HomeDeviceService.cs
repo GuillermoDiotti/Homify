@@ -16,17 +16,12 @@ namespace Homify.BusinessLogic.HomeDevices;
 public class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
-    private readonly IDeviceService _deviceService;
     private readonly INotificationService _notificationService;
-    private readonly IHomeUserService _homeUserService;
 
-    public HomeDeviceService(IRepository<HomeDevice> repository, IDeviceService deviceService, INotificationService notificationService,
-        IHomeUserService homeUserService)
+    public HomeDeviceService(IRepository<HomeDevice> repository, INotificationService notificationService)
     {
         _repository = repository;
-        _deviceService = deviceService;
         _notificationService = notificationService;
-        _homeUserService = homeUserService;
     }
 
     public HomeDevice AddHomeDevice(Home home, Device device)
