@@ -135,27 +135,27 @@ public class DeviceService : IDeviceService
         }
     }
 
-    public List<Device> GetAll(DeviceFiltersRequest args)
+    public List<Device> GetAll(string? name, string? model, string? company, string? type)
     {
         var devicesQuery = _deviceRepository.GetAll();
-        if (!string.IsNullOrEmpty(args.DeviceName))
+        if (!string.IsNullOrEmpty(name))
         {
-            devicesQuery = devicesQuery.Where(d => d.Name.Contains(args.DeviceName, StringComparison.OrdinalIgnoreCase)).ToList();
+            devicesQuery = devicesQuery.Where(d => d.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        if (!string.IsNullOrEmpty(args.Model))
+        if (!string.IsNullOrEmpty(model))
         {
-            devicesQuery = devicesQuery.Where(d => d.Model.Contains(args.Model, StringComparison.OrdinalIgnoreCase)).ToList();
+            devicesQuery = devicesQuery.Where(d => d.Model.Contains(model, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        if (!string.IsNullOrEmpty(args.Company))
+        if (!string.IsNullOrEmpty(company))
         {
-            devicesQuery = devicesQuery.Where(d => d.Company.Name.Contains(args.Company, StringComparison.OrdinalIgnoreCase)).ToList();
+            devicesQuery = devicesQuery.Where(d => d.Company.Name.Contains(company, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        if (!string.IsNullOrEmpty(args.Type))
+        if (!string.IsNullOrEmpty(type))
         {
-            devicesQuery = devicesQuery.Where(d => d.Type.Equals(args.Type, StringComparison.OrdinalIgnoreCase)).ToList();
+            devicesQuery = devicesQuery.Where(d => d.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         return devicesQuery.ToList();

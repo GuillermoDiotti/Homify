@@ -5,7 +5,6 @@ using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
@@ -26,14 +25,12 @@ public class DeviceControllerTest
     private readonly DeviceController _controller;
     private readonly Mock<IDeviceService> _deviceServiceMock;
     private readonly Mock<ICompanyOwnerService> _companyOwnerServiceMock;
-    private readonly Mock<IHomeDeviceService> _homeDeviceServiceMock;
 
     public DeviceControllerTest()
     {
         _companyOwnerServiceMock = new Mock<ICompanyOwnerService>(MockBehavior.Strict);
         _deviceServiceMock = new Mock<IDeviceService>(MockBehavior.Strict);
-        _homeDeviceServiceMock = new Mock<IHomeDeviceService>(MockBehavior.Strict);
-        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object, _homeDeviceServiceMock.Object);
+        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object);
         var httpContext = new DefaultHttpContext();
         httpContext.Items["UserLogged"] = new User { };
         _controller.ControllerContext = new ControllerContext
@@ -168,7 +165,7 @@ public class DeviceControllerTest
         };
 
         _deviceServiceMock
-            .Setup(service => service.GetAll(It.IsAny<DeviceFiltersRequest>()))
+            .Setup(service => service.GetAll(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .Returns(deviceList);
 
         var result = _controller.ObtainDevices(new DeviceFiltersRequest() { DeviceName = "Camera" });
@@ -180,7 +177,8 @@ public class DeviceControllerTest
         Assert.AreEqual("Company A", result[0].CompanyName);
         Assert.AreEqual("Camera 2", result[2].Name);
         Assert.AreEqual(string.Empty, result[2].Photo);
-        _deviceServiceMock.Verify(service => service.GetAll(It.IsAny<DeviceFiltersRequest>()), Times.Once);
+        _deviceServiceMock
+            .Verify(service => service.GetAll(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
 
     [TestMethod]

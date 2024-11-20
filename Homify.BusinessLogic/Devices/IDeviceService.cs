@@ -12,7 +12,7 @@ public interface IDeviceService
     WindowSensor AddWindowSensor(CreateDeviceArgs device, CompanyOwner? user);
     MovementSensor AddMovementSensor(CreateDeviceArgs device, CompanyOwner? user);
     Device GetById(string id);
-    List<Device> GetAll(DeviceFiltersRequest args);
+    List<Device> GetAll(string? name, string? model, string? company, string? type);
     List<string> SearchSupportedDevices();
     Lamp AddLamp(CreateDeviceArgs device, CompanyOwner? user);
 }

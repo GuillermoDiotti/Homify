@@ -33,7 +33,6 @@ using Homify.DataAccess.Contexts;
 using Homify.DataAccess.Repositories;
 using Homify.WebApi.Filters;
 using Microsoft.EntityFrameworkCore;
-using Exception = Homify.WebApi.Filters.Exception;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +44,7 @@ builder
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddControllers(options => { options.Filters.Add<Exception>(); });
+builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter>(); });
 
 var services = builder.Services;
 var configuration = builder.Configuration;

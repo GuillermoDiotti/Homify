@@ -10,6 +10,7 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Moq;
 using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
@@ -253,7 +254,7 @@ public class DeviceServiceTest
             Limit = "10",
             Offset = "0"
         };
-        var result = _deviceService.GetAll(searchArgs);
+        var result = _deviceService.GetAll(searchArgs.DeviceName, searchArgs.Model, searchArgs.Company, searchArgs.Type);
 
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("Camera 1", result.First().Name);

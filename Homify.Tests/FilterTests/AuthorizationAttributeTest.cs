@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using Moq;
-using Authorization = Homify.WebApi.Filters.Authorization;
+using Authorization = Homify.WebApi.Filters.AuthorizationAttribute;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 
 namespace Homify.Tests.FilterTests;

@@ -19,13 +19,11 @@ public class DeviceController : HomifyControllerBase
 {
     private readonly IDeviceService _deviceService;
     private readonly ICompanyOwnerService _companyOwnerService;
-    private readonly IHomeDeviceService _homeDeviceService;
 
-    public DeviceController(IDeviceService deviceService, ICompanyOwnerService companyOwnerService, IHomeDeviceService homeDeviceService)
+    public DeviceController(IDeviceService deviceService, ICompanyOwnerService companyOwnerService)
     {
         _deviceService = deviceService;
         _companyOwnerService = companyOwnerService;
-        _homeDeviceService = homeDeviceService;
     }
 
     [HttpPost("cameras")]
@@ -149,7 +147,7 @@ public class DeviceController : HomifyControllerBase
         var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
         var response = _deviceService
-                .GetAll(req)
+                .GetAll(req.DeviceName, req.Model, req.Company, req.Type)
                 .Skip(pageOffset)
                 .Take(pageSize)
                 .Select(d => new SearchDevicesResponse(d))

@@ -1,4 +1,4 @@
-﻿namespace Homify.BusinessLogic.Devices.Entities;
+﻿namespace Homify.WebApi.Controllers.Devices.Models.Requests;
 
 public class DeviceFiltersRequest
 {

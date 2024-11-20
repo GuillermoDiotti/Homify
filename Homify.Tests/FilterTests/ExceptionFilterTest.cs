@@ -7,21 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Moq;
-using Exception = Homify.WebApi.Filters.Exception;
 using InvalidOperationException = System.InvalidOperationException;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 
 namespace Homify.Tests.FilterTests;
 
 [TestClass]
-public class ExceptionTest
+public class ExceptionFilterTest
 {
     private readonly ExceptionContext _context;
-    private readonly Exception _attribute;
+    private readonly ExceptionFilter _attribute;
 
-    public ExceptionTest()
+    public ExceptionFilterTest()
     {
-        _attribute = new Exception();
+        _attribute = new ExceptionFilter();
         _context = new ExceptionContext(
             new ActionContext(
                 new Mock<HttpContext>().Object,

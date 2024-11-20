@@ -6,7 +6,7 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.WebApi.Filters;
 
-public class Exception : IExceptionFilter
+public class ExceptionFilter : IExceptionFilter
 {
     private readonly Dictionary<Type, Func<System.Exception, IActionResult>>
      _errors = new Dictionary<Type, Func<System.Exception, IActionResult>>
