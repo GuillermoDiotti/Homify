@@ -27,8 +27,8 @@ public sealed class AdminController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateAdmin)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateAdmin)]
     public CreateAdminResponse Create(CreateAdminRequest? request)
     {
         Helpers.ValidateRequest(request);
@@ -48,16 +48,16 @@ public sealed class AdminController : HomifyControllerBase
     }
 
     [HttpDelete("{adminId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.DeleteAdmin)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.DeleteAdmin)]
     public void Delete(string adminId)
     {
         _userService.Delete(adminId);
     }
 
     [HttpGet("accounts")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetAllAccounts)]
     public List<UserBasicInfo> AllAccounts([FromQuery] UserFiltersRequest? req)
     {
         var pageSize = 10;

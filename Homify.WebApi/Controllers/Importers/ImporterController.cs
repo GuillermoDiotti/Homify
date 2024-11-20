@@ -19,8 +19,8 @@ public sealed class ImporterController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public void AddImportedDevices(ImportRequest request)
     {
         Helpers.ValidateRequest(request);
@@ -35,8 +35,8 @@ public sealed class ImporterController : HomifyControllerBase
     }
 
     [HttpGet]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public List<string> ObtainImporters()
     {
         return _importerService
@@ -46,8 +46,8 @@ public sealed class ImporterController : HomifyControllerBase
     }
 
     [HttpGet("validators")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public List<string> GetAllValidators()
     {
         return _importerService

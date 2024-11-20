@@ -6,10 +6,10 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.WebApi.Filters;
 
-public class ExceptionFilter : IExceptionFilter
+public class Exception : IExceptionFilter
 {
-    private readonly Dictionary<Type, Func<Exception, IActionResult>>
-     _errors = new Dictionary<Type, Func<Exception, IActionResult>>
+    private readonly Dictionary<Type, Func<System.Exception, IActionResult>>
+     _errors = new Dictionary<Type, Func<System.Exception, IActionResult>>
      {
         {
             typeof(ArgsNullException), exception =>
@@ -115,7 +115,7 @@ public class ExceptionFilter : IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         Type exceptionType = context.Exception.GetType();
-        Func<Exception, IActionResult>? responseBuilder = _errors.GetValueOrDefault(exceptionType);
+        Func<System.Exception, IActionResult>? responseBuilder = _errors.GetValueOrDefault(exceptionType);
 
         if (responseBuilder == null)
         {

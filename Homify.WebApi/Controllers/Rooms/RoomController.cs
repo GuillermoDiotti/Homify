@@ -23,8 +23,8 @@ public class RoomController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public CreateRoomResponse Create(CreateRoomRequest request)
     {
         Helpers.ValidateRequest(request);
@@ -41,8 +41,8 @@ public class RoomController : HomifyControllerBase
     }
 
     [HttpGet("{homeId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
     {
         return _roomService
@@ -52,8 +52,8 @@ public class RoomController : HomifyControllerBase
     }
 
     [HttpPut("{roomId}/{homeDeviceId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public Room AssignHomeDeviceToRoom([FromRoute] string roomId, [FromRoute] string homeDeviceId)
     {
         var owner = GetUserLogged();

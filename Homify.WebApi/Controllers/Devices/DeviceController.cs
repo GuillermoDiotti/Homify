@@ -29,8 +29,8 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("cameras")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterCamera)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterCamera)]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
         Helpers.ValidateRequest(req);
@@ -57,8 +57,8 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("window-sensors")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterWindowSensor(CreateSensorRequest? req)
     {
         Helpers.ValidateRequest(req);
@@ -86,8 +86,8 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("lamps")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
     {
         Helpers.ValidateRequest(req);
@@ -114,8 +114,8 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("movement-sensors")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterMovementSensor(CreateSensorRequest req)
     {
         Helpers.ValidateRequest(req);
@@ -142,7 +142,7 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpGet]
-    [AuthenticationFilter]
+    [Authentication]
     public List<SearchDevicesResponse> ObtainDevices([FromQuery] DeviceFiltersRequest? req)
     {
         var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
@@ -159,7 +159,7 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpGet("supported")]
-    [AuthenticationFilter]
+    [Authentication]
     public List<SearchSupportedDevicesResponse> ObtainSupportedDevices()
     {
         return _deviceService

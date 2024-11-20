@@ -22,8 +22,8 @@ public class CompanyController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
         Helpers.ValidateRequest(request);
@@ -45,8 +45,8 @@ public class CompanyController : HomifyControllerBase
     }
 
     [HttpGet]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetCompanies)]
     public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest? req)
     {
         var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
@@ -61,8 +61,8 @@ public class CompanyController : HomifyControllerBase
     }
 
     [HttpPut("validators")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public AddValidatorBasicInfo UpdateCompanyValidator(AddValidatorBasicInfo req)
     {
         var user = GetUserLogged();

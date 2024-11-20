@@ -79,8 +79,8 @@ public class NotificationController : HomifyControllerBase
     }
 
     [HttpGet]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetUserNotifications)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetUserNotifications)]
     public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string? deviceType, [FromQuery] string? date, [FromQuery] string? read)
     {
         var user = GetUserLogged();
@@ -107,8 +107,8 @@ public class NotificationController : HomifyControllerBase
     }
 
     [HttpPut("{notificationId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateUserNotification)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateUserNotification)]
     public UpdateNotificationResponse UpdateNotification([FromRoute] string notificationId)
     {
         var user = GetUserLogged();

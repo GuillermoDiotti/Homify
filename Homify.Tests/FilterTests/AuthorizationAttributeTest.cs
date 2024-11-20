@@ -14,17 +14,18 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using Moq;
+using Authorization = Homify.WebApi.Filters.Authorization;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 
 namespace Homify.Tests.FilterTests;
 
 [TestClass]
-public class AuthorizationFilterAttributeTest
+public class AuthorizationAttributeTest
 {
     private readonly Mock<HttpContext> _httpContextMock;
     private readonly Mock<ISessionService> _sessionServiceMock;
     private readonly AuthorizationFilterContext _context;
-    private AuthorizationFilter _attribute = null!;
+    private Authorization _attribute = null!;
 
     private readonly SystemPermission _permission;
     private readonly Role _roleForTest;
@@ -32,7 +33,7 @@ public class AuthorizationFilterAttributeTest
     private readonly string _validToken;
     private readonly string _authorizationHeader;
 
-    public AuthorizationFilterAttributeTest()
+    public AuthorizationAttributeTest()
     {
         _httpContextMock = new Mock<HttpContext>(MockBehavior.Loose);
         _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Loose);
@@ -74,7 +75,7 @@ public class AuthorizationFilterAttributeTest
             .Returns(_sessionServiceMock.Object);
         _httpContextMock.SetupSet(h => h.Items[Items.UserLogged] = _user);
         _httpContextMock.Setup(h => h.Items[Items.UserLogged]).Returns(_user);
-        _attribute = new AuthorizationFilter("admins-Create");
+        _attribute = new Authorization("admins-Create");
     }
 
     [TestMethod]
@@ -130,7 +131,7 @@ public class AuthorizationFilterAttributeTest
     {
         _user.Roles.First().Role.Permissions.Clear();
 
-        _attribute = new AuthorizationFilter("admins-Create");
+        _attribute = new Authorization("admins-Create");
         _attribute.OnAuthorization(_context);
 
         var response = _context.Result;

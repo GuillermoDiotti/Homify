@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Homify.WebApi.Filters;
 
-public sealed class AuthorizationFilter : AuthenticationFilterAttribute
+public sealed class Authorization : AuthenticationAttribute
 {
     public string Code { get; set; }
 
-    public AuthorizationFilter(string code)
+    public Authorization(string code)
     {
         Code = code;
     }

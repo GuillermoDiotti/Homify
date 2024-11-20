@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Homify.WebApi.Filters;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class AuthenticationFilterAttribute : Attribute, IAuthorizationFilter
+public class AuthenticationAttribute : Attribute, IAuthorizationFilter
 {
     private const string AUTHORIZATION_HEADER = "Authorization";
     public virtual void OnAuthorization(AuthorizationFilterContext context)

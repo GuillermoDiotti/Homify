@@ -32,8 +32,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public CreateHomeResponse Create(CreateHomeRequest request)
     {
         Helpers.ValidateRequest(request);
@@ -53,8 +53,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/members")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeMembersList)]
     public UpdateMembersListResponse AddMemberToHome(
         [FromRoute] string homeId,
         UpdateMemberListRequest? request)
@@ -67,8 +67,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/{memberId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeMembersList)]
     public HomeMemberBasicInfo ChangeHomeMemberPermissions(
         [FromRoute] string? homeId,
         [FromRoute] string memberId,
@@ -93,8 +93,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/devices")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeDevices)]
     public UpdateHomeDeviceResponse AssignDeviceToHome(
         UpdateHomeDevicesRequest request,
         [FromRoute] string homeId)
@@ -108,8 +108,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpGet("{homeId}/members")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetHomeMembers)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetHomeMembers)]
     public List<GetMemberResponse> ObtainMembers([FromRoute] string homeId)
     {
         var user = GetUserLogged();
@@ -121,8 +121,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/notifications")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeNotificatedMembers)]
     public NotificatedMembersResponse UpdateNotificatedMembers(
         [FromRoute] string homeId,
         NotificatedMembersRequest request)
@@ -138,8 +138,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/rename")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public UpdateHomeResponse UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
         Helpers.ValidateRequest(req);
@@ -151,8 +151,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpGet("by-owner")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public List<GetHomesResponse> ObtainHomesWhereUserIsOwner()
     {
         var user = GetUserLogged();
@@ -163,8 +163,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpGet("by-member")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public List<GetHomesResponse> ObtainHomesWhereUserIsMember()
     {
         var user = GetUserLogged();
@@ -175,8 +175,8 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpGet("{homeId}/devices")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetHomeDevices)]
     public List<GetHomeDevicesResponse> AllHomeDevices([FromRoute] string homeId, [FromQuery] string? room)
     {
         var user = GetUserLogged();

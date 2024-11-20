@@ -33,6 +33,7 @@ using Homify.DataAccess.Contexts;
 using Homify.DataAccess.Repositories;
 using Homify.WebApi.Filters;
 using Microsoft.EntityFrameworkCore;
+using Exception = Homify.WebApi.Filters.Exception;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +45,7 @@ builder
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter>(); });
+builder.Services.AddControllers(options => { options.Filters.Add<Exception>(); });
 
 var services = builder.Services;
 var configuration = builder.Configuration;
@@ -63,7 +64,7 @@ services.AddCors(options =>
 var homifyConnectionString = configuration.GetConnectionString("Homify");
 if (string.IsNullOrEmpty(homifyConnectionString))
 {
-    throw new Exception("Missing Homify connection string");
+    throw new System.Exception("Missing Homify connection string");
 }
 
 services.AddControllers()
@@ -122,7 +123,7 @@ services.AddScoped<INotificationService, NotificationService>();
 
 services.AddScoped<IImporterService, ImporterService>();
 
-services.AddScoped<AuthenticationFilterAttribute>();
+services.AddScoped<AuthenticationAttribute>();
 
 var app = builder.Build();
 

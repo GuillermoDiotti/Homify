@@ -18,7 +18,7 @@ public class RoleController : HomifyControllerBase
     }
 
     [HttpPut]
-    [AuthenticationFilter]
+    [Authentication]
     public RoleBasicInfo AssignRoleToExistingUser()
     {
         var user = GetUserLogged();

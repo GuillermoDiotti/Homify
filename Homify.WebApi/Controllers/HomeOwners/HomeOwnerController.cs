@@ -44,8 +44,8 @@ public class HomeOwnerController : HomifyControllerBase
     }
 
     [HttpPut("profile")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public UpdateProfileResponse UpdateProfileResponse(UpdateProfileRequest req)
     {
         Helpers.ValidateRequest(req);

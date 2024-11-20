@@ -7,20 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Moq;
+using Exception = Homify.WebApi.Filters.Exception;
 using InvalidOperationException = System.InvalidOperationException;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 
 namespace Homify.Tests.FilterTests;
 
 [TestClass]
-public class ExceptionFilterTest
+public class ExceptionTest
 {
     private readonly ExceptionContext _context;
-    private readonly ExceptionFilter _attribute;
+    private readonly Exception _attribute;
 
-    public ExceptionFilterTest()
+    public ExceptionTest()
     {
-        _attribute = new ExceptionFilter();
+        _attribute = new Exception();
         _context = new ExceptionContext(
             new ActionContext(
                 new Mock<HttpContext>().Object,
@@ -32,7 +33,7 @@ public class ExceptionFilterTest
     [TestMethod]
     public void OnException_WhenExceptionIsNotRegistered_ShouldResponseInternalError()
     {
-        _context.Exception = new Exception("Not registered");
+        _context.Exception = new System.Exception("Not registered");
 
         _attribute.OnException(_context);
 

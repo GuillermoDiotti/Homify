@@ -13,12 +13,12 @@ using Moq;
 namespace Homify.Tests.FilterTests;
 
 [TestClass]
-public class AuthenticationFilterAttributeTest(
+public class AuthenticationAttributeTest(
     Mock<HttpContext> httpContextMock,
     Mock<ISessionService> sessionServiceMock,
     AuthorizationFilterContext context)
 {
-    private readonly AuthenticationFilterAttribute _attribute = new();
+    private readonly AuthenticationAttribute _attribute = new();
 
     [TestMethod]
     public void Authenticate_WhenTokenIsCorrect_ShouldNotFail()

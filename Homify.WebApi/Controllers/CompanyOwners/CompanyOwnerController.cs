@@ -24,8 +24,8 @@ public class CompanyOwnerController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompanyOwner)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompanyOwner)]
     public CreateCompanyOwnerResponse Create(CreateCompanyOwnerRequest? request)
     {
         Helpers.ValidateRequest(request);

@@ -10,7 +10,7 @@ using Moq;
 
 namespace Homify.Tests.FilterTests;
 
-public class NonAuthenticationFilterAttributeTest
+public class NonAuthenticationAttributeTest
 {
     [TestClass]
     public class NonAuthenticationFilterTests

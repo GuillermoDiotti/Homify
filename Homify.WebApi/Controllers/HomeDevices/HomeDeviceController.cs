@@ -20,8 +20,8 @@ public class HomeDeviceController : HomifyControllerBase
     }
 
     [HttpPut("{id}/update")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public string RenameHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
         Helpers.ValidateRequest(req);
@@ -35,8 +35,8 @@ public class HomeDeviceController : HomifyControllerBase
     }
 
     [HttpPut("{hardwareId}/activate")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeDevices)]
     public TurnOnDeviceResponse TurnOnHomeDevice([FromRoute] string hardwareId)
     {
         var user = GetUserLogged();
@@ -46,8 +46,8 @@ public class HomeDeviceController : HomifyControllerBase
     }
 
     [HttpPut("{hardwareId}/deactivate")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeDevices)]
     public TurnOnDeviceResponse TurnOffHomeDevice([FromRoute] string hardwareId)
     {
         var user = GetUserLogged();
