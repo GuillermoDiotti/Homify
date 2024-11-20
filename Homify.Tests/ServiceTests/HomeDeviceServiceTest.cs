@@ -381,4 +381,25 @@ public class HomeDeviceServiceTest
         Assert.IsNotNull(result);
         Assert.IsFalse(result.IsOn);
     }
+
+    [TestMethod]
+    public void GetAAll_ByHomeDeviceId()
+    {
+        var hardwareId = "Device123";
+        var user = new User { Id = "testUserId" };
+        var homeDevice = new HomeDevice
+        {
+            Id = "Device123",
+            IsActive = false,
+            HardwareId = hardwareId,
+            Home = new Home { OwnerId = user.Id, Members = [new HomeUser { UserId = user.Id }] }
+        };
+
+        _homeDeviceRepositoryMock.Setup(d => d.GetAll(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns([homeDevice]);
+
+        _homeDeviceService.GetHomeDeviceByHomeId("testUserId");
+
+        _homeDeviceRepositoryMock.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<HomeDevice, bool>>>()), Times.Once);
+    }
 }
