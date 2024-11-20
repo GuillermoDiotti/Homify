@@ -231,4 +231,18 @@ public class RoomServiceTest
     {
         var args = new UpdateRoomArgs(null, "homeDeviceId", new HomeOwner { Id = "owner123" });
     }
+
+    [ExpectedException(typeof(NullReferenceException))]
+    [TestMethod]
+    public void UpdateRoom_WhenHomeDeviceIdIsNull_ThrowsException()
+    {
+        var args = new UpdateRoomArgs("id", null, new HomeOwner { Id = "owner123" });
+    }
+
+    [ExpectedException(typeof(NullReferenceException))]
+    [TestMethod]
+    public void UpdateRoom_WhenHomeOwnersNull_ThrowsException()
+    {
+        var args = new UpdateRoomArgs("id", "id", null);
+    }
 }
