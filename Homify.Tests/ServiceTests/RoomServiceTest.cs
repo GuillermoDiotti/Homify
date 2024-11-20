@@ -32,13 +32,20 @@ public class RoomServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
-    public void AddHomeRoom_HomeNotFound_ThrowsNotFoundException()
+    public void AddHomeRoom_HomeNotFound_ThrowsException()
     {
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
         _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns((Home)null);
 
         _roomService.AddHomeRoom(args);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void AddHomeRoom_RoomNHomeIdNull_ThrowsException()
+    {
+        var args = new CreateRoomArgs("room", null, new HomeOwner { Id = "owner123" });
     }
 
     [TestMethod]
