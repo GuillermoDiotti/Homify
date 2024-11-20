@@ -189,4 +189,25 @@ public class RoomServiceTest
 
         _mockRoomRepository.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>()), Times.Once);
     }
+
+    [TestMethod]
+    public void ListRooms()
+    {
+        var expectedRooms = new List<Room>
+        {
+            new Room { Id = "1", Name = "Living Room", HomeId = "homeId", Home = new Home() { Id = "homeId" } },
+            new Room { Id = "2", Name = "Bedroom", HomeId = "homeId", Home = new Home() { Id = "homeId" } }
+        };
+
+        _mockRoomRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(expectedRooms);
+
+        var result = _roomService.GetAll();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Living Room", result[0].Name);
+        Assert.AreEqual("Bedroom", result[1].Name);
+
+        _mockRoomRepository.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>()), Times.Once);
+    }
 }

@@ -65,12 +65,8 @@ public class SessionServiceTest
             Password = "password123",
             LastName = "Doe",
         };
-        var session = new Session()
-        {
-            AuthToken = "token",
-            User = expectedUser,
-            Id = "123456789"
-        };
+        var session = new Session("token", expectedUser);
+        session.UserId = "123456";
 
         _sessionRepositoryMock.Setup(repo =>
             repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);
