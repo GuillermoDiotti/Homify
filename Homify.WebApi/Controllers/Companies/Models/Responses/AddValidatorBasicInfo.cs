@@ -4,8 +4,8 @@ public sealed record class AddValidatorBasicInfo
 {
     public string Model { get; set; } = null!;
 
-    public AddValidatorBasicInfo(string str)
+    public AddValidatorBasicInfo(/*string str*/)
     {
-        Model = str;
+        // Model = str;
     }
 }

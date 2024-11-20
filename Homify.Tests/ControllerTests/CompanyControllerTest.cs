@@ -301,7 +301,7 @@ public class CompanyControllerTest
     public void UpdateCompanyValidator_ShouldReturnUpdatedModel_WhenRequestIsValid()
     {
         var user = new User { Id = "1" };
-        var request = new AddValidatorBasicInfo("TestModel");
+        var request = new AddValidatorBasicInfo(/*"TestModel"*/);
         var updatedModel = "UpdatedModel";
 
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
