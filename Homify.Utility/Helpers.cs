@@ -26,14 +26,6 @@ public static class Helpers
         }
     }
 
-    public static void ValidateInvalidOperation(bool obj)
-    {
-        if (obj == false)
-        {
-            throw new InvalidOperationException("Error: The data you provided is incorrect");
-        }
-    }
-
     public static void ValidateArgsNull(string? actor, object? obj)
     {
         if (obj == null)

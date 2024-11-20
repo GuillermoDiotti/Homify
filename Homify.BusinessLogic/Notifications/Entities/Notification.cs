@@ -1,10 +1,11 @@
 ﻿using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 
-public class Notification
+public sealed record class Notification
 {
     public string? Id { get; init; }
     public string? Event { get; init; }

@@ -3,9 +3,9 @@ using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.Rooms.Entities;
 
 namespace Homify.BusinessLogic.HomeDevices.Entities;
-public class HomeDevice
+public sealed record class HomeDevice
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; init; } = null!;
     public string? CustomName { get; set; } = null!;
     public string HomeId { get; set; } = null!;
     public string DeviceId { get; set; } = null!;

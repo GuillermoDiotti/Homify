@@ -12,6 +12,7 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications;

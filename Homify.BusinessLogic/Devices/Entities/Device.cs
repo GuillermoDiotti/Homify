@@ -2,7 +2,7 @@
 
 namespace Homify.BusinessLogic.Devices.Entities;
 
-public class Device
+public record class Device
 {
     public string Id { get; init; }
     public string? Type { get; set; } = null!;

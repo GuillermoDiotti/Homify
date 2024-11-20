@@ -2,9 +2,9 @@
 
 namespace Homify.BusinessLogic.Roles.Entities;
 
-public class Role
+public sealed record class Role
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; init; } = null!;
     public string Name { get; set; } = null!;
     public List<SystemPermission> Permissions { get; init; }
 

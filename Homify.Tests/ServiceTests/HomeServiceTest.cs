@@ -8,6 +8,7 @@ using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;

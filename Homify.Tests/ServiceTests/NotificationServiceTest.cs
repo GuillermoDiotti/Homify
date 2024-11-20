@@ -4,6 +4,7 @@ using Homify.BusinessLogic;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;

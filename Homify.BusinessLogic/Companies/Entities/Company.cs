@@ -6,7 +6,7 @@ using ModeloValidador.Abstracciones;
 
 namespace Homify.BusinessLogic.Companies.Entities;
 
-public class Company
+public sealed record class Company
 {
     [NotMapped]
     private IModeloValidador _validator = null!;

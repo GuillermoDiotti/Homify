@@ -4,6 +4,7 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;

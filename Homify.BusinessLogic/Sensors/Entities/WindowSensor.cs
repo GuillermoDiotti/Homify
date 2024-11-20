@@ -3,7 +3,7 @@ using Homify.Utility;
 
 namespace Homify.BusinessLogic.Sensors.Entities;
 
-public class WindowSensor : Device
+public sealed record class WindowSensor : Device
 {
     public WindowSensor()
         : base()

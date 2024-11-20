@@ -1,4 +1,6 @@
-﻿namespace Homify.BusinessLogic.HomeUsers;
+﻿using Homify.BusinessLogic.HomeUsers.Entities;
+
+namespace Homify.BusinessLogic.HomeUsers;
 
 public interface IHomeUserService
 {

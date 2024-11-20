@@ -2,7 +2,7 @@
 
 namespace Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 
-public class SystemPermission
+public sealed record class SystemPermission
 {
     public string Id { get; init; }
     public string? Value { get; set; }

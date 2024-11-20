@@ -3,7 +3,7 @@ using Homify.BusinessLogic.Homes.Entities;
 
 namespace Homify.BusinessLogic.Rooms.Entities;
 
-public class Room
+public sealed record class Room
 {
     public string Id { get; init; }
     public string? Name { get; set; }
