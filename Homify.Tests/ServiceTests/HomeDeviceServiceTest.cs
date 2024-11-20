@@ -23,7 +23,6 @@ public class HomeDeviceServiceTest
 {
     private Mock<IRepository<HomeDevice>>? _homeDeviceRepositoryMock;
     private HomeDeviceService? _homeDeviceService;
-    private Mock<IHomeDeviceService>? _homedeviceServiceMock;
     private Mock<IDeviceService>? _deviceServiceMock;
     private Mock<INotificationService>? _notificationServiceMock;
     private Mock<IHomeUserService>? _homeUserServiceMock;
@@ -36,7 +35,12 @@ public class HomeDeviceServiceTest
         _notificationServiceMock = new Mock<INotificationService>();
         _homeUserServiceMock = new Mock<IHomeUserService>();
         _homeDeviceService = new HomeDeviceService(_homeDeviceRepositoryMock.Object, _deviceServiceMock.Object, _notificationServiceMock.Object, _homeUserServiceMock.Object);
-        _homedeviceServiceMock = new Mock<IHomeDeviceService>();
+    }
+
+    [TestMethod]
+    public void AddHomeDevice_ShouldThrowNotFoundException_WhenHomeIsNull()
+    {
+        Assert.ThrowsException<NotFoundException>(() => _homeDeviceService.AddHomeDevice(null, new Device()));
     }
 
     [TestMethod]

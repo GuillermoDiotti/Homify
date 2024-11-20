@@ -74,4 +74,9 @@ public class Company
     {
         return typeof(T).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract;
     }
+
+    public void SetValidatorForTest(IModeloValidador validator)
+    {
+        _validator = validator;
+    }
 }

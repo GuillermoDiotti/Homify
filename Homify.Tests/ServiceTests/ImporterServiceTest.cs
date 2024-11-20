@@ -24,6 +24,7 @@ public class ImporterServiceTest
     private Mock<IDeviceService>? _deviceServiceMock;
     private Mock<ICompanyOwnerService>? _companyOwnerServiceMock;
     private string validatorpath;
+
     public ImporterServiceTest()
     {
         _importerServiceMock = new Mock<IImporterService>();
@@ -197,5 +198,13 @@ public class ImporterServiceTest
         args.Path.Should().NotBeNull();
         args.User.Should().NotBeNull();
     }
+}
+
+public interface IFileSystem
+{
+    string[] GetFiles(string path);
+    bool FileExists(string path);
+    FileInfo GetFileInfo(string path);
+    Assembly LoadAssembly(string path);
 }
 
