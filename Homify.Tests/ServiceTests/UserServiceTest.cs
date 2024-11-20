@@ -11,6 +11,7 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
+using Microsoft.AspNetCore.Identity;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -45,6 +46,13 @@ public class UserServiceTest
         Assert.AreEqual("123", per.Id);
         Assert.AreEqual("test", per.Value);
         Assert.IsNotNull(per.Roles);
+    }
+
+    [ExpectedException(typeof(ArgsNullException))]
+    [TestMethod]
+    public void CreateHomeOwner_WhenInfoInvalid_ThrowsException()
+    {
+        var args = new CreateHomeOwnerArgs("John", "mail@domain.com", "password123!", "Doe", null, RolesGenerator.HomeOwner());
     }
 
     [TestMethod]
