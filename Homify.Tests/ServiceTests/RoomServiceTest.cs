@@ -224,4 +224,11 @@ public class RoomServiceTest
 
         _mockRoomRepository.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>()), Times.Once);
     }
+
+    [ExpectedException(typeof(NullReferenceException))]
+    [TestMethod]
+    public void UpdateRoom_WhenRoomIdIsNull_ThrowsException()
+    {
+        var args = new UpdateRoomArgs(null, "homeDeviceId", new HomeOwner { Id = "owner123" });
+    }
 }
