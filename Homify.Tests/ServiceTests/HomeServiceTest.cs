@@ -627,4 +627,18 @@ public class HomeServiceTest
     {
         _homeService.AssignDevice("device123", null, new User());
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateNofiticatedList_WhenUserNotFoundInHome_ThrowsNotFoundException()
+    {
+        var userId = "user-123";
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members =  new List<HomeUser>() };
+        var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
+        var user = new User { Id = userId };
+
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home { Id = "homeId", OwnerId = "ownerId", Alias = "oldAlias" });
+
+        _homeService.UpdateNotificatedList("NewName", "device-123", user);
+    }
 }
