@@ -54,7 +54,7 @@ public class ImporterService : IImporterService
         return availableImporters;
     }
 
-    public List<IImporter> GetAllImporters()
+    public List<IImporter> GetAll()
     {
         var importersPath = "./Importers";
         var filePaths = Directory.GetFiles(importersPath);
@@ -99,7 +99,7 @@ public class ImporterService : IImporterService
             throw new System.InvalidOperationException("Owner must have a company to import devices");
         }
 
-        IImporter? importerFile = GetAllImporters()
+        IImporter? importerFile = GetAll()
             .FirstOrDefault(i => i.GetName().Equals(args.Importer, StringComparison.OrdinalIgnoreCase));
 
         if (importerFile == null)

@@ -38,7 +38,7 @@ public class RoleServiceTest
         _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
             .Returns(role);
 
-        var result = _service.GetRole(roleId);
+        var result = _service.Get(roleId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(roleId, result.Id);
@@ -56,7 +56,7 @@ public class RoleServiceTest
         _roleRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Role, bool>>>()))
             .Returns(RolesGenerator.HomeOwner);
 
-        Assert.ThrowsException<InvalidOperationException>(() => _service.AddRoleToUser(user));
+        Assert.ThrowsException<InvalidOperationException>(() => _service.AddToUser(user));
     }
 
     [TestMethod]
@@ -86,7 +86,7 @@ public class RoleServiceTest
         var roleService = new RoleService(mockRepository.Object, mockUserService.Object);
 
         // Act
-        roleService.AddRoleToUser(user);
+        roleService.AddToUser(user);
 
         // Assert
         mockUserService.Verify(us => us.LoadIntermediateTable(user.Id, Constants.HOMEOWNERID), Times.Once);

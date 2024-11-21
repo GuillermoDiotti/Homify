@@ -26,10 +26,10 @@ public class NotificationService : INotificationService
         return notifications.Where(n => n.HomeUser.UserId == userId).ToList();
     }
 
-    public List<Notification> AddPersonDetectedNotification(CreateNotificationArgs notification)
+    public List<Notification> AddPersonDetected(CreateNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -56,10 +56,10 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public List<Notification> AddWindowNotification(CreateGenericNotificationArgs notification)
+    public List<Notification> AddWindow(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -85,10 +85,10 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public List<Notification> AddLampNotifications(CreateGenericNotificationArgs notificationArgs)
+    public List<Notification> AddLamp(CreateGenericNotificationArgs notificationArgs)
     {
         var homeId = notificationArgs.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -114,10 +114,10 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public List<Notification> AddMovementNotification(CreateGenericNotificationArgs notification)
+    public List<Notification> AddMovement(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -143,7 +143,7 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification ReadNotificationById(string id, User u)
+    public Notification ReadById(string id, User u)
     {
         var noti = _notificationRepository.Get(x => x.Id == id);
         if (noti.HomeUser.UserId != u.Id)

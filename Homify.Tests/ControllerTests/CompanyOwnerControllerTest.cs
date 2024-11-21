@@ -59,7 +59,7 @@ public class CompanyOwnerControllerTest
             Roles = [new UserRole() { UserId = "123", Role = expectedRole }]
         };
 
-        _roleServiceMock.Setup(r => r.GetRole("COMPANYOWNER")).Returns(expectedRole);
+        _roleServiceMock.Setup(r => r.Get("COMPANYOWNER")).Returns(expectedRole);
         _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Returns(expectedOwner);
 
         var response = _controller.Create(request);

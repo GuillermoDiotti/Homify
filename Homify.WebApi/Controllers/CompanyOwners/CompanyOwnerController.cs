@@ -30,7 +30,7 @@ public class CompanyOwnerController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var role = _roleService.GetRole(Constants.COMPANYOWNER);
+        var role = _roleService.Get(Constants.COMPANYOWNER);
 
         var arguments = new CreateUserArgs(
             request.Name ?? string.Empty,

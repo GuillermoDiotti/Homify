@@ -6,9 +6,9 @@ namespace Homify.BusinessLogic.Notifications;
 public interface INotificationService
 {
     List<Notification> GetAllByUserId(string userId);
-    List<Notification> AddPersonDetectedNotification(CreateNotificationArgs notification);
-    List<Notification> AddWindowNotification(CreateGenericNotificationArgs notification);
-    List<Notification> AddMovementNotification(CreateGenericNotificationArgs notification);
-    List<Notification> AddLampNotifications(CreateGenericNotificationArgs notification);
-    Notification ReadNotificationById(string id, User u);
+    List<Notification> AddPersonDetected(CreateNotificationArgs notification);
+    List<Notification> AddWindow(CreateGenericNotificationArgs notification);
+    List<Notification> AddMovement(CreateGenericNotificationArgs notification);
+    List<Notification> AddLamp(CreateGenericNotificationArgs notification);
+    Notification ReadById(string id, User u);
 }

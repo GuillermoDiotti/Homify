@@ -369,7 +369,7 @@ public class HomesControllerTest
 
         var expectedHome = new Home("calle 1", "1", "101", "202", 3, owner, [], []);
 
-        _homeServiceMock.Setup(service => service.AddHome(It.IsAny<CreateHomeArgs>()))
+        _homeServiceMock.Setup(service => service.Add(It.IsAny<CreateHomeArgs>()))
             .Returns(expectedHome);
 
         var response = _controller.Create(request);
@@ -413,7 +413,7 @@ public class HomesControllerTest
             HardwareId = "1001"
         };
 
-        _homeServiceMock.Setup(service => service.AssignDeviceToHome(request.DeviceId, "home1", user)).Returns(updatedDevice);
+        _homeServiceMock.Setup(service => service.AssignDevice(request.DeviceId, "home1", user)).Returns(updatedDevice);
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = user;
@@ -421,7 +421,7 @@ public class HomesControllerTest
 
         var result = _controller.AssignDeviceToHome(request, "home1");
 
-        _homeServiceMock.Verify(service => service.AssignDeviceToHome(request.DeviceId, "home1", user), Times.Once);
+        _homeServiceMock.Verify(service => service.AssignDevice(request.DeviceId, "home1", user), Times.Once);
     }
 
     [TestMethod]
@@ -520,7 +520,7 @@ public class HomesControllerTest
         httpContext.Items[Items.UserLogged] = user;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Setup(service => service.UpdateHome(home.Id, "updatedAlias", user)).Returns(updatedHome);
+        _homeServiceMock.Setup(service => service.Update(home.Id, "updatedAlias", user)).Returns(updatedHome);
 
         _controller.UpdateHome("home123", req);
     }
@@ -548,7 +548,7 @@ public class HomesControllerTest
         httpContext.Items[Items.UserLogged] = user;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        _homeServiceMock.Setup(service => service.UpdateHome(home.Id, null, user)).Throws(new ArgumentNullException("Alias can not be null"));
+        _homeServiceMock.Setup(service => service.Update(home.Id, null, user)).Throws(new ArgumentNullException("Alias can not be null"));
 
         _controller.UpdateHome("home123", req);
     }
@@ -599,7 +599,7 @@ public class HomesControllerTest
             Id = "user123"
         };
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Throws(new NotFoundException("Home not found"));
+        _homeServiceMock.Setup(service => service.GetMembers(homeId, user)).Throws(new NotFoundException("Home not found"));
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = user;
@@ -626,7 +626,7 @@ public class HomesControllerTest
             }
         };
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Throws(new InvalidOperationException("Only the owner can see the members"));
+        _homeServiceMock.Setup(service => service.GetMembers(homeId, user)).Throws(new InvalidOperationException("Only the owner can see the members"));
 
         var httpContext = new DefaultHttpContext();
         httpContext.Items[Items.UserLogged] = user;
@@ -667,7 +667,7 @@ public class HomesControllerTest
             }
         };
 
-        _homeServiceMock.Setup(service => service.GetHomeMembers(homeId, user)).Returns(homeMembers);
+        _homeServiceMock.Setup(service => service.GetMembers(homeId, user)).Returns(homeMembers);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
@@ -680,7 +680,7 @@ public class HomesControllerTest
         result.Count.Should().Be(2);
         result[0].Should().BeEquivalentTo(new GetMemberResponse(homeMembers[0]));
         result[1].Should().BeEquivalentTo(new GetMemberResponse(homeMembers[1]));
-        _homeServiceMock.Verify(service => service.GetHomeMembers(homeId, user), Times.Once);
+        _homeServiceMock.Verify(service => service.GetMembers(homeId, user), Times.Once);
     }
 
     [TestMethod]
@@ -701,7 +701,7 @@ public class HomesControllerTest
         var permissionListDevices = new HomePermission { Value = PermissionsGenerator.MemberCanListDevices };
         var permissionsList = new List<HomePermission> { permissionAddDevice, permissionListDevices };
 
-        _homeUserServiceMock.Setup(service => service.GetHomeUser(homeId, memberId)).Returns(found);
+        _homeUserServiceMock.Setup(service => service.Get(homeId, memberId)).Returns(found);
 
         _homePermissionServiceMock.Setup(service => service.ChangeHomeMemberPermissions(request.CanAddDevices, request.CanListDevices, request.CanRenameDevices, user, found)).Returns(permissionsList);
         _homeUserServiceMock.Setup(service => service.Update(It.IsAny<HomeUser>())).Returns(found);
@@ -717,7 +717,7 @@ public class HomesControllerTest
         result.UserId.Should().Be(memberId);
         result.Permissions.Should().Contain(permissionAddDevice.Value.ToString());
         result.Permissions.Should().Contain(permissionListDevices.Value.ToString());
-        _homeUserServiceMock.Verify(service => service.GetHomeUser(homeId, memberId), Times.Once);
+        _homeUserServiceMock.Verify(service => service.Get(homeId, memberId), Times.Once);
         _homeUserServiceMock.Verify(service => service.Update(It.IsAny<HomeUser>()), Times.Once);
     }
 
@@ -726,7 +726,7 @@ public class HomesControllerTest
     {
         var user = new User { Id = "user1" };
         var homes = new List<Home> { new Home { Id = "home1" }, new Home { Id = "home2" } };
-        _homeServiceMock.Setup(service => service.GetAllHomesWhereUserIsOwner(user)).Returns(homes);
+        _homeServiceMock.Setup(service => service.GetAllWhereUserIsOwner(user)).Returns(homes);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
@@ -748,7 +748,7 @@ public class HomesControllerTest
             UserId = "user1"
         };
         var homes = new List<Home> { new Home { Id = "home1", Members = [hu1] } };
-        _homeServiceMock.Setup(service => service.GetAllHomesWhereUserIsMember(user)).Returns(homes);
+        _homeServiceMock.Setup(service => service.GetAllWhereUserIsMember(user)).Returns(homes);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()

@@ -51,7 +51,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -68,7 +68,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -85,7 +85,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -102,7 +102,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -119,7 +119,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -136,7 +136,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -155,7 +155,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -172,7 +172,7 @@ public class UserControllerTests
             LastName = null
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -202,7 +202,7 @@ public class UserControllerTests
         };
 
         _userServiceMock.Setup(user => user.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         var response = _controller.Create(request);
 

@@ -21,9 +21,9 @@ public class RoomService : IRoomService
         _homeDeviceService = homeDeviceService;
     }
 
-    public Room AddHomeRoom(CreateRoomArgs args)
+    public Room Add(CreateRoomArgs args)
     {
-        var home = _homeService.GetHomeById(args.HomeId);
+        var home = _homeService.GetById(args.HomeId);
 
         if (home == null)
         {
@@ -47,9 +47,9 @@ public class RoomService : IRoomService
         return room;
     }
 
-    public Room AssignHomeDeviceToRoom(UpdateRoomArgs args)
+    public Room AssignHomeDevice(UpdateRoomArgs args)
     {
-        var homeDevice = _homeDeviceService.GetHomeDeviceById(args.HomeDeviceId);
+        var homeDevice = _homeDeviceService.GetById(args.HomeDeviceId);
 
         var home = homeDevice.Home;
 
@@ -94,7 +94,7 @@ public class RoomService : IRoomService
 
     public bool ExistsDeviceInOtherRoom(HomeDevice homeDevice)
     {
-        foreach (var r in GetAllRoomsOfHouse(homeDevice.Home.Id))
+        foreach (var r in GetAll(homeDevice.Home.Id))
         {
             if (r.Devices.Contains(homeDevice))
             {
@@ -110,7 +110,7 @@ public class RoomService : IRoomService
         return _roomRepository.GetAll();
     }
 
-    public List<Room> GetAllRoomsOfHouse(string homeId)
+    public List<Room> GetAll(string homeId)
     {
         return _roomRepository.GetAll().Where(x => x.Home.Id == homeId).ToList();
     }

@@ -4,9 +4,9 @@ namespace Homify.BusinessLogic.Rooms;
 
 public interface IRoomService
 {
-    Room AddHomeRoom(CreateRoomArgs args);
+    Room Add(CreateRoomArgs args);
 
-    Room AssignHomeDeviceToRoom(UpdateRoomArgs args);
+    Room AssignHomeDevice(UpdateRoomArgs args);
 
-    List<Room> GetAllRoomsOfHouse(string homeId);
+    List<Room> GetAll(string homeId);
 }

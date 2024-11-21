@@ -18,7 +18,7 @@ public class RoleService : IRoleService
         _userService = userService;
     }
 
-    public Role? GetRole(string roleName)
+    public Role? Get(string roleName)
     {
         try
         {
@@ -30,16 +30,16 @@ public class RoleService : IRoleService
         }
     }
 
-    public void AddRoleToUser(User u)
+    public void AddToUser(User u)
     {
         var roles = u.Roles.Select(x => x.Role).ToList();
 
-        if (!roles.Contains(GetRole(Constants.ADMINISTRATOR)) && !roles.Contains(GetRole(Constants.COMPANYOWNER)))
+        if (!roles.Contains(Get(Constants.ADMINISTRATOR)) && !roles.Contains(Get(Constants.COMPANYOWNER)))
         {
             throw new InvalidOperationException("User must be an admin or company owner to add a role.");
         }
 
-        if (roles.Contains(GetRole(Constants.HOMEOWNER)))
+        if (roles.Contains(Get(Constants.HOMEOWNER)))
         {
             throw new InvalidOperationException("User has already the HomeOwner Role");
         }

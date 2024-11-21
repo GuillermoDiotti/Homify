@@ -7,7 +7,7 @@ namespace Homify.BusinessLogic.Importers;
 
 public interface IImporterService
 {
-    public List<IImporter> GetAllImporters();
+    public List<IImporter> GetAll();
     public void AddImportedDevices(ImporterArgs args, User user);
     public List<IModeloValidador> GetAllValidators();
 }

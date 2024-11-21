@@ -29,7 +29,7 @@ public class HomeOwnerController : HomifyControllerBase
     {
         Helpers.ValidateRequest(req);
 
-        var role = _roleService.GetRole(Constants.HOMEOWNER);
+        var role = _roleService.Get(Constants.HOMEOWNER);
         var args = new CreateHomeOwnerArgs(
             req.Name ?? string.Empty,
             req.Email ?? string.Empty,

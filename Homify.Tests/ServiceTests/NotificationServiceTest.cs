@@ -45,10 +45,10 @@ public class NotificationServiceTest
         var detectedUser = new User { Id = "Person123", Name = "John", LastName = "Doe" };
         var notificationArgs = new CreateNotificationArgs("Person123", homeDevice, false, "Hardware123");
 
-        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
+        _mockHomeUserService.Setup(s => s.GetByHomeId(homeDevice.HomeId)).Returns(homeUsers);
         _mockUserService.Setup(s => s.GetById("Person123")).Returns(detectedUser);
 
-        var result = _notificationService.AddPersonDetectedNotification(notificationArgs);
+        var result = _notificationService.AddPersonDetected(notificationArgs);
 
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual("Person Detected", result[0].Event);
@@ -67,9 +67,9 @@ public class NotificationServiceTest
         };
         var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Window state switch detected", "Window opened");
 
-        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
+        _mockHomeUserService.Setup(s => s.GetByHomeId(homeDevice.HomeId)).Returns(homeUsers);
 
-        var result = _notificationService.AddWindowNotification(notificationArgs);
+        var result = _notificationService.AddWindow(notificationArgs);
 
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual("Window opened", result[0].Event);
@@ -166,9 +166,9 @@ public class NotificationServiceTest
             homeUsers[0]);
         var notificationArgs = new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, "Hardware123", "Movement detected", null);
 
-        _mockHomeUserService.Setup(s => s.GetHomeUsersByHomeId(homeDevice.HomeId)).Returns(homeUsers);
+        _mockHomeUserService.Setup(s => s.GetByHomeId(homeDevice.HomeId)).Returns(homeUsers);
 
-        var result = _notificationService.AddMovementNotification(notificationArgs);
+        var result = _notificationService.AddMovement(notificationArgs);
 
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual("Movement detected in home", result[0].Event);
@@ -197,16 +197,16 @@ public class NotificationServiceTest
             new CreateGenericNotificationArgs(homeDevice, false, DateTimeOffset.Now, homeDevice.HardwareId, "movement detected", null);
 
         _mockHomeUserService
-            .Setup(service => service.GetHomeUsersByHomeId("Home123"))
+            .Setup(service => service.GetByHomeId("Home123"))
             .Returns(homeUsers);
 
         // Act
-        var result = _notificationService.AddMovementNotification(notificationArgs);
+        var result = _notificationService.AddMovement(notificationArgs);
 
         // Assert
         Assert.IsNotNull(result);
         _mockRepository.Verify(repo => repo.Add(It.IsAny<Notification>()), Times.Never, "No notifications should be added if no users are notificable.");
-        _mockHomeUserService.Verify(service => service.GetHomeUsersByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
+        _mockHomeUserService.Verify(service => service.GetByHomeId("Home123"), Times.Once, "HomeUsers should be fetched once.");
         _mockUserService.Verify(service => service.GetById(It.IsAny<string>()), Times.Never, "No users should be fetched if no users are notificable.");
     }
 
@@ -225,7 +225,7 @@ public class NotificationServiceTest
             .Setup(repo => repo.Get(It.IsAny<Expression<Func<Notification, bool>>>()))
             .Returns(notification);
 
-        var result = _notificationService.ReadNotificationById(notificationId, new User()
+        var result = _notificationService.ReadById(notificationId, new User()
         {
             Id = "User1"
         });

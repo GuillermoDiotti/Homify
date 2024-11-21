@@ -12,7 +12,7 @@ public class HomeUserService : IHomeUserService
         _repository = repository;
     }
 
-    public HomeUser? GetHomeUser(string? homeId, string? userId)
+    public HomeUser? Get(string? homeId, string? userId)
     {
         var response = _repository.Get(x => x.HomeId == homeId && x.UserId == userId);
 
@@ -30,7 +30,7 @@ public class HomeUserService : IHomeUserService
         return hu;
     }
 
-    public List<HomeUser> GetHomeUsersByHomeId(string id)
+    public List<HomeUser> GetByHomeId(string id)
     {
         return _repository.GetAll(x => x.HomeId == id);
     }

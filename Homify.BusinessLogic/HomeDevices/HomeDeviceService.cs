@@ -24,7 +24,7 @@ public class HomeDeviceService : IHomeDeviceService
         _notificationService = notificationService;
     }
 
-    public HomeDevice AddHomeDevice(Home home, Device device)
+    public HomeDevice Add(Home home, Device device)
     {
         if (home == null)
         {
@@ -45,7 +45,7 @@ public class HomeDeviceService : IHomeDeviceService
         return homeDevice;
     }
 
-    public HomeDevice? GetHomeDeviceByHardwareId(string id)
+    public HomeDevice? GetByHardwareId(string id)
     {
         try
         {
@@ -59,7 +59,7 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice Activate(string hardwareId, User logged)
     {
-        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        var homeDevice = GetByHardwareId(hardwareId);
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
@@ -80,7 +80,7 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice Deactivate(string hardwareId, User logged)
     {
-        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        var homeDevice = GetByHardwareId(hardwareId);
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
@@ -99,26 +99,26 @@ public class HomeDeviceService : IHomeDeviceService
         return homeDevice;
     }
 
-    public List<HomeDevice> GetHomeDeviceByHomeId(string homeId)
+    public List<HomeDevice> GetByHomeId(string homeId)
     {
         return _repository.GetAll(x => x.HomeId == homeId);
     }
 
-    public HomeDevice GetHomeDeviceById(string id)
+    public HomeDevice GetById(string id)
     {
         return _repository.Get(x => x.Id == id);
     }
 
-    public HomeDevice RenameHomeDevice(string name, string id, User u)
+    public HomeDevice Rename(string name, string id, User u)
     {
-        var device = GetHomeDeviceById(id);
+        var device = GetById(id);
 
         if (device == null)
         {
             throw new NotFoundException("HomeDevice not found");
         }
 
-        var home = GetHomeDeviceByHardwareId(device.HardwareId)?.Home;
+        var home = GetByHardwareId(device.HardwareId)?.Home;
 
         var userIsOwner = home.OwnerId == u.Id;
 
@@ -150,7 +150,7 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice LampOn(string hardwareId)
     {
-        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        var homeDevice = GetByHardwareId(hardwareId);
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
@@ -163,7 +163,7 @@ public class HomeDeviceService : IHomeDeviceService
 
         homeDevice.IsOn = true;
         CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Lamp state switch detected", "Lamp On");
-        _notificationService.AddLampNotifications(notificationArgs);
+        _notificationService.AddLamp(notificationArgs);
 
         _repository.Update(homeDevice);
         return homeDevice;
@@ -171,7 +171,7 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice LampOff(string hardwareId)
     {
-        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        var homeDevice = GetByHardwareId(hardwareId);
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
@@ -184,14 +184,14 @@ public class HomeDeviceService : IHomeDeviceService
 
         homeDevice.IsOn = false;
         CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Lamp state switch detected", "Lamp Off");
-        _notificationService.AddLampNotifications(notificationArgs);
+        _notificationService.AddLamp(notificationArgs);
         _repository.Update(homeDevice);
         return homeDevice;
     }
 
     public HomeDevice OpenWindow(string hardwareId)
     {
-        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        var homeDevice = GetByHardwareId(hardwareId);
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
@@ -204,7 +204,7 @@ public class HomeDeviceService : IHomeDeviceService
 
         homeDevice.IsOn = true;
         CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Open");
-        _notificationService.AddWindowNotification(notificationArgs);
+        _notificationService.AddWindow(notificationArgs);
 
         _repository.Update(homeDevice);
         return homeDevice;
@@ -212,7 +212,7 @@ public class HomeDeviceService : IHomeDeviceService
 
     public HomeDevice CloseWindow(string hardwareId)
     {
-        var homeDevice = GetHomeDeviceByHardwareId(hardwareId);
+        var homeDevice = GetByHardwareId(hardwareId);
         if (homeDevice == null)
         {
             throw new NotFoundException("Device not found");
@@ -225,7 +225,7 @@ public class HomeDeviceService : IHomeDeviceService
 
         homeDevice.IsOn = false;
         CreateGenericNotificationArgs notificationArgs = new(homeDevice, false, DateTimeOffset.Now, hardwareId, "Window state switch detected", "Window Closed");
-        _notificationService.AddWindowNotification(notificationArgs);
+        _notificationService.AddWindow(notificationArgs);
 
         _repository.Update(homeDevice);
         return homeDevice;

@@ -61,10 +61,10 @@ public class SessionControllerTest
             User = user
         };
 
-        _sessionServiceMock.Setup(s => s.CheckSessionConstraints(It.IsAny<string?>(), It.IsAny<string?>()))
+        _sessionServiceMock.Setup(s => s.CheckConstraints(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns(user);
 
-        _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>()))
+        _sessionServiceMock.Setup(ss => ss.Create(It.IsAny<User>()))
             .Returns(session);
 
         var result = _controller.Create(request);
@@ -73,6 +73,6 @@ public class SessionControllerTest
         result.Should().BeOfType<CreateSessionResponse>();
         result.Token.Should().Be(session.AuthToken);
 
-        _sessionServiceMock.Verify(ss => ss.CreateSession(It.IsAny<User>()), Times.Once);
+        _sessionServiceMock.Verify(ss => ss.Create(It.IsAny<User>()), Times.Once);
     }
 }

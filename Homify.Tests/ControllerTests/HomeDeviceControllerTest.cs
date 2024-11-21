@@ -92,7 +92,7 @@ public class HomeDeviceControllerTest
 
         var req = new UpdateHomeDeviceRequest() { CustomName = "NewName" };
 
-        _homeDeviceMock.Setup(x => x.RenameHomeDevice(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
+        _homeDeviceMock.Setup(x => x.Rename(req.CustomName, updatedDevice.Id, owner)).Returns(updatedDevice);
         var response = _controller.RenameHomeDevice(req, updatedDevice.Id);
 
         response.Should().NotBeNull();

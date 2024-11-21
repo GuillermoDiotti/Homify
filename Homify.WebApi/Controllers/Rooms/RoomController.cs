@@ -36,7 +36,7 @@ public class RoomController : HomifyControllerBase
             request.HomeId ?? string.Empty,
             owner);
 
-        var room = _roomService.AddHomeRoom(arguments);
+        var room = _roomService.Add(arguments);
         return new CreateRoomResponse(room.Id);
     }
 
@@ -46,7 +46,7 @@ public class RoomController : HomifyControllerBase
     public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
     {
         return _roomService
-            .GetAllRoomsOfHouse(homeId)
+            .GetAll(homeId)
             .Select(r => new RoomBasicInfo(r))
             .ToList();
     }
@@ -63,7 +63,7 @@ public class RoomController : HomifyControllerBase
             homeDeviceId ?? string.Empty,
             owner);
 
-        var result = _roomService.AssignHomeDeviceToRoom(args);
+        var result = _roomService.AssignHomeDevice(args);
 
         return result;
     }

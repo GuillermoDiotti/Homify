@@ -70,7 +70,7 @@ public class SessionServiceTest
 
         _sessionRepositoryMock.Setup(repo =>
             repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);
-        var result = _service?.CreateSession(expectedUser);
+        var result = _service?.Create(expectedUser);
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.AuthToken);
@@ -84,7 +84,7 @@ public class SessionServiceTest
         _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
             .Throws(new NotFoundException("not found"));
 
-        var result = _service.CreateSession(user);
+        var result = _service.Create(user);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(user.Email, result.User.Email);
@@ -103,7 +103,7 @@ public class SessionServiceTest
             Password = "testPassword"
         };
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -116,7 +116,7 @@ public class SessionServiceTest
             Password = "testPassword"
         };
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -139,7 +139,7 @@ public class SessionServiceTest
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([user]);
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -156,7 +156,7 @@ public class SessionServiceTest
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -172,7 +172,7 @@ public class SessionServiceTest
         };
         _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([user]);
 
-        var result = _service.CheckSessionConstraints(email, password);
+        var result = _service.CheckConstraints(email, password);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(user, result);
@@ -198,6 +198,6 @@ public class SessionServiceTest
         var password = "password";
         _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([new User()]);
 
-        _service.CheckSessionConstraints(email, password);
+        _service.CheckConstraints(email, password);
     }
 }

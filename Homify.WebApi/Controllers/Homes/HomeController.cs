@@ -48,7 +48,7 @@ public sealed class HomeController : HomifyControllerBase
             owner,
             request.Alias ?? string.Empty);
 
-        var homeSaved = _homeService.AddHome(arguments);
+        var homeSaved = _homeService.Add(arguments);
         return new CreateHomeResponse(homeSaved);
     }
 
@@ -61,7 +61,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var home = _homeService.AddMemberToHome(homeId, request.Email);
+        var home = _homeService.AddMember(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);
     }
@@ -76,7 +76,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         Helpers.ValidateRequest(req);
 
-        var found = _homeUserService.GetHomeUser(homeId, memberId);
+        var found = _homeUserService.Get(homeId, memberId);
 
         var user = GetUserLogged();
 
@@ -103,7 +103,7 @@ public sealed class HomeController : HomifyControllerBase
 
         var user = GetUserLogged();
 
-        var result = _homeService.AssignDeviceToHome(request.DeviceId, homeId, user);
+        var result = _homeService.AssignDevice(request.DeviceId, homeId, user);
         return new UpdateHomeDeviceResponse(result);
     }
 
@@ -115,7 +115,7 @@ public sealed class HomeController : HomifyControllerBase
         var user = GetUserLogged();
 
         return _homeService
-            .GetHomeMembers(homeId, user)
+            .GetMembers(homeId, user)
             .Select(hu => new GetMemberResponse(hu))
             .ToList();
     }
@@ -145,7 +145,7 @@ public sealed class HomeController : HomifyControllerBase
         Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
-        var result = _homeService.UpdateHome(homeId, req.Alias, user);
+        var result = _homeService.Update(homeId, req.Alias, user);
 
         return new UpdateHomeResponse(result);
     }
@@ -157,7 +157,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         var user = GetUserLogged();
         return _homeService
-            .GetAllHomesWhereUserIsOwner(user)
+            .GetAllWhereUserIsOwner(user)
             .Select(home => new GetHomesResponse(home))
             .ToList();
     }
@@ -169,7 +169,7 @@ public sealed class HomeController : HomifyControllerBase
     {
         var user = GetUserLogged();
         return _homeService
-            .GetAllHomesWhereUserIsMember(user)
+            .GetAllWhereUserIsMember(user)
             .Select(home => new GetHomesResponse(home))
             .ToList();
     }

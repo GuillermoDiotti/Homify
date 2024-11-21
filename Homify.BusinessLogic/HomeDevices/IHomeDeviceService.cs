@@ -6,13 +6,13 @@ using Homify.BusinessLogic.Users.Entities;
 namespace Homify.BusinessLogic.HomeDevices;
 public interface IHomeDeviceService
 {
-    HomeDevice AddHomeDevice(Home home, Device device);
-    HomeDevice? GetHomeDeviceByHardwareId(string? id);
+    HomeDevice Add(Home home, Device device);
+    HomeDevice? GetByHardwareId(string? id);
     HomeDevice Activate(string hardwareId, User logged);
     HomeDevice Deactivate(string hardwareId, User logged);
-    List<HomeDevice> GetHomeDeviceByHomeId(string homeId);
-    HomeDevice GetHomeDeviceById(string id);
-    HomeDevice RenameHomeDevice(string name, string id, User u);
+    List<HomeDevice> GetByHomeId(string homeId);
+    HomeDevice GetById(string id);
+    HomeDevice Rename(string name, string id, User u);
     HomeDevice LampOn(string hardwareId);
     HomeDevice LampOff(string hardwareId);
     HomeDevice OpenWindow(string hardwareId);

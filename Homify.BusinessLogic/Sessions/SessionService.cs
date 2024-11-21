@@ -17,7 +17,7 @@ public class SessionService : ISessionService
         _userService = userService;
     }
 
-    public Session CreateSession(User u)
+    public Session Create(User u)
     {
         Session hasSession;
         try
@@ -57,7 +57,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public User CheckSessionConstraints(string? mail, string? password)
+    public User CheckConstraints(string? mail, string? password)
     {
         if (mail == null)
         {

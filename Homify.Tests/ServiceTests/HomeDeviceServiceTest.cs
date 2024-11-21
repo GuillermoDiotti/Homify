@@ -37,7 +37,7 @@ public class HomeDeviceServiceTest
     [TestMethod]
     public void AddHomeDevice_ShouldThrowNotFoundException_WhenHomeIsNull()
     {
-        Assert.ThrowsException<NotFoundException>(() => _homeDeviceService.AddHomeDevice(null, new Device()));
+        Assert.ThrowsException<NotFoundException>(() => _homeDeviceService.Add(null, new Device()));
     }
 
     [TestMethod]
@@ -55,7 +55,7 @@ public class HomeDeviceServiceTest
             Id = deviceId
         };
 
-        var result = _homeDeviceService.AddHomeDevice(home, device);
+        var result = _homeDeviceService.Add(home, device);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(homeId, result.HomeId);
@@ -73,7 +73,7 @@ public class HomeDeviceServiceTest
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(expectedHomeDevice);
 
-        var result = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
+        var result = _homeDeviceService.GetByHardwareId(hardwareId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(hardwareId, result.HardwareId);
@@ -86,7 +86,7 @@ public class HomeDeviceServiceTest
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Throws(new NotFoundException("HomeDevice not found"));
 
-        var result = _homeDeviceService.GetHomeDeviceByHardwareId(hardwareId);
+        var result = _homeDeviceService.GetByHardwareId(hardwareId);
 
         Assert.IsNull(result);
     }
@@ -239,7 +239,7 @@ public class HomeDeviceServiceTest
     public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
         var user = new User();
-        _homeDeviceService.RenameHomeDevice("NewName", null, user);
+        _homeDeviceService.Rename("NewName", null, user);
     }
 
     [TestMethod]
@@ -251,7 +251,7 @@ public class HomeDeviceServiceTest
         var homeDevice = new HomeDevice() { Id = "idHomeDevice", DeviceId = "idDevice", HomeId = "idHome", Home = home, HardwareId = "hardwareId", CustomName = "oldName" };
         _homeDeviceRepositoryMock.Setup(r => r.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns(homeDevice);
-        var response = _homeDeviceService.RenameHomeDevice("NewName", "idHomeDevice", user);
+        var response = _homeDeviceService.Rename("NewName", "idHomeDevice", user);
 
         response.Id.Should().Be("idHomeDevice");
         response.CustomName.Should().Be("NewName");
@@ -399,7 +399,7 @@ public class HomeDeviceServiceTest
         _homeDeviceRepositoryMock.Setup(d => d.GetAll(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
             .Returns([homeDevice]);
 
-        _homeDeviceService.GetHomeDeviceByHomeId("testUserId");
+        _homeDeviceService.GetByHomeId("testUserId");
 
         _homeDeviceRepositoryMock.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<HomeDevice, bool>>>()), Times.Once);
     }

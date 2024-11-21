@@ -29,7 +29,7 @@ public class HomeDeviceController : HomifyControllerBase
         Helpers.ValidateArgsNull("CustomName", req.CustomName);
 
         var user = GetUserLogged();
-        var device = _homeDeviceService.RenameHomeDevice(req.CustomName, id, user);
+        var device = _homeDeviceService.Rename(req.CustomName, id, user);
 
         return device.Id;
     }

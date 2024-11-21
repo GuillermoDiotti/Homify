@@ -24,9 +24,9 @@ public class SessionController : ControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var userFound = _sessionService.CheckSessionConstraints(request.Email, request.Password);
+        var userFound = _sessionService.CheckConstraints(request.Email, request.Password);
 
-        BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.CreateSession(userFound);
+        BusinessLogic.Sessions.Entities.Session sessionSaved = _sessionService.Create(userFound);
 
         return new CreateSessionResponse(sessionSaved, userFound);
     }

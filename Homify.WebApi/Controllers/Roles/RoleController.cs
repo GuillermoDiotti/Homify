@@ -28,7 +28,7 @@ public class RoleController : HomifyControllerBase
             throw new NotFoundException("User not found");
         }
 
-        _roleService.AddRoleToUser(user);
+        _roleService.AddToUser(user);
 
         return new RoleBasicInfo(user);
     }

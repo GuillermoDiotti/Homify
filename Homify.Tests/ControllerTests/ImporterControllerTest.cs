@@ -50,7 +50,7 @@ public class ImporterControllerTest
             new Mock<IImporter>().Object,
             new Mock<IImporter>().Object
         };
-        _importerService.Setup(service => service.GetAllImporters()).Returns(importers);
+        _importerService.Setup(service => service.GetAll()).Returns(importers);
 
         var result = _importerController.ObtainImporters();
 

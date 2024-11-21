@@ -63,7 +63,7 @@ public class HomePermissionTest
         var repositoryMock = new Mock<IRepository<HomePermission>>();
         var service = new HomePermissionService(repositoryMock.Object);
 
-        homeUserServiceMock.Setup(service => service.GetHomeUser(homeId, memberId)).Returns(found);
+        homeUserServiceMock.Setup(service => service.Get(homeId, memberId)).Returns(found);
 
         service.ChangeHomeMemberPermissions(true, true, true, user, found);
     }

@@ -33,7 +33,7 @@ public sealed class AdminController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var adminRole = _roleService.GetRole(Constants.ADMINISTRATOR);
+        var adminRole = _roleService.Get(Constants.ADMINISTRATOR);
 
         var arguments = new CreateUserArgs(
             request.Name ?? string.Empty,

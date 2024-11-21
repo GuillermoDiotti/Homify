@@ -89,7 +89,7 @@ public class ImporterServiceTest
         var company = new Company{ValidatorType = validatorMock.Object.ToString()};
         var owner = new CompanyOwner{ Company = company };
         _companyOwnerServiceMock.Setup(i => i.GetById(user.Id)).Returns(owner);
-        _importerServiceMock.Setup(i => i.GetAllImporters()).Returns(list);
+        _importerServiceMock.Setup(i => i.GetAll()).Returns(list);
 
         _importerService.AddImportedDevices(args, user);
     }

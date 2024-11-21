@@ -40,7 +40,7 @@ public sealed class ImporterController : HomifyControllerBase
     public List<string> ObtainImporters()
     {
         return _importerService
-            .GetAllImporters()
+            .GetAll()
             .Select(x => x.GetName())
             .ToList();
     }

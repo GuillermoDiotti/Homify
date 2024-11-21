@@ -29,7 +29,7 @@ public class HomeService : IHomeService
         _userervice = userervice;
     }
 
-    public Home AddHome(CreateHomeArgs home)
+    public Home Add(CreateHomeArgs home)
     {
         var homeExists = _repository.Exist(h => h.Latitude == home.Latitude && h.Longitude == home.Longitude);
 
@@ -56,7 +56,7 @@ public class HomeService : IHomeService
         return newHome;
     }
 
-    public Home? GetHomeById(string id)
+    public Home? GetById(string id)
     {
         try
         {
@@ -68,9 +68,9 @@ public class HomeService : IHomeService
         }
     }
 
-    public Home AddMemberToHome(string homeId, string userMail)
+    public Home AddMember(string homeId, string userMail)
     {
-        var homeFound = GetHomeById(homeId);
+        var homeFound = GetById(homeId);
 
         if (homeFound == null)
         {
@@ -113,7 +113,7 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public HomeDevice AssignDeviceToHome(string deviceid, string homeid, User user)
+    public HomeDevice AssignDevice(string deviceid, string homeid, User user)
     {
         if (homeid == null)
         {
@@ -138,13 +138,13 @@ public class HomeService : IHomeService
             throw new NotFoundException("Device not found");
         }
 
-        var result = _homeDeviceService.AddHomeDevice(home, device);
+        var result = _homeDeviceService.Add(home, device);
         home.Devices.Add(result);
         _repository.Update(home);
         return result;
     }
 
-    public List<HomeUser> GetHomeMembers(string homeId, User user)
+    public List<HomeUser> GetMembers(string homeId, User user)
     {
         var home = _repository.Get(x => x.Id == homeId);
         if (home.OwnerId != user.Id)
@@ -186,7 +186,7 @@ public class HomeService : IHomeService
 
         if (userIsOwner)
         {
-            return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
+            return _homeDeviceService.GetByHomeId(homeId);
         }
 
         var user = home.Members.FirstOrDefault(x => x.User.Id == u.Id);
@@ -201,17 +201,17 @@ public class HomeService : IHomeService
             throw new InvalidOperationException("User has no permission to list devices");
         }
 
-        return _homeDeviceService.GetHomeDeviceByHomeId(homeId);
+        return _homeDeviceService.GetByHomeId(homeId);
     }
 
-    public Home UpdateHome(string homeId, string? alias, User u)
+    public Home Update(string homeId, string? alias, User u)
     {
         if (string.IsNullOrEmpty(alias))
         {
             throw new ArgumentNullException("Alias can not be null");
         }
 
-        var home = GetHomeById(homeId);
+        var home = GetById(homeId);
         if (home.OwnerId != u.Id)
         {
             throw new InvalidOperationException("Only the owner can update the home");
@@ -222,12 +222,12 @@ public class HomeService : IHomeService
         return home;
     }
 
-    public List<Home> GetAllHomesWhereUserIsOwner(User user)
+    public List<Home> GetAllWhereUserIsOwner(User user)
     {
         return _repository.GetAll(x => x.OwnerId == user.Id);
     }
 
-    public List<Home> GetAllHomesWhereUserIsMember(User user)
+    public List<Home> GetAllWhereUserIsMember(User user)
     {
         return _repository.GetAll(x => x.Members.Any(m => m.UserId == user.Id));
     }

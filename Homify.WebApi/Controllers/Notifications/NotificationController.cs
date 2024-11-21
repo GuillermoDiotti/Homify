@@ -29,7 +29,7 @@ public class NotificationController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
+        var fromDevice = _homeDeviceService.GetByHardwareId(request.HardwareId);
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
@@ -39,7 +39,7 @@ public class NotificationController : HomifyControllerBase
             false,
             request.HardwareId);
 
-        var notification = _notificationService.AddPersonDetectedNotification(arguments);
+        var notification = _notificationService.AddPersonDetected(arguments);
 
         return notification.Select(n => new CreateNotificationResponse(n)).ToList();
     }
@@ -49,13 +49,13 @@ public class NotificationController : HomifyControllerBase
     {
         Helpers.ValidateRequest(request);
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
+        var fromDevice = _homeDeviceService.GetByHardwareId(request.HardwareId);
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.SENSOR);
 
         var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action, request.Event);
 
-        var notification = _notificationService.AddWindowNotification(arguments);
+        var notification = _notificationService.AddWindow(arguments);
 
         return notification.Select(n => new CreateGenericNotificationResponse(n)).ToList();
     }
@@ -65,7 +65,7 @@ public class NotificationController : HomifyControllerBase
     {
         Helpers.ValidateRequest(req);
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(req.HardwareId);
+        var fromDevice = _homeDeviceService.GetByHardwareId(req.HardwareId);
 
         Helpers.ValidateNotFound("Device", fromDevice);
 
@@ -73,7 +73,7 @@ public class NotificationController : HomifyControllerBase
 
         var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action, req.Event);
 
-        var notification = _notificationService.AddMovementNotification(arguments);
+        var notification = _notificationService.AddMovement(arguments);
 
         return notification.Select(n => new CreateGenericNotificationResponse(n)).ToList();
     }
@@ -112,7 +112,7 @@ public class NotificationController : HomifyControllerBase
     public UpdateNotificationResponse UpdateNotification([FromRoute] string notificationId)
     {
         var user = GetUserLogged();
-        var noti = _notificationService.ReadNotificationById(notificationId, user);
+        var noti = _notificationService.ReadById(notificationId, user);
 
         Helpers.ValidateNotFound("Notification", noti);
 
