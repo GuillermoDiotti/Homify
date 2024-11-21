@@ -77,17 +77,22 @@ public class ImporterServiceTest
             .Returns(true);
         var list = new List<IImporter> { importerMock.Object };
 
-        var ImportationContainer = new List<ImportationContainer>{ new ImportationContainer{ Devices = new List<ImportedDevices>()} };
+        var ImportationContainer = new List<ImportationContainer> { new ImportationContainer { Devices = new List<ImportedDevices>() } };
         var importedDevices = new ImportedDevices
         {
-            Id = "id", Model = "model", Name = "name",
-            Photos = new List<ImportPhotos>(), Type = "type", PersonDetection = true, MovementDetection = true
+            Id = "id",
+            Model = "model",
+            Name = "name",
+            Photos = new List<ImportPhotos>(),
+            Type = "type",
+            PersonDetection = true,
+            MovementDetection = true
         };
 
         var user = new User();
         var args = new ImporterArgs("ValidImporter", validatorpath, user);
-        var company = new Company{ValidatorType = validatorMock.Object.ToString()};
-        var owner = new CompanyOwner{ Company = company };
+        var company = new Company { ValidatorType = validatorMock.Object.ToString() };
+        var owner = new CompanyOwner { Company = company };
         _companyOwnerServiceMock.Setup(i => i.GetById(user.Id)).Returns(owner);
         _importerServiceMock.Setup(i => i.GetAll()).Returns(list);
 
@@ -117,7 +122,7 @@ public class ImporterServiceTest
             }
         };
         var importationContainer = new ImportationContainer { Devices = importationDevice };
-        var importedPhotos = new ImportPhotos{ Path = "photo1.jpg", IsPrincipal = true };
+        var importedPhotos = new ImportPhotos { Path = "photo1.jpg", IsPrincipal = true };
         var devices = new List<ReturnImportDevices>
         {
             new ReturnImportDevices

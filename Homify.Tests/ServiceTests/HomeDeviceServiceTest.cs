@@ -499,7 +499,7 @@ public class HomeDeviceServiceTest
     public void Rename_WhenUserNotFoundInHome_ThrowsNotFoundException()
     {
         var userId = "user-123";
-        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members =  new List<HomeUser>() };
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = new List<HomeUser>() };
         var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };
 
@@ -514,7 +514,7 @@ public class HomeDeviceServiceTest
     {
         var userId = "user-123";
         var hardwareId = "hardware id";
-        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members =  new List<HomeUser>() };
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = new List<HomeUser>() };
         var homeDevice = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };
 

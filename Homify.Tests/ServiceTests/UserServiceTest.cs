@@ -326,7 +326,7 @@ public class UserServiceTest
             ProfilePicture = "oldProfilePic.jpg",
             Roles = [new UserRole()
             {
-                Role = new Role(){ Name = "HOMEOWNER" }
+                Role = new Role() { Name = "HOMEOWNER" }
             }
 
             ]
@@ -365,7 +365,7 @@ public class UserServiceTest
             ProfilePicture = "oldProfilePic.jpg",
             Roles = [new UserRole()
             {
-                Role = new Role(){ Name = "HOMEOWNER" }
+                Role = new Role() { Name = "HOMEOWNER" }
             }
 
             ]
