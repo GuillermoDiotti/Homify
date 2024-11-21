@@ -303,4 +303,17 @@ public class DeviceServiceTest
         Assert.AreEqual("A movement sensor", result.Description);
         Assert.AreEqual("company1", result.CompanyId);
     }
+
+    [TestMethod]
+    [ExpectedException((typeof(NotFoundException)))]
+    public void AddWindowSensor_HasCompany_ThrowsExceptionIfNoCompany()
+    {
+        var owner = new CompanyOwner { Id = "owner-456" };
+        var deviceArgs = new CreateDeviceArgs();
+
+        _companyServiceMock.Setup(s => s.GetByOwner(owner.Id))
+            .Returns((Company)null); // Simula que no tiene empresa
+
+        var exception = _deviceService.AddWindowSensor(deviceArgs, owner);
+    }
 }
