@@ -382,6 +382,25 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void CloseWindow_WithInvalidDevice_ShouldOpenWindow()
+    {
+        var hardwareId = "12345";
+        var sensorDevice = new Device { Type = Constants.LAMP };
+        var homeDevice = new HomeDevice
+        {
+            HardwareId = hardwareId,
+            Device = sensorDevice,
+            IsOn = false
+        };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns(homeDevice);
+
+        var result = _homeDeviceService.CloseWindow(hardwareId);
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void OpenWindow_WithNullDevice_ShouldOpenWindow()
     {
