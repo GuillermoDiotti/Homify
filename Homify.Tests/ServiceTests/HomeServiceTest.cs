@@ -630,7 +630,7 @@ public class HomeServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
-    public void UpdateNofiticatedList_WhenUserNotFoundInHome_ThrowsNotFoundException()
+    public void UpdateNofiticatedList_WhenUserNotFoundInHome_ThrowsInvalidOperationException()
     {
         var userId = "user-123";
         var home = new Home { Id = "home-123", OwnerId = "owner-123", Members =  new List<HomeUser>() };
@@ -639,6 +639,23 @@ public class HomeServiceTest
 
         _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home { Id = "homeId", OwnerId = "ownerId", Alias = "oldAlias" });
 
+        _homeService.UpdateNotificatedList("NewName", "device-123", user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void UpdateNofiticatedList_WhenUserNotInHome_ThrowsInvalidOperationException()
+    {
+        var userId = "ownerId";
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members =  new List<HomeUser>() };
+        var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
+        var user = new User { Id = userId };
+
+        _mockRepository.Setup(repo => repo.Get(It.IsAny<Expression<Func<Home, bool>>>())).Returns(new Home
+        {
+            Id = "homeId", OwnerId = "ownerId",
+            Alias = "oldAlias", Members = new List<HomeUser>()
+        });
         _homeService.UpdateNotificatedList("NewName", "device-123", user);
     }
 }
