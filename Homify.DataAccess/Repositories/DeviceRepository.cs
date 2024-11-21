@@ -4,7 +4,6 @@ using Homify.BusinessLogic.Devices.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 
 public class DeviceRepository : Repository<Device>
 {

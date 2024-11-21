@@ -5,7 +5,6 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 public class HomeRepository : Repository<Home>
 {
     public HomeRepository(DbContext context)
