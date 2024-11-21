@@ -236,6 +236,18 @@ public class HomeDeviceServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
+    public void Deactivate_WithDeviceNotFound_ShouldThrowException()
+    {
+        var hardwareId = "Device123";
+        var user = new User { Id = "testUserId" };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>())).Returns((HomeDevice)null);
+
+        var result = _homeDeviceService.Deactivate(hardwareId, user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
     public void UpdateName_WhenHomeDeviceNotFound_ThrowsException()
     {
         var user = new User();
