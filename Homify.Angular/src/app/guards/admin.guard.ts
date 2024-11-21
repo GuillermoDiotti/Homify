@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate } from '@angular/router';
 import { HomifyConstants } from '../../utility/HomifyConstants';
 import { SessionService } from '../../backend/services/session/Session.service';
 
@@ -8,7 +8,7 @@ import { SessionService } from '../../backend/services/session/Session.service';
 })
 export class AdminGuard implements CanActivate {
 
-  constructor(private router: Router, private readonly SessionService: SessionService) {}
+  constructor(private readonly SessionService: SessionService) {}
 
   canActivate(): boolean {
 		const { token, roles } = this.SessionService.getCurrentUser(); 
@@ -18,7 +18,6 @@ export class AdminGuard implements CanActivate {
     if (token && hasPermission) {
       return true;
     } else {
-      this.router.navigate(['/']);
       return false;
     }
   }

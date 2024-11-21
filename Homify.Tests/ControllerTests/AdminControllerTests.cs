@@ -8,7 +8,6 @@ using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins;
-using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Moq;
 
@@ -23,7 +22,7 @@ public class UserControllerTests
 
     public UserControllerTests()
     {
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
+        _userServiceMock = new Mock<IUserService>();
         _roleServicemock = new Mock<IRoleService>(MockBehavior.Strict);
         _controller = new AdminController(_userServiceMock.Object, _roleServicemock.Object);
     }
@@ -51,7 +50,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -68,7 +67,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -85,7 +84,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -102,7 +101,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -119,7 +118,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -136,7 +135,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -155,7 +154,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -172,7 +171,7 @@ public class UserControllerTests
             LastName = null
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -202,7 +201,7 @@ public class UserControllerTests
         };
 
         _userServiceMock.Setup(user => user.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         var response = _controller.Create(request);
 
@@ -221,80 +220,15 @@ public class UserControllerTests
     #endregion
 
     #region Delete
-
-    #region Error
-
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void DeleteUser_WhenUserIdIsNull_ShouldThrowException()
+    public void Delete_WhenCalled_InvokesUserServiceDelete()
     {
-        _userServiceMock.Setup(user => user.GetById(It.IsAny<string>())).Throws(new NotFoundException("User not found"));
-        _controller.Delete("1234");
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void Delete_WhenAdminNotFound_ShouldThrowNotFoundException()
-    {
-        var adminId = "nonexistentAdminId";
-        _userServiceMock.Setup(service => service.GetById(adminId)).Returns((User)null);
-
-        _controller.Delete(adminId);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void Delete_WhenTargetUserIsNotAdmin_ShouldThrowInvalidOperationException()
-    {
-        var adminId = "userId";
-        var user = new User { Id = adminId };
-        _userServiceMock.Setup(service => service.GetById(adminId)).Returns(user);
-
-        _controller.Delete(adminId);
-    }
-
-    [TestMethod]
-    public void Delete_WhenAdminExistsAndIsAdmin_ShouldDeleteAdmin()
-    {
-        var adminId = "adminId";
-        var admin = new User
-        {
-            Id = adminId,
-            Roles =
-            [
-                new UserRole
-                {
-                    UserId = adminId,
-                    RoleId = Constants.ADMINISTRATORID,
-                    Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
-                }
-
-            ]
-        };
-        _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
-        _userServiceMock.Setup(service => service.Delete(adminId));
+        var adminId = "testAdminId";
 
         _controller.Delete(adminId);
 
-        _userServiceMock.Verify(service => service.GetById(adminId), Times.Once);
         _userServiceMock.Verify(service => service.Delete(adminId), Times.Once);
     }
-
-    #endregion
-
-    #region Success
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void DeleteUser_WhenUserIdIsOk_ShouldDeleteUser()
-    {
-        var testUser = new User();
-        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Throws(new NotFoundException("User not found"));
-        _controller.Delete(testUser.Id);
-    }
-
-    #endregion
-
     #endregion
 
     [TestMethod]

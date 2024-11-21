@@ -8,7 +8,15 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
+      <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
       <ProjectReference Include="..\Homify.Utility\Homify.Utility.csproj" />
+      <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="ModeloValidador.Abstracciones">
+        <HintPath>..\lib\ModeloValidador.Abstracciones.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

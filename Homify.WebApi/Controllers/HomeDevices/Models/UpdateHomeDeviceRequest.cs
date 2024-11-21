@@ -1,6 +1,6 @@
 namespace Homify.WebApi.Controllers.HomeDevices.Models;
 
-public class UpdateHomeDeviceRequest
+public sealed record class UpdateHomeDeviceRequest
 {
     public string CustomName { get; set; } = null!;
 }

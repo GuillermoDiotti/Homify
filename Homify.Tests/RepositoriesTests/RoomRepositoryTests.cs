@@ -1,7 +1,5 @@
-using System.Linq.Expressions;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.DataAccess.Repositories;
-using Homify.DataAccess.Repositories.Rooms.Entities;
-using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -39,24 +37,6 @@ public class RoomRepositoryTests
         Assert.IsNotNull(result);
         Assert.AreEqual("Room1", result.Name);
         Assert.AreEqual("1", result.HomeId);
-    }
-
-    [TestMethod]
-    public void Get_WhenRoomDoesNotExist_ThrowsException()
-    {
-        var mockSet = new Mock<DbSet<Room>>();
-        mockSet.As<IQueryable<Room>>().Setup(m => m.Provider).Returns(new List<Room>().AsQueryable().Provider);
-        mockSet.As<IQueryable<Room>>().Setup(m => m.Expression).Returns(new List<Room>().AsQueryable().Expression);
-        mockSet.As<IQueryable<Room>>().Setup(m => m.ElementType).Returns(new List<Room>().AsQueryable().ElementType);
-        mockSet.As<IQueryable<Room>>().Setup(m => m.GetEnumerator()).Returns(new List<Room>().AsQueryable().GetEnumerator());
-
-        var mockContext = new Mock<DbContext>();
-        mockContext.Setup(c => c.Set<Room>()).Returns(mockSet.Object);
-
-        var roomRepository = new RoomRepository(mockContext.Object);
-        Expression<Func<Room, bool>> predicate = r => false;
-
-        Assert.ThrowsException<NotFoundException>(() => roomRepository.Get(predicate));
     }
 
     [TestMethod]

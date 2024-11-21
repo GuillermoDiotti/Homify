@@ -1,6 +1,7 @@
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
-using Homify.Exceptions;
+using Homify.Utility;
+using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Controllers.HomeDevices.Models;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -19,22 +20,67 @@ public class HomeDeviceController : HomifyControllerBase
     }
 
     [HttpPut("{id}/update")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.MemberCanChangeNameDevices)]
-    public string UpdateHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
+    public string RenameHomeDevice(UpdateHomeDeviceRequest req, [FromRoute] string id)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request cannot null");
-        }
+        Helpers.ValidateRequest(req);
 
-        if (req.CustomName == null)
-        {
-            throw new ArgumentNullException("CustomName cannot be null");
-        }
+        Helpers.ValidateArgsNull("CustomName", req.CustomName);
 
-        var device = _homeDeviceService.UpdateHomeDevice(req.CustomName, id);
+        var user = GetUserLogged();
+        var device = _homeDeviceService.Rename(req.CustomName, id, user);
 
         return device.Id;
+    }
+
+    [HttpPut("{hardwareId}/activate")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOnHomeDevice([FromRoute] string hardwareId)
+    {
+        var user = GetUserLogged();
+
+        var result = _homeDeviceService.Activate(hardwareId, user);
+        return new TurnOnDeviceResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/deactivate")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeDevices)]
+    public TurnOnDeviceResponse TurnOffHomeDevice([FromRoute] string hardwareId)
+    {
+        var user = GetUserLogged();
+
+        var result = _homeDeviceService.Deactivate(hardwareId, user);
+        return new TurnOnDeviceResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/lampOn")]
+    public TurnOnOffLampResponse LampOn([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.LampOn(hardwareId);
+        return new TurnOnOffLampResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/lampOff")]
+    public TurnOnOffLampResponse LampOff([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.LampOff(hardwareId);
+        return new TurnOnOffLampResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/windowOpen")]
+    public OpenWindowResponse WindowOpen([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.OpenWindow(hardwareId);
+        return new OpenWindowResponse(result);
+    }
+
+    [HttpPut("{hardwareId}/windowClose")]
+    public OpenWindowResponse WindowClose([FromRoute] string hardwareId)
+    {
+        var result = _homeDeviceService.CloseWindow(hardwareId);
+        return new OpenWindowResponse(result);
     }
 }

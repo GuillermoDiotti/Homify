@@ -3,6 +3,6 @@ export default interface UserBasicInfo {
     name: string;
     lastName: string;
     fullName: string;
-    role: string;
+    role: string[];
     createdAt: string;
 }

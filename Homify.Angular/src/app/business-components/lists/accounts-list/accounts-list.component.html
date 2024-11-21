@@ -1,8 +1,32 @@
 <article>
-	<h2>Accounts list</h2>
-	<button (click)="handleRefresh()">
-		Refresh
-	</button>
+  <h2>Accounts list</h2>
+  <div class="filters">
+    <div>
+      <label for="accRole">Role</label>
+      <select id="accRole" name="role" (change)="onRoleChange($event)">
+        <option value="">Any</option>
+        <option value="administrator">Administrator</option>
+        <option value="companyowner">Company Owner</option>
+        <option value="homeowner">Home Owner</option>
+      </select>
+    </div>
+
+    <div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="accFullName">Fullname</label>
+      <input id="accFullName" type="text" (change)="onFullNameChange($event)" />
+    </div>
+
+    <div>
+      <app-pagination
+        [limit]="limit"
+        [offset]="offset"
+        (limitChange)="updateLimit($event)"
+        (offsetChange)="updateOffset($event)"
+      ></app-pagination>
+      <p>Current Limit: {{ limit }}, Current Offset: {{ offset }}</p>
+    </div>
+  </div>
+  <button (click)="handleRefresh()">Refresh</button>
   @if (accounts.length > 0) {
   <ul>
     @for (account of accounts; track $index) {
@@ -11,15 +35,14 @@
       <strong>Name:</strong> {{ account.name }} <br />
       <strong>Lastname:</strong> {{ account.lastName }} <br />
       <strong>Fullname:</strong> {{ account.fullName }} <br />
-      <div>
-        <strong>Role:</strong> {{ account.role }} <br />
-        @if (account.role === 'ADMINISTRATOR') {
-        <app-delete-admin-button
-          [adminId]="account.id"
-        ></app-delete-admin-button>
-        }
-      </div>
+      <strong>Role:</strong> {{ account.role }} <br />
       <strong>Created at:</strong> {{ account.createdAt }} <br />
+				@if (account.role.includes('ADMINISTRATOR') && userId != account.id) {
+					<hr>
+					<app-delete-admin-button
+						[adminId]="account.id"
+					></app-delete-admin-button>
+					}
     </li>
     }
   </ul>

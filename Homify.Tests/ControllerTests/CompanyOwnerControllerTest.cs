@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles;
@@ -59,7 +59,7 @@ public class CompanyOwnerControllerTest
             Roles = [new UserRole() { UserId = "123", Role = expectedRole }]
         };
 
-        _roleServiceMock.Setup(r => r.GetRole("COMPANYOWNER")).Returns(expectedRole);
+        _roleServiceMock.Setup(r => r.Get("COMPANYOWNER")).Returns(expectedRole);
         _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Returns(expectedOwner);
 
         var response = _controller.Create(request);

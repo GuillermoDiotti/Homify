@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
-using Homify.DataAccess.Repositories.Rooms.Entities;
-using Homify.Exceptions;
+using Homify.BusinessLogic.Rooms.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
@@ -19,10 +18,6 @@ public class RoomRepository : Repository<Room>
             .Where(predicate);
 
         var room = query.FirstOrDefault();
-        if (room == null)
-        {
-            throw new NotFoundException("Room not found");
-        }
 
         return room;
     }

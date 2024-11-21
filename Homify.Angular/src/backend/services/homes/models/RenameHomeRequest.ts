@@ -1,0 +1,1 @@
+export interface RenameHomeRequest { alias: string };

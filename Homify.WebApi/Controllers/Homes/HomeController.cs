@@ -1,11 +1,9 @@
-﻿using Homify.BusinessLogic.HomeOwners;
-using Homify.BusinessLogic.Homes;
+﻿using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions;
-using Homify.BusinessLogic.Users;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Homes.Models;
 using Homify.WebApi.Controllers.Homes.Models.Requests;
 using Homify.WebApi.Controllers.Homes.Models.Responses;
@@ -19,33 +17,27 @@ namespace Homify.WebApi.Controllers.Homes;
 public sealed class HomeController : HomifyControllerBase
 {
     private readonly IHomeService _homeService;
-    private readonly IUserService _userService;
     private readonly IHomeUserService _homeUserService;
     private readonly IHomePermissionService _homePermissionService;
 
     public HomeController(
         IHomeService homeService,
-        IUserService userService,
         IHomeUserService homeUserService,
         IHomePermissionService homePermissionService)
     {
         _homeService = homeService;
-        _userService = userService;
         _homeUserService = homeUserService;
         _homePermissionService = homePermissionService;
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public CreateHomeResponse Create(CreateHomeRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
-        var owner = GetUserLogged() as HomeOwner;
+        var owner = GetUserLogged();
         var arguments = new CreateHomeArgs(
             request.Street ?? string.Empty,
             request.Number ?? string.Empty,
@@ -55,47 +47,42 @@ public sealed class HomeController : HomifyControllerBase
             owner,
             request.Alias ?? string.Empty);
 
-        var homeSaved = _homeService.AddHome(arguments);
+        var homeSaved = _homeService.Add(arguments);
         return new CreateHomeResponse(homeSaved);
     }
 
     [HttpPut("{homeId}/members")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
-    public UpdateMembersListResponse UpdateMembersList(
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeMembersList)]
+    public UpdateMembersListResponse AddMemberToHome(
         [FromRoute] string homeId,
         UpdateMemberListRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
-        var home = _homeService.UpdateMemberList(homeId, request.Email);
+        var home = _homeService.AddMember(homeId, request.Email);
 
         return new UpdateMembersListResponse(home);
     }
 
     [HttpPut("{homeId}/{memberId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeMembersList)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeMembersList)]
     public HomeMemberBasicInfo ChangeHomeMemberPermissions(
         [FromRoute] string? homeId,
         [FromRoute] string memberId,
         EditMemberPermissionsRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(req);
 
-        var found = _homeUserService.GetByIds(homeId, memberId);
+        var found = _homeUserService.Get(homeId, memberId);
 
         var user = GetUserLogged();
 
         var list = _homePermissionService.ChangeHomeMemberPermissions(
             req.CanAddDevices,
             req.CanListDevices,
+            req.CanRenameDevices,
             user,
             found);
 
@@ -105,60 +92,41 @@ public sealed class HomeController : HomifyControllerBase
     }
 
     [HttpPut("{homeId}/devices")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public UpdateHomeDeviceResponse UpdateHomeDevice(
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeDevices)]
+    public UpdateHomeDeviceResponse AssignDeviceToHome(
         UpdateHomeDevicesRequest request,
         [FromRoute] string homeId)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var user = GetUserLogged();
 
-        var result = _homeService.UpdateHomeDevices(request.DeviceId, homeId, user);
+        var result = _homeService.AssignDevice(request.DeviceId, homeId, user);
         return new UpdateHomeDeviceResponse(result);
     }
 
-    [HttpGet("{homeId}/devices")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetHomeDevices)]
-    public List<GetDevicesResponse> ObtainHomeDevices([FromRoute] string homeId)
-    {
-        var user = GetUserLogged();
-
-        return _homeService
-            .GetHomeDevices(homeId, user)
-            .Select(hd => new GetDevicesResponse(hd))
-            .ToList();
-    }
-
     [HttpGet("{homeId}/members")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetHomeMembers)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetHomeMembers)]
     public List<GetMemberResponse> ObtainMembers([FromRoute] string homeId)
     {
         var user = GetUserLogged();
 
         return _homeService
-            .GetHomeMembers(homeId, user)
+            .GetMembers(homeId, user)
             .Select(hu => new GetMemberResponse(hu))
             .ToList();
     }
 
     [HttpPut("{homeId}/notifications")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeNotificatedMembers)]
-    public NotificatedMembersResponse NotificatedMembers(
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateHomeNotificatedMembers)]
+    public NotificatedMembersResponse UpdateNotificatedMembers(
         [FromRoute] string homeId,
         NotificatedMembersRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
         var user = GetUserLogged();
         var newMembersToNotify = _homeService.UpdateNotificatedList(
@@ -168,43 +136,59 @@ public sealed class HomeController : HomifyControllerBase
         return new NotificatedMembersResponse(newMembersToNotify);
     }
 
-    [HttpPatch("{homeId}/update")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public Home UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
+    [HttpPut("{homeId}/rename")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
+    public UpdateHomeResponse UpdateHome([FromRoute] string homeId, UpdateHomeRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
-        var result = _homeService.UpdateHome(homeId, req.Alias, user);
+        var result = _homeService.Update(homeId, req.Alias, user);
 
-        return result;
+        return new UpdateHomeResponse(result);
     }
 
     [HttpGet("by-owner")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public List<GetHomesResponse> ObtainHomesWhereUserIsOwner()
     {
         var user = GetUserLogged();
         return _homeService
-            .GetAllHomesWhereUserIsOwner(user)
+            .GetAllWhereUserIsOwner(user)
             .Select(home => new GetHomesResponse(home))
             .ToList();
     }
 
     [HttpGet("by-member")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public List<GetHomesResponse> ObtainHomesWhereUserIsMember()
     {
         var user = GetUserLogged();
         return _homeService
-            .GetAllHomesWhereUserIsMember(user)
+            .GetAllWhereUserIsMember(user)
             .Select(home => new GetHomesResponse(home))
+            .ToList();
+    }
+
+    [HttpGet("{homeId}/devices")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetHomeDevices)]
+    public List<GetHomeDevicesResponse> AllHomeDevices([FromRoute] string homeId, [FromQuery] string? room)
+    {
+        var user = GetUserLogged();
+
+        var devices = _homeService.GetHomeDevices(homeId, user);
+
+        if (!string.IsNullOrEmpty(room))
+        {
+            devices = devices.Where(d => d.Room != null && (d.Room?.Name.ToLower() == room.ToLower())).ToList();
+        }
+
+        return devices
+            .Select(hd => new GetHomeDevicesResponse(hd))
             .ToList();
     }
 }

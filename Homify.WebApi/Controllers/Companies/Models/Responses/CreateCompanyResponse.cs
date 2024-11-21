@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.Companies;
+﻿using Homify.BusinessLogic.Companies.Entities;
 
 namespace Homify.WebApi.Controllers.Companies.Models.Responses;
 

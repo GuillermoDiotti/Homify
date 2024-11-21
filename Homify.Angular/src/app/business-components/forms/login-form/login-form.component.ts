@@ -5,29 +5,34 @@ import { FormComponent } from '../../../components/form/form/form.component';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormInputComponent } from '../../../components/form/form-input/form-input.component';
+import { HomeownerButtonComponent } from '../../buttons/homeowner-button/homeowner-button.component';
+import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [FormComponent, FormInputComponent, ButtonComponent],
+  imports: [FormComponent, FormInputComponent, ButtonComponent, 
+		HomeownerButtonComponent, ErrorMessageComponent],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
 	form: FormGroup;
   currentUserToken: string | null = null;
+	currentUserName: string = '';
   errorMessage: string = '';
 
   constructor(private fb: FormBuilder ,private sessionService: SessionService) {
 		this.form = this.fb.group({
-      email: ["admin@domain.com", [Validators.required, Validators.email]],
-      password: [".Popso212", [Validators.required]],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required]],
     });
 	}
 
   ngOnInit(): void {
-    const { token } = this.sessionService.getCurrentUser();
+    const { token, name } = this.sessionService.getCurrentUser();
 		this.currentUserToken = token ?? null;
+		this.currentUserName = name;
   }
 
   onSubmit(event: Event) {
@@ -43,8 +48,9 @@ export class LoginFormComponent {
 
     this.sessionService.login(email, password).subscribe(
       resp => {
-        this.sessionService.setCurrentUser(resp.token, resp.roles);
+        this.sessionService.setCurrentUser(resp.token, resp.roles, resp.name, resp.userId);
 				this.currentUserToken = resp.token;
+				this.currentUserName = resp.name;
         this.errorMessage = '';
       },
       (error: APIError) => {
@@ -56,6 +62,8 @@ export class LoginFormComponent {
 
   onLogout(){
     this.currentUserToken = null;
+		this.currentUserName = '';
+		this.errorMessage = '';
 		this.sessionService.removeCurrentUserToken();
   }
 }

@@ -1,15 +1,23 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Companies;
 using Homify.WebApi.Controllers.Companies.Models;
 using Homify.WebApi.Controllers.Companies.Models.Requests;
+using Homify.WebApi.Controllers.Companies.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ModeloValidador.Abstracciones;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -29,6 +37,18 @@ public class CompanyControllerTest
         {
             HttpContext = httpContext
         };
+    }
+
+    [TestInitialize]
+    public void TestSetup()
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "Validators");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        File.WriteAllText(Path.Combine(path, "FakeValidator.dll"), "Fake content");
     }
 
     [TestMethod]
@@ -54,7 +74,7 @@ public class CompanyControllerTest
             HttpContext = httpContext
         };
 
-        _companyServiceMock.Setup(x => x.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(x => x.GetByOwner(companyOwner.Id)).Returns((Company)null);
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
@@ -107,7 +127,7 @@ public class CompanyControllerTest
             }
         };
 
-        _companyServiceMock.Setup(c => c.GetByUserId(companyOwner.Id)).Returns((Company)null);
+        _companyServiceMock.Setup(c => c.GetByOwner(companyOwner.Id)).Returns((Company)null);
 
         _companyServiceMock
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
@@ -125,26 +145,35 @@ public class CompanyControllerTest
     [TestMethod]
     public void AllCompanies_ShouldReturnPaginatedCompanyBasicInfo()
     {
+        var validatorMock = new Mock<IModeloValidador>();
+        validatorMock
+            .Setup(v => v.EsValido(It.IsAny<Modelo>()))
+            .Returns(true);
+
+        var expectedRole = new Role
+        {
+            Name = "COMPANYOWNER",
+            Permissions = [new SystemPermission { Value = "companies-Create" }]
+        };
+
+        var owner = new CompanyOwner
+        {
+            Name = "name",
+            LastName = "lastName",
+            Email = "mail@gmail.com",
+            Password = "password",
+            Id = Guid.NewGuid().ToString(),
+            ProfilePicture = "foto",
+            Roles = [new UserRole { UserId = "123", Role = expectedRole }],
+            IsIncomplete = true,
+            CreatedAt = HomifyDateTime.GetActualDate()
+        };
+
         var companies = new List<Company>
         {
-            new Company
-            {
-                Id = "1",
-                Name = "Company A",
-                Owner = new CompanyOwner()
-            },
-            new Company
-            {
-                Id = "2",
-                Name = "Company B",
-                Owner = new CompanyOwner()
-            },
-            new Company
-            {
-                Id = "3",
-                Name = "Company C",
-                Owner = new CompanyOwner()
-            },
+            new Company { Id = "1", Name = "Company A", Owner = owner, ValidatorType = validatorMock.Object.ToString() },
+            new Company { Id = "2", Name = "Company B", Owner = owner, ValidatorType = validatorMock.Object.ToString() },
+            new Company { Id = "3", Name = "Company C", Owner = owner, ValidatorType = validatorMock.Object.ToString() }
         };
 
         _companyServiceMock
@@ -159,7 +188,7 @@ public class CompanyControllerTest
             new CompanyBasicInfo(companies[2], companies[2].Owner)
         };
 
-        var req = new CompanyFiltersRequest()
+        var req = new CompanyFiltersRequest
         {
             Limit = limit,
             Offset = offset
@@ -266,6 +295,22 @@ public class CompanyControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("TechCorp", result[0].CompanyName);
+    }
+
+    [TestMethod]
+    public void UpdateCompanyValidator_ShouldReturnUpdatedModel_WhenRequestIsValid()
+    {
+        var user = new CompanyOwner { Id = "1", Company = new Company() { ValidatorType = "TestModel" } };
+        var updatedModel = "UpdatedModel";
+        var request = new AddValidatorBasicInfo() { Model = updatedModel };
+
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
+        _companyServiceMock.Setup(s => s.AddValidatorModel(It.IsAny<string>(), It.IsAny<User>())).Returns(updatedModel);
+
+        var result = _controller.UpdateCompanyValidator(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(updatedModel, result.Model);
     }
 }
 

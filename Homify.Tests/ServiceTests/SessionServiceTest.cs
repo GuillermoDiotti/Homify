@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
-using Homify.WebApi.Controllers.Session.Models.Requests;
+using Homify.WebApi.Controllers.Sessions.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -65,16 +65,12 @@ public class SessionServiceTest
             Password = "password123",
             LastName = "Doe",
         };
-        var session = new Session()
-        {
-            AuthToken = "token",
-            User = expectedUser,
-            Id = "123456789"
-        };
+        var session = new Session("token", expectedUser);
+        session.UserId = "123456";
 
         _sessionRepositoryMock.Setup(repo =>
             repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);
-        var result = _service?.CreateSession(expectedUser);
+        var result = _service?.Create(expectedUser);
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.AuthToken);
@@ -88,7 +84,7 @@ public class SessionServiceTest
         _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
             .Throws(new NotFoundException("not found"));
 
-        var result = _service.CreateSession(user);
+        var result = _service.Create(user);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(user.Email, result.User.Email);
@@ -107,7 +103,7 @@ public class SessionServiceTest
             Password = "testPassword"
         };
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -120,7 +116,7 @@ public class SessionServiceTest
             Password = "testPassword"
         };
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -143,7 +139,7 @@ public class SessionServiceTest
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([user]);
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -160,7 +156,7 @@ public class SessionServiceTest
             .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns([]);
 
-        _service.CheckSessionConstraints(request.Email, request.Password);
+        _service.CheckConstraints(request.Email, request.Password);
     }
 
     [TestMethod]
@@ -176,9 +172,32 @@ public class SessionServiceTest
         };
         _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([user]);
 
-        var result = _service.CheckSessionConstraints(email, password);
+        var result = _service.CheckConstraints(email, password);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(user, result);
+    }
+
+    [TestMethod]
+    public void GetUserByToken_ShouldReturnNull_WhenNotFoundExceptionIsThrown()
+    {
+        var token = "invalidToken";
+
+        _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
+            .Throws(new NotFoundException("Not found"));
+
+        var result = _service.GetUserByToken(token);
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CheckSessionConstraints_ShouldThrowNotFoundException_WhenUserNotFound()
+    {
+        var email = "nonexistent@example.com";
+        var password = "password";
+        _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([new User()]);
+
+        _service.CheckConstraints(email, password);
     }
 }

@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using Homify.BusinessLogic.Devices;
+﻿using System.Linq.Expressions;
+using Homify.BusinessLogic.Devices.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 
 public class DeviceRepository : Repository<Device>
 {

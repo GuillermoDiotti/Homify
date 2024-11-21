@@ -2,12 +2,13 @@ using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.Exceptions;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
-namespace Homify.DataAccess.Repositories.Rooms;
+namespace Homify.BusinessLogic.Rooms;
 
-public class RoomService : IRoomService
+public sealed class RoomService : IRoomService
 {
     private readonly IRepository<Room> _roomRepository;
     private readonly IHomeService _homeService;
@@ -20,9 +21,9 @@ public class RoomService : IRoomService
         _homeDeviceService = homeDeviceService;
     }
 
-    public Room AddHomeRoom(CreateRoomArgs args)
+    public Room Add(CreateRoomArgs args)
     {
-        var home = _homeService.GetHomeById(args.HomeId);
+        var home = _homeService.GetById(args.HomeId);
 
         if (home == null)
         {
@@ -46,9 +47,9 @@ public class RoomService : IRoomService
         return room;
     }
 
-    public Room AssignHomeDeviceToRoom(UpdateRoomArgs args)
+    public Room AssignHomeDevice(UpdateRoomArgs args)
     {
-        var homeDevice = _homeDeviceService.GetHomeDeviceById(args.HomeDeviceId);
+        var homeDevice = _homeDeviceService.GetById(args.HomeDeviceId);
 
         var home = homeDevice.Home;
 
@@ -71,10 +72,11 @@ public class RoomService : IRoomService
 
         if (ExistsDeviceInOtherRoom(homeDevice))
         {
-            throw new InvalidOperationException("The device is already in another room of the house");
+            throw new InvalidOperationException("The device is already in this or another room of the house");
         }
 
         room.Devices.Add(homeDevice);
+        homeDevice.Room = room;
         _roomRepository.Update(room);
 
         return room;
@@ -92,7 +94,7 @@ public class RoomService : IRoomService
 
     public bool ExistsDeviceInOtherRoom(HomeDevice homeDevice)
     {
-        foreach (var r in GetAll())
+        foreach (var r in GetAll(homeDevice.Home.Id))
         {
             if (r.Devices.Contains(homeDevice))
             {
@@ -106,5 +108,10 @@ public class RoomService : IRoomService
     public List<Room> GetAll()
     {
         return _roomRepository.GetAll();
+    }
+
+    public List<Room> GetAll(string homeId)
+    {
+        return _roomRepository.GetAll().Where(x => x.Home.Id == homeId).ToList();
     }
 }

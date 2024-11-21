@@ -1,14 +1,19 @@
 using System.Text.Json;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
 using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
+using Homify.BusinessLogic.Importers;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
@@ -16,6 +21,8 @@ using Homify.BusinessLogic.Permissions.HomePermissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
@@ -24,8 +31,6 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts;
 using Homify.DataAccess.Repositories;
-using Homify.DataAccess.Repositories.Rooms;
-using Homify.DataAccess.Repositories.Rooms.Entities;
 using Homify.WebApi.Filters;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,7 +63,7 @@ services.AddCors(options =>
 var homifyConnectionString = configuration.GetConnectionString("Homify");
 if (string.IsNullOrEmpty(homifyConnectionString))
 {
-    throw new Exception("Missing Homify connection string");
+    throw new System.Exception("Missing Homify connection string");
 }
 
 services.AddControllers()
@@ -88,7 +93,7 @@ services.AddScoped<IRepository<Camera>, Repository<Camera>>();
 services.AddScoped<IRepository<MovementSensor>, Repository<MovementSensor>>();
 services.AddScoped<IRepository<Lamp>, Repository<Lamp>>();
 
-services.AddScoped<IRepository<Sensor>, Repository<Sensor>>();
+services.AddScoped<IRepository<WindowSensor>, Repository<WindowSensor>>();
 services.AddScoped<IDeviceService, DeviceService>();
 
 services.AddScoped<IRepository<Session>, SessionRepository>();
@@ -115,7 +120,9 @@ services.AddScoped<ICompanyOwnerService, CompanyOwnerService>();
 services.AddScoped<IRepository<Notification>, NotificationRepository>();
 services.AddScoped<INotificationService, NotificationService>();
 
-services.AddScoped<AuthenticationFilterAttribute>();
+services.AddScoped<IImporterService, ImporterService>();
+
+services.AddScoped<AuthenticationAttribute>();
 
 var app = builder.Build();
 

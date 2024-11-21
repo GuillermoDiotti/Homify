@@ -1,5 +1,6 @@
 ﻿using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.Exceptions;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Companies;
 
@@ -8,9 +9,10 @@ public class CreateCompanyArgs
     public readonly string Name;
     public readonly string LogoUrl;
     public readonly string Rut;
+    public readonly string Validator;
     public readonly CompanyOwner Owner;
 
-    public CreateCompanyArgs(string name, string logoUrl, string rut, CompanyOwner? owner)
+    public CreateCompanyArgs(string? name, string? logoUrl, string? rut, string validator, CompanyOwner? owner)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -44,5 +46,6 @@ public class CreateCompanyArgs
         }
 
         Owner = owner;
+        Validator = validator;
     }
 }

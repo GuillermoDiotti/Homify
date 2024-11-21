@@ -3,4 +3,5 @@ export default interface CompanyBasicInfo {
   ownerName: string;
   ownerMail: string;
   rut: string;
+	logo: string;
 }

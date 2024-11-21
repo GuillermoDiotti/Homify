@@ -1,0 +1,14 @@
+<article style="margin-top: 30px">
+  <p>You can now update your profile picture</p>
+  <app-input
+    [label]="'Picture URL'"
+    [value]="profilePicture"
+    (change)="onPPChange($event)"
+  >
+  </app-input>
+
+  <app-button (click)="handleSubmit()">Update</app-button>
+
+  <app-success-message [message]="successMessage"></app-success-message>
+  <app-error-message [message]="errorMessage"></app-error-message>
+</article>

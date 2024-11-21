@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 
 public class HomeDeviceRepository : Repository<HomeDevice>
 {
@@ -19,7 +17,9 @@ public class HomeDeviceRepository : Repository<HomeDevice>
         var query =
             _entities.Include(u => u.Home)
                 .ThenInclude(u => u.Members)
+                .ThenInclude(u => u.Permissions)
                 .Include(u => u.Device)
+                .Include(u => u.Room)
                 .Where(predicate);
 
         var user = query.FirstOrDefault();
@@ -37,13 +37,17 @@ public class HomeDeviceRepository : Repository<HomeDevice>
         if (predicate == null)
         {
             return _entities.Include(u => u.Home)
-                .Include(u => u.Device).ToList();
+                .Include(u => u.Device)
+                .Include(u => u.Room)
+                .ToList();
         }
 
         var query =
             _entities.Include(u => u.Home)
                 .Include(u => u.Device)
-                .Where(predicate).ToList();
+                .Include(u => u.Room)
+                .Where(predicate)
+                .ToList();
 
         return query;
     }

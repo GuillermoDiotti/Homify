@@ -1,10 +1,12 @@
-using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.BusinessLogic.Rooms.Entities;
 
-namespace Homify.DataAccess.Repositories.Rooms;
+namespace Homify.BusinessLogic.Rooms;
 
 public interface IRoomService
 {
-    Room AddHomeRoom(CreateRoomArgs args);
+    Room Add(CreateRoomArgs args);
 
-    Room AssignHomeDeviceToRoom(UpdateRoomArgs args);
+    Room AssignHomeDevice(UpdateRoomArgs args);
+
+    List<Room> GetAll(string homeId);
 }

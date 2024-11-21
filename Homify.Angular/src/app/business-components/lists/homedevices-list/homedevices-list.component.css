@@ -8,6 +8,7 @@ ul {
 
 li {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	border: 2px solid #224fca;
 	border-radius: 20px;
@@ -16,14 +17,24 @@ li {
 }
 
 .photo-container {
-	width: 40%;
+	width: 250px;
+	max-width: 250px;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+	max-width: 200px;
+	max-height: 200px;
 }
 
 .info-container {
 	flex: 1;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	gap: 2rem;
+	width: 100%;
 }
 
 .col {
@@ -31,4 +42,14 @@ li {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.text-success {
+  color: green;
+  font-weight: bold;
+}
+
+.text-danger {
+  color: red;
+  font-weight: bold;
 }

@@ -10,7 +10,7 @@ import UserBasicInfo from "../services/admin/models/UserBasicInfo";
 @Injectable({
   providedIn: "root",
 })
-export class AdminTypeApiRepositoryService extends ApiRepository{
+export class AdminTypeApiRepositoryService extends ApiRepository {
   constructor(http: HttpClient) {
     super(environment.homifyApi, 'admins', http);
   }
@@ -23,13 +23,7 @@ export class AdminTypeApiRepositoryService extends ApiRepository{
     return this.delete(id).pipe(catchError(this.handleError));
   }
 
-  public getAllAccounts(
-    limit?: string,
-    offset?: string,
-    role?: string,
-    fullName?: string)
-    : Observable<Array<UserBasicInfo>> {
-    const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(role ?? '')}&fullName=${encodeURIComponent(fullName ?? '')}`;
+  public getAllAccounts(query: string): Observable<Array<UserBasicInfo>> {
     return this.get<Array<UserBasicInfo>>("accounts", query).pipe(catchError(this.handleError));
   }
 }

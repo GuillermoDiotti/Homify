@@ -1,11 +1,10 @@
-using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Lamps.Entities;
 
-public class Lamp : Device
+public sealed record class Lamp : Device
 {
-    public bool IsActive { get; set; }
     public Lamp()
         : base()
     {

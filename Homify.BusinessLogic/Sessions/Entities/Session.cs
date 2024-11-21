@@ -1,7 +1,7 @@
 ﻿using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.Sessions.Entities;
-public class Session
+public sealed record class Session
 {
     public string Id { get; init; }
     public string AuthToken { get; set; } = null!;

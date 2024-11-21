@@ -1,5 +1,6 @@
-﻿using Homify.BusinessLogic.HomeOwners;
+﻿using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Homes.Entities;
 
@@ -11,9 +12,9 @@ public class CreateHomeArgs
     public readonly string Longitude;
     public readonly int MaxMembers;
     public readonly string Alias;
-    public readonly HomeOwner Owner;
+    public readonly User Owner;
 
-    public CreateHomeArgs(string street, string number, string latitude, string longitude, int maxMembers, HomeOwner? owner, string alias)
+    public CreateHomeArgs(string street, string number, string latitude, string longitude, int maxMembers, User? owner, string alias)
     {
         if (string.IsNullOrWhiteSpace(street))
         {
@@ -48,6 +49,11 @@ public class CreateHomeArgs
         if (owner == null)
         {
             throw new ArgsNullException("owner cannot be null");
+        }
+
+        if (!owner.Roles.Any(x => x.Role.Name == Constants.HOMEOWNER))
+        {
+            throw new Exceptions.InvalidOperationException("Owner must have homeowner role");
         }
 
         Owner = owner;

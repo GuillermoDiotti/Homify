@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Permissions;
-using Homify.DataAccess.Repositories;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -38,6 +38,6 @@ public class CompanyOwnerServiceTests
     public void GetCompOwnerPermissions()
     {
         var perms = PermissionsGenerator.GetCompanyOwnerPermissions();
-        Assert.AreEqual(5, perms.Count);
+        Assert.AreEqual(6, perms.Count);
     }
 }

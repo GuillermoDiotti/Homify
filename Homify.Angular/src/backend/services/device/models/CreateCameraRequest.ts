@@ -3,6 +3,8 @@ export default interface CreateCameraRequest {
   model: string;
   isExterior: boolean;
   isInterior: boolean;
+	movementDetection: boolean;
+	peopleDetection: boolean;
   description: string;
   photos: Array<string>;
   ppalPicture: string;

@@ -1,9 +1,10 @@
-using Homify.BusinessLogic.HomeOwners;
-using Homify.DataAccess.Repositories.Rooms;
-using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Rooms;
+using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -27,7 +28,7 @@ public class RoomControllerTest
     [ExpectedException(typeof(NullRequestException))]
     public void Create_NullRequest_ThrowsNullRequestException()
     {
-        _controller.Create(null, "homeId");
+        _controller.Create(null);
     }
 
     [TestMethod]
@@ -36,10 +37,11 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = "Living Room"
+            Name = "Living Room",
+            HomeId = null
         };
 
-        _controller.Create(request, null);
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -48,10 +50,11 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = null
+            Name = null,
+            HomeId = "id"
         };
 
-        _controller.Create(request, "id");
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -64,10 +67,11 @@ public class RoomControllerTest
 
         var request = new CreateRoomRequest
         {
-            Name = "name"
+            Name = "name",
+            HomeId = "id"
         };
 
-        _controller.Create(request, "id");
+        _controller.Create(request);
     }
 
     [TestMethod]
@@ -75,7 +79,8 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = "Living Room"
+            Name = "Living Room",
+            HomeId = "testHomeId"
         };
         var homeId = "testHomeId";
 
@@ -88,12 +93,12 @@ public class RoomControllerTest
         httpContext.Items[Items.UserLogged] = mockOwner;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>()))
+        _mockRoomService.Setup(s => s.Add(It.IsAny<CreateRoomArgs>()))
             .Returns(new Room { Id = "roomId" });
 
-        var response = _controller.Create(request, homeId);
+        var response = _controller.Create(request);
 
-        _mockRoomService.Verify(s => s.AddHomeRoom(It.Is<CreateRoomArgs>(args =>
+        _mockRoomService.Verify(s => s.Add(It.Is<CreateRoomArgs>(args =>
                 args.Name == request.Name &&
                 args.HomeId == homeId &&
                 args.Owner == mockOwner)),
@@ -106,7 +111,8 @@ public class RoomControllerTest
     {
         var request = new CreateRoomRequest
         {
-            Name = "Kitchen"
+            Name = "Kitchen",
+            HomeId = "home123"
         };
         var homeId = "home123";
         var room = new Room { Id = "room456" };
@@ -120,9 +126,9 @@ public class RoomControllerTest
         httpContext.Items[Items.UserLogged] = mockOwner;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        _mockRoomService.Setup(s => s.AddHomeRoom(It.IsAny<CreateRoomArgs>())).Returns(room);
+        _mockRoomService.Setup(s => s.Add(It.IsAny<CreateRoomArgs>())).Returns(room);
 
-        var result = _controller.Create(request, homeId);
+        var result = _controller.Create(request);
 
         Assert.AreEqual("room456", result.Id);
     }
@@ -162,15 +168,37 @@ public class RoomControllerTest
         httpContext.Items[Items.UserLogged] = mockOwner;
         _controller.ControllerContext.HttpContext = httpContext;
 
-        _mockRoomService.Setup(s => s.AssignHomeDeviceToRoom(It.IsAny<UpdateRoomArgs>()))
+        _mockRoomService.Setup(s => s.AssignHomeDevice(It.IsAny<UpdateRoomArgs>()))
             .Returns(new Room { Id = roomId });
 
         var result = _controller.AssignHomeDeviceToRoom(roomId, homeDeviceId);
 
-        _mockRoomService.Verify(s => s.AssignHomeDeviceToRoom(It.Is<UpdateRoomArgs>(args =>
+        _mockRoomService.Verify(s => s.AssignHomeDevice(It.Is<UpdateRoomArgs>(args =>
             args.RoomId == roomId &&
             args.HomeDeviceId == homeDeviceId &&
             args.Owner == mockOwner)), Times.Once);
         Assert.AreEqual(roomId, result.Id);
+    }
+
+    [TestMethod]
+    public void ObtainHomeRooms_ShouldReturnListOfRoomBasicInfo()
+    {
+        var homeId = "home123";
+        var rooms = new List<Room>
+        {
+            new Room { Id = "1", Name = "Living Room" },
+            new Room { Id = "2", Name = "Bedroom" }
+        };
+
+        _mockRoomService.Setup(service => service.GetAll(homeId)).Returns(rooms);
+
+        var result = _controller.ObtainHomeRooms(homeId) as List<RoomBasicInfo>;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Living Room", result[0].Name);
+        Assert.AreEqual("Bedroom", result[1].Name);
+
+        _mockRoomService.Verify(service => service.GetAll(homeId), Times.Once);
     }
 }

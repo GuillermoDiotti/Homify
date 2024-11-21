@@ -6,11 +6,10 @@ import { Observable } from 'rxjs';
 import UserBasicInfo from './models/UserBasicInfo';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
-
-  constructor(private readonly _repository: AdminTypeApiRepositoryService) { }
+  constructor(private readonly _repository: AdminTypeApiRepositoryService) {}
 
   public create(request: CreateAdminRequest): Observable<CreateAdminResponse> {
     return this._repository.create(request);
@@ -24,9 +23,24 @@ export class AdminService {
     limit?: string,
     offset?: string,
     role?: string,
-    fullName?: string)
-    : Observable<UserBasicInfo[]> {
-    const query = `limit=${limit ?? ''}&offset=${offset ?? ''}&role=${encodeURIComponent(role ?? '')}&fullName=${encodeURIComponent(fullName ?? '')}`;
+    fullName?: string
+  ): Observable<UserBasicInfo[]> {
+    const queryParams: string[] = [];
+
+    if (limit) {
+      queryParams.push(`limit=${encodeURIComponent(limit)}`);
+    }
+    if (offset) {
+      queryParams.push(`offset=${encodeURIComponent(offset)}`);
+    }
+    if (role) {
+      queryParams.push(`role=${encodeURIComponent(role)}`);
+    }
+    if (fullName) {
+      queryParams.push(`fullname=${encodeURIComponent(fullName)}`);
+    }
+
+    const query = queryParams.join('&');
     return this._repository.getAllAccounts(query);
   }
 }

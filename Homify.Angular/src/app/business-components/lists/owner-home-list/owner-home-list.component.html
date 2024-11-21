@@ -7,12 +7,16 @@
   <ul>
     @for (home of homes; track $index) {
     <li>
+			<strong>Alias:</strong> {{ home.alias }} <br />
       <strong>Home street:</strong> {{ home.street }} <br />
       <strong>Home number:</strong> {{ home.number }} <br />
       <app-button (clicked)="onClick(home.id)">Select</app-button>
     </li>
     }
   </ul>
+	@if (selectedHomeId) {
+		<app-rename-home-button [homeId]="selectedHomeId"></app-rename-home-button>
+	}
   } @else {
   <p>There aren't homes available.</p>
   }

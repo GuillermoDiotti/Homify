@@ -1,8 +1,10 @@
-﻿namespace Homify.BusinessLogic.HomeUsers;
+﻿using Homify.BusinessLogic.HomeUsers.Entities;
+
+namespace Homify.BusinessLogic.HomeUsers;
 
 public interface IHomeUserService
 {
-    HomeUser? GetByIds(string? homeId, string? userId);
+    HomeUser? Get(string? homeId, string? userId);
     HomeUser Update(HomeUser hu);
-    List<HomeUser> GetHomeUsersByHomeId(string id);
+    List<HomeUser> GetByHomeId(string id);
 }

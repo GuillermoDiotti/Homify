@@ -1,0 +1,17 @@
+<h2>Import validations</h2>
+  <div>
+    <label for="validator">Validator</label>
+    <select id="validator" name="validator" (change)="onValidatorChange($event)">
+      @for (val of validators; track $index) {
+      <option value="{{ val }}">{{ val }}</option>
+      }
+    </select>
+    <app-button (click)="handleRefreshValidators()"
+    >Refresh validators</app-button>
+
+    <app-button (click)="handleSubmit()"
+    >Submit</app-button>
+  </div>
+  <app-success-message [message]="successMessage"></app-success-message>
+  <app-error-message [message]="errorMessage"></app-error-message>
+

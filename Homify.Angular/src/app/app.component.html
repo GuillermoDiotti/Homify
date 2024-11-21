@@ -33,7 +33,7 @@
           </li>
 
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/create-companyowner">Create Company Owner</a>
+            <a routerLink="/companyowner">Create Company Owner</a>
           </li>
 
           <li nz-menu-item nzMatchRouter>
@@ -60,6 +60,10 @@
             <a routerLink="/homes/create">Create Home</a>
           </li>
 
+					<li nz-menu-item nzMatchRouter>
+            <a routerLink="/rooms">Add Rooms</a>
+          </li>
+
           <li nz-menu-item nzMatchRouter>
             <a routerLink="homes/add-member">Members</a>
           </li>
@@ -67,8 +71,21 @@
           <li nz-menu-item nzMatchRouter>
             <a routerLink="homes/devices">Home Devices</a>
           </li>
+
+					<li nz-menu-item nzMatchRouter>
+            <a routerLink="notifications">Notifications</a>
+          </li>
+
           <li nz-menu-item nzMatchRouter>
             <a routerLink="homes/update-permissions">Permissions</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Importations" nzIcon="user">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="importer">Import</a>
           </li>
         </ul>
       </li>

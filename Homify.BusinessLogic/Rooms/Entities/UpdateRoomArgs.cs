@@ -1,14 +1,14 @@
-using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.Users.Entities;
 
-namespace Homify.DataAccess.Repositories.Rooms.Entities;
+namespace Homify.BusinessLogic.Rooms.Entities;
 
 public class UpdateRoomArgs
 {
     public string RoomId { get; set; }
-    public HomeOwner Owner { get; set; }
+    public User Owner { get; set; }
     public string HomeDeviceId { get; set; }
 
-    public UpdateRoomArgs(string roomId, string homeDeviceId, HomeOwner? owner)
+    public UpdateRoomArgs(string roomId, string homeDeviceId, User? owner)
     {
         if (string.IsNullOrEmpty(roomId))
         {

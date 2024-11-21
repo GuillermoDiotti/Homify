@@ -1,16 +1,14 @@
 ﻿using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.CompanyOwners.Entities;
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Users;
 
-public class UserService : IUserService
+public sealed class UserService : IUserService
 {
     private readonly IRepository<User> _repository;
     private readonly IRepository<UserRole> _userRolerepository;
@@ -115,22 +113,45 @@ public class UserService : IUserService
         return list;
     }
 
-    public void Delete(string userId)
+    public void Delete(string adminId)
     {
-        User user;
-        try
+        var admin = _repository.Get(x => x.Id == adminId);
+        if (admin == null)
         {
-            user = _repository.Get(x => x.Id == userId);
-        }
-        catch (NotFoundException)
-        {
-            user = null;
+            throw new NotFoundException("Admin not found");
         }
 
-        if (user != null)
+        if (!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR))
         {
-            _repository.Remove(user);
+            throw new System.InvalidOperationException("Target user is not an admin");
         }
+
+        if (admin.Roles.Count > 1)
+        {
+            throw new System.InvalidOperationException("Admins with more than one role cannot be deleted");
+        }
+
+        if (admin != null)
+        {
+            _repository.Remove(admin);
+        }
+    }
+
+    public User UpdateProfilePicture(string pfp, User u)
+    {
+        if (u == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        if (!u.Roles.Any(x => x.Role.Name == Constants.HOMEOWNER))
+        {
+            throw new Exceptions.InvalidOperationException("User is not a homeowner");
+        }
+
+        u.ProfilePicture = pfp;
+        _repository.Update(u);
+        return u;
     }
 
     private void ValidateEmailIsNotRepeated(string email)

@@ -1,7 +1,7 @@
 ﻿using Homify.BusinessLogic.Companies;
 using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Permissions;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Companies.Models;
 using Homify.WebApi.Controllers.Companies.Models.Requests;
 using Homify.WebApi.Controllers.Companies.Models.Responses;
@@ -22,14 +22,11 @@ public class CompanyController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(request);
 
         var userLogged = GetUserLogged();
 
@@ -39,6 +36,7 @@ public class CompanyController : HomifyControllerBase
             request.Name ?? string.Empty,
             request.LogoUrl ?? string.Empty,
             request.Rut ?? string.Empty,
+            request.Validator ?? string.Empty,
             companyOwner);
 
         var company = _companyService.Add(args, companyOwner!);
@@ -47,22 +45,12 @@ public class CompanyController : HomifyControllerBase
     }
 
     [HttpGet]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetCompanies)]
     public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest? req)
     {
-        var pageSize = 10;
-        var pageOffset = 0;
-
-        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
-        {
-            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
-        }
-
-        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
-        {
-            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
-        }
+        var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
+        var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
         return _companyService
             .GetAll(req.OwnerFullName, req.Company)
@@ -70,5 +58,18 @@ public class CompanyController : HomifyControllerBase
             .Take(pageSize)
             .Select(m => new CompanyBasicInfo(m, m.Owner))
             .ToList();
+    }
+
+    [HttpPut("validators")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
+    public AddValidatorBasicInfo UpdateCompanyValidator(AddValidatorBasicInfo req)
+    {
+        var user = GetUserLogged();
+        var resp = _companyService.AddValidatorModel(req.Model ?? string.Empty, user);
+        return new AddValidatorBasicInfo()
+        {
+            Model = resp
+        };
     }
 }

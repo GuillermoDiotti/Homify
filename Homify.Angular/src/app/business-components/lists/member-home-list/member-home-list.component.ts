@@ -2,11 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { GetAllHomesResponse } from '../../../../backend/services/homes/models/GetAllHomesResponse';
 import { HomeService } from '../../../../backend/services/homes/home.service';
 import { ButtonComponent } from '../../../components/button/button.component';
+import { RenameHomeButtonComponent } from '../../../components/rename-home-button/rename-home-button.component';
 
 @Component({
   selector: 'app-member-home-list',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, RenameHomeButtonComponent],
   templateUrl: './member-home-list.component.html',
   styleUrl: './member-home-list.component.css'
 })
@@ -17,7 +18,7 @@ export class MemberHomeListComponent {
 	constructor(private HomeService: HomeService){}
 
 	ngOnInit() {
-		this.HomeService.getHomesByOwner().subscribe(
+		this.HomeService.getHomesByMember().subscribe(
 			response => {
 				this.homes = response;
 			},

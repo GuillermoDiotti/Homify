@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.Devices.Entities;
 
 namespace Homify.WebApi.Controllers.Devices.Models.Responses;
 
@@ -9,6 +9,8 @@ public class SearchDevicesResponse
     public string Model { get; set; }
     public string Photo { get; set; }
     public string CompanyName { get; set; }
+    public List<string> Photos { get; set; }
+    public string Type { get; set; }
 
     public SearchDevicesResponse(Device d)
     {
@@ -17,5 +19,7 @@ public class SearchDevicesResponse
         Model = d.Model;
         Photo = d.PpalPicture ?? string.Empty;
         CompanyName = d.Company.Name;
+        Photos = d.Photos ?? [];
+        Type = d.Type ?? string.Empty;
     }
 }

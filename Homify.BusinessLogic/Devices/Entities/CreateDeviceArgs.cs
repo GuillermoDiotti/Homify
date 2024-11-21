@@ -1,19 +1,28 @@
 ﻿using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.Exceptions;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Devices.Entities;
 
 public class CreateDeviceArgs
 {
-    public string Name { get; init; }
-    public string Model { get; init; }
-    public string Description { get; init; }
-    public List<string> Photos { get; init; }
-    public string PpalPicture { get; init; }
-    public bool IsExterior { get; init; }
-    public bool IsInterior { get; init; }
-    public bool IsActive { get; init; }
-    public CompanyOwner Owner { get; init; }
+    public string? Id { get; set; }
+    public string? Name { get; init; }
+    public string? Model { get; init; }
+    public string? Type { get; set; }
+    public string? Description { get; init; }
+    public List<string>? Photos { get; set; }
+    public string? PpalPicture { get; set; }
+    public bool? IsExterior { get; init; }
+    public bool? IsInterior { get; init; }
+    public bool? IsActive { get; init; }
+    public CompanyOwner? Owner { get; init; }
+    public bool? MovementDetection { get; set; }
+    public bool? PeopleDetection { get; set; }
+
+    public CreateDeviceArgs()
+    {
+    }
 
     public CreateDeviceArgs(
         string name,
@@ -23,6 +32,8 @@ public class CreateDeviceArgs
         string? ppalPicture,
         bool isExterior,
         bool isInterior,
+        bool movementDetection,
+        bool peopleDetection,
         CompanyOwner? owner,
         bool isActive)
     {
@@ -67,6 +78,8 @@ public class CreateDeviceArgs
         IsExterior = isExterior;
         IsInterior = isInterior;
         IsActive = isActive;
+        PeopleDetection = peopleDetection;
+        MovementDetection = movementDetection;
 
         if (owner == null)
         {

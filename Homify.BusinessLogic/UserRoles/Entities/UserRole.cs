@@ -3,9 +3,9 @@ using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.UserRoles.Entities;
 
-public class UserRole
+public sealed record class UserRole
 {
-    public string Id = Guid.NewGuid().ToString();
+    public string Id { get; init; }
     public string? RoleId { get; set; }
     public Role? Role { get; set; }
     public string? UserId { get; set; }
@@ -13,6 +13,7 @@ public class UserRole
 
     public UserRole(User user, Role role)
     {
+        Id = Guid.NewGuid().ToString();
         UserId = user.Id;
         RoleId = role.Id;
         User = user;
@@ -21,5 +22,6 @@ public class UserRole
 
     public UserRole()
     {
+        Id = Guid.NewGuid().ToString();
     }
 }

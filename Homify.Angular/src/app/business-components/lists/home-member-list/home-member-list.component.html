@@ -4,13 +4,24 @@
 		Refresh
 	</button>
   @if (members.length > 0) {
-  <ul>
+  <ul style="list-style: none;">
     @for (member of members; track $index) {
-    <li>
-      <strong>Member Name:</strong> {{ member.fullName }} <br />
+    <li class="homeowner-card">
+			<picture>
+				<img src="{{ member.photo }}" alt="member.name" style="width: 100px; height: 100px; max-width: 100px; max-height: 100px; border-radius: 100%;">
+			</picture> <br />
+      <strong>Member Name:</strong> {{ member.fullname }} <br />
       <strong>Member Email:</strong> {{ member.email }} <br />
-      <strong>Member Permissions:</strong> {{ member.permissions }} <br />
-      <app-button (clicked)="onClick(member.id)">Select</app-button>
+      <div style="display: flex; flex-direction: column;">
+				<strong>Member Permissions:</strong>
+				<div style="display: flex; gap: 10px;">
+					@for (perm of member.permissions; track $index){
+						<span>{{ perm }}</span>
+					}
+				</div>
+			</div>
+			<br />
+				<app-button (clicked)="onClick(member.id)">Select</app-button>
     </li>
     }
   </ul>

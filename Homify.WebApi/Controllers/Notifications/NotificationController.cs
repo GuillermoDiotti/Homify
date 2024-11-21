@@ -2,8 +2,6 @@
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Permissions;
-using Homify.BusinessLogic.Utility;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Notifications.Models;
 using Homify.WebApi.Controllers.Notifications.Models.Requests;
@@ -29,12 +27,9 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("person-detected")]
     public List<CreateNotificationResponse> PersonDetectedNotification(CreateNotificationRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null.");
-        }
+        Helpers.ValidateRequest(request);
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
+        var fromDevice = _homeDeviceService.GetByHardwareId(request.HardwareId);
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
@@ -44,7 +39,7 @@ public class NotificationController : HomifyControllerBase
             false,
             request.HardwareId);
 
-        var notification = _notificationService.AddPersonDetectedNotification(arguments);
+        var notification = _notificationService.AddPersonDetected(arguments);
 
         return notification.Select(n => new CreateNotificationResponse(n)).ToList();
     }
@@ -52,18 +47,15 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("window-movement")]
     public List<CreateGenericNotificationResponse> WindowMovementNotification(CreateGenericNotificationRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null.");
-        }
+        Helpers.ValidateRequest(request);
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(request.HardwareId);
+        var fromDevice = _homeDeviceService.GetByHardwareId(request.HardwareId);
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.SENSOR);
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, request.HardwareId, request.Action, request.Event);
 
-        var notification = _notificationService.AddWindowNotification(arguments);
+        var notification = _notificationService.AddWindow(arguments);
 
         return notification.Select(n => new CreateGenericNotificationResponse(n)).ToList();
     }
@@ -71,44 +63,33 @@ public class NotificationController : HomifyControllerBase
     [HttpPost("movement-detected")]
     public List<CreateGenericNotificationResponse> MovementNotification(CreateGenericNotificationRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Exception cannot be null");
-        }
+        Helpers.ValidateRequest(req);
 
-        var fromDevice = _homeDeviceService.GetHomeDeviceByHardwareId(req.HardwareId);
+        var fromDevice = _homeDeviceService.GetByHardwareId(req.HardwareId);
 
-        if (fromDevice == null)
-        {
-            throw new NotFoundException("Device not found");
-        }
+        Helpers.ValidateNotFound("Device", fromDevice);
 
         var validateDeviceArgs = new ValidateNotificationDeviceArgs(fromDevice, Constants.CAMERA);
 
-        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action);
+        var arguments = new CreateGenericNotificationArgs(fromDevice, false, DateTimeOffset.Now, req.HardwareId, req.Action, req.Event);
 
-        var notification = _notificationService.AddMovementNotification(arguments);
+        var notification = _notificationService.AddMovement(arguments);
 
         return notification.Select(n => new CreateGenericNotificationResponse(n)).ToList();
     }
 
     [HttpGet]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetUserNotifications)]
-    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string? eventTriggered, [FromQuery] string? date, [FromQuery] string? read)
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetUserNotifications)]
+    public List<NotificationBasicInfo> ObtainNotifications([FromQuery] string? deviceType, [FromQuery] string? date, [FromQuery] string? read)
     {
         var user = GetUserLogged();
         var list = _notificationService.GetAllByUserId(user.Id);
 
-        if (!string.IsNullOrEmpty(eventTriggered))
+        if (!string.IsNullOrEmpty(deviceType))
         {
-            list = list.Where(n => n.Event == eventTriggered).ToList();
+            list = list.Where(n => n?.Device?.Device?.Type.ToLower() == deviceType.ToLower()).ToList();
         }
-
-        /*if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
-        {
-            list = list.Where(n => n.Date == parsedDate.Date).ToList();
-        }*/
 
         if (!string.IsNullOrEmpty(date))
         {
@@ -126,17 +107,14 @@ public class NotificationController : HomifyControllerBase
     }
 
     [HttpPut("{notificationId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateUserNotification)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.UpdateUserNotification)]
     public UpdateNotificationResponse UpdateNotification([FromRoute] string notificationId)
     {
         var user = GetUserLogged();
-        var noti = _notificationService.ReadNotificationById(notificationId, user);
+        var noti = _notificationService.ReadById(notificationId, user);
 
-        if (noti == null)
-        {
-            throw new NotFoundException("Notification not found");
-        }
+        Helpers.ValidateNotFound("Notification", noti);
 
         return new UpdateNotificationResponse(noti);
     }

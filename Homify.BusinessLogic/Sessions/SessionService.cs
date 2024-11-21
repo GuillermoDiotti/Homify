@@ -1,13 +1,12 @@
 ﻿using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Sessions;
 
-public class SessionService : ISessionService
+public sealed class SessionService : ISessionService
 {
     private readonly IRepository<Session> _repository;
     private readonly IUserService _userService;
@@ -18,7 +17,7 @@ public class SessionService : ISessionService
         _userService = userService;
     }
 
-    public Session CreateSession(User u)
+    public Session Create(User u)
     {
         Session hasSession;
         try
@@ -58,7 +57,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public User CheckSessionConstraints(string? mail, string? password)
+    public User CheckConstraints(string? mail, string? password)
     {
         if (mail == null)
         {

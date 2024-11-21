@@ -1,3 +1,3 @@
 export default interface CreateCompanyOsnerResponse{
-    Id: string;
+  id: string;
 }

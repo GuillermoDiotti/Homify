@@ -1,5 +1,8 @@
-using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.UserRoles.Entities;
+using Homify.BusinessLogic.Users;
+using Homify.BusinessLogic.Users.Entities;
+using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Roles;
 using Microsoft.AspNetCore.Http;
@@ -11,41 +14,56 @@ namespace Homify.Tests.ControllerTests;
 [TestClass]
 public class RoleControllertest
 {
-    [TestMethod]
-    public void AddRole_WhenUserLoggedIsNull_ReturnUnauthorized()
+    private readonly Mock<IRoleService> mockRoleService;
+    private readonly Mock<IUserService>? _mockUserService;
+    public RoleControllertest()
     {
-        var roleService = new Mock<IRoleService>();
-        var controller = new RoleController(roleService.Object);
-        controller.ControllerContext = new ControllerContext()
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-
-        var result = controller.CreateRoleToExistingUser();
-
-        Assert.IsInstanceOfType(result, typeof(UnauthorizedResult));
+        mockRoleService = new Mock<IRoleService>();
+        _mockUserService = new Mock<IUserService>();
     }
 
     [TestMethod]
-    public void AddRole_WhenUserLoggedIsNotNull_ReturnOk()
+    [ExpectedException(typeof(NotFoundException))]
+    public void AssignRoleToExistingUser_UserNotFound_ThrowsNotFoundException()
     {
-        var roleService = new Mock<IRoleService>();
-        var controller = new RoleController(roleService.Object);
-        var companyOwner = new CompanyOwner
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = null;
+
+        var mockController = new RoleController(mockRoleService.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
+        };
+
+        mockController.AssignRoleToExistingUser();
+    }
+
+    [TestMethod]
+    public void AssignRoleToExistingUser_UserWithoutRequiredRole_ThrowsInvalidOperationException()
+    {
+        var user = new User
         {
             Id = "1",
-            IsIncomplete = true
+            Name = "Carlos",
+            Roles =
+            [
+                new UserRole { Role = RolesGenerator.HomeOwner() }
+            ],
         };
-        var httpContext = new DefaultHttpContext();
-        httpContext.Items[Items.UserLogged] = companyOwner;
 
-        controller.ControllerContext = new ControllerContext
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Items[Items.UserLogged] = user;
+
+        var mockController = new RoleController(mockRoleService.Object)
         {
-            HttpContext = httpContext
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = mockHttpContext
+            }
         };
 
-        var result = controller.CreateRoleToExistingUser();
-
-        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        mockController.AssignRoleToExistingUser();
     }
 }

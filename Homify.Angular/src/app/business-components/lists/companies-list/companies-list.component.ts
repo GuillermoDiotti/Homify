@@ -1,26 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../../../backend/services/company/Company.service';
-import UserBasicInfo from '../../../../backend/services/admin/models/UserBasicInfo';
-import { DeleteAdminButtonComponent } from '../../buttons/delete-admin-button/delete-admin-button.component';
 import CompanyBasicInfo from '../../../../backend/services/company/models/CompanyBasicInfo';
+import { PaginationComponent } from '../../../components/pagination/pagination.component';
 
 @Component({
   selector: 'app-companies-list',
   standalone: true,
-  imports: [],
+  imports: [PaginationComponent],
   templateUrl: './companies-list.component.html',
   styleUrl: './companies-list.component.css'
 })
 export class CompaniesListComponent implements OnInit {
 	companies: CompanyBasicInfo[] = [];
-	limit = '10';
-  	offset = '0';
+
 	constructor(private CompanyService: CompanyService){}
 
+	limit = 10;
+  offset = 0;
+	ownerFullnameFilter = '';
+	companyFilter = '';
+
+  updateLimit(newLimit: number) {
+    this.limit = newLimit;
+  }
+
+  updateOffset(newOffset: number) {
+    this.offset = newOffset;
+  }
+
+	onCompanyChange(event: Event) {
+		this.companyFilter = (event.target as HTMLInputElement).value;
+	}
+
+	onOwnerFullnameChange(event: Event) {
+		this.ownerFullnameFilter = (event.target as HTMLInputElement).value;
+	}
+
 	ngOnInit() {
-		this.CompanyService.getAllCompanies(this.limit, this.offset).subscribe(
+		this.CompanyService.getAllCompanies(this.limit.toString(), this.offset.toString(), this.ownerFullnameFilter, this.companyFilter).subscribe(
 			response => {
-				console.log(response)
 				this.companies = response;
 			},
 			error => {
@@ -30,7 +48,7 @@ export class CompaniesListComponent implements OnInit {
 	}
 
 	handleRefresh() {
-		this.CompanyService.getAllCompanies(this.limit, this.offset).subscribe(
+		this.CompanyService.getAllCompanies(this.limit.toString(), this.offset.toString(), this.ownerFullnameFilter, this.companyFilter).subscribe(
 			response => {
 				this.companies = response;
 			},

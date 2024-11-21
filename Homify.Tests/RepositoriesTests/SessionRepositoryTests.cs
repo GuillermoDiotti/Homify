@@ -74,4 +74,48 @@ public class SessionRepositoryTests
 
         Assert.ThrowsException<NotFoundException>(() => sessionRepository.Get(predicate));
     }
+
+    [TestMethod]
+    public void GetAll_WithPredicate_ReturnsFilteredSessions()
+    {
+        var testData = new List<Session>
+        {
+            new Session
+            {
+                Id = "1",
+                User = new User
+                {
+                    Id = "1",
+                    Name = "User1",
+                    Roles = [new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }]
+                }
+            },
+            new Session
+            {
+                Id = "2",
+                User = new User
+                {
+                    Id = "2",
+                    Name = "User2",
+                    Roles = [new UserRole { Role = new Role { Name = "USER" } }]
+                }
+            }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<Session>>();
+        mockSet.As<IQueryable<Session>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<Session>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<Session>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<Session>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<Session>()).Returns(mockSet.Object);
+
+        var sessionRepository = new SessionRepository(mockContext.Object);
+
+        var result = sessionRepository.GetAll(s => s.User.Name == "User1");
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("User1", result[0].User.Name);
+    }
 }

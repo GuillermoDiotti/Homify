@@ -1,9 +1,8 @@
 using Homify.BusinessLogic.CompanyOwners.Entities;
-using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.CompanyOwners;
 
-public class CompanyOwnerService : ICompanyOwnerService
+public sealed class CompanyOwnerService : ICompanyOwnerService
 {
     private readonly IRepository<CompanyOwner> _repository;
     public CompanyOwnerService(IRepository<CompanyOwner> repository)

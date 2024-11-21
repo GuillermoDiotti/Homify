@@ -4,21 +4,19 @@ namespace Homify.BusinessLogic.Permissions;
 
 public static class PermissionsGenerator
 {
-    // ADMIN PERMISSIONS
     public const string CreateAdmin = "admins-Create";
     public const string DeleteAdmin = "admins-Delete";
     public const string GetAllAccounts = "admins-AllAccounts";
     public const string CreateCompanyOwner = "company-owners-Create";
     public const string GetCompanies = "homes-ObtainCompanies";
 
-    // COMPANY OWNER PERMISSIONS
     public const string CreateCompany = "companies-Create";
     public const string RegisterCamera = "devices-RegisterCamera";
     public const string RegisterSensor = "companies-RegisterSensor";
     public const string RegisterLamp = "companies-RegisterLamp";
     public const string RegisterMovementSensor = "companies-RegisterMovementSensor";
+    public const string ImportDevices = "companies-ImportDevices";
 
-    // HOME OWNER PERMISSIONS
     public const string CreateHome = "homes-Create";
     public const string UpdateHomeMembersList = "homes-UpdateMembersList";
     public const string UpdateHomeDevices = "homes-UpdateHomeDevice";
@@ -28,17 +26,9 @@ public static class PermissionsGenerator
     public const string GetUserNotifications = "notifications-ObtainNotifications";
     public const string UpdateUserNotification = "notifications-UpdateNotification";
 
-    // NON AUTHENTICATED USER
-    public const string ViewRegisteredDevices = "devices-ViewRegistered";
-    public const string ViewSupportedDevices = "companies-ViewSupported";
-
-    // ???
-    public const string CreateNotification = "notifications-Create";
-
-    // HOMEUSERS
     public const string MemberCanAddDevice = "AddDevices";
     public const string MemberCanListDevices = "ListDevices";
-    public const string MemberCanChangeNameDevices = "ChangeNameDevices";
+    public const string MemberCanChangeNameDevices = "ChangeDeviceName";
 
     public static List<SystemPermission> GetAdminPermissions()
     {
@@ -61,7 +51,8 @@ public static class PermissionsGenerator
             new(RegisterCamera),
             new(RegisterSensor),
             new(RegisterMovementSensor),
-            new(RegisterLamp)
+            new(RegisterLamp),
+            new(ImportDevices)
         ];
         return permissions;
     }

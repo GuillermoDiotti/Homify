@@ -1,11 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using Homify.BusinessLogic.HomeUsers;
+﻿using System.Linq.Expressions;
+using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 
 public class HomeUserRepository : Repository<HomeUser>
 {

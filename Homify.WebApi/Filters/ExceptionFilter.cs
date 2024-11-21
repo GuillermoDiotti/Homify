@@ -2,13 +2,14 @@
 using Homify.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.WebApi.Filters;
 
 public class ExceptionFilter : IExceptionFilter
 {
-    private readonly Dictionary<Type, Func<Exception, IActionResult>>
-     _errors = new Dictionary<Type, Func<Exception, IActionResult>>
+    private readonly Dictionary<Type, Func<System.Exception, IActionResult>>
+     _errors = new Dictionary<Type, Func<System.Exception, IActionResult>>
      {
         {
             typeof(ArgsNullException), exception =>
@@ -97,13 +98,24 @@ public class ExceptionFilter : IExceptionFilter
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest
                 }
-        }
+        },
+        {
+            typeof(InvalidDataException), exception =>
+                new ObjectResult(new
+                {
+                    InnerCode = "InvalidData",
+                    Message = exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                }
+        },
      };
 
     public void OnException(ExceptionContext context)
     {
         Type exceptionType = context.Exception.GetType();
-        Func<Exception, IActionResult>? responseBuilder = _errors.GetValueOrDefault(exceptionType);
+        Func<System.Exception, IActionResult>? responseBuilder = _errors.GetValueOrDefault(exceptionType);
 
         if (responseBuilder == null)
         {

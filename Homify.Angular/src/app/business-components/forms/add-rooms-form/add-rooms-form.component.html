@@ -1,0 +1,12 @@
+<app-input
+[label]="'Name'"
+[value]="roomName"
+(change)="onRoomChange($event)"
+></app-input>
+
+<app-button
+(click)="handleSubmit()"
+>Create</app-button>
+
+<app-success-message [message]="successMessage"></app-success-message>
+<app-error-message [message]="errorMessage"></app-error-message>

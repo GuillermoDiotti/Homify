@@ -1,6 +1,5 @@
-using System.Linq.Expressions;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles.Entities;
-using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
@@ -14,108 +13,117 @@ namespace Homify.Tests.RepositoriesTests;
 public class UserRepositoryTests
 {
     [TestMethod]
-    public void Get_UserExists_ReturnsSession()
+    public void Get_UserExists_ReturnsUser()
     {
-        var testData = new List<Session>
+        var testData = new List<User>
         {
-            new Session
+            new User
             {
                 Id = "1",
-                User = new User
-                {
-                    Id = "1",
-                    Email = "user1@example.com",
-                    Name = "User1",
-                    LastName = "LastName1",
-                    Password = "Password1",
-                    Roles = [new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }]
-                }
+                Name = "John",
+                LastName = "Doe",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        Role = new Role { Name = "Admin", Permissions = [new SystemPermission { Value = "Read" }] }
+                    }
+
+                ]
             }
         }.AsQueryable();
 
-        var mockSet = new Mock<DbSet<Session>>();
-        mockSet.As<IQueryable<Session>>().Setup(m => m.Provider).Returns(testData.Provider);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.Expression).Returns(testData.Expression);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.ElementType).Returns(testData.ElementType);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
 
         var mockContext = new Mock<DbContext>();
-        mockContext.Setup(c => c.Set<Session>()).Returns(mockSet.Object);
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
 
-        var sessionRepository = new SessionRepository(mockContext.Object);
+        var userRepository = new UserRepository(mockContext.Object);
 
-        var result = sessionRepository.Get(s => s.Id == "1");
+        var result = userRepository.Get(u => u.Id == "1");
 
         Assert.IsNotNull(result);
-        Assert.AreEqual("1", result.Id);
-        Assert.AreEqual("User1", result.User.Name);
-        Assert.AreEqual("LastName1", result.User.LastName);
-        Assert.AreEqual("user1@example.com", result.User.Email);
-        Assert.AreEqual("ADMINISTRATOR", result.User.Roles.First().Role.Name);
+        Assert.AreEqual("John", result.Name);
+        Assert.AreEqual("Admin", result.Roles.First().Role.Name);
     }
 
     [TestMethod]
-    public void Get_WhenSessionDoesNotExist_ThrowsNotFoundException()
+    public void GetAll_WithPredicate_ReturnsFilteredUsers()
     {
-        var mockSet = new Mock<DbSet<Session>>();
-        mockSet.As<IQueryable<Session>>().Setup(m => m.Provider).Returns(new List<Session>().AsQueryable().Provider);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.Expression)
-            .Returns(new List<Session>().AsQueryable().Expression);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.ElementType)
-            .Returns(new List<Session>().AsQueryable().ElementType);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.GetEnumerator())
-            .Returns(new List<Session>().AsQueryable().GetEnumerator());
-
-        var mockContext = new Mock<DbContext>();
-        mockContext.Setup(c => c.Set<Session>()).Returns(mockSet.Object);
-
-        var sessionRepository = new SessionRepository(mockContext.Object);
-        Expression<Func<Session, bool>> predicate = session => session.Id == "non-existent-id";
-
-        Assert.ThrowsException<NotFoundException>(() => sessionRepository.Get(predicate));
-    }
-
-    [TestMethod]
-    public void GetAll_WithPredicate_ReturnsFilteredSessions()
-    {
-        var testData = new List<Session>
+        var testData = new List<User>
         {
-            new Session
-            {
-                Id = "1",
-                User = new User
-                {
-                    Id = "1",
-                    Name = "User1",
-                    Roles = [new UserRole { Role = new Role { Name = "ADMINISTRATOR" } }]
-                }
-            },
-            new Session
-            {
-                Id = "2",
-                User = new User
-                {
-                    Id = "2",
-                    Name = "User2",
-                    Roles = [new UserRole { Role = new Role { Name = "USER" } }]
-                }
-            }
+            new User { Id = "1", Name = "John", LastName = "Doe" },
+            new User { Id = "2", Name = "Jane", LastName = "Smith" }
         }.AsQueryable();
 
-        var mockSet = new Mock<DbSet<Session>>();
-        mockSet.As<IQueryable<Session>>().Setup(m => m.Provider).Returns(testData.Provider);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.Expression).Returns(testData.Expression);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.ElementType).Returns(testData.ElementType);
-        mockSet.As<IQueryable<Session>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
 
         var mockContext = new Mock<DbContext>();
-        mockContext.Setup(c => c.Set<Session>()).Returns(mockSet.Object);
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
 
-        var sessionRepository = new SessionRepository(mockContext.Object);
+        var userRepository = new UserRepository(mockContext.Object);
 
-        var result = sessionRepository.GetAll(s => s.User.Name == "User1");
+        var result = userRepository.GetAll(u => u.Name == "John");
 
         Assert.AreEqual(1, result.Count);
-        Assert.AreEqual("User1", result[0].User.Name);
+        Assert.AreEqual("John", result[0].Name);
+    }
+
+    [TestMethod]
+    public void GetAll_NullPredicate_ReturnsAllUsers()
+    {
+        var testData = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe" },
+            new User { Id = "2", Name = "Jane", LastName = "Smith" }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
+
+        var userRepository = new UserRepository(mockContext.Object);
+
+        var result = userRepository.GetAll(null);
+
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("John", result[0].Name);
+        Assert.AreEqual("Jane", result[1].Name);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Get_UserNotFound_ThrowsNotFoundException()
+    {
+        var testData = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe" }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
+
+        var userRepository = new UserRepository(mockContext.Object);
+
+        userRepository.Get(u => u.Id == "999");
     }
 }

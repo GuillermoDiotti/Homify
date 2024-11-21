@@ -1,11 +1,10 @@
-﻿using Homify.BusinessLogic.HomeUsers;
+﻿using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 
 namespace Homify.BusinessLogic.Permissions.HomePermissions;
 
-public class HomePermissionService : IHomePermissionService
+public sealed class HomePermissionService : IHomePermissionService
 {
     private readonly IRepository<HomePermission> _repository;
 
@@ -19,7 +18,7 @@ public class HomePermissionService : IHomePermissionService
         return _repository.Get(x => x.Value == value);
     }
 
-    public List<HomePermission> ChangeHomeMemberPermissions(bool addDevice, bool listDevice, User user, HomeUser? found)
+    public List<HomePermission> ChangeHomeMemberPermissions(bool addDevice, bool listDevice, bool renameDevice, User user, HomeUser? found)
     {
         if (user.Id != found.Home.OwnerId)
         {
@@ -39,6 +38,15 @@ public class HomePermissionService : IHomePermissionService
         if (listDevice)
         {
             var permission = GetByValue(PermissionsGenerator.MemberCanListDevices);
+            if (permission != null)
+            {
+                list.Add(permission);
+            }
+        }
+
+        if (renameDevice)
+        {
+            var permission = GetByValue(PermissionsGenerator.MemberCanChangeNameDevices);
             if (permission != null)
             {
                 list.Add(permission);

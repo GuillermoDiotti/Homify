@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, filter } from "rxjs/operators";
 import { environment } from "../../environment";
 import ApiRepository from "./api-repository";
 import { CreateHomeRequest } from "../services/homes/models/CreateHomeRequest";
@@ -15,6 +15,9 @@ import { GetMembersResponse } from "../services/homes/models/GetMembersResponse"
 import { GetDevicesResponse } from "../services/device/models/GetDevicesResponse";
 import { UpdateHomeDevicesRequest } from "../services/homes/models/UpdateHomeDevicesRequest";
 import { UpdateHomeDeviceResponse } from "../services/homes/models/UpdateHomeDeviceResponse";
+import { NotificatedMembersRequest } from "../services/homes/models/NotificatedMembersRequest";
+import { NotificatedMembersResponse } from "../services/homes/models/NotificatedMembersResponse";
+import { RenameHomeRequest } from "../services/homes/models/RenameHomeRequest";
 
 
 @Injectable({
@@ -54,12 +57,22 @@ import { UpdateHomeDeviceResponse } from "../services/homes/models/UpdateHomeDev
         return this.get<Array<GetMembersResponse>>(`${homeId}/members`).pipe(catchError(this.handleError));
       }
 
-			public GetHomeDevices(homeId:string): Observable<GetDevicesResponse[]>{
+			public GetHomeDevices(homeId:string, filterByRoom: string): Observable<GetDevicesResponse[]>{
+				if (filterByRoom)
+					return this.get<GetDevicesResponse[]>(`${homeId}/devices?room=${filterByRoom}`).pipe(catchError(this.handleError));
+				
 				return this.get<GetDevicesResponse[]>(`${homeId}/devices`).pipe(catchError(this.handleError));
 			}
 
 			public addNewDevice(homeId: string, req: UpdateHomeDevicesRequest): Observable<UpdateHomeDeviceResponse> {
 				return this.putById<UpdateHomeDeviceResponse>(homeId, req, "devices").pipe(catchError(this.handleError));
 			}
-  
+
+			public makeUserNotificable(homeId: string, req: NotificatedMembersRequest): Observable<NotificatedMembersResponse> {
+				return this.putById<NotificatedMembersResponse>(`${homeId}/notifications`, req).pipe(catchError(this.handleError));
+			}
+
+			public renameHome(homeId: string, req: RenameHomeRequest): Observable<{ id: string, alias:string }> {
+				return this.putById<{ id: string, alias: string }>(`${homeId}/rename`, req).pipe(catchError(this.handleError));
+			}
     }

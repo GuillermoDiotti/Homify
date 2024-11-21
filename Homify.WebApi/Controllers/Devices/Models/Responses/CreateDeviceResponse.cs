@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.Devices;
+﻿using Homify.BusinessLogic.Devices.Entities;
 
 namespace Homify.WebApi.Controllers.Devices.Models.Responses;
 

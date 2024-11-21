@@ -1,8 +1,8 @@
-using Homify.BusinessLogic.HomeOwners;
 using Homify.BusinessLogic.Permissions;
-using Homify.DataAccess.Repositories.Rooms;
-using Homify.DataAccess.Repositories.Rooms.Entities;
-using Homify.Exceptions;
+using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
+using Homify.Utility;
+using Homify.WebApi.Controllers.Rooms.Models;
 using Homify.WebApi.Controllers.Rooms.Models.Requests;
 using Homify.WebApi.Controllers.Rooms.Models.Responses;
 using Homify.WebApi.Filters;
@@ -21,40 +21,48 @@ public class RoomController : HomifyControllerBase
         _roomService = roomService;
     }
 
-    [HttpPost("{homeId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
-    public CreateRoomResponse Create(CreateRoomRequest request, [FromRoute] string homeId)
+    [HttpPost]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
+    public CreateRoomResponse Create(CreateRoomRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request can not be null");
-        }
+        Helpers.ValidateRequest(request);
 
-        var owner = GetUserLogged() as HomeOwner;
+        var owner = GetUserLogged();
 
         var arguments = new CreateRoomArgs(
             request.Name ?? string.Empty,
-            homeId ?? string.Empty,
+            request.HomeId ?? string.Empty,
             owner);
 
-        var room = _roomService.AddHomeRoom(arguments);
+        var room = _roomService.Add(arguments);
         return new CreateRoomResponse(room.Id);
     }
 
+    [HttpGet("{homeId}")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
+    public List<RoomBasicInfo> ObtainHomeRooms([FromRoute] string homeId)
+    {
+        return _roomService
+            .GetAll(homeId)
+            .Select(r => new RoomBasicInfo(r))
+            .ToList();
+    }
+
     [HttpPut("{roomId}/{homeDeviceId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateHome)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
     public Room AssignHomeDeviceToRoom([FromRoute] string roomId, [FromRoute] string homeDeviceId)
     {
-        var owner = GetUserLogged() as HomeOwner;
+        var owner = GetUserLogged();
 
         var args = new UpdateRoomArgs(
             roomId ?? string.Empty,
             homeDeviceId ?? string.Empty,
             owner);
 
-        var result = _roomService.AssignHomeDeviceToRoom(args);
+        var result = _roomService.AssignHomeDevice(args);
 
         return result;
     }

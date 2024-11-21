@@ -2,7 +2,7 @@ using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Admins.Models;
 using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Homify.WebApi.Controllers.Admins.Models.Responses;
@@ -26,16 +26,13 @@ public sealed class AdminController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateAdmin)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateAdmin)]
     public CreateAdminResponse Create(CreateAdminRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
+        Helpers.ValidateRequest(request);
 
-        var adminRole = _roleService.GetRole(Constants.ADMINISTRATOR);
+        var adminRole = _roleService.Get(Constants.ADMINISTRATOR);
 
         var arguments = new CreateUserArgs(
             request.Name ?? string.Empty,
@@ -50,27 +47,16 @@ public sealed class AdminController : HomifyControllerBase
     }
 
     [HttpDelete("{adminId}")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.DeleteAdmin)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.DeleteAdmin)]
     public void Delete(string adminId)
     {
-        var admin = _userService.GetById(adminId);
-        if (admin == null)
-        {
-            throw new NotFoundException("Admin not found");
-        }
-
-        if (!admin.Roles.Any(r => r.Role.Name == Constants.ADMINISTRATOR))
-        {
-            throw new InvalidOperationException("Target user is not an admin");
-        }
-
         _userService.Delete(adminId);
     }
 
     [HttpGet("accounts")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetAllAccounts)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetAllAccounts)]
     public List<UserBasicInfo> AllAccounts([FromQuery] UserFiltersRequest? req)
     {
         var pageSize = 10;

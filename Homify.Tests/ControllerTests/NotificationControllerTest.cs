@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Notifications;
@@ -14,6 +14,7 @@ using Homify.WebApi.Controllers.Notifications.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -48,7 +49,7 @@ public class NotificationControllerTest
             PersonDetectedId = Guid.NewGuid().ToString(),
         };
 
-        _homeDeviceService.Setup(d => d.GetHomeDeviceByHardwareId(It.IsAny<string>())).Returns((HomeDevice?)null);
+        _homeDeviceService.Setup(d => d.GetByHardwareId(It.IsAny<string>())).Returns((HomeDevice?)null);
 
         _controller.PersonDetectedNotification(req);
     }
@@ -69,10 +70,10 @@ public class NotificationControllerTest
             Detail = null,
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
-        _notificationService.Setup(s => s.AddPersonDetectedNotification(It.IsAny<CreateNotificationArgs>()))
+        _notificationService.Setup(s => s.AddPersonDetected(It.IsAny<CreateNotificationArgs>()))
             .Returns([notification]);
 
         var result = _controller.PersonDetectedNotification(request);
@@ -90,8 +91,8 @@ public class NotificationControllerTest
         var user = new User { Id = userId };
         var notifications = new List<Notification>
         {
-            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1" }, Date = "10/10/2024" },
-            new Notification { Event = "Event2", IsRead = true, Device = new HomeDevice { Id = "Device2" } }
+            new Notification { Event = "Event1", IsRead = false, Device = new HomeDevice { Id = "Device1", Device = new Device { Type = "Event1" } }, Date = HomifyDateTime.Parse("10/10/2024") },
+            new Notification { Event = "Event2", IsRead = true, Device = new HomeDevice { Id = "Device2", Device = new Device { Type = "Event2" } } }
         };
 
         _notificationService.Setup(n => n.GetAllByUserId(userId)).Returns(notifications);
@@ -107,7 +108,7 @@ public class NotificationControllerTest
             }
         };
 
-        var result = mockController.ObtainNotifications("Event1", "10/10/2024", "false");
+        var result = mockController.ObtainNotifications("event1", "10/10/2024", "false");
 
         result.Should().NotBeNull();
         result.Count.Should().Be(1);
@@ -123,7 +124,7 @@ public class NotificationControllerTest
         var notificationId = "testNotificationId";
         var notification = new Notification { Id = notificationId, Event = "Event1", IsRead = false };
 
-        _notificationService.Setup(n => n.ReadNotificationById(notificationId, user)).Returns(notification);
+        _notificationService.Setup(n => n.ReadById(notificationId, user)).Returns(notification);
 
         var mockHttpContext = new DefaultHttpContext();
         mockHttpContext.Items[Items.UserLogged] = user;
@@ -151,7 +152,7 @@ public class NotificationControllerTest
         var user = new User { Id = userId };
         var notificationId = "nonExistentNotificationId";
 
-        _notificationService.Setup(n => n.ReadNotificationById(notificationId, user)).Returns((Notification)null);
+        _notificationService.Setup(n => n.ReadById(notificationId, user)).Returns((Notification)null);
 
         var mockHttpContext = new DefaultHttpContext();
         mockHttpContext.Items[Items.UserLogged] = user;
@@ -211,7 +212,7 @@ public class NotificationControllerTest
             DeviceId = "1",
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns((HomeDevice)null);
 
         _controller.WindowMovementNotification(request);
@@ -235,7 +236,7 @@ public class NotificationControllerTest
             }
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
         _controller.WindowMovementNotification(request);
@@ -257,10 +258,10 @@ public class NotificationControllerTest
             Detail = null,
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
-        _notificationService.Setup(s => s.AddWindowNotification(It.IsAny<CreateGenericNotificationArgs>()))
+        _notificationService.Setup(s => s.AddWindow(It.IsAny<CreateGenericNotificationArgs>()))
             .Returns([notification]);
 
         var result = _controller.WindowMovementNotification(request);
@@ -287,7 +288,7 @@ public class NotificationControllerTest
             HardwareId = null
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Throws(new NotFoundException("HardwareId not found"));
 
         _controller.MovementNotification(request);
@@ -302,7 +303,7 @@ public class NotificationControllerTest
             HardwareId = "hardwareId"
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Throws(new NotFoundException("HardwareId not found"));
 
         _controller.MovementNotification(request);
@@ -318,7 +319,7 @@ public class NotificationControllerTest
             HardwareId = "hardwareId"
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns((HomeDevice?)null);
 
         _controller.MovementNotification(request);
@@ -345,7 +346,7 @@ public class NotificationControllerTest
             Device = expectedDevice
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
         _controller.MovementNotification(request);
@@ -367,10 +368,10 @@ public class NotificationControllerTest
             Detail = null,
         };
 
-        _homeDeviceService.Setup(s => s.GetHomeDeviceByHardwareId(request.HardwareId))
+        _homeDeviceService.Setup(s => s.GetByHardwareId(request.HardwareId))
             .Returns(homeDevice);
 
-        _notificationService.Setup(s => s.AddMovementNotification(It.IsAny<CreateGenericNotificationArgs>()))
+        _notificationService.Setup(s => s.AddMovement(It.IsAny<CreateGenericNotificationArgs>()))
             .Returns([notification]);
 
         var result = _controller.MovementNotification(request);

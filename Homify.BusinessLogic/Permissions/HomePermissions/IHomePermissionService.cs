@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.HomeUsers;
+﻿using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 
@@ -8,5 +8,5 @@ public interface IHomePermissionService
 {
     HomePermission? GetByValue(string value);
 
-    List<HomePermission> ChangeHomeMemberPermissions(bool addDevice, bool listDevice, User user, HomeUser? found);
+    List<HomePermission> ChangeHomeMemberPermissions(bool addDevice, bool listDevice, bool renameDevice, User user, HomeUser? found);
 }

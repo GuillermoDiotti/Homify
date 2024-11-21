@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.CompanyOwners.Models.Requests;
 using Homify.WebApi.Controllers.CompanyOwners.Models.Responses;
@@ -25,23 +24,20 @@ public class CompanyOwnerController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompanyOwner)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompanyOwner)]
     public CreateCompanyOwnerResponse Create(CreateCompanyOwnerRequest? request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
+        Helpers.ValidateRequest(request);
 
-        var adminRole = _roleService.GetRole(Constants.COMPANYOWNER);
+        var role = _roleService.Get(Constants.COMPANYOWNER);
 
         var arguments = new CreateUserArgs(
             request.Name ?? string.Empty,
             request.Email ?? string.Empty,
             request.Password ?? string.Empty,
             request.LastName ?? string.Empty,
-            adminRole);
+            role);
 
         var ownerSaved = _userService.AddCompanyOwner(arguments);
 

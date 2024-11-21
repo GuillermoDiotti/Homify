@@ -4,6 +4,7 @@ import { CompanyTypeApiRepositoryService } from '../../repositories/CompanyRepos
 import CreateCompanyRequest from './models/CreateCompanyRequest';
 import CreateCompanyResponse from './models/CreateCompanyResponse';
 import CompanyBasicInfo from './models/CompanyBasicInfo';
+import AddValidatorBasicInfo from './models/AddValidatorBasicInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -31,14 +32,18 @@ export class CompanyService {
     if (offset) {
       queryParams.push(`offset=${encodeURIComponent(offset)}`);
     }
-    if (ownerfullname) {
-      queryParams.push(`role=${encodeURIComponent(ownerfullname)}`);
-    }
     if (company) {
-      queryParams.push(`fullName=${encodeURIComponent(company)}`);
+      queryParams.push(`company=${encodeURIComponent(company)}`);
+    }
+    if (ownerfullname) {
+      queryParams.push(`ownerFullName=${encodeURIComponent(ownerfullname)}`);
     }
 
     const query = queryParams.join('&');
     return this._repository.getAllCompanies(query);
+  }
+
+  public addValidator(request: AddValidatorBasicInfo): Observable<AddValidatorBasicInfo> {
+      return this._repository.addValidator(request);
   }
 }

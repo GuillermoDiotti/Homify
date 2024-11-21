@@ -1,0 +1,19 @@
+<section style="width: 400px; height: 400px; display: flex; flex-direction: column; padding: 20px;">
+  <h2>Rename device</h2>
+  <form [formGroup]="form" (ngSubmit)="handleSubmit()" style="width: 100%;">
+    <app-form-input
+      [form]="form"
+      name="customName"
+      type="text"
+      label="Custom Name"
+      placeholder="Name"
+      [formField]="{
+        customName: { required: 'Custom Name is required' }
+      }"
+    ></app-form-input>
+		<app-form-button type="submit" title="Apply" style="margin: 15px 0;"></app-form-button>
+  </form>
+	<app-success-message [message]="successMessage"></app-success-message>
+	<app-error-message [message]="errorMessage"></app-error-message>
+  <button mat-button (click)="close()">Cerrar</button>
+</section>

@@ -44,6 +44,7 @@ export class UpdateMembersPermissionsFormComponent {
     this.form = this.fb.group({
       canAddDevices: [false],
       canListDevices: [false],
+			canRenameDevices: [false],
     });
   }
 
@@ -51,12 +52,14 @@ export class UpdateMembersPermissionsFormComponent {
     event.preventDefault();
     this.successMessage = '';
     this.errorMessage = '';
+		console.log(this.selectedMemberId)
 
     if (this.form.valid) {
-      const { canAddDevices, canListDevices } = this.form.value;
+      const { canAddDevices, canListDevices, canRenameDevices } = this.form.value;
       const req: UpdateMembersPermissionRequest = {
-        canAddDevices:Boolean(canAddDevices),
-        canListDevices:Boolean(canListDevices),
+        canAddDevices: Boolean(canAddDevices),
+        canListDevices: Boolean(canListDevices),
+				canRenameDevices: Boolean(canRenameDevices),
       };
       this.homeService
         .UpdatePermissions(this.selectedHomeId ?? '', req, this.selectedMemberId ?? '')

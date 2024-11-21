@@ -7,6 +7,7 @@ import { CreateCompanyFormComponent } from '../../business-components/forms/crea
 import { CompaniesListComponent } from '../../business-components/lists/companies-list/companies-list.component';
 import { AdminGuard } from '../../guards/admin.guard';
 import { CompanyOwnerGuard } from '../../guards/company-owner.guard';
+import { ValidatorFormComponent } from '../../business-components/forms/validator-form/validator-form.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateCompanyPageComponent, canActivate: [CompanyOwnerGuard] },
@@ -23,6 +24,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
 		CreateCompanyFormComponent,
 		CompaniesListComponent,
+    ValidatorFormComponent
   ]
 })
 export class CompanyPageModule { }

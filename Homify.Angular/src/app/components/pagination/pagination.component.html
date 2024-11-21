@@ -1,0 +1,20 @@
+<div class="pagination-container">
+	<label>
+		Limit:
+		<input
+			type="number"
+			[value]="limit"
+			(input)="onLimitChange($event)"
+			min="0"
+		/>
+	</label>
+	<label>
+		Offset:
+		<input
+			type="number"
+			[value]="offset"
+			(input)="onOffsetChange($event)"
+			min="0"
+		/>
+	</label>
+</div>

@@ -1,14 +1,15 @@
 using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
-using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.DataAccess.Repositories;
-using Homify.DataAccess.Repositories.Rooms;
-using Homify.DataAccess.Repositories.Rooms.Entities;
+using Homify.BusinessLogic.Rooms;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.Exceptions;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -31,13 +32,27 @@ public class RoomServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
-    public void AddHomeRoom_HomeNotFound_ThrowsNotFoundException()
+    public void AddHomeRoom_HomeNotFound_ThrowsException()
     {
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns((Home)null);
+        _mockHomeService.Setup(s => s.GetById(args.HomeId)).Returns((Home)null);
 
-        _roomService.AddHomeRoom(args);
+        _roomService.Add(args);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void AddHomeRoom_RoomNHomeIdNull_ThrowsException()
+    {
+        new CreateRoomArgs("room", null, new HomeOwner { Id = "owner123" });
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void AddHomeRoom_RoomNameNull_ThrowsNotFoundException()
+    {
+        new CreateRoomArgs(null, "home123", new HomeOwner { Id = "owner123" });
     }
 
     [TestMethod]
@@ -47,11 +62,11 @@ public class RoomServiceTest
         var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+        _mockHomeService.Setup(s => s.GetById(args.HomeId)).Returns(home);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>()))
             .Returns(new Room { Name = "Living Room", HomeId = "home123" });
 
-        _roomService.AddHomeRoom(args);
+        _roomService.Add(args);
     }
 
     [TestMethod]
@@ -61,9 +76,9 @@ public class RoomServiceTest
         var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner456" } };
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+        _mockHomeService.Setup(s => s.GetById(args.HomeId)).Returns(home);
 
-        _roomService.AddHomeRoom(args);
+        _roomService.Add(args);
     }
 
     [TestMethod]
@@ -72,10 +87,10 @@ public class RoomServiceTest
         var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+        _mockHomeService.Setup(s => s.GetById(args.HomeId)).Returns(home);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns((Room)null);
 
-        var result = _roomService.AddHomeRoom(args);
+        var result = _roomService.Add(args);
 
         _mockRoomRepository.Verify(r => r.Add(It.IsAny<Room>()), Times.Once);
         Assert.AreEqual("Living Room", result.Name);
@@ -88,10 +103,10 @@ public class RoomServiceTest
         var home = new Home { Id = "home123", Owner = new HomeOwner { Id = "owner123" } };
         var args = new CreateRoomArgs("Living Room", "home123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeService.Setup(s => s.GetHomeById(args.HomeId)).Returns(home);
+        _mockHomeService.Setup(s => s.GetById(args.HomeId)).Returns(home);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns((Room)null);
 
-        var result = _roomService.AddHomeRoom(args);
+        var result = _roomService.Add(args);
 
         Assert.AreEqual("Living Room", result.Name);
         Assert.AreEqual(home.Id, result.HomeId);
@@ -107,10 +122,10 @@ public class RoomServiceTest
 
         var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockHomeDeviceService.Setup(s => s.GetById(args.HomeDeviceId)).Returns(homeDevice);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room);
 
-        _roomService.AssignHomeDeviceToRoom(args);
+        _roomService.AssignHomeDevice(args);
     }
 
     [TestMethod]
@@ -123,10 +138,10 @@ public class RoomServiceTest
 
         var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockHomeDeviceService.Setup(s => s.GetById(args.HomeDeviceId)).Returns(homeDevice);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room);
 
-        _roomService.AssignHomeDeviceToRoom(args);
+        _roomService.AssignHomeDevice(args);
     }
 
     [TestMethod]
@@ -141,11 +156,11 @@ public class RoomServiceTest
 
         var args = new UpdateRoomArgs("room456", "device123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockHomeDeviceService.Setup(s => s.GetById(args.HomeDeviceId)).Returns(homeDevice);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room2);
         _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns([room1, room2]);
 
-        _roomService.AssignHomeDeviceToRoom(args);
+        _roomService.AssignHomeDevice(args);
     }
 
     [TestMethod]
@@ -158,13 +173,76 @@ public class RoomServiceTest
 
         var args = new UpdateRoomArgs("room123", "device123", new HomeOwner { Id = "owner123" });
 
-        _mockHomeDeviceService.Setup(s => s.GetHomeDeviceById(args.HomeDeviceId)).Returns(homeDevice);
+        _mockHomeDeviceService.Setup(s => s.GetById(args.HomeDeviceId)).Returns(homeDevice);
         _mockRoomRepository.Setup(r => r.Get(It.IsAny<Expression<Func<Room, bool>>>())).Returns(room);
         _mockRoomRepository.Setup(r => r.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns([room]);
 
-        var result = _roomService.AssignHomeDeviceToRoom(args);
+        var result = _roomService.AssignHomeDevice(args);
 
         Assert.IsTrue(result.Devices.Contains(homeDevice));
         _mockRoomRepository.Verify(r => r.Update(room), Times.Once);
+    }
+
+    [TestMethod]
+    public void GetAllRooms_ShouldReturnAllRooms()
+    {
+        var expectedRooms = new List<Room>
+        {
+            new Room { Id = "1", Name = "Living Room", HomeId = "homeId", Home = new Home() { Id = "homeId" } },
+            new Room { Id = "2", Name = "Bedroom", HomeId = "homeId", Home = new Home() { Id = "homeId" } }
+        };
+
+        _mockRoomRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(expectedRooms);
+
+        var result = _roomService.GetAll("homeId");
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Living Room", result[0].Name);
+        Assert.AreEqual("Bedroom", result[1].Name);
+
+        _mockRoomRepository.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void ListRooms()
+    {
+        var expectedRooms = new List<Room>
+        {
+            new Room { Id = "1", Name = "Living Room", HomeId = "homeId", Home = new Home() { Id = "homeId" } },
+            new Room { Id = "2", Name = "Bedroom", HomeId = "homeId", Home = new Home() { Id = "homeId" } }
+        };
+
+        _mockRoomRepository.Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>())).Returns(expectedRooms);
+
+        var result = _roomService.GetAll();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Living Room", result[0].Name);
+        Assert.AreEqual("Bedroom", result[1].Name);
+
+        _mockRoomRepository.Verify(repo => repo.GetAll(It.IsAny<Expression<Func<Room, bool>>>()), Times.Once);
+    }
+
+    [ExpectedException(typeof(NullReferenceException))]
+    [TestMethod]
+    public void UpdateRoom_WhenRoomIdIsNull_ThrowsException()
+    {
+        new UpdateRoomArgs(null, "homeDeviceId", new HomeOwner { Id = "owner123" });
+    }
+
+    [ExpectedException(typeof(NullReferenceException))]
+    [TestMethod]
+    public void UpdateRoom_WhenHomeDeviceIdIsNull_ThrowsException()
+    {
+        new UpdateRoomArgs("id", null, new HomeOwner { Id = "owner123" });
+    }
+
+    [ExpectedException(typeof(NullReferenceException))]
+    [TestMethod]
+    public void UpdateRoom_WhenHomeOwnersNull_ThrowsException()
+    {
+        new UpdateRoomArgs("id", "id", null);
     }
 }

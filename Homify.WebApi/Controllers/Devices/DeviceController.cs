@@ -2,10 +2,9 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.Exceptions;
+using Homify.Utility;
 using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Homify.WebApi.Controllers.Devices.Models.Responses;
 using Homify.WebApi.Filters;
@@ -19,24 +18,19 @@ public class DeviceController : HomifyControllerBase
 {
     private readonly IDeviceService _deviceService;
     private readonly ICompanyOwnerService _companyOwnerService;
-    private readonly IHomeDeviceService _homeDeviceService;
 
-    public DeviceController(IDeviceService deviceService, ICompanyOwnerService companyOwnerService, IHomeDeviceService homeDeviceService)
+    public DeviceController(IDeviceService deviceService, ICompanyOwnerService companyOwnerService)
     {
         _deviceService = deviceService;
         _companyOwnerService = companyOwnerService;
-        _homeDeviceService = homeDeviceService;
     }
 
     [HttpPost("cameras")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterCamera)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterCamera)]
     public CreateDeviceResponse RegisterCamera(CreateCameraRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -47,8 +41,10 @@ public class DeviceController : HomifyControllerBase
             req.Description ?? string.Empty,
             req.Photos ?? [],
             req.PpalPicture ?? string.Empty,
-            req.IsExterior,
-            req.IsInterior,
+            req.IsExterior ?? false,
+            req.IsInterior ?? false,
+            req.MovementDetection ?? false,
+            req.PeopleDetection ?? false,
             companyOwner,
             false);
 
@@ -58,14 +54,11 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpPost("window-sensors")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterSensor)]
-    public CreateDeviceResponse RegisterSensor(CreateSensorRequest? req)
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterSensor)]
+    public CreateDeviceResponse RegisterWindowSensor(CreateSensorRequest? req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var isExterior = false;
         var user = GetUserLogged();
@@ -79,24 +72,22 @@ public class DeviceController : HomifyControllerBase
             req.PpalPicture ?? string.Empty,
             isExterior,
             true,
-                        companyOwner,
-                        false);
+            false,
+            false,
+            companyOwner,
+            false);
 
-        Sensor sen = _deviceService.AddSensor(args, companyOwner);
+        WindowSensor sen = _deviceService.AddWindowSensor(args, companyOwner);
 
         return new CreateDeviceResponse(sen);
     }
 
     [HttpPost("lamps")]
-
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterLamp)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterLamp(CreateLampRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -105,8 +96,10 @@ public class DeviceController : HomifyControllerBase
             req.Name ?? string.Empty,
             req.Model ?? string.Empty,
             req.Description ?? string.Empty,
-            null,
-            null,
+            req.Photos ?? [],
+            req.PpalPicture,
+            false,
+            false,
             false,
             false,
             companyOwner,
@@ -117,16 +110,12 @@ public class DeviceController : HomifyControllerBase
         return new CreateDeviceResponse(lamp);
     }
 
-    [HttpPost("movement-sensor")]
-
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.RegisterMovementSensor)]
+    [HttpPost("movement-sensors")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.RegisterSensor)]
     public CreateDeviceResponse RegisterMovementSensor(CreateSensorRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException();
-        }
+        Helpers.ValidateRequest(req);
 
         var user = GetUserLogged();
         var companyOwner = _companyOwnerService.GetById(user.Id);
@@ -139,6 +128,8 @@ public class DeviceController : HomifyControllerBase
             req.PpalPicture ?? string.Empty,
             false,
             false,
+            false,
+            false,
             companyOwner,
             false);
 
@@ -148,24 +139,14 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpGet]
-    [AuthenticationFilter]
+    [Authentication]
     public List<SearchDevicesResponse> ObtainDevices([FromQuery] DeviceFiltersRequest? req)
     {
-        var pageSize = 10;
-        var pageOffset = 0;
-
-        if (!string.IsNullOrEmpty(req.Limit) && int.TryParse(req.Limit, out var parsedLimit))
-        {
-            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
-        }
-
-        if (!string.IsNullOrEmpty(req.Offset) && int.TryParse(req.Offset, out var parsedOffset))
-        {
-            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
-        }
+        var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
+        var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
         var response = _deviceService
-                .GetAll(req)
+                .GetAll(req.DeviceName, req.Model, req.Company, req.Type)
                 .Skip(pageOffset)
                 .Take(pageSize)
                 .Select(d => new SearchDevicesResponse(d))
@@ -175,23 +156,12 @@ public class DeviceController : HomifyControllerBase
     }
 
     [HttpGet("supported")]
-    [AuthenticationFilter]
+    [Authentication]
     public List<SearchSupportedDevicesResponse> ObtainSupportedDevices()
     {
         return _deviceService
             .SearchSupportedDevices()
             .Select(d => new SearchSupportedDevicesResponse(d))
             .ToList();
-    }
-
-    [HttpPut("{hardwareId}/activate")]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.UpdateHomeDevices)]
-    public TurnOnDeviceResponse TurnOnDevice([FromRoute] string hardwareId)
-    {
-        var user = GetUserLogged();
-
-        var result = _homeDeviceService.Activate(hardwareId, user);
-        return new TurnOnDeviceResponse(result);
     }
 }

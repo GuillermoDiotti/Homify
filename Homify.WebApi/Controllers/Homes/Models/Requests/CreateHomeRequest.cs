@@ -1,6 +1,6 @@
 ﻿namespace Homify.WebApi.Controllers.Homes.Models.Requests;
 
-public class CreateHomeRequest
+public sealed record class CreateHomeRequest
 {
     public string Street { get; set; } = null!;
     public string Number { get; set; } = null!;

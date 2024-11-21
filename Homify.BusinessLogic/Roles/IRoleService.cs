@@ -5,6 +5,6 @@ namespace Homify.BusinessLogic.Roles;
 
 public interface IRoleService
 {
-    Role? GetRole(string roleName);
-    void AddRoleToUser(User u);
+    Role? Get(string roleName);
+    void AddToUser(User u);
 }

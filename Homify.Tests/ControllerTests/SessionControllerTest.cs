@@ -1,12 +1,11 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
-using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.Session;
-using Homify.WebApi.Controllers.Session.Models.Requests;
-using Homify.WebApi.Controllers.Session.Models.Responses;
+using Homify.WebApi.Controllers.Sessions.Models.Requests;
+using Homify.WebApi.Controllers.Sessions.Models.Responses;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -16,13 +15,11 @@ public class SessionControllerTest
 {
     private readonly SessionController _controller;
     private readonly Mock<ISessionService> _sessionServiceMock;
-    private readonly Mock<IUserService> _userServiceMock;
 
     public SessionControllerTest()
     {
         _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-        _controller = new SessionController(_sessionServiceMock.Object, _userServiceMock.Object);
+        _controller = new SessionController(_sessionServiceMock.Object);
     }
 
     [TestMethod]
@@ -64,10 +61,10 @@ public class SessionControllerTest
             User = user
         };
 
-        _sessionServiceMock.Setup(s => s.CheckSessionConstraints(It.IsAny<string?>(), It.IsAny<string?>()))
+        _sessionServiceMock.Setup(s => s.CheckConstraints(It.IsAny<string?>(), It.IsAny<string?>()))
             .Returns(user);
 
-        _sessionServiceMock.Setup(ss => ss.CreateSession(It.IsAny<User>()))
+        _sessionServiceMock.Setup(ss => ss.Create(It.IsAny<User>()))
             .Returns(session);
 
         var result = _controller.Create(request);
@@ -76,6 +73,6 @@ public class SessionControllerTest
         result.Should().BeOfType<CreateSessionResponse>();
         result.Token.Should().Be(session.AuthToken);
 
-        _sessionServiceMock.Verify(ss => ss.CreateSession(It.IsAny<User>()), Times.Once);
+        _sessionServiceMock.Verify(ss => ss.Create(It.IsAny<User>()), Times.Once);
     }
 }

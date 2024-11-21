@@ -4,7 +4,7 @@ using Homify.BusinessLogic.Users.Entities;
 namespace Homify.BusinessLogic.Sessions;
 public interface ISessionService
 {
-    Session CreateSession(User u);
+    Session Create(User u);
     User? GetUserByToken(string token);
-    User CheckSessionConstraints(string? mail, string? password);
+    User CheckConstraints(string? mail, string? password);
 }
