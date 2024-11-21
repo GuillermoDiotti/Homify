@@ -1,0 +1,1 @@
+var i=(()=>{class t{static{this.ADMINISTRATORID="AdminId"}static{this.COMPANYOWNERID="CompanyOwnerId"}static{this.HOMEOWNERID="HomeOwnerId"}static{this.ADMINISTRATOR="ADMINISTRATOR"}static{this.COMPANYOWNER="COMPANYOWNER"}static{this.HOMEOWNER="HOMEOWNER"}static{this.SENSOR="SENSOR"}static{this.CAMERA="CAMERA"}}return t})();export{i as a};
