@@ -77,6 +77,22 @@ public class HomeServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void CreateHomeArge_WithIncorrectRol_ShouldThrowException()
+    {
+        var owner = new User()
+        {
+            Roles = [new UserRole()
+                {
+                    Role = new Role() { Name = "ADMIN" }
+                }
+
+            ]
+        };
+        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, owner, "alias");
+    }
+
+    [TestMethod]
     public void GetHomeById_ShouldReturnHome_WhenHomeExists()
     {
         var homeId = "home123";
