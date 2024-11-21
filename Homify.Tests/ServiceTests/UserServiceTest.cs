@@ -368,4 +368,27 @@ public class UserServiceTest
         Assert.AreEqual(newProfilePicture, updatedUser.ProfilePicture);
         _userRepositoryMock.Verify(r => r.Update(user), Times.Once);
     }
+
+    [TestMethod]
+    public void GetAll_WithRoleAndNameFilter_ShouldReturnFilteredUsers()
+    {
+        // Arrange
+        var role = "Admin";
+        var name = "John";
+        var users = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe", Roles = new List<UserRole> { new UserRole { Role = new Role { Name = "HOMEOWNER" } } } },
+            new User { Id = "2", Name = "Jane", LastName = "Smith", Roles = new List<UserRole> { new UserRole { Role = new Role { Name = "HOMEOWNER" } } } }
+        };
+
+        _userRepositoryMock
+            .Setup(x => x.GetAll(It.IsAny<Expression<Func<User, bool>>>()))
+            .Returns(users);
+
+        // Act
+        var result = _service.GetAll(role, name);
+
+        // Assert
+        Assert.AreEqual("John", users.First().Name);
+    }
 }
