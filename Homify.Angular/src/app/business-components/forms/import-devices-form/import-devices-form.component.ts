@@ -5,7 +5,6 @@ import { APIError } from '../../../../interfaces/interfaces';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 import { ButtonComponent } from '../../../components/button/button.component';
-import { take } from 'rxjs';
 import { InputComponent } from '../../../components/input/input.component';
 
 @Component({
@@ -23,7 +22,7 @@ import { InputComponent } from '../../../components/input/input.component';
 export class ImportDevicesFormComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
-	importPath = 'C:/Users/Juan/Desktop/devices2.json';
+	importPath = '';
 
   constructor(private ImportService: ImportService) {}
 
