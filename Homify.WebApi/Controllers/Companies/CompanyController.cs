@@ -67,6 +67,9 @@ public class CompanyController : HomifyControllerBase
     {
         var user = GetUserLogged();
         var resp = _companyService.AddValidatorModel(req.Model ?? string.Empty, user);
-        return new AddValidatorBasicInfo(/*resp*/);
+        return new AddValidatorBasicInfo()
+        {
+            Model = resp
+        };
     }
 }
