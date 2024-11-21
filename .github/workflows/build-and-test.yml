@@ -49,10 +49,6 @@ jobs:
       - name: Run Build
         run: dotnet build --configuration Release
 
-      # Nuevo paso para copiar la carpeta Validators
-      - name: Copy Validators Directory
-        run: mkdir -p Homify.Tests/bin/Release/net8.0/Validators cp -R Homify.WebApi/Validators/* Homify.Tests/bin/Release/net8.0/Validators/
-
       - name: Generate Test Results
         run: dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFilePrefix=test-results" --results-directory ./coverage
 
