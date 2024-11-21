@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace InterfaceImporter.Models;
+namespace Homify.Importer.Abstractions.Models;
 
 public class ImportPhotos
 {

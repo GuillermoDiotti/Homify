@@ -1,4 +1,4 @@
-namespace Homify.WebApi.Controllers.Admins.Models;
+namespace Homify.WebApi.Controllers.Admins.Models.Requests;
 
 public class UserFiltersRequest
 {

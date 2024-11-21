@@ -7,7 +7,7 @@ using Homify.BusinessLogic.Importers.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Importer.Abstractions;
-using InterfaceImporter.Models;
+using Homify.Importer.Abstractions.Models;
 using ModeloValidador.Abstracciones;
 
 namespace Homify.BusinessLogic.Importers;

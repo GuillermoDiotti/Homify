@@ -1,4 +1,4 @@
-using InterfaceImporter.Models;
+using Homify.Importer.Abstractions.Models;
 
 namespace Homify.Importer.Abstractions;
 

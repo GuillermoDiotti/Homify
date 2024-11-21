@@ -1,5 +1,5 @@
 using Homify.Importer.Abstractions;
-using InterfaceImporter.Models;
+using Homify.Importer.Abstractions.Models;
 using Newtonsoft.Json;
 
 namespace JSONImporter;
