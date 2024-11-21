@@ -11,7 +11,6 @@ using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
-using Microsoft.AspNetCore.Identity;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -52,7 +51,7 @@ public class UserServiceTest
     [TestMethod]
     public void CreateHomeOwner_WhenInfoInvalid_ThrowsException()
     {
-        var args = new CreateHomeOwnerArgs("John", "mail@domain.com", "password123!", "Doe", null, RolesGenerator.HomeOwner());
+        new CreateHomeOwnerArgs("John", "mail@domain.com", "password123!", "Doe", null, RolesGenerator.HomeOwner());
     }
 
     [TestMethod]
@@ -353,7 +352,7 @@ public class UserServiceTest
             "password123!",
             "Doe",
             null);
-        var result = _service.AddAdmin(createUserArgs);
+        _service.AddAdmin(createUserArgs);
     }
 
     [TestMethod]
@@ -389,8 +388,16 @@ public class UserServiceTest
         var name = "John";
         var users = new List<User>
         {
-            new User { Id = "1", Name = "John", LastName = "Doe", Roles = new List<UserRole> { new UserRole { Role = new Role { Name = "HOMEOWNER" } } } },
-            new User { Id = "2", Name = "Jane", LastName = "Smith", Roles = new List<UserRole> { new UserRole { Role = new Role { Name = "HOMEOWNER" } } } }
+            new User
+            {
+                Id = "1", Name = "John", LastName = "Doe", Roles =
+                [new UserRole { Role = new Role { Name = "HOMEOWNER" } }]
+            },
+            new User
+            {
+                Id = "2", Name = "Jane", LastName = "Smith", Roles =
+                [new UserRole { Role = new Role { Name = "HOMEOWNER" } }]
+            }
         };
 
         _userRepositoryMock

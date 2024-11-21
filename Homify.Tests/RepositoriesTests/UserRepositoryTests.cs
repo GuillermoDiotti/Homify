@@ -1,7 +1,5 @@
-using System.Linq.Expressions;
 using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles.Entities;
-using Homify.BusinessLogic.Sessions.Entities;
 using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
@@ -24,17 +22,14 @@ public class UserRepositoryTests
                 Id = "1",
                 Name = "John",
                 LastName = "Doe",
-                Roles = new List<UserRole>
-                {
+                Roles =
+                [
                     new UserRole
                     {
-                        Role = new Role
-                        {
-                            Name = "Admin",
-                            Permissions = [new SystemPermission { Value = "Read" }]
-                        }
+                        Role = new Role { Name = "Admin", Permissions = [new SystemPermission { Value = "Read" }] }
                     }
-                }
+
+                ]
             }
         }.AsQueryable();
 

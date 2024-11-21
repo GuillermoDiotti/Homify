@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies.Entities;
@@ -7,7 +6,6 @@ using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications.Entities;

@@ -1,4 +1,3 @@
-using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Rooms;
 using Homify.BusinessLogic.Rooms.Entities;

@@ -47,7 +47,7 @@ public class CompanyServiceTest
         var validator = "validValidator";
         var owner = new CompanyOwner { IsIncomplete = true };
 
-        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+        new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
     }
 
     [TestMethod]
@@ -60,7 +60,7 @@ public class CompanyServiceTest
         var validator = "validValidator";
         var owner = new CompanyOwner { IsIncomplete = true };
 
-        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+        new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
     }
 
     [TestMethod]
@@ -73,7 +73,7 @@ public class CompanyServiceTest
         var validator = "validValidator";
         var owner = new CompanyOwner { IsIncomplete = true };
 
-        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+        new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
     }
 
     [TestMethod]
@@ -86,7 +86,7 @@ public class CompanyServiceTest
         var validator = "validValidator";
         CompanyOwner owner = null;
 
-        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+        new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
     }
 
     [TestMethod]
@@ -99,7 +99,7 @@ public class CompanyServiceTest
         var validator = "validValidator";
         var owner = new CompanyOwner { IsIncomplete = false };
 
-        var args = new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
+        new CreateCompanyArgs(name, logoUrl, rut, validator, owner);
     }
 
     [TestMethod]

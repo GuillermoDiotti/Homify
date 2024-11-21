@@ -77,13 +77,13 @@ public class ImporterServiceTest
             .Returns(true);
         var list = new List<IImporter> { importerMock.Object };
 
-        var ImportationContainer = new List<ImportationContainer> { new ImportationContainer { Devices = new List<ImportedDevices>() } };
+        var importationContainer = new List<ImportationContainer> { new ImportationContainer { Devices = [] } };
         var importedDevices = new ImportedDevices
         {
             Id = "id",
             Model = "model",
             Name = "name",
-            Photos = new List<ImportPhotos>(),
+            Photos = [],
             Type = "type",
             PersonDetection = true,
             MovementDetection = true
@@ -114,11 +114,11 @@ public class ImporterServiceTest
                 Type = "camera",
                 PersonDetection = true,
                 MovementDetection = true,
-                Photos = new List<ImportPhotos>
-                {
+                Photos =
+                [
                     new ImportPhotos { Path = "photo1.jpg", IsPrincipal = true },
                     new ImportPhotos { Path = "photo2.jpg", IsPrincipal = false }
-                }
+                ]
             }
         };
         var importationContainer = new ImportationContainer { Devices = importationDevice };
@@ -135,7 +135,7 @@ public class ImporterServiceTest
                 MovementDetection = importationDevice[0].MovementDetection,
                 Photos =
                 [
-                    new ReturnPhotos { Path = importedPhotos.Path, IsPrincipal = importedPhotos.IsPrincipal},
+                    new ReturnPhotos { Path = importedPhotos.Path, IsPrincipal = importedPhotos.IsPrincipal },
                     new ReturnPhotos { Path = "photo2.jpg", IsPrincipal = false }
                 ]
             }
@@ -184,14 +184,14 @@ public class ImporterServiceTest
     [TestMethod]
     public void ImporterArgs_WhenImporterNull_ThrowsException()
     {
-        var args = new ImporterArgs(null, "path", new User());
+        new ImporterArgs(null, "path", new User());
     }
 
     [ExpectedException(typeof(ArgsNullException))]
     [TestMethod]
     public void ImporterArgs_WhenPathNull_ThrowsException()
     {
-        var args = new ImporterArgs("importer", null, new User());
+        new ImporterArgs("importer", null, new User());
     }
 
     [TestMethod]
@@ -204,12 +204,3 @@ public class ImporterServiceTest
         args.User.Should().NotBeNull();
     }
 }
-
-public interface IFileSystem
-{
-    string[] GetFiles(string path);
-    bool FileExists(string path);
-    FileInfo GetFileInfo(string path);
-    Assembly LoadAssembly(string path);
-}
-

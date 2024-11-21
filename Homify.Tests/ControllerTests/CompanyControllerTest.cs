@@ -153,7 +153,7 @@ public class CompanyControllerTest
         var expectedRole = new Role
         {
             Name = "COMPANYOWNER",
-            Permissions = new List<SystemPermission> { new SystemPermission { Value = "companies-Create" } }
+            Permissions = [new SystemPermission { Value = "companies-Create" }]
         };
 
         var owner = new CompanyOwner
@@ -164,7 +164,7 @@ public class CompanyControllerTest
             Password = "password",
             Id = Guid.NewGuid().ToString(),
             ProfilePicture = "foto",
-            Roles = new List<UserRole> { new UserRole { UserId = "123", Role = expectedRole } },
+            Roles = [new UserRole { UserId = "123", Role = expectedRole }],
             IsIncomplete = true,
             CreatedAt = HomifyDateTime.GetActualDate()
         };

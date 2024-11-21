@@ -1,6 +1,5 @@
 ﻿using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Users.Entities;
 

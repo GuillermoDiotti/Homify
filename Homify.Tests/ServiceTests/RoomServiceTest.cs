@@ -45,14 +45,14 @@ public class RoomServiceTest
     [ExpectedException(typeof(NullReferenceException))]
     public void AddHomeRoom_RoomNHomeIdNull_ThrowsException()
     {
-        var args = new CreateRoomArgs("room", null, new HomeOwner { Id = "owner123" });
+        new CreateRoomArgs("room", null, new HomeOwner { Id = "owner123" });
     }
 
     [TestMethod]
     [ExpectedException(typeof(NullReferenceException))]
     public void AddHomeRoom_RoomNameNull_ThrowsNotFoundException()
     {
-        var args = new CreateRoomArgs(null, "home123", new HomeOwner { Id = "owner123" });
+        new CreateRoomArgs(null, "home123", new HomeOwner { Id = "owner123" });
     }
 
     [TestMethod]
@@ -229,20 +229,20 @@ public class RoomServiceTest
     [TestMethod]
     public void UpdateRoom_WhenRoomIdIsNull_ThrowsException()
     {
-        var args = new UpdateRoomArgs(null, "homeDeviceId", new HomeOwner { Id = "owner123" });
+        new UpdateRoomArgs(null, "homeDeviceId", new HomeOwner { Id = "owner123" });
     }
 
     [ExpectedException(typeof(NullReferenceException))]
     [TestMethod]
     public void UpdateRoom_WhenHomeDeviceIdIsNull_ThrowsException()
     {
-        var args = new UpdateRoomArgs("id", null, new HomeOwner { Id = "owner123" });
+        new UpdateRoomArgs("id", null, new HomeOwner { Id = "owner123" });
     }
 
     [ExpectedException(typeof(NullReferenceException))]
     [TestMethod]
     public void UpdateRoom_WhenHomeOwnersNull_ThrowsException()
     {
-        var args = new UpdateRoomArgs("id", "id", null);
+        new UpdateRoomArgs("id", "id", null);
     }
 }

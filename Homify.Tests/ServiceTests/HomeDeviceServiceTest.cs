@@ -1,12 +1,10 @@
 using System.Linq.Expressions;
 using FluentAssertions;
 using Homify.BusinessLogic;
-using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
 using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Notifications;
 using Homify.BusinessLogic.Permissions;
@@ -499,7 +497,7 @@ public class HomeDeviceServiceTest
     public void Rename_WhenUserNotFoundInHome_ThrowsNotFoundException()
     {
         var userId = "user-123";
-        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = new List<HomeUser>() };
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = [] };
         var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };
 
@@ -514,7 +512,7 @@ public class HomeDeviceServiceTest
     {
         var userId = "user-123";
         var hardwareId = "hardware id";
-        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = new List<HomeUser>() };
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = [] };
         var homeDevice = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };
 
@@ -532,10 +530,7 @@ public class HomeDeviceServiceTest
         {
             Id = "home-123",
             OwnerId = "owner-123",
-            Members = new List<HomeUser>
-            {
-                new HomeUser() { UserId = userId, Permissions = new List<HomePermission>() }
-            }
+            Members = [new HomeUser() { UserId = userId, Permissions = [] }]
         };
         var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };

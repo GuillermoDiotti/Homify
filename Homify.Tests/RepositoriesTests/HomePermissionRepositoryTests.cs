@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;

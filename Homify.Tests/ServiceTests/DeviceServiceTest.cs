@@ -305,7 +305,7 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-    [ExpectedException((typeof(NotFoundException)))]
+    [ExpectedException(typeof(NotFoundException))]
     public void AddWindowSensor_HasCompany_ThrowsExceptionIfNoCompany()
     {
         var owner = new CompanyOwner { Id = "owner-456" };

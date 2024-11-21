@@ -7,7 +7,6 @@ using Homify.BusinessLogic.HomeDevices.Entities;
 using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.HomeUsers.Entities;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
@@ -73,7 +72,7 @@ public class HomeServiceTest
     [ExpectedException(typeof(ArgsNullException))]
     public void CreateHomeArge_WithNullOwner_ShouldThrowException()
     {
-        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, null, "alias");
+        new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, null, "alias");
     }
 
     [TestMethod]
@@ -656,7 +655,7 @@ public class HomeServiceTest
     public void UpdateNofiticatedList_WhenUserNotFoundInHome_ThrowsInvalidOperationException()
     {
         var userId = "user-123";
-        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = new List<HomeUser>() };
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = [] };
         var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };
 
@@ -670,7 +669,7 @@ public class HomeServiceTest
     public void UpdateNofiticatedList_WhenUserNotInHome_ThrowsInvalidOperationException()
     {
         var userId = "ownerId";
-        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = new List<HomeUser>() };
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members = [] };
         var device = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
         var user = new User { Id = userId };
 
@@ -679,7 +678,7 @@ public class HomeServiceTest
             Id = "homeId",
             OwnerId = "ownerId",
             Alias = "oldAlias",
-            Members = new List<HomeUser>()
+            Members = []
         });
         _homeService.UpdateNotificatedList("NewName", "device-123", user);
     }
