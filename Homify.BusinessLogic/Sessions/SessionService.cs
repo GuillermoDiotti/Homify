@@ -6,7 +6,7 @@ using Homify.Utility;
 
 namespace Homify.BusinessLogic.Sessions;
 
-public class SessionService : ISessionService
+public sealed class SessionService : ISessionService
 {
     private readonly IRepository<Session> _repository;
     private readonly IUserService _userService;

@@ -14,7 +14,7 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Homes;
 
-public class HomeService : IHomeService
+public sealed class HomeService : IHomeService
 {
     private readonly IRepository<Home> _repository;
     private readonly IDeviceService _deviceService;

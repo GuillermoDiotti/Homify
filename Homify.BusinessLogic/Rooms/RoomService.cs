@@ -8,7 +8,7 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Rooms;
 
-public class RoomService : IRoomService
+public sealed class RoomService : IRoomService
 {
     private readonly IRepository<Room> _roomRepository;
     private readonly IHomeService _homeService;

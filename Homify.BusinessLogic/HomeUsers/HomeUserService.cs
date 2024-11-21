@@ -3,7 +3,7 @@ using Homify.Exceptions;
 
 namespace Homify.BusinessLogic.HomeUsers;
 
-public class HomeUserService : IHomeUserService
+public sealed class HomeUserService : IHomeUserService
 {
     private readonly IRepository<HomeUser> _repository;
 

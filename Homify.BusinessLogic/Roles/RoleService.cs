@@ -7,7 +7,7 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Roles;
 
-public class RoleService : IRoleService
+public sealed class RoleService : IRoleService
 {
     private readonly IRepository<Role> _repository;
     private readonly IUserService _userService;

@@ -13,7 +13,7 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.HomeDevices;
 
-public class HomeDeviceService : IHomeDeviceService
+public sealed class HomeDeviceService : IHomeDeviceService
 {
     private readonly IRepository<HomeDevice> _repository;
     private readonly INotificationService _notificationService;

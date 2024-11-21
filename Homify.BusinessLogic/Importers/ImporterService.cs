@@ -12,7 +12,7 @@ using ModeloValidador.Abstracciones;
 
 namespace Homify.BusinessLogic.Importers;
 
-public class ImporterService : IImporterService
+public sealed class ImporterService : IImporterService
 {
     private readonly IDeviceService? _deviceService;
     private readonly ICompanyOwnerService _companyOwnerService;

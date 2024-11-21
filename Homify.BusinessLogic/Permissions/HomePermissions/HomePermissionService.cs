@@ -5,7 +5,7 @@ using Homify.BusinessLogic.Users.Entities;
 
 namespace Homify.BusinessLogic.Permissions.HomePermissions;
 
-public class HomePermissionService : IHomePermissionService
+public sealed class HomePermissionService : IHomePermissionService
 {
     private readonly IRepository<HomePermission> _repository;
 

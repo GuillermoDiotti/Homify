@@ -9,7 +9,7 @@ using Homify.Utility;
 
 namespace Homify.BusinessLogic.Devices;
 
-public class DeviceService : IDeviceService
+public sealed class DeviceService : IDeviceService
 {
     private readonly IRepository<Camera> _cameraRepository;
     private readonly IRepository<WindowSensor> _sensorRepository;

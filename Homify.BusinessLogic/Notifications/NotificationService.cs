@@ -6,7 +6,7 @@ using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications;
 
-public class NotificationService : INotificationService
+public sealed class NotificationService : INotificationService
 {
     private readonly IRepository<Notification> _notificationRepository;
     private readonly IHomeUserService _homeUserService;

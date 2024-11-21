@@ -7,7 +7,7 @@ using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.BusinessLogic.Companies;
 
-public class CompanyService : ICompanyService
+public sealed class CompanyService : ICompanyService
 {
     private readonly IRepository<Company> _repository;
 

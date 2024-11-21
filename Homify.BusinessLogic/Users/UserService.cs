@@ -8,7 +8,7 @@ using Homify.Utility;
 
 namespace Homify.BusinessLogic.Users;
 
-public class UserService : IUserService
+public sealed class UserService : IUserService
 {
     private readonly IRepository<User> _repository;
     private readonly IRepository<UserRole> _userRolerepository;
