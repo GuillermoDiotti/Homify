@@ -24,8 +24,8 @@ export class LoginFormComponent {
 
   constructor(private fb: FormBuilder ,private sessionService: SessionService) {
 		this.form = this.fb.group({
-      email: ["admin@domain.com", [Validators.required, Validators.email]],
-      password: [".Popso212", [Validators.required]],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required]],
     });
 	}
 

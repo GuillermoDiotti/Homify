@@ -24,11 +24,11 @@ export class RegisterFormComponent {
 
   constructor(private fb: FormBuilder, private sessionService: SessionService) {
 		this.form = this.fb.group({
-      email: ["juan@mail.com", [Validators.required, Validators.email]],
-      password: ["123456!", [Validators.required]],
-			name: ["juan", [Validators.required]],
-      lastName: ["angular", [Validators.required]],
-			profilePicUrl: ["hola.jpg", [Validators.required]],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required]],
+			name: ["", [Validators.required]],
+      lastName: ["", [Validators.required]],
+			profilePicUrl: ["", [Validators.required]],
     });
 	}
 
