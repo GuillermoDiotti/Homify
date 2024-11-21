@@ -620,4 +620,11 @@ public class HomeServiceTest
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullRequestException))]
+    public void AssignDevice_WhenHomeIdIsNull_ShouldThrowNullRequestException()
+    {
+        _homeService.AssignDevice("device123", null, new User());
+    }
 }
