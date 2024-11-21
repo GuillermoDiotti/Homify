@@ -382,6 +382,18 @@ public class HomeDeviceServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void OpenWindow_WithNullDevice_ShouldOpenWindow()
+    {
+        var hardwareId = "12345";
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>()))
+            .Returns((HomeDevice)null);
+
+        var result = _homeDeviceService.OpenWindow(hardwareId);
+    }
+
+    [TestMethod]
     public void CloseWindow_WithValidSensor_ShouldCloseWindow()
     {
         var hardwareId = "12345";
