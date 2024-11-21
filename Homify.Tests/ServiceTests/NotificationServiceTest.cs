@@ -286,4 +286,29 @@ public class NotificationServiceTest
 
         new ValidateNotificationDeviceArgs(homeDevice, type);
     }
+
+    [TestMethod]
+    public void AddLamp_ShouldAddNotificationsForNotificableUsers()
+    {
+        // Arrange
+        var homeId = "home-123";
+        var device = new HomeDevice { Id = "device-123", HomeId = homeId };
+        var notificationArgs = new CreateGenericNotificationArgs(device, false, DateTimeOffset.Now, "device-123", "Lamp state switch detected", "Lamp On");
+
+        var homeUsers = new List<HomeUser>
+        {
+            new HomeUser { UserId = "user-1", IsNotificable = true },
+            new HomeUser { UserId = "user-2", IsNotificable = false },
+            new HomeUser { UserId = "user-3", IsNotificable = true }
+        };
+
+        _mockHomeUserService.Setup(service => service.GetByHomeId(homeId)).Returns(homeUsers);
+
+        // Act
+        var result = _notificationService.AddLamp(notificationArgs);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Count);
+    }
 }
