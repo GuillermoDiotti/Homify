@@ -16,6 +16,7 @@ export class AccountsListComponent implements OnInit {
 	accounts: UserBasicInfo[] = [];
 	filterByRole = '';
 	filterByFullName = '';
+	userId = '';
 	constructor(private AdminService: AdminService){}
 
 	limit = 10;
@@ -30,6 +31,7 @@ export class AccountsListComponent implements OnInit {
   }
 	
 	ngOnInit() {
+		this.userId = localStorage.getItem('userId') ?? '';
 		this.AdminService.getAllAccounts().subscribe(
 			response => {
 				this.accounts = response;

@@ -2,20 +2,20 @@
 
 namespace Homify.WebApi.Controllers.Homes.Models.Responses;
 
-public class GetHomeDevicesResponse
+public sealed record class GetHomeDevicesResponse
 {
     public string Name { get; set; } = null!;
     public string CustomName { get; set; } = null!;
     public string Model { get; set; } = null!;
     public string? MainPhoto { get; set; } = null!;
-    public bool IsConnected { get; set; }
+    public bool? IsConnected { get; set; }
     public string DeviceId { get; set; } = null!;
     public string HardwareId { get; set; } = null!;
     public string Id { get; set; } = null!;
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
     public string Room { get; set; } = null!;
     public string DeviceType { get; set; } = null!;
-    public bool IsOn { get; set; }
+    public bool? IsOn { get; set; }
 
     public GetHomeDevicesResponse(HomeDevice homeDevice)
     {

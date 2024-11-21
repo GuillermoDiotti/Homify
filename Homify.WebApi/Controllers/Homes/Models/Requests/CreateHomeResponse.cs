@@ -2,7 +2,7 @@
 
 namespace Homify.WebApi.Controllers.Homes.Models.Requests;
 
-public class CreateHomeResponse
+public sealed record class CreateHomeResponse
 {
     public string Id { get; set; }
     public CreateHomeResponse(Home home)

@@ -1,7 +1,7 @@
 ﻿using Homify.BusinessLogic.Sessions;
 using Homify.Utility;
-using Homify.WebApi.Controllers.Session.Models.Requests;
-using Homify.WebApi.Controllers.Session.Models.Responses;
+using Homify.WebApi.Controllers.Sessions.Models.Requests;
+using Homify.WebApi.Controllers.Sessions.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 

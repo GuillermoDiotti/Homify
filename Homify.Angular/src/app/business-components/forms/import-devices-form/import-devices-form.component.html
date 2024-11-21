@@ -1,7 +1,5 @@
 <h2>Import devices</h2>
-<form
-  [formGroup]="form"
-  (ngSubmit)="handleSubmit()"
+<div
   style="display: flex; flex-direction: column; align-items: start"
 >
   <div style="display: flex; flex-direction: row; align-items: center; gap: 5">
@@ -18,19 +16,16 @@
     >
   </div>
 
-  <app-form-input
-    [form]="form"
+  <app-input
+		(change)="onPathChange($event)"
     name="filePath"
     type="text"
     label="File Path"
     placeholder="Path"
-    [formField]="{
-      filePath: { required: 'Path is required' }
-    }"
-  ></app-form-input>
+  ></app-input>
 
-  <app-form-button type="submit" title="Submit"></app-form-button>
+  <app-button (click)="handleSubmit()">Submit</app-button>
 
   <app-success-message [message]="successMessage"></app-success-message>
   <app-error-message [message]="errorMessage"></app-error-message>
-</form>
+</div>

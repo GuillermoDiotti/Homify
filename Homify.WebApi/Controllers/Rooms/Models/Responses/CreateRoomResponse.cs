@@ -1,6 +1,6 @@
 namespace Homify.WebApi.Controllers.Rooms.Models.Responses;
 
-public class CreateRoomResponse
+public sealed record class CreateRoomResponse
 {
     public string Id { get; init; }
 

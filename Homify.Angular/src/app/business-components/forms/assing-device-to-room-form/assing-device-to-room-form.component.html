@@ -5,7 +5,7 @@
 			<label for="homerooms">Home Room</label>
 			<select id="homerooms" name="device" (change)="onRoomChange($event)">
 				@for (room of rooms; track $index){
-					<option value="room.id">{{ room.name }}</option>
+					<option value="{{ room.id }}">{{ room.name }}</option>
 				}
 			</select>
 		</div>

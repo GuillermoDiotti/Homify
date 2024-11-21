@@ -37,7 +37,7 @@
       <strong>Fullname:</strong> {{ account.fullName }} <br />
       <strong>Role:</strong> {{ account.role }} <br />
       <strong>Created at:</strong> {{ account.createdAt }} <br />
-				@if (account.role.includes('ADMINISTRATOR')) {
+				@if (account.role.includes('ADMINISTRATOR') && userId != account.id) {
 					<hr>
 					<app-delete-admin-button
 						[adminId]="account.id"

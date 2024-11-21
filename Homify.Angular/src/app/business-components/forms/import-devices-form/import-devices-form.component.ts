@@ -1,45 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
 import { ImportService } from '../../../../backend/services/importer/Importer.service';
 import { ImportRequest } from '../../../../backend/services/importer/models/ImportRequest';
 import { APIError } from '../../../../interfaces/interfaces';
-import { FormComponent } from '../../../components/form/form/form.component';
-import { FormButtonComponent } from '../../../components/form/form-button/form-button.component';
-import { FormInputComponent } from '../../../components/form/form-input/form-input.component';
 import { SuccessMessageComponent } from '../../../components/success-message/success-message.component';
 import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 import { ButtonComponent } from '../../../components/button/button.component';
+import { take } from 'rxjs';
+import { InputComponent } from '../../../components/input/input.component';
 
 @Component({
   selector: 'app-import-devices-form',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    FormComponent,
-    FormButtonComponent,
-    FormInputComponent,
     SuccessMessageComponent,
     ErrorMessageComponent,
 		ButtonComponent,
+		InputComponent
   ],
   templateUrl: './import-devices-form.component.html',
   styleUrl: './import-devices-form.component.css',
 })
 export class ImportDevicesFormComponent implements OnInit {
-  form: FormGroup;
   successMessage = '';
   errorMessage = '';
+	importPath = 'C:/Users/Juan/Desktop/devices2.json';
 
-  constructor(private fb: FormBuilder, private ImportService: ImportService) {
-    this.form = this.fb.group({
-      filePath: ['', [Validators.required]],
-    });
-  }
+  constructor(private ImportService: ImportService) {}
 
   importers: string[] = [];
 	selectedImporter = '';
@@ -70,14 +56,12 @@ export class ImportDevicesFormComponent implements OnInit {
   handleSubmit() {
     this.successMessage = '';
     this.errorMessage = '';
-    if (this.form.valid) {
-      const { filePath } = this.form.value;
       const req: ImportRequest = {
         importerSelected: this.selectedImporter,
-        filePath,
+        filePath: this.importPath,
       };
 
-      this.ImportService.add(req).subscribe(
+      this.ImportService.addImportedDevices(req).subscribe(
         (response) => {
           this.successMessage = 'Devices added successfully';
         },
@@ -85,13 +69,14 @@ export class ImportDevicesFormComponent implements OnInit {
           this.errorMessage = error.error.message;
         }
       );
-    } else {
-      this.errorMessage = 'Form is invalid';
-    }
   }
 
 	onImporterChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedImporter = selectElement.value;
   }
+
+	onPathChange(event: Event) {
+		this.importPath = (event.target as HTMLInputElement).value;
+	}
 }

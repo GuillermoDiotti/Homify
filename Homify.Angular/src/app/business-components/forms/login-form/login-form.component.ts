@@ -48,7 +48,7 @@ export class LoginFormComponent {
 
     this.sessionService.login(email, password).subscribe(
       resp => {
-        this.sessionService.setCurrentUser(resp.token, resp.roles, resp.name);
+        this.sessionService.setCurrentUser(resp.token, resp.roles, resp.name, resp.userId);
 				this.currentUserToken = resp.token;
 				this.currentUserName = resp.name;
         this.errorMessage = '';

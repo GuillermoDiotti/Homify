@@ -2,7 +2,6 @@
 using Homify.BusinessLogic.CompanyOwners;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.Utility;
@@ -98,7 +97,7 @@ public class DeviceController : HomifyControllerBase
             req.Model ?? string.Empty,
             req.Description ?? string.Empty,
             req.Photos ?? [],
-            null,
+            req.PpalPicture,
             false,
             false,
             false,

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ImportService {
   constructor(private readonly _repository: ImporterApiRepositoryService) {}
 
-  public add(request: ImportRequest): Observable<any> {
+  public addImportedDevices(request: ImportRequest): Observable<any> {
     return this._repository.AddImportedDevices(request);
   }
 

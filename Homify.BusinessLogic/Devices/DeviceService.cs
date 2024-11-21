@@ -192,6 +192,7 @@ public sealed class DeviceService : IDeviceService
             Company = owner.Company,
             CompanyId = owner.Company.Id,
             Photos = device.Photos ?? [],
+            PpalPicture = device.PpalPicture ?? string.Empty,
         };
 
         _lampRepository.Add(lamp);

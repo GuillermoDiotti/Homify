@@ -1,6 +1,6 @@
 namespace Homify.WebApi.Controllers.Admins.Models.Requests;
 
-public class UserFiltersRequest
+public sealed record class UserFiltersRequest
 {
     public string? Limit { get; init; }
     public string? Offset { get; init; }

@@ -51,5 +51,8 @@ export class AssingDeviceToRoomFormComponent implements OnInit {
     );
   }
 
-  onRoomChange(event: Event) {}
+  onRoomChange(event: Event) {
+		const selectElement = event.target as HTMLSelectElement;
+    this.selectedRoomId = selectElement.value;
+	}
 }
