@@ -344,6 +344,19 @@ public class UserServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void AddAdmin_WhenEmailNotFound_ShouldAddAdmin()
+    {
+        var createUserArgs = new CreateUserArgs(
+            "John",
+            "mail@mail.com",
+            "password123!",
+            "Doe",
+            null);
+        var result = _service.AddAdmin(createUserArgs);
+    }
+
+    [TestMethod]
     public void UpdateProfilePicture_ValidUser_ReturnsUpdatedUser()
     {
         var user = new User
@@ -372,7 +385,6 @@ public class UserServiceTest
     [TestMethod]
     public void GetAll_WithRoleAndNameFilter_ShouldReturnFilteredUsers()
     {
-        // Arrange
         var role = "Admin";
         var name = "John";
         var users = new List<User>
@@ -385,10 +397,8 @@ public class UserServiceTest
             .Setup(x => x.GetAll(It.IsAny<Expression<Func<User, bool>>>()))
             .Returns(users);
 
-        // Act
         var result = _service.GetAll(role, name);
 
-        // Assert
         Assert.AreEqual("John", users.First().Name);
     }
 }
