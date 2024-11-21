@@ -27,7 +27,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Contexts;
 
-[ExcludeFromCodeCoverage]
 public sealed class HomifyDbContext : DbContext
 {
     public DbSet<Company> Companies { get; set; }

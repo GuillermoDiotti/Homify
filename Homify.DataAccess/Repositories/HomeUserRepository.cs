@@ -6,7 +6,6 @@ using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 
 public class HomeUserRepository : Repository<HomeUser>
 {
