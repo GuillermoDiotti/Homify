@@ -1,18 +1,22 @@
-using System.Diagnostics.CodeAnalysis;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Cameras.Entities;
-using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
-using Homify.BusinessLogic.Devices;
-using Homify.BusinessLogic.HomeDevices;
-using Homify.BusinessLogic.HomeOwners;
+using Homify.BusinessLogic.Companies.Entities;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.HomeDevices.Entities;
+using Homify.BusinessLogic.HomeOwners.Entities;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Notifications.Entities;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.Rooms.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Sessions.Entities;
-using Homify.BusinessLogic.SystemPermissions;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Contexts.TestContext;
 using Homify.Utility;
@@ -21,7 +25,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Contexts;
 
-[ExcludeFromCodeCoverage]
 public sealed class HomifyDbContext : DbContext
 {
     public DbSet<Company> Companies { get; set; }
@@ -32,7 +35,7 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<Session> Sessions { get; set; }
     public DbSet<Camera> Cameras { get; set; }
     public DbSet<Device> Devices { get; set; }
-    public DbSet<Sensor> Sensors { get; set; }
+    public DbSet<WindowSensor> WindowSensors { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<HomeUser> HomeUser { get; set; }
     public DbSet<Admin> Admins { get; set; }
@@ -40,6 +43,11 @@ public sealed class HomifyDbContext : DbContext
     public DbSet<SystemPermission> SystemPermissions { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RoleSystemPermission> RoleSystemPermissions { get; set; }
+    public DbSet<Room> Rooms { get; set; }
+    public DbSet<Lamp> Lamps { get; set; }
+    public DbSet<MovementSensor> MovementSensors { get; set; }
+
+    public DbSet<UserRole> UserRoles { get; set; }
 
     public HomifyDbContext(DbContextOptions options)
         : base(options)
@@ -48,14 +56,16 @@ public sealed class HomifyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Sensor>().ToTable("Sensors");
+        modelBuilder.Entity<WindowSensor>().ToTable("WindowSensors");
         modelBuilder.Entity<Camera>().ToTable("Cameras");
+        modelBuilder.Entity<Lamp>().ToTable("Lamps");
+        modelBuilder.Entity<MovementSensor>().ToTable("MovementSensors");
 
         modelBuilder.Entity<Admin>().ToTable("Admins");
         modelBuilder.Entity<HomeUser>().ToTable("HomeUsers");
         modelBuilder.Entity<HomeOwner>().ToTable("HomeOwners");
 
-        modelBuilder.Entity<HomeOwner>()
+        modelBuilder.Entity<User>()
             .HasMany(h => h.Homes)
             .WithOne(o => o.Owner)
             .HasForeignKey(i => i.OwnerId)
@@ -83,17 +93,19 @@ public sealed class HomifyDbContext : DbContext
         modelBuilder.Entity<HomeDevice>()
             .HasKey(hd => hd.Id);
 
-        modelBuilder.Entity<User>()
-            .HasOne(u => u.Role)
-            .WithMany()
-            .HasForeignKey(u => u.RoleId)
-            .IsRequired();
-
         modelBuilder.Entity<Session>()
             .HasOne(s => s.User)
             .WithMany()
             .HasForeignKey(s => s.UserId)
             .IsRequired();
+
+        /*modelBuilder.Entity<User>()
+            .HasMany(r => r.Roles); */
+
+        modelBuilder.Entity<UserRole>().HasOne(x => x.Role);
+        modelBuilder.Entity<UserRole>().HasOne(x => x.User);
+
+        modelBuilder.Entity<UserRole>().HasKey(x => x.Id);
 
         modelBuilder.Entity<Role>()
             .HasMany(r => r.Permissions)
@@ -182,51 +194,33 @@ public sealed class HomifyDbContext : DbContext
             {
                 Id = "16",
                 Value = PermissionsGenerator.UpdateUserNotification
-            },
-            new SystemPermission
-            {
-                Id = "17",
-                Value = PermissionsGenerator.ViewRegisteredDevices
-            },
-            new SystemPermission
-            {
-                Id = "18",
-                Value = PermissionsGenerator.ViewSupportedDevices
-            },
-            new SystemPermission
-            {
-                Id = "19",
-                Value = PermissionsGenerator.CreateNotification
             });
 
         modelBuilder.Entity<HomePermission>().HasData(
             new HomePermission
             {
-                Id = "2",
+                Id = "1",
                 Value = "AddDevices"
             },
             new HomePermission
             {
-                Id = "3",
+                Id = "2",
                 Value = "ListDevices"
+            },
+            new HomePermission
+            {
+                Id = "3",
+                Value = "ChangeDeviceName"
             });
 
+        var adminRole = new Role { Id = Constants.ADMINISTRATORID, Name = Constants.ADMINISTRATOR };
+        var companyOwnerRole = new Role { Id = Constants.COMPANYOWNERID, Name = Constants.COMPANYOWNER };
+        var homeOwnerRole = new Role { Id = Constants.HOMEOWNERID, Name = Constants.HOMEOWNER };
+
         modelBuilder.Entity<Role>().HasData(
-            new Role
-            {
-                Id = Constants.ADMINISTRATORID,
-                Name = Constants.ADMINISTRATOR
-            },
-            new Role
-            {
-                Id = Constants.COMPANYOWNERID,
-                Name = Constants.COMPANYOWNER
-            },
-            new Role
-            {
-                Id = Constants.HOMEOWNERID,
-                Name = Constants.HOMEOWNER
-            });
+            adminRole,
+            companyOwnerRole,
+            homeOwnerRole);
 
         modelBuilder.Entity<RoleSystemPermission>()
             .HasKey(rp => new { rp.RoleSystemPermissionId });
@@ -339,21 +333,6 @@ public sealed class HomifyDbContext : DbContext
                 {
                     RoleId = Constants.HOMEOWNERID,
                     PermissionId = "16"
-                },
-                new RoleSystemPermission
-                {
-                    RoleId = Constants.HOMEOWNERID,
-                    PermissionId = "17"
-                },
-                new RoleSystemPermission
-                {
-                    RoleId = Constants.HOMEOWNERID,
-                    PermissionId = "18"
-                },
-                new RoleSystemPermission
-                {
-                    RoleId = Constants.HOMEOWNERID,
-                    PermissionId = "19"
                 });
 
         User admin = new Admin()
@@ -362,8 +341,13 @@ public sealed class HomifyDbContext : DbContext
             Name = "Admin",
             Email = "admin@domain.com",
             Password = ".Popso212",
-            LastName = "LastName",
-            RoleId = Constants.ADMINISTRATORID,
+            LastName = "LastName"
+        };
+
+        var userRoleAdmin = new UserRole()
+        {
+            UserId = admin.Id,
+            RoleId = adminRole.Id
         };
 
         User homeowner = new HomeOwner()
@@ -373,8 +357,13 @@ public sealed class HomifyDbContext : DbContext
             Email = "homeowner@domain.com",
             Password = ".Popso212",
             LastName = "LastName",
-            ProfilePicture = "picture",
-            RoleId = Constants.HOMEOWNERID
+            ProfilePicture = "picture"
+        };
+
+        var userHomeOwnerRole = new UserRole()
+        {
+            UserId = homeowner.Id,
+            RoleId = homeOwnerRole.Id
         };
 
         User companyowner = new CompanyOwner()
@@ -384,13 +373,20 @@ public sealed class HomifyDbContext : DbContext
             Email = "companyowner@domain.com",
             Password = ".Popso212",
             LastName = "LastName",
-            RoleId = Constants.COMPANYOWNERID,
             IsIncomplete = true,
+        };
+
+        var userCompanyOwnerRole = new UserRole()
+        {
+            UserId = companyowner.Id,
+            RoleId = companyOwnerRole.Id
         };
 
         modelBuilder.Entity<Admin>().HasData(admin);
         modelBuilder.Entity<HomeOwner>().HasData(homeowner);
         modelBuilder.Entity<CompanyOwner>().HasData(companyowner);
+
+        modelBuilder.Entity<UserRole>().HasData(userRoleAdmin, userHomeOwnerRole, userCompanyOwnerRole);
 
         modelBuilder.Entity<Session>().HasData(
             new Session

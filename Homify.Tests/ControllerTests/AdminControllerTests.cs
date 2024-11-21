@@ -1,12 +1,14 @@
 using FluentAssertions;
 using Homify.BusinessLogic.Admins.Entities;
 using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Admins;
-using Homify.WebApi.Controllers.Admins.Models;
+using Homify.WebApi.Controllers.Admins.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -20,7 +22,7 @@ public class UserControllerTests
 
     public UserControllerTests()
     {
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
+        _userServiceMock = new Mock<IUserService>();
         _roleServicemock = new Mock<IRoleService>(MockBehavior.Strict);
         _controller = new AdminController(_userServiceMock.Object, _roleServicemock.Object);
     }
@@ -48,7 +50,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -65,7 +67,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -82,7 +84,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -99,7 +101,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -116,7 +118,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -133,7 +135,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -152,7 +154,7 @@ public class UserControllerTests
             LastName = "Doe"
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -169,7 +171,7 @@ public class UserControllerTests
             LastName = null
         };
 
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         _controller.Create(request);
     }
@@ -199,7 +201,7 @@ public class UserControllerTests
         };
 
         _userServiceMock.Setup(user => user.AddAdmin(It.IsAny<CreateUserArgs>())).Returns(expectedUser);
-        _roleServicemock.Setup(roleService => roleService.GetRole("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
+        _roleServicemock.Setup(roleService => roleService.Get("ADMINISTRATOR")).Returns(new Role { Name = "ADMINISTRATOR" });
 
         var response = _controller.Create(request);
 
@@ -212,99 +214,21 @@ public class UserControllerTests
         expectedUser.Password.Should().Be(request.Password);
         expectedUser.LastName.Should().Be(request.LastName);
     }
+
     #endregion
 
     #endregion
 
     #region Delete
-
-    #region Error
-
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void DeleteUser_WhenUserIdIsNull_ShouldThrowException()
+    public void Delete_WhenCalled_InvokesUserServiceDelete()
     {
-        _userServiceMock.Setup(user => user.GetById(It.IsAny<string>())).Throws(new NotFoundException("User not found"));
-        _controller.Delete("1234");
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void Delete_WhenAdminNotFound_ShouldThrowNotFoundException()
-    {
-        var adminId = "nonexistentAdminId";
-        _userServiceMock.Setup(service => service.GetById(adminId)).Returns((User)null);
+        var adminId = "testAdminId";
 
         _controller.Delete(adminId);
-    }
 
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void Delete_WhenTargetUserIsNotAdmin_ShouldThrowInvalidOperationException()
-    {
-        var adminId = "userId";
-        var user = new User { Id = adminId, Role = new Role { Name = "User" } };
-        _userServiceMock.Setup(service => service.GetById(adminId)).Returns(user);
-
-        _controller.Delete(adminId);
-    }
-
-    [TestMethod]
-    public void Delete_WhenAdminExistsAndIsAdmin_ShouldDeleteAdmin()
-    {
-        // Arrange
-        var adminId = "adminId";
-        var admin = new User { Id = adminId, Role = new Role { Name = Constants.ADMINISTRATOR } };
-        _userServiceMock.Setup(service => service.GetById(adminId)).Returns(admin);
-        _userServiceMock.Setup(service => service.Delete(adminId));
-
-        // Act
-        _controller.Delete(adminId);
-
-        // Assert
-        _userServiceMock.Verify(service => service.GetById(adminId), Times.Once);
         _userServiceMock.Verify(service => service.Delete(adminId), Times.Once);
     }
-    #endregion
-
-    #region Success
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void DeleteUser_WhenUserIdIsOk_ShouldDeleteUser()
-    {
-        var testUser = new User();
-        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Throws(new NotFoundException("User not found"));
-        _controller.Delete(testUser.Id);
-    }
-
-    #endregion
-
-    #endregion
-
-    #region Get
-
-    [TestMethod]
-    public void GetUser_WhenUserIdIsOk_ShouldReturnUser()
-    {
-        var testUser = new User();
-        _userServiceMock.Setup(user => user.GetById(testUser.Id)).Returns(testUser);
-
-        var response = _controller.GetById(testUser.Id);
-
-        response.Should().NotBeNull();
-        response.Id.Should().NotBeNull();
-        response.Id.Should().NotBeEmpty();
-        response.Id.Should().Be(testUser.Id);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void GetUser_WhenUserIdIsNull_ShouldThrowException()
-    {
-        _controller.GetById(null!);
-    }
-
     #endregion
 
     [TestMethod]
@@ -316,34 +240,63 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Guest"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("2", "1", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "2",
+            Offset = "1"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -360,46 +313,66 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Guest"
-                }
-            },
-            new User
-            {
-                Name = "Lucy",
-                LastName = "Williams",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("invalid", "0", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "invalid",
+            Offset = "0"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(4, result.Count);
+        Assert.AreEqual(3, result.Count);
     }
 
     [TestMethod]
@@ -411,34 +384,63 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("2", "invalid", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "2",
+            Offset = "invalid"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -454,34 +456,63 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role
-                {
-                    Name = "User"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "user",
                 Name = "Adam",
                 LastName = "Johnson",
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "user",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts(null, null, string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = string.Empty,
+            Offset = string.Empty
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
@@ -496,17 +527,31 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                CreatedAt = DateTime.Now,
-                Role = new Role
-                {
-                    Name = "Admin"
-                }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(users);
 
-        var result = _controller.AllAccounts("10", "0", string.Empty, string.Empty);
+        var req = new UserFiltersRequest()
+        {
+            Limit = "10",
+            Offset = "0"
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result, "El resultado no debe ser nulo");
         Assert.AreEqual(1, result.Count, "Debe haber exactamente un usuario en la lista");
@@ -527,23 +572,55 @@ public class UserControllerTests
             {
                 Name = "John",
                 LastName = "Doe",
-                Role = new Role { Name = "Admin" }
+                Id = "adminId",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "adminId",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             },
             new User
             {
+                Id = "userid",
                 Name = "Jane",
                 LastName = "Smith",
-                Role = new Role { Name = "User" }
+                Roles =
+                [
+                    new UserRole
+                    {
+                        UserId = "userid",
+                        RoleId = Constants.ADMINISTRATORID,
+                        Role = new Role { Id = Constants.ADMINISTRATORID, Name = "ADMINISTRATOR" }
+                    }
+
+                ]
             }
         };
 
-        _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns((string? role, string? name) =>
+                users.Where(u =>
+                    (string.IsNullOrEmpty(role) || u.Roles.Any(r => r.Role.Name.Contains(role, StringComparison.OrdinalIgnoreCase))) &&
+                    (string.IsNullOrEmpty(name) || Helpers.GetUserFullName(u.Name, u.LastName).Contains(name, StringComparison.OrdinalIgnoreCase))).ToList());
 
-        var result = _controller.AllAccounts(limit, offset, role, fullName);
+        var req = new UserFiltersRequest()
+        {
+            Limit = limit,
+            Offset = offset,
+            Role = role,
+            FullName = fullName
+        };
+
+        var result = _controller.AllAccounts(req);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("John Doe", Helpers.GetUserFullName(result[0].Name, result[0].LastName));
-        _userServiceMock.Verify(service => service.GetAll(), Times.Once);
     }
 }

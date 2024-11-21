@@ -1,25 +1,21 @@
-using Homify.BusinessLogic.HomeDevices;
 using Homify.BusinessLogic.HomeUsers;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Utility;
 
 namespace Homify.BusinessLogic.Notifications;
 
-public class NotificationService : INotificationService
+public sealed class NotificationService : INotificationService
 {
     private readonly IRepository<Notification> _notificationRepository;
-    private readonly IHomeDeviceService _homeDeviceService;
     private readonly IHomeUserService _homeUserService;
     private readonly IUserService _userService;
 
-    public NotificationService(IRepository<Notification> notificationRepository, IHomeDeviceService homeDeviceService,
+    public NotificationService(IRepository<Notification> notificationRepository,
         IHomeUserService homeUserService, IUserService userService)
     {
         _notificationRepository = notificationRepository;
-        _homeDeviceService = homeDeviceService;
         _homeUserService = homeUserService;
         _userService = userService;
     }
@@ -30,10 +26,10 @@ public class NotificationService : INotificationService
         return notifications.Where(n => n.HomeUser.UserId == userId).ToList();
     }
 
-    public List<Notification> AddPersonDetectedNotification(CreateNotificationArgs notification)
+    public List<Notification> AddPersonDetected(CreateNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -46,7 +42,7 @@ public class NotificationService : INotificationService
                     Event = "Person Detected",
                     Device = notification.Device,
                     IsRead = false,
-                    Date = notification.Date,
+                    Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = (detectedUser != null) ? Helpers.GetUserFullName(detectedUser.Name, detectedUser.LastName) : null,
                     HomeUserId = users.UserId,
@@ -60,10 +56,10 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public List<Notification> AddWindowNotification(CreateGenericNotificationArgs notification)
+    public List<Notification> AddWindow(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -72,10 +68,10 @@ public class NotificationService : INotificationService
                 var noti = new Notification()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Event = "Window state switch detected",
+                    Event = notification.Event ?? "Window state switch detected",
                     Device = notification.Device,
                     IsRead = false,
-                    Date = notification.Date,
+                    Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = notification.Action,
                     HomeUserId = users.UserId,
@@ -89,10 +85,39 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public List<Notification> AddMovementNotification(CreateGenericNotificationArgs notification)
+    public List<Notification> AddLamp(CreateGenericNotificationArgs notificationArgs)
+    {
+        var homeId = notificationArgs.Device.HomeId;
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
+        var returnNotification = new List<Notification>();
+        foreach (var users in homeUsers)
+        {
+            if (users.IsNotificable)
+            {
+                var noti = new Notification()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Event = notificationArgs.Event ?? "Lamp state switch detected",
+                    Device = notificationArgs.Device,
+                    IsRead = false,
+                    Date = HomifyDateTime.GetActualDate(),
+                    HomeDeviceId = notificationArgs.Device.Id,
+                    Detail = notificationArgs.Action,
+                    HomeUserId = users.UserId,
+                    HomeUser = users,
+                };
+                returnNotification.Add(noti);
+                _notificationRepository.Add(noti);
+            }
+        }
+
+        return returnNotification;
+    }
+
+    public List<Notification> AddMovement(CreateGenericNotificationArgs notification)
     {
         var homeId = notification.Device.HomeId;
-        var homeUsers = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var homeUsers = _homeUserService.GetByHomeId(homeId);
         var returnNotification = new List<Notification>();
         foreach (var users in homeUsers)
         {
@@ -104,7 +129,7 @@ public class NotificationService : INotificationService
                     Event = "Movement detected in home",
                     Device = notification.Device,
                     IsRead = false,
-                    Date = notification.Date,
+                    Date = HomifyDateTime.GetActualDate(),
                     HomeDeviceId = notification.Device.Id,
                     Detail = notification.Action,
                     HomeUserId = users.UserId,
@@ -118,7 +143,7 @@ public class NotificationService : INotificationService
         return returnNotification;
     }
 
-    public Notification ReadNotificationById(string id, User u)
+    public Notification ReadById(string id, User u)
     {
         var noti = _notificationRepository.Get(x => x.Id == id);
         if (noti.HomeUser.UserId != u.Id)

@@ -1,20 +1,23 @@
 ﻿using Homify.BusinessLogic.Sessions.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.Utility;
 
 namespace Homify.BusinessLogic.Sessions;
 
-public class SessionService : ISessionService
+public sealed class SessionService : ISessionService
 {
     private readonly IRepository<Session> _repository;
+    private readonly IUserService _userService;
 
-    public SessionService(IRepository<Session> repository)
+    public SessionService(IRepository<Session> repository, IUserService userService)
     {
         _repository = repository;
+        _userService = userService;
     }
 
-    public Session CreateSession(User u)
+    public Session Create(User u)
     {
         Session hasSession;
         try
@@ -52,5 +55,31 @@ public class SessionService : ISessionService
         {
             return null;
         }
+    }
+
+    public User CheckConstraints(string? mail, string? password)
+    {
+        if (mail == null)
+        {
+            throw new ArgsNullException("Email can not be null");
+        }
+
+        AccountCredentialsValidator.CheckEmail(mail ?? string.Empty);
+
+        var userFound = _userService.GetAll().Find(u => u.Email == mail);
+
+        if (userFound == null)
+        {
+            throw new NotFoundException("Cannot find user with email: " + mail);
+        }
+
+        AccountCredentialsValidator.CheckPassword(password ?? string.Empty);
+
+        if (password != userFound.Password)
+        {
+            throw new ArgumentException("Incorrect password");
+        }
+
+        return userFound;
     }
 }

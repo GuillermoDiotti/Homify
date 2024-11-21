@@ -1,4 +1,4 @@
-﻿using Homify.BusinessLogic.HomeDevices;
+﻿using Homify.BusinessLogic.HomeDevices.Entities;
 
 namespace Homify.BusinessLogic.Notifications.Entities;
 
@@ -9,8 +9,9 @@ public class CreateGenericNotificationArgs
     public string? HardwareId { get; init; }
     public DateTimeOffset? Date { get; init; }
     public string? Action { get; init; }
+    public string? Event { get; init; }
 
-    public CreateGenericNotificationArgs(HomeDevice device, bool isRead, DateTimeOffset date, string hardwareId, string? action = null)
+    public CreateGenericNotificationArgs(HomeDevice? device, bool isRead, DateTimeOffset date, string hardwareId, string? action, string? event1)
     {
         if (hardwareId == null)
         {
@@ -31,5 +32,6 @@ public class CreateGenericNotificationArgs
         Date = date;
         IsRead = isRead;
         Action = action;
+        Event = event1;
     }
 }

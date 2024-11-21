@@ -1,6 +1,6 @@
-using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
-using Homify.BusinessLogic.Devices;
+using Homify.BusinessLogic.Companies.Entities;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Devices.Entities;
 using Homify.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;

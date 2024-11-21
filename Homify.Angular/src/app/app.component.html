@@ -1,0 +1,111 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null">
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="ul">
+      
+			<li nz-menu-item nzMatchRouter nzIcon="new">
+        <a routerLink="/register">Register</a>
+      </li>
+			<li nz-menu-item nzMatchRouter nzIcon="enter">
+        <a routerLink="/login">Login</a>
+      </li>
+
+			<li nz-submenu nzOpen nzTitle="Auth Users" nzIcon="user">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices/supported">List supported devices</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices/all">List devices</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Admin" nzIcon="crown">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/admin">Admins</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/companyowner">Create Company Owner</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/companies/list">List Companies</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Company Owner" nzIcon="tool">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/companies/create">Create Company</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/devices">Create Devices</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Home Owner" nzIcon="team">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/homes/create">Create Home</a>
+          </li>
+
+					<li nz-menu-item nzMatchRouter>
+            <a routerLink="/rooms">Add Rooms</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="homes/add-member">Members</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="homes/devices">Home Devices</a>
+          </li>
+
+					<li nz-menu-item nzMatchRouter>
+            <a routerLink="notifications">Notifications</a>
+          </li>
+
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="homes/update-permissions">Permissions</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Importations" nzIcon="user">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="importer">Import</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <span class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></span>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content class="cont">
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

@@ -1,8 +1,9 @@
 ﻿using Homify.BusinessLogic.Homes.Entities;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
 using Homify.BusinessLogic.Users.Entities;
 
-namespace Homify.BusinessLogic.HomeUsers;
-public class HomeUser
+namespace Homify.BusinessLogic.HomeUsers.Entities;
+public sealed record class HomeUser
 {
     public string Id { get; init; } = null!;
     public Home Home { get; set; } = null!;

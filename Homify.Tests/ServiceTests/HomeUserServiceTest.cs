@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.HomeUsers;
-using Homify.DataAccess.Repositories;
+using Homify.BusinessLogic.HomeUsers.Entities;
+using Homify.Exceptions;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -33,7 +35,7 @@ public class HomeUserServiceTest
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()))
             .Returns(expectedHomeUser);
 
-        var result = _homeUserService.GetByIds(homeId, userId);
+        var result = _homeUserService.Get(homeId, userId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedHomeUser.HomeId, result.HomeId);
@@ -42,15 +44,15 @@ public class HomeUserServiceTest
     }
 
     [TestMethod]
-    public void GetByIds_ShouldReturnNull_WhenHomeUserDoesNotExist()
+    [ExpectedException(typeof(NotFoundException))]
+    public void GetByIds_ShouldThrowNotFoundException_WhenHomeUserDoesNotExist()
     {
         var homeId = "nonexistentHome";
         var userId = "nonexistentUser";
         _mockRepository.Setup(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()))
             .Returns((HomeUser)null);
-        var result = _homeUserService.GetByIds(homeId, userId);
-        Assert.IsNull(result);
-        _mockRepository.Verify(r => r.Get(It.IsAny<Expression<Func<HomeUser, bool>>>()), Times.Once);
+
+        _homeUserService.Get(homeId, userId);
     }
 
     [TestMethod]
@@ -93,7 +95,7 @@ public class HomeUserServiceTest
             .Returns(homeUsers);
 
         // Act
-        var result = _homeUserService.GetHomeUsersByHomeId(homeId);
+        var result = _homeUserService.GetByHomeId(homeId);
 
         // Assert
         Assert.IsNotNull(result);

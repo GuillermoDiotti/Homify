@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Sessions;
 using Homify.BusinessLogic.Sessions.Entities;
+using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Sessions.Models.Requests;
 using Moq;
-using Constants = Homify.Utility.Constants;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -14,14 +14,15 @@ namespace Homify.Tests.ServiceTests;
 public class SessionServiceTest
 {
     private Mock<IRepository<Session>>? _sessionRepositoryMock;
-
+    private Mock<IUserService>? _userServiceMock;
     private SessionService? _service;
 
     [TestInitialize]
     public void Setup()
     {
+        _userServiceMock = new Mock<IUserService>();
         _sessionRepositoryMock = new Mock<IRepository<Session>>();
-        _service = new SessionService(_sessionRepositoryMock.Object);
+        _service = new SessionService(_sessionRepositoryMock.Object, _userServiceMock.Object);
     }
 
     [TestMethod]
@@ -35,7 +36,6 @@ public class SessionServiceTest
             Email = "john@example.com",
             Password = "password123",
             LastName = "Doe",
-            Role = new Role()
         };
         var session = new Session
         {
@@ -64,18 +64,13 @@ public class SessionServiceTest
             Email = userEmail,
             Password = "password123",
             LastName = "Doe",
-            RoleId = Constants.ADMINISTRATORID
         };
-        var session = new Session()
-        {
-            AuthToken = "token",
-            User = expectedUser,
-            Id = "123456789"
-        };
+        var session = new Session("token", expectedUser);
+        session.UserId = "123456";
 
         _sessionRepositoryMock.Setup(repo =>
             repo.Get(It.IsAny<Expression<Func<Session, bool>>>())).Returns(session);
-        var result = _service?.CreateSession(expectedUser);
+        var result = _service?.Create(expectedUser);
 
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.AuthToken);
@@ -85,19 +80,124 @@ public class SessionServiceTest
     [TestMethod]
     public void CreateSession_WhenSessionNotFound_ShouldEnterCatchBlockAndCreateNewSession()
     {
-        // Arrange
         var user = new User { Email = "test@example.com" };
         _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
             .Throws(new NotFoundException("not found"));
 
-        // Act
-        var result = _service.CreateSession(user);
+        var result = _service.Create(user);
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(user.Email, result.User.Email);
         Assert.IsNotNull(result.AuthToken);
         _sessionRepositoryMock.Verify(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()), Times.Once);
         _sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void Create_WhenEmailFormatIsInvalid_ShouldThrowInvalidFormatException()
+    {
+        var request = new CreateSessionRequest
+        {
+            Email = "invalid-email",
+            Password = "testPassword"
+        };
+
+        _service.CheckConstraints(request.Email, request.Password);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void Create_WhenEmailIsNull_ShouldThrowArgsNullException()
+    {
+        var request = new CreateSessionRequest
+        {
+            Email = null,
+            Password = "testPassword"
+        };
+
+        _service.CheckConstraints(request.Email, request.Password);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidFormatException))]
+    public void Create_WhenPasswordIsIncorrect_ShouldThrowArgumentException()
+    {
+        var request = new CreateSessionRequest
+        {
+            Email = "user@example.com",
+            Password = "wrongPassword"
+        };
+
+        var user = new User
+        {
+            Email = "user@example.com",
+            Password = ".Coo120dshjha"
+        };
+
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([user]);
+
+        _service.CheckConstraints(request.Email, request.Password);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Create_WhenUserNotFound_ShouldThrowNotFoundException()
+    {
+        var request = new CreateSessionRequest
+        {
+            Email = "nonexistent@example.com",
+            Password = "testPassword"
+        };
+
+        _userServiceMock
+            .Setup(service => service.GetAll(It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns([]);
+
+        _service.CheckConstraints(request.Email, request.Password);
+    }
+
+    [TestMethod]
+    public void CheckSessionConstraints_WhenValid_ShouldReturnUser()
+    {
+        var email = "example@mail.com";
+        var password = "password123.";
+
+        var user = new User()
+        {
+            Email = email,
+            Password = password
+        };
+        _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([user]);
+
+        var result = _service.CheckConstraints(email, password);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(user, result);
+    }
+
+    [TestMethod]
+    public void GetUserByToken_ShouldReturnNull_WhenNotFoundExceptionIsThrown()
+    {
+        var token = "invalidToken";
+
+        _sessionRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<Session, bool>>>()))
+            .Throws(new NotFoundException("Not found"));
+
+        var result = _service.GetUserByToken(token);
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void CheckSessionConstraints_ShouldThrowNotFoundException_WhenUserNotFound()
+    {
+        var email = "nonexistent@example.com";
+        var password = "password";
+        _userServiceMock.Setup(u => u.GetAll(It.IsAny<string?>(), It.IsAny<string?>())).Returns([new User()]);
+
+        _service.CheckConstraints(email, password);
     }
 }

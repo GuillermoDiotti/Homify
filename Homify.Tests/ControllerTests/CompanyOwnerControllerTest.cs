@@ -1,13 +1,15 @@
 ﻿using FluentAssertions;
-using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.Companies.Entities;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
 using Homify.BusinessLogic.Roles;
-using Homify.BusinessLogic.SystemPermissions;
+using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi.Controllers.CompanyOwners;
-using Homify.WebApi.Controllers.CompanyOwners.Models;
+using Homify.WebApi.Controllers.CompanyOwners.Models.Requests;
 using Moq;
 
 namespace Homify.Tests.ControllerTests;
@@ -49,14 +51,15 @@ public class CompanyOwnerControllerTest
 
         var expectedOwner = new CompanyOwner()
         {
+            Id = "123",
             Name = request.Name,
             Email = request.Email,
             Password = request.Password,
             LastName = request.LastName,
-            Role = expectedRole
+            Roles = [new UserRole() { UserId = "123", Role = expectedRole }]
         };
 
-        _roleServiceMock.Setup(r => r.GetRole("COMPANYOWNER")).Returns(expectedRole);
+        _roleServiceMock.Setup(r => r.Get("COMPANYOWNER")).Returns(expectedRole);
         _ownerServiceMock.Setup(ow => ow.AddCompanyOwner(It.IsAny<CreateUserArgs>())).Returns(expectedOwner);
 
         var response = _controller.Create(request);
@@ -69,7 +72,7 @@ public class CompanyOwnerControllerTest
         expectedOwner.Email.Should().Be(request.Email);
         expectedOwner.Password.Should().Be(request.Password);
         expectedOwner.LastName.Should().Be(request.LastName);
-        expectedOwner.Role.Permissions[0].Value.Should().Be("companies-Create");
+        expectedOwner.Roles[0].Role.Permissions[0].Value.Should().Be("companies-Create");
     }
 
     #endregion

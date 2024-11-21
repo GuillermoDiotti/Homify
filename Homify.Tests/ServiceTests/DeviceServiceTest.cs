@@ -1,13 +1,18 @@
 using System.Linq.Expressions;
+using FluentAssertions;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Cameras.Entities;
 using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.Companies.Entities;
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
-using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
+using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ServiceTests;
 
@@ -15,24 +20,49 @@ namespace Homify.Tests.ServiceTests;
 public class DeviceServiceTest
 {
     private Mock<IRepository<Camera>>? _cameraRepositoryMock;
-    private Mock<IRepository<Sensor>>? _sensorRepositoryMock;
+    private Mock<IRepository<WindowSensor>>? _sensorRepositoryMock;
     private Mock<IRepository<Device>>? _deviceRepositoryMock;
     private DeviceService? _deviceService;
     private Mock<ICompanyService>? _companyServiceMock;
+    private Mock<IRepository<Lamp>>? _lampRepositoryMock;
+    private Mock<IRepository<MovementSensor>>? _movementSensorRepositoryMock;
 
     [TestInitialize]
     public void Setup()
     {
         _cameraRepositoryMock = new Mock<IRepository<Camera>>();
-        _sensorRepositoryMock = new Mock<IRepository<Sensor>>();
+        _sensorRepositoryMock = new Mock<IRepository<WindowSensor>>();
         _deviceRepositoryMock = new Mock<IRepository<Device>>();
+        _lampRepositoryMock = new Mock<IRepository<Lamp>>();
         _companyServiceMock = new Mock<ICompanyService>();
-        _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object, _deviceRepositoryMock.Object, _companyServiceMock.Object);
+        _movementSensorRepositoryMock = new Mock<IRepository<MovementSensor>>();
+        _deviceService = new DeviceService(_cameraRepositoryMock.Object, _sensorRepositoryMock.Object,
+        _deviceRepositoryMock.Object, _companyServiceMock.Object, _lampRepositoryMock.Object, _movementSensorRepositoryMock.Object);
+    }
+
+    [TestMethod]
+    public void CreateCameraFromConstructor()
+    {
+        var cam = new Camera(true, true);
+        cam.Should().NotBeNull();
     }
 
     [TestMethod]
     public void AddCamera_ShouldAddCameraToRepository()
     {
+        var user = new CompanyOwner
+        {
+            Id = "1",
+            Name = "John",
+            Email = "john@example.com",
+            IsIncomplete = false,
+            Company = new Company
+            {
+                Id = "company1",
+                Name = "Test Company"
+            }
+        };
+
         var createDeviceArgs = new CreateDeviceArgs(
             "Test Camera",
             "Model X",
@@ -43,23 +73,15 @@ public class DeviceServiceTest
             ],
             "photo1.jpg",
             true,
-            false);
-
-        var user = new CompanyOwner
-        {
-            Id = "1",
-            Name = "John",
-            Email = "john@example.com",
-            Company = new Company
-            {
-                Id = "company1",
-                Name = "Test Company"
-            }
-        };
+            false,
+            false,
+            true,
+                    user,
+                    false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
-        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
+        _companyServiceMock.Setup(r => r.GetByOwner("1")).Returns(user.Company);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
@@ -79,7 +101,9 @@ public class DeviceServiceTest
     [TestMethod]
     public void AddSensor_ShouldAddSensor_WhenValidArguments()
     {
-        // Arrange
+        var company = new Company { Id = "companyId", Name = "Test Company" };
+        var user = new CompanyOwner { Company = company, Id = "1", IsIncomplete = false };
+
         var deviceArgs = new CreateDeviceArgs(
             "Test Sensor",
             "Model X",
@@ -90,18 +114,19 @@ public class DeviceServiceTest
             ],
             "mainphoto.jpg",
             true,
-            false);
-
-        var company = new Company { Id = "companyId", Name = "Test Company" };
-        var user = new CompanyOwner { Company = company, Id = "1" };
+            false,
+            false,
+            true,
+                    user,
+                    false);
 
         _cameraRepositoryMock.Setup(r => r.Add(It.IsAny<Camera>())).Verifiable();
 
-        _companyServiceMock.Setup(r => r.GetByUserId("1")).Returns(user.Company);
+        _companyServiceMock.Setup(r => r.GetByOwner("1")).Returns(user.Company);
 
-        var result = _deviceService.AddSensor(deviceArgs, user);
+        var result = _deviceService.AddWindowSensor(deviceArgs, user);
 
-        _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<Sensor>()), Times.Once);
+        _sensorRepositoryMock.Verify(r => r.Add(It.IsAny<WindowSensor>()), Times.Once);
         Assert.IsNotNull(result);
         Assert.AreEqual(deviceArgs.Name, result.Name);
         Assert.AreEqual(deviceArgs.Model, result.Model);
@@ -147,9 +172,17 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
+    [ExpectedException(typeof(InvalidOperationException))]
     public void AddCamera_WhenCompanyIsNull_ShouldThrowNotFoundException()
     {
+        var user = new CompanyOwner
+        {
+            Id = "1",
+            Name = "John",
+            Email = "john@example.com",
+            IsIncomplete = true
+        };
+
         var createDeviceArgs = new CreateDeviceArgs(
             "Test Camera",
             "Model X",
@@ -160,15 +193,11 @@ public class DeviceServiceTest
             ],
             "photo1.jpg",
             true,
+            false,
+            false,
+            true,
+                    user,
             false);
-
-        var user = new CompanyOwner
-        {
-            Id = "1",
-            Name = "John",
-            Email = "john@example.com",
-            Company = null
-        };
 
         _deviceService.AddCamera(createDeviceArgs, user);
     }
@@ -217,15 +246,15 @@ public class DeviceServiceTest
             .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
             .Returns(deviceList);
 
-        var searchArgs = new SearchDevicesArgs
+        var searchArgs = new DeviceFiltersRequest
         {
             DeviceName = "Camera",
             Model = "Model A",
             Company = "Company A",
-            Limit = 10,
-            Offset = 0
+            Limit = "10",
+            Offset = "0"
         };
-        var result = _deviceService.SearchDevices(searchArgs);
+        var result = _deviceService.GetAll(searchArgs.DeviceName, searchArgs.Model, searchArgs.Company, searchArgs.Type);
 
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual("Camera 1", result.First().Name);
@@ -235,45 +264,56 @@ public class DeviceServiceTest
     [TestMethod]
     public void SearchSupportedDevices_ReturnsUniqueDeviceTypes()
     {
-        var deviceList = new List<Device>
-        {
-            new Device
-            {
-                Id = "1",
-                Name = "Camera",
-                Model = "Model A",
-                Type = "Camera"
-            },
-            new Device
-            {
-                Id = "2",
-                Name = "Sensor",
-                Model = "Model B",
-                Type = "Sensor"
-            },
-            new Device
-            {
-                Id = "3",
-                Name = "Camera 2",
-                Model = "Model C",
-                Type = "Camera"
-            },
-            new Device
-            {
-                Id = "4",
-                Name = "Thermostat",
-                Model = "Model D",
-                Type = "Thermostat"
-            }
-        };
-
-        _deviceRepositoryMock
-            .Setup(repo => repo.GetAll(It.IsAny<Expression<Func<Device, bool>>>()))
-            .Returns(deviceList);
-
         var result = _deviceService.SearchSupportedDevices();
 
-        Assert.AreEqual(3, result.Count);
-        CollectionAssert.AreEqual(new List<string> { "Camera", "Sensor", "Thermostat" }, result);
+        Assert.AreEqual(4, result.Count);
+    }
+
+    [TestMethod]
+    public void AddLamp_ValidRequest_AddsLamp()
+    {
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
+        var createDeviceArgs = new CreateDeviceArgs("Lamp", "Model X", "A smart lamp", [], "ppalPicture", false, false, false, false, user, true);
+        _companyServiceMock.Setup(service => service.GetByOwner(user.Id)).Returns(user.Company);
+
+        var result = _deviceService.AddLamp(createDeviceArgs, user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Lamp", result.Name);
+        Assert.AreEqual("Model X", result.Model);
+        Assert.AreEqual("A smart lamp", result.Description);
+        Assert.AreEqual("company1", result.CompanyId);
+        _lampRepositoryMock.Verify(repo => repo.Add(It.IsAny<Lamp>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void AddMovementSensor_ValidRequest_ShouldAddsMovementSensor()
+    {
+        var user = new CompanyOwner { Id = "user1", Company = new Company { Id = "company1" }, IsIncomplete = false };
+        var createDeviceArgs = new CreateDeviceArgs("Sensor", "Model Y", "A movement sensor", [],
+            "ppalPicture", false, false, true, false, user, true);
+
+        _companyServiceMock.Setup(service => service.GetByOwner(user.Id)).Returns(user.Company);
+
+        var result = _deviceService.AddMovementSensor(createDeviceArgs, user);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Sensor", result.Name);
+        Assert.AreEqual("Model Y", result.Model);
+        Assert.AreEqual("A movement sensor", result.Description);
+        Assert.AreEqual("company1", result.CompanyId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void AddWindowSensor_HasCompany_ThrowsExceptionIfNoCompany()
+    {
+        var owner = new CompanyOwner { Id = "owner-456" };
+        var deviceArgs = new CreateDeviceArgs();
+
+        _companyServiceMock.Setup(s => s.GetByOwner(owner.Id))
+            .Returns((Company)null); // Simula que no tiene empresa
+
+        var exception = _deviceService.AddWindowSensor(deviceArgs, owner);
     }
 }

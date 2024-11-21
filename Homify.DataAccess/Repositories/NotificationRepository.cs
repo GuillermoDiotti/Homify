@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Homify.BusinessLogic.Notifications.Entities;
 using Homify.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homify.DataAccess.Repositories;
-[ExcludeFromCodeCoverage]
 
 public class NotificationRepository : Repository<Notification>
 {
@@ -18,6 +16,7 @@ public class NotificationRepository : Repository<Notification>
     {
         var query =
             _entities.Include(u => u.Device)
+                .ThenInclude(u => u.Device)
                 .Include(u => u.HomeUser)
                 .Where(expression);
 
@@ -36,6 +35,7 @@ public class NotificationRepository : Repository<Notification>
         if (predicate == null)
         {
             return _entities.Include(u => u.Device)
+                .ThenInclude(u => u.Device)
                 .Include(u => u.HomeUser)
                 .ThenInclude(u => u.User)
                 .ToList();

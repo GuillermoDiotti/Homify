@@ -1,7 +1,7 @@
 ﻿using Homify.Exceptions;
 using Homify.Utility;
 
-namespace Homify.Tests.UtilsTests;
+namespace Homify.Tests.UtilityTests;
 
 [TestClass]
 public class AccountCredentialsValidatorTests

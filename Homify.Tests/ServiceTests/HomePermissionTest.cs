@@ -1,7 +1,12 @@
 ﻿using System.Linq.Expressions;
-using Homify.BusinessLogic.Homes;
+using Homify.BusinessLogic;
 using Homify.BusinessLogic.Homes.Entities;
-using Homify.DataAccess.Repositories;
+using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.HomeUsers.Entities;
+using Homify.BusinessLogic.Permissions;
+using Homify.BusinessLogic.Permissions.HomePermissions;
+using Homify.BusinessLogic.Permissions.HomePermissions.Entities;
+using Homify.BusinessLogic.Users.Entities;
 using Moq;
 
 namespace Homify.Tests.ServiceTests;
@@ -42,5 +47,80 @@ public class HomePermissionTest
         var result = _service.GetByValue("nonExistingValue");
 
         Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ChangeHomeMemberPermissions_WhenUserIsNotOwner_ShouldThrowInvalidOperationException()
+    {
+        var homeId = "home123";
+        var memberId = "member123";
+        var user = new User { Id = "notOwner123" };
+        var home = new Home { Id = homeId, OwnerId = "owner123" };
+        var found = new HomeUser { Home = home, UserId = memberId, Permissions = [] };
+
+        var homeUserServiceMock = new Mock<IHomeUserService>();
+        var repositoryMock = new Mock<IRepository<HomePermission>>();
+        var service = new HomePermissionService(repositoryMock.Object);
+
+        homeUserServiceMock.Setup(service => service.Get(homeId, memberId)).Returns(found);
+
+        service.ChangeHomeMemberPermissions(true, true, true, user, found);
+    }
+
+    [TestMethod]
+    public void ChangeHomeMemberPermissions_AddDeviceTrue_AddsCorrectPermission()
+    {
+        var user = new User { Id = "1" };
+        var homeUser = new HomeUser { Home = new Home { OwnerId = "1" } };
+        var permission = new HomePermission { Value = PermissionsGenerator.MemberCanAddDevice };
+        _repositoryMock.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomePermission, bool>>>()))
+            .Returns(permission);
+
+        var result = _service.ChangeHomeMemberPermissions(true, false, false, user, homeUser);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(PermissionsGenerator.MemberCanAddDevice, result[0].Value);
+    }
+
+    [TestMethod]
+    public void ChangeHomeMemberPermissions_ListDeviceTrue_AddsCorrectPermission()
+    {
+        var user = new User { Id = "1" };
+        var homeUser = new HomeUser { Home = new Home { OwnerId = "1" } };
+        var permission = new HomePermission { Value = PermissionsGenerator.MemberCanListDevices };
+        _repositoryMock.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomePermission, bool>>>()))
+            .Returns(permission);
+
+        var result = _service.ChangeHomeMemberPermissions(false, true, false, user, homeUser);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(PermissionsGenerator.MemberCanListDevices, result[0].Value);
+    }
+
+    [TestMethod]
+    public void ChangeHomeMemberPermissions_RenameDeviceTrue_AddsCorrectPermission()
+    {
+        var user = new User { Id = "1" };
+        var homeUser = new HomeUser { Home = new Home { OwnerId = "1" } };
+        var permission = new HomePermission { Value = PermissionsGenerator.MemberCanChangeNameDevices };
+        _repositoryMock.Setup(r => r.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<HomePermission, bool>>>()))
+            .Returns(permission);
+
+        var result = _service.ChangeHomeMemberPermissions(false, false, true, user, homeUser);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(PermissionsGenerator.MemberCanChangeNameDevices, result[0].Value);
+    }
+
+    [TestMethod]
+    public void ChangeHomeMemberPermissions_AllFlagsFalse_ReturnsEmptyList()
+    {
+        var user = new User { Id = "1" };
+        var homeUser = new HomeUser { Home = new Home { OwnerId = "1" } };
+
+        var result = _service.ChangeHomeMemberPermissions(false, false, false, user, homeUser);
+
+        Assert.AreEqual(0, result.Count);
     }
 }

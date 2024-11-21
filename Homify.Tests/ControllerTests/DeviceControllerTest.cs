@@ -1,21 +1,21 @@
 ﻿using FluentAssertions;
 using Homify.BusinessLogic.Cameras.Entities;
-using Homify.BusinessLogic.Companies;
+using Homify.BusinessLogic.Companies.Entities;
 using Homify.BusinessLogic.CompanyOwners;
+using Homify.BusinessLogic.CompanyOwners.Entities;
 using Homify.BusinessLogic.Devices;
 using Homify.BusinessLogic.Devices.Entities;
-using Homify.BusinessLogic.HomeDevices;
-using Homify.BusinessLogic.Homes.Entities;
-using Homify.BusinessLogic.HomeUsers;
+using Homify.BusinessLogic.Lamps.Entities;
 using Homify.BusinessLogic.Sensors.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.Exceptions;
 using Homify.WebApi;
 using Homify.WebApi.Controllers.Devices;
-using Homify.WebApi.Controllers.Devices.Models;
+using Homify.WebApi.Controllers.Devices.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using InvalidOperationException = Homify.Exceptions.InvalidOperationException;
 
 namespace Homify.Tests.ControllerTests;
 
@@ -25,14 +25,12 @@ public class DeviceControllerTest
     private readonly DeviceController _controller;
     private readonly Mock<IDeviceService> _deviceServiceMock;
     private readonly Mock<ICompanyOwnerService> _companyOwnerServiceMock;
-    private readonly Mock<IHomeDeviceService> _homeDeviceServiceMock;
 
     public DeviceControllerTest()
     {
         _companyOwnerServiceMock = new Mock<ICompanyOwnerService>(MockBehavior.Strict);
         _deviceServiceMock = new Mock<IDeviceService>(MockBehavior.Strict);
-        _homeDeviceServiceMock = new Mock<IHomeDeviceService>(MockBehavior.Strict);
-        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object, _homeDeviceServiceMock.Object);
+        _controller = new DeviceController(_deviceServiceMock.Object, _companyOwnerServiceMock.Object);
         var httpContext = new DefaultHttpContext();
         httpContext.Items["UserLogged"] = new User { };
         _controller.ControllerContext = new ControllerContext
@@ -95,7 +93,7 @@ public class DeviceControllerTest
         };
         var user = new User { Id = "testUserId" };
         var companyOwner = new CompanyOwner { Id = "companyOwnerId", IsIncomplete = false };
-        var expectedSensor = new Sensor
+        var expectedSensor = new WindowSensor
         {
             Name = request.Name,
             PpalPicture = request.PpalPicture,
@@ -106,7 +104,7 @@ public class DeviceControllerTest
             CompanyId = companyOwner.Id
         };
 
-        _deviceServiceMock.Setup(d => d.AddSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
+        _deviceServiceMock.Setup(d => d.AddWindowSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(expectedSensor);
         _companyOwnerServiceMock.Setup(c => c.GetById(user.Id)).Returns(companyOwner);
         _controller.ControllerContext = new ControllerContext
         {
@@ -114,7 +112,7 @@ public class DeviceControllerTest
         };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        var response = _controller.RegisterSensor(request);
+        var response = _controller.RegisterWindowSensor(request);
 
         response.Should().NotBeNull();
     }
@@ -132,7 +130,8 @@ public class DeviceControllerTest
                 PpalPicture = "photo1.jpg",
                 Company = new Company
                 {
-                    Name = "Company A"
+                    Name = "Company A",
+                    Owner = new CompanyOwner() { Id = "123456", IsIncomplete = false }
                 }
             },
             new Device
@@ -143,7 +142,8 @@ public class DeviceControllerTest
                 PpalPicture = "photo2.jpg",
                 Company = new Company
                 {
-                    Name = "Company B"
+                    Name = "Company B",
+                    Owner = new CompanyOwner() { Id = "123456", IsIncomplete = false }
                 }
             },
             new Device
@@ -154,16 +154,21 @@ public class DeviceControllerTest
                 PpalPicture = null,
                 Company = new Company
                 {
-                    Name = "Company A"
+                    Name = "Company A",
+                    Owner = new CompanyOwner()
+                    {
+                        Id = "123456",
+                        IsIncomplete = false
+                    }
                 }
             }
         };
 
         _deviceServiceMock
-            .Setup(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()))
+            .Setup(service => service.GetAll(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .Returns(deviceList);
 
-        var result = _controller.ObtainDevices("Camera", null, null, null, null, null);
+        var result = _controller.ObtainDevices(new DeviceFiltersRequest() { DeviceName = "Camera" });
 
         Assert.AreEqual(3, result.Count);
         Assert.AreEqual("Camera 1", result[0].Name);
@@ -172,7 +177,8 @@ public class DeviceControllerTest
         Assert.AreEqual("Company A", result[0].CompanyName);
         Assert.AreEqual("Camera 2", result[2].Name);
         Assert.AreEqual(string.Empty, result[2].Photo);
-        _deviceServiceMock.Verify(service => service.SearchDevices(It.IsAny<SearchDevicesArgs>()), Times.Once);
+        _deviceServiceMock
+            .Verify(service => service.GetAll(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
 
     [TestMethod]
@@ -205,53 +211,12 @@ public class DeviceControllerTest
     }
 
     [TestMethod]
-    public void TurnOnDevice_WithValidHardwareId_ShouldReturnActivatedDevice()
-    {
-        var hardwareId = "Device123";
-        var user = new User { Id = "testUserId" };
-        var homeDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = false,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = user.Id,
-                Members = [new HomeUser { UserId = user.Id }]
-            }
-        };
-
-        var activatedDevice = new HomeDevice
-        {
-            Id = "Device123",
-            IsActive = true,
-            HardwareId = hardwareId,
-            Home = homeDevice.Home
-        };
-
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
-        _homeDeviceServiceMock.Setup(service => service.Activate(homeDevice)).Returns(activatedDevice);
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
-
-        var result = _controller.TurnOnDevice(hardwareId);
-
-        result.Should().NotBeNull();
-        result.IsActive.Should().BeTrue();
-        _homeDeviceServiceMock.Verify(service => service.GetHomeDeviceByHardwareId(hardwareId), Times.Once);
-        _homeDeviceServiceMock.Verify(service => service.Activate(homeDevice), Times.Once);
-    }
-
-    [TestMethod]
     [ExpectedException(typeof(NullRequestException))]
     public void RegisterSensor_WhenRequestIsNull_ShouldThrowNullRequestException()
     {
         CreateSensorRequest request = null;
 
-        _controller.RegisterSensor(request);
+        _controller.RegisterWindowSensor(request);
     }
 
     [TestMethod]
@@ -302,37 +267,60 @@ public class DeviceControllerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(NotFoundException))]
-    public void TurnOnDevice_WhenHomeDeviceNotFound_ShouldThrowNotFoundException()
+    public void RegisterLamp_ValidRequest_ShouldReturnsCreateDeviceResponse()
     {
-        var hardwareId = "Device123";
+        var request = new CreateLampRequest
+        {
+            Name = "Lamp",
+            Model = "Model X",
+            Description = "A smart lamp",
+            Active = true
+        };
+        var user = new User { Id = "user1" };
+        var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false };
+        var lamp = new Lamp { Id = "lamp1", Name = "Lamp", Model = "Model X" };
+        _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
+        _deviceServiceMock.Setup(service => service.AddLamp(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(lamp);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns<HomeDevice>(null);
+        var result = _controller.RegisterLamp(request);
 
-        _controller.TurnOnDevice(hardwareId);
+        Assert.IsNotNull(result);
+        Assert.AreEqual("lamp1", result.Id);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TurnOnDevice_WhenUserIsNotMemberOrOwner_ShouldThrowInvalidOperationException()
+    public void RegisterMovementSensor_ValidRequest_ShouldReturnsCreateDeviceResponse()
     {
-        var hardwareId = "Device123";
-        var user = new User { Id = "testUserId" };
-        var homeDevice = new HomeDevice
+        var request = new CreateSensorRequest
         {
-            Id = "Device123",
-            IsActive = false,
-            HardwareId = hardwareId,
-            Home = new Home
-            {
-                OwnerId = "otherUserId",
-                Members = []
-            }
+            Name = "Sensor",
+            Model = "Model Y",
+            Description = "A movement sensor",
+            Photos = [],
+            PpalPicture = "ppalPicture"
         };
 
-        _homeDeviceServiceMock.Setup(service => service.GetHomeDeviceByHardwareId(hardwareId)).Returns(homeDevice);
+        var user = new User { Id = "user1" };
+        var companyOwner = new CompanyOwner { Id = "user1", IsIncomplete = false, Company = new Company { Id = "company1" } };
+        var sensor = new MovementSensor { Id = "sensor1", Name = "Sensor", Model = "Model Y", Description = "A movement sensor", CompanyId = "company1" };
+
+        _companyOwnerServiceMock.Setup(service => service.GetById(user.Id)).Returns(companyOwner);
+        _deviceServiceMock.Setup(service => service.AddMovementSensor(It.IsAny<CreateDeviceArgs>(), companyOwner)).Returns(sensor);
+
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
         _controller.ControllerContext.HttpContext.Items[Items.UserLogged] = user;
 
-        _controller.TurnOnDevice(hardwareId);
+        var result = _controller.RegisterMovementSensor(request);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual("sensor1", result.Id);
     }
 }

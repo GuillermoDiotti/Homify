@@ -1,0 +1,31 @@
+<article>
+	<h2>Listing of Members</h2>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (members.length > 0) {
+  <ul style="list-style: none;">
+    @for (member of members; track $index) {
+    <li class="homeowner-card">
+			<picture>
+				<img src="{{ member.photo }}" alt="member.name" style="width: 100px; height: 100px; max-width: 100px; max-height: 100px; border-radius: 100%;">
+			</picture> <br />
+      <strong>Member Name:</strong> {{ member.fullname }} <br />
+      <strong>Member Email:</strong> {{ member.email }} <br />
+      <div style="display: flex; flex-direction: column;">
+				<strong>Member Permissions:</strong>
+				<div style="display: flex; gap: 10px;">
+					@for (perm of member.permissions; track $index){
+						<span>{{ perm }}</span>
+					}
+				</div>
+			</div>
+			<br />
+				<app-button (clicked)="onClick(member.id)">Select</app-button>
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There aren't members available.</p>
+  }
+</article>

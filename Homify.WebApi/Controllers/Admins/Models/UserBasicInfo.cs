@@ -5,20 +5,22 @@ namespace Homify.WebApi.Controllers.Admins.Models;
 
 public class UserBasicInfo
 {
+    public string Id { get; set; }
     public string Name { get; set; }
     public string LastName { get; set; }
     public string FullName { get; set; }
 
-    public string Role { get; set; }
+    public List<string> Role { get; set; }
 
-    public DateTimeOffset CreatedAt { get; set; }
+    public string CreatedAt { get; set; }
 
     public UserBasicInfo(User u)
     {
+        Id = u.Id;
         Name = u.Name;
         LastName = u.LastName;
         CreatedAt = u.CreatedAt;
-        Role = u.Role.Name;
+        Role = u.Roles.Select(r => r.Role.Name).ToList();
         FullName = Helpers.GetUserFullName(u.Name, u.LastName);
     }
 }

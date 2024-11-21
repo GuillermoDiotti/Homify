@@ -1,5 +1,6 @@
-using System.Linq.Expressions;
-using Homify.BusinessLogic.Roles;
+using Homify.BusinessLogic.Permissions.SystemPermissions.Entities;
+using Homify.BusinessLogic.Roles.Entities;
+using Homify.BusinessLogic.UserRoles.Entities;
 using Homify.BusinessLogic.Users.Entities;
 using Homify.DataAccess.Repositories;
 using Homify.Exceptions;
@@ -19,11 +20,16 @@ public class UserRepositoryTests
             new User
             {
                 Id = "1",
-                Email = "user1@example.com",
-                Name = "User1",
-                LastName = "LastName1",
-                Password = "Password1",
-                Role = RolesGenerator.Admin()
+                Name = "John",
+                LastName = "Doe",
+                Roles =
+                [
+                    new UserRole
+                    {
+                        Role = new Role { Name = "Admin", Permissions = [new SystemPermission { Value = "Read" }] }
+                    }
+
+                ]
             }
         }.AsQueryable();
 
@@ -38,31 +44,11 @@ public class UserRepositoryTests
 
         var userRepository = new UserRepository(mockContext.Object);
 
-        var result1 = userRepository.Get(u => u.Id == "1");
+        var result = userRepository.Get(u => u.Id == "1");
 
-        Assert.IsNotNull(result1);
-        Assert.AreEqual("User1", result1.Name);
-        Assert.AreEqual("LastName1", result1.LastName);
-        Assert.AreEqual("user1@example.com", result1.Email);
-        Assert.AreEqual("ADMINISTRATOR", result1.Role.Name);
-    }
-
-    [TestMethod]
-    public void Get_WhenUserDoesNotExist_ThrowsException()
-    {
-        var mockSet = new Mock<DbSet<User>>();
-        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(new List<User>().AsQueryable().Provider);
-        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(new List<User>().AsQueryable().Expression);
-        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(new List<User>().AsQueryable().ElementType);
-        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(new List<User>().AsQueryable().GetEnumerator());
-
-        var mockContext = new Mock<DbContext>();
-        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
-
-        var userRepository = new UserRepository(mockContext.Object);
-        Expression<Func<User, bool>> predicate = user => false;
-
-        Assert.ThrowsException<NotFoundException>(() => userRepository.Get(predicate));
+        Assert.IsNotNull(result);
+        Assert.AreEqual("John", result.Name);
+        Assert.AreEqual("Admin", result.Roles.First().Role.Name);
     }
 
     [TestMethod]
@@ -70,18 +56,8 @@ public class UserRepositoryTests
     {
         var testData = new List<User>
         {
-            new User
-            {
-                Id = "1",
-                Name = "User1",
-                Role = RolesGenerator.Admin()
-            },
-            new User
-            {
-                Id = "2",
-                Name = "User2",
-                Role = RolesGenerator.Admin()
-            }
+            new User { Id = "1", Name = "John", LastName = "Doe" },
+            new User { Id = "2", Name = "Jane", LastName = "Smith" }
         }.AsQueryable();
 
         var mockSet = new Mock<DbSet<User>>();
@@ -95,9 +71,59 @@ public class UserRepositoryTests
 
         var userRepository = new UserRepository(mockContext.Object);
 
-        var result = userRepository.GetAll(u => u.Name == "User1");
+        var result = userRepository.GetAll(u => u.Name == "John");
 
         Assert.AreEqual(1, result.Count);
-        Assert.AreEqual("User1", result[0].Name);
+        Assert.AreEqual("John", result[0].Name);
+    }
+
+    [TestMethod]
+    public void GetAll_NullPredicate_ReturnsAllUsers()
+    {
+        var testData = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe" },
+            new User { Id = "2", Name = "Jane", LastName = "Smith" }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
+
+        var userRepository = new UserRepository(mockContext.Object);
+
+        var result = userRepository.GetAll(null);
+
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("John", result[0].Name);
+        Assert.AreEqual("Jane", result[1].Name);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void Get_UserNotFound_ThrowsNotFoundException()
+    {
+        var testData = new List<User>
+        {
+            new User { Id = "1", Name = "John", LastName = "Doe" }
+        }.AsQueryable();
+
+        var mockSet = new Mock<DbSet<User>>();
+        mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testData.Provider);
+        mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testData.Expression);
+        mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testData.ElementType);
+        mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testData.GetEnumerator());
+
+        var mockContext = new Mock<DbContext>();
+        mockContext.Setup(c => c.Set<User>()).Returns(mockSet.Object);
+
+        var userRepository = new UserRepository(mockContext.Object);
+
+        userRepository.Get(u => u.Id == "999");
     }
 }

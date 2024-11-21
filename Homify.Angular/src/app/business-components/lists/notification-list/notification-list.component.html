@@ -1,0 +1,55 @@
+<article>
+  <div class="filters">
+    <div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="eventTriggered">Device Type</label>
+      <app-input
+        id="eventTriggered"
+        type="text"
+        (change)="onEventTriggeredChange($event)"
+      />
+    </div>
+
+    <div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="event_date">Date</label>
+      <input id="event_date" type="date" (change)="onDateChange($event)" />
+    </div>
+
+    <div style="margin: 5px 0; display: flex; align-items: center">
+      <label for="eventTriggered">Read</label>
+      <input
+        id="eventTriggered"
+        type="checkbox"
+        (change)="onReadChange($event)"
+      />
+    </div>
+  </div>
+  <div style="display: flex; gap: 10px; margin: 10px 0;">
+    <app-button (click)="handleRefresh()">Refresh</app-button>
+    <app-button (click)="handleSearchWithoutFilters()">
+      Refresh with no filters
+    </app-button>
+  </div>
+  @if (notifications.length > 0) {
+  <ul>
+    @for (noti of notifications; track $index) {
+    <li>
+      <strong>Event:</strong> {{ noti.event }} <br />
+      <strong>Device ID:</strong> {{ noti.deviceId }} <br />
+			<strong>Detail:</strong> {{ noti.detail }} <br />
+			<strong>Device Type:</strong> {{ noti.deviceType }} <br />
+      <strong>Date:</strong> {{ noti.date }} <br />
+      <div>
+        <strong>is Read:</strong> {{ noti.isRead }} <br />
+        @if (!noti.isRead) {
+        <app-read-notification-button [notiId]="noti.id"
+          >Mark as Read</app-read-notification-button
+        >
+        }
+      </div>
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>No notifications available to show.</p>
+  }
+</article>

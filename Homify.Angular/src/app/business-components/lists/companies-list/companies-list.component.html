@@ -1,0 +1,50 @@
+<article>
+	<h2>Listing of Companies</h2>
+	<div>
+		<div style="margin: 5px 0; display: flex; align-items: center;">
+      <label for="accOwnerFullName">Owner Fullname</label>
+      <input
+        id="accOwnerFullName"
+        type="text"
+        (change)="onOwnerFullnameChange($event)"
+      />
+    </div>
+
+		<div style="margin: 5px 0; display: flex; align-items: center;">
+      <label for="accCompany">Company</label>
+      <input
+        id="accCompany"
+        type="text"
+        (change)="onCompanyChange($event)"
+      />
+    </div>
+
+    <div>
+      <app-pagination
+        [limit]="limit"
+        [offset]="offset"
+        (limitChange)="updateLimit($event)"
+        (offsetChange)="updateOffset($event)"
+      ></app-pagination>
+      <p>Current Limit: {{ limit }}, Current Offset: {{ offset }}</p>
+    </div>
+	</div>
+	<button (click)="handleRefresh()">
+		Refresh
+	</button>
+  @if (companies.length > 0) {
+  <ul>
+    @for (company of companies; track $index) {
+    <li>
+			<img src="{{ company.logo }}" alt="{{ company.companyName }}" style="width: 100px; height: 100px; max-width: 100px; max-height: 100px; border-radius: 100%;" >
+      <strong>Company Name:</strong> {{ company.companyName }} <br />
+      <strong>Owner Name:</strong> {{ company.ownerName }} <br />
+      <strong>Owner Mail:</strong> {{ company.ownerMail }} <br />
+      <strong>Rut:</strong> {{ company.rut }} <br />
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>There are'nt companies available.</p>
+  }
+</article>

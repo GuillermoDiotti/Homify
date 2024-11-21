@@ -1,25 +1,37 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace Homify.BusinessLogic.Utility;
+namespace Homify.Utility;
 
-[ExcludeFromCodeCoverage]
-public class HomifyDateTime
+public static class HomifyDateTime
 {
-    public static DateTimeOffset Parse(string date)
+    public static string Parse(string date)
     {
-        var isParsed = DateTimeOffset.TryParseExact(
-            date,
-            "yyyy-MM-dd",
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out DateTimeOffset dateParsed);
-
-        if (!isParsed)
+        try
         {
-            throw new ArgumentException("Invalid published on");
-        }
+            var isParsed = DateTimeOffset.TryParseExact(
+                date,
+                "dd/MM/yyyy",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out DateTimeOffset dateParsed);
 
-        return dateParsed;
+            if (!isParsed)
+            {
+                throw new ArgumentException("Invalid date format");
+            }
+
+            return dateParsed.ToString("dd/MM/yyyy");
+        }
+        catch (ArgumentException ex)
+        {
+            return ex.Message;
+        }
+    }
+
+    public static string GetActualDate()
+    {
+        DateTimeOffset actual = DateTimeOffset.Now;
+        var fecha = Parse(actual.ToString("dd/MM/yyyy"));
+        return fecha;
     }
 }

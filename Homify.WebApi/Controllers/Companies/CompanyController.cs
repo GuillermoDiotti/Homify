@@ -1,8 +1,10 @@
 ﻿using Homify.BusinessLogic.Companies;
-using Homify.BusinessLogic.CompanyOwners;
-using Homify.Exceptions;
+using Homify.BusinessLogic.CompanyOwners.Entities;
+using Homify.BusinessLogic.Permissions;
 using Homify.Utility;
 using Homify.WebApi.Controllers.Companies.Models;
+using Homify.WebApi.Controllers.Companies.Models.Requests;
+using Homify.WebApi.Controllers.Companies.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,93 +22,54 @@ public class CompanyController : HomifyControllerBase
     }
 
     [HttpPost]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.CreateCompany)]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
     public CreateCompanyResponse Create(CreateCompanyRequest request)
     {
-        if (request == null)
-        {
-            throw new NullRequestException();
-        }
-
-        var nameExists = _companyService.GetAll().Any(x => x.Name == request.Name);
-
-        if (nameExists)
-        {
-            throw new DuplicatedDataException("The name is already taken.");
-        }
+        Helpers.ValidateRequest(request);
 
         var userLogged = GetUserLogged();
 
         var companyOwner = userLogged as CompanyOwner;
 
-        if (companyOwner == null)
-        {
-            throw new InvalidOperationException("Only a CompanyOwner can create a company.");
-        }
-
-        if (!companyOwner.IsIncomplete)
-        {
-            throw new InvalidOperationException("Account must be incomplete to execute this action.");
-        }
-
-        var alreadyHasACompany = _companyService.GetByUserId(userLogged.Id);
-
-        if (alreadyHasACompany != null)
-        {
-            throw new InvalidOperationException("User already owns a company");
-        }
-
         var args = new CreateCompanyArgs(
             request.Name ?? string.Empty,
             request.LogoUrl ?? string.Empty,
-            request.Rut ?? string.Empty);
+            request.Rut ?? string.Empty,
+            request.Validator ?? string.Empty,
+            companyOwner);
 
-        var company = _companyService.Add(args, companyOwner);
+        var company = _companyService.Add(args, companyOwner!);
 
         return new CreateCompanyResponse(company);
     }
 
     [HttpGet]
-    [AuthenticationFilter]
-    [AuthorizationFilter(PermissionsGenerator.GetCompanies)]
-    public List<CompanyBasicInfo> AllCompanies([FromQuery] string? limit, [FromQuery] string? offset,
-        [FromQuery] string? ownerFullName, [FromQuery] string? company)
+    [Authentication]
+    [Authorization(PermissionsGenerator.GetCompanies)]
+    public List<CompanyBasicInfo> AllCompanies([FromQuery] CompanyFiltersRequest? req)
     {
-        var pageSize = 10;
-        var pageOffset = 0;
+        var pageSize = Helpers.ValidatePaginationLimit(req.Limit);
+        var pageOffset = Helpers.ValidatePaginatioOffset(req.Offset);
 
-        if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out var parsedLimit))
+        return _companyService
+            .GetAll(req.OwnerFullName, req.Company)
+            .Skip(pageOffset)
+            .Take(pageSize)
+            .Select(m => new CompanyBasicInfo(m, m.Owner))
+            .ToList();
+    }
+
+    [HttpPut("validators")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateCompany)]
+    public AddValidatorBasicInfo UpdateCompanyValidator(AddValidatorBasicInfo req)
+    {
+        var user = GetUserLogged();
+        var resp = _companyService.AddValidatorModel(req.Model ?? string.Empty, user);
+        return new AddValidatorBasicInfo()
         {
-            pageSize = parsedLimit > 0 ? parsedLimit : pageSize;
-        }
-
-        if (!string.IsNullOrEmpty(offset) && int.TryParse(offset, out var parsedOffset))
-        {
-            pageOffset = parsedOffset >= 0 ? parsedOffset : pageOffset;
-        }
-
-        var list = _companyService.GetAll();
-
-        if (!string.IsNullOrEmpty(ownerFullName))
-        {
-            list = list.Where(c => Helpers.GetUserFullName(c.Owner.Name, c.Owner.LastName)
-                .Contains(ownerFullName, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        if (!string.IsNullOrEmpty(company))
-        {
-            list = list.Where(c => c.Name.Contains(company, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        var paginatedList = list.Skip(pageOffset).Take(pageSize).ToList();
-
-        List<CompanyBasicInfo> result = [];
-        foreach (Company c in paginatedList)
-        {
-            result.Add(new CompanyBasicInfo(c, c.Owner));
-        }
-
-        return result;
+            Model = resp
+        };
     }
 }

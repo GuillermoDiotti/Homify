@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Homify.DataAccess.Repositories;
+namespace Homify.BusinessLogic;
 
 public interface IRepository<TEntity>
     where TEntity : class

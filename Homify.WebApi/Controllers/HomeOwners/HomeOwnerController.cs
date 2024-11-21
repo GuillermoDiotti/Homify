@@ -1,9 +1,10 @@
 ﻿using Homify.BusinessLogic.HomeOwners.Entities;
+using Homify.BusinessLogic.Permissions;
 using Homify.BusinessLogic.Roles;
 using Homify.BusinessLogic.Users;
-using Homify.Exceptions;
 using Homify.Utility;
-using Homify.WebApi.Controllers.HomeOwners.Models;
+using Homify.WebApi.Controllers.HomeOwners.Models.Requests;
+using Homify.WebApi.Controllers.HomeOwners.Models.Responses;
 using Homify.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,15 +27,30 @@ public class HomeOwnerController : HomifyControllerBase
     [NonAuthenticationFilter]
     public CreateHomeOwnerResponse Create(CreateHomeOwnerRequest req)
     {
-        if (req == null)
-        {
-            throw new NullRequestException("Request cannot be null");
-        }
+        Helpers.ValidateRequest(req);
 
-        var role = _roleService.GetRole(Constants.HOMEOWNER);
-        var args = new CreateHomeOwnerArgs(req.Name ?? string.Empty, req.Email ?? string.Empty, req.Password ?? string.Empty,
-            req.LastName ?? string.Empty, req.ProfilePicUrl ?? string.Empty, role);
+        var role = _roleService.Get(Constants.HOMEOWNER);
+        var args = new CreateHomeOwnerArgs(
+            req.Name ?? string.Empty,
+            req.Email ?? string.Empty,
+            req.Password ?? string.Empty,
+            req.LastName ?? string.Empty,
+            req.ProfilePicUrl ?? string.Empty,
+            role);
+
         var user = _userService.AddHomeOwner(args);
+
         return new CreateHomeOwnerResponse(user);
+    }
+
+    [HttpPut("profile")]
+    [Authentication]
+    [Authorization(PermissionsGenerator.CreateHome)]
+    public UpdateProfileResponse UpdateProfileResponse(UpdateProfileRequest req)
+    {
+        Helpers.ValidateRequest(req);
+        var user = GetUserLogged();
+        var result = _userService.UpdateProfilePicture(req.ProfilePicture ?? string.Empty, user);
+        return new UpdateProfileResponse(result);
     }
 }

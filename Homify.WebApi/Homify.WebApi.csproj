@@ -10,6 +10,7 @@
     <ProjectReference Include="..\Homify.BusinessLogic\Homify.BusinessLogic.csproj" />
     <ProjectReference Include="..\Homify.Exceptions\Homify.Exceptions.csproj" />
     <ProjectReference Include="..\Homify.DataAccess\Homify.DataAccess.csproj" />
+    <ProjectReference Include="..\Homify.Importer.Abstractions\Homify.Importer.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Moq" Version="4.20.72" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ModeloValidador.Abstracciones">
+      <HintPath>..\lib\ModeloValidador.Abstracciones.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Moq;
+using InvalidOperationException = System.InvalidOperationException;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 
 namespace Homify.Tests.FilterTests;
@@ -31,7 +32,7 @@ public class ExceptionFilterTest
     [TestMethod]
     public void OnException_WhenExceptionIsNotRegistered_ShouldResponseInternalError()
     {
-        _context.Exception = new Exception("Not registered");
+        _context.Exception = new System.Exception("Not registered");
 
         _attribute.OnException(_context);
 
@@ -200,11 +201,11 @@ public class ExceptionFilterTest
         response.Should().NotBeNull();
         var concreteResponse = response as ObjectResult;
         concreteResponse.Should().NotBeNull();
-        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        concreteResponse.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
         if (concreteResponse.Value != null)
         {
-            GetInnerCode(concreteResponse.Value).Should().Be("InvalidOperation");
-            GetMessage(concreteResponse.Value).Should().Be("Your account is not incomplete");
+            GetInnerCode(concreteResponse.Value).Should().Be("InternalError");
+            GetMessage(concreteResponse.Value).Should().Be("There was an error while processing the request");
         }
     }
 
