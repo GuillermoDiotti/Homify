@@ -9,6 +9,7 @@ public sealed record class CompanyBasicInfo
     public string OwnerName { get; init; } = null!;
     public string OwnerMail { get; init; } = null!;
     public string Rut { get; init; } = null!;
+    public string Logo { get; init; } = null!;
 
     public CompanyBasicInfo(Company company, CompanyOwner owner)
     {
@@ -16,5 +17,6 @@ public sealed record class CompanyBasicInfo
         OwnerName = owner.Name;
         OwnerMail = owner.Email;
         Rut = company.Rut;
+        Logo = company.LogoUrl;
     }
 }
