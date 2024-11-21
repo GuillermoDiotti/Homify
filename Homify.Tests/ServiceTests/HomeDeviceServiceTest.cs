@@ -510,6 +510,21 @@ public class HomeDeviceServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
+    public void Deactivate_WhenUserNotFoundInHome_ThrowsInvalidOperationException()
+    {
+        var userId = "user-123";
+        var hardwareId = "hardware id";
+        var home = new Home { Id = "home-123", OwnerId = "owner-123", Members =  new List<HomeUser>() };
+        var homeDevice = new HomeDevice { Id = "device-123", HardwareId = "hw-123", Home = home };
+        var user = new User { Id = userId };
+
+        _homeDeviceRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<HomeDevice, bool>>>())).Returns(homeDevice);
+
+        _homeDeviceService.Deactivate(hardwareId, user);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
     public void Rename_WhenUserHasNoPermission_ThrowsInvalidOperationException()
     {
         var userId = "user-123";
