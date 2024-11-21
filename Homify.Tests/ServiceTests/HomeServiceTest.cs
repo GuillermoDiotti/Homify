@@ -70,6 +70,13 @@ public class HomeServiceTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgsNullException))]
+    public void CreateHomeArge_WithNullOwner_ShouldThrowException()
+    {
+        var createHomeArgs = new CreateHomeArgs("main", "123", "-54.3", "-55.4", 5, null, "alias");
+    }
+
+    [TestMethod]
     public void GetHomeById_ShouldReturnHome_WhenHomeExists()
     {
         var homeId = "home123";
